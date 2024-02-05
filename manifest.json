@@ -1,0 +1,29 @@
+{
+    "theme_color": "#fc9952",
+    "background_color": "#08080c",
+    "icons": [
+        {
+            "purpose": "maskable",
+            "sizes": "512x512",
+            "src": "icons/icon512_maskable.png",
+            "type": "image/png"
+        },
+        {
+            "purpose": "any",
+            "sizes": "512x512",
+            "src": "icons/icon512_rounded.png",
+            "type": "image/png"
+        }
+    ],
+    "orientation": "portrait",
+    "display": "standalone",
+    "dir": "auto",
+    "lang": "en-US",
+    "name": "CasaMax",
+    "short_name": "casamax",
+    "start_url": "/",
+    "scope": "https://casamax.co.zw/unilistings/",
+    "description": "Tool For Getting Off Campus Accommodation In Zimbabwe",
+    "prefer_related_applications": false
+
+}

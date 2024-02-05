@@ -1,0 +1,74 @@
+<style>
+
+.agent_change_info h1{
+    color: rgb(252, 153, 82);
+    margin-top: 20px;
+    font-size: 50px;
+    text-align: center;
+    font-weight: 1000;
+    font-family: 'Oswald', sans-serif;
+    }
+.agent_change_info h2{
+    margin: 40px 0 0 0 ;
+    font-size: 30px;
+    text-align: center;
+    color: rgb(252, 153, 82);
+    font-weight: 600;
+    font-family: 'Oswald', sans-serif;
+
+}
+.agent_change_info label{
+    font-family: 'Quicksand', sans-serif;
+    margin-bottom: 20px auto;
+    color: rgb(8, 8, 12);
+    font-weight: 600;
+    text-align: left;
+}
+.agent_change_info form{
+    margin: 15% ;
+}
+.agent_change_info div{
+    margin-bottom: 20px;
+}
+.agent_change_info input{
+    width: 90%;
+    height: 20px;
+    border: none;
+    background: none;
+    color: rgb(8, 8, 12);
+    border-bottom: solid 1px rgba(8, 8, 12, 0.452);
+}    
+
+</style>
+
+
+<div class="agent_change_info" id="agent_change_info">
+    <h1>
+        edit my info
+    </h1>
+<form action="./add_house_script.php" method="post" enctype="multipart/form-data">
+    <div>
+    <label>First-name:</label><br>
+    <input type="text" name="firstname" value="" placeholder="enter name that will show on your profile" required>
+    </div>
+
+    <div>
+    <label>Last-name:</label><br>
+    <input type="text" name="lastname" value="" placeholder="enter last name" required>
+    </div>
+
+    <div>
+    <label>Email:</label><br>
+    <input type="email" name="email"  value="" placeholder="enter phone-number" required>
+    </div>
+
+    <div>
+        <label>Contact:</label><br>
+        <input type="number"  min="0" name="contact"  value="" placeholder="enter phone-number" required>
+    </div>
+
+    <button type="submit" class="edit_info_button" name="edit_agent_info">Edit Agent info</button>
+    <button type="button" class="edit_info_button" name="cancel" onclick="close_edit_agent_info()">cancel</button>
+    
+</form>
+</div>

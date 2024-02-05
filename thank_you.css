@@ -1,0 +1,272 @@
+*{
+    margin: 0;
+    padding: 0; 
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+@keyframes text {
+    100%{
+        color: rgb(252, 153, 82);
+    }
+    0%{
+        color: rgb(8, 8, 12);
+    }
+}
+@keyframes loader_spin {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+@keyframes checkmark {
+    0%{
+        height: 0;
+        width: 0;
+        opacity: 1;
+    }
+    20%{
+        height:0;
+        width: 1.75em;
+        opacity: 1;
+    }
+    40%{
+        height: 3.5em;
+        width: 1.75em;
+        opacity: 1;
+    }
+    100%{
+        height: 3.5em;
+        width: 1.75em;
+        opacity: 1;
+    }
+}
+html {
+    scroll-behavior: smooth;
+}
+button:active{
+    transform: scale(0.9);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+    transition: 0.3s all;
+}
+.circle_loader{
+    border: 3px solid rgb(8, 8, 12);
+    border-left-color: rgb(252, 153, 82);
+    animation: loader_spin 1s infinite linear;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 50%;
+    width: 7em;
+    height: 7em;
+    margin: 60px;
+}
+.load_complete{
+    -webkit-animation: none;
+    animation: none;
+    border-color: rgb(8, 8, 12);
+    transition: border 5000 ease-in-out;
+}
+.checkmark{
+    display: none;
+}
+.draw::after{
+    display: block;
+    animation-duration: 4000ms;
+    animation-timing-function: ease;
+    animation-name: checkmark;
+    transform: scalex(-1) rotate(135deg);
+}
+.draw::after{
+    opacity: 1;
+    height: 3.5em;
+    width: 1.7em;
+    transform-origin: left top;
+    border-right: 6px solid rgb(8, 8, 12);
+    border-top: 6px solid;
+    border-radius: 2px;
+    content: '';
+    left: 1.2em;
+    top: 3.5em;
+    position: absolute;
+}
+header{
+    text-align: center;
+    padding-bottom: 10px;
+}
+.logo{
+    width: 6vw;
+    height: 6vw;
+    margin-top: 10px;
+   
+}
+.container{
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(44, 44, 44, 0.815);
+    width: 80%;
+    height: 40%;
+    display: block;
+    text-align: center;
+    border-radius: 10px;
+    position: static; 
+    padding: 20px 80px;
+}
+.student_image{
+    margin: 30px;
+    border-radius: 10px;
+}
+h1{
+    font-size: 5vw;
+    color: rgb(252, 153, 82);
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 6vw;
+    width: 100%;
+    font-weight: 800;
+}
+p{
+    width: 40vw;
+    margin: 0 auto;
+}
+button{
+    background-color: rgb(252, 153, 82);
+    color:rgb(255, 255, 255);
+    border: none;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 5px 20px ;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: 0.3s all;
+}
+
+
+/* --footer-- */
+
+.footer{
+    flex: 1;
+    width: 100%;
+    bottom: 0;
+    background:rgb(8, 8, 12);
+    color: white;
+    font-size: 1.4vw;
+    line-height: 1.4vw;
+    padding: 3vw;
+}
+
+.socialicons .fab{
+    width: 2.4vw;
+    height: 2.4vw;
+    text-align: center;
+    line-height: 2vw;
+    font-size: 2vw;
+    color: white;
+    margin: 0.8vw auto;
+    cursor: pointer;
+}
+.socialicons{
+    text-align: center;
+}
+.socialicons img{
+height: 2.4vw;
+width: 2.4vw;
+text-align: center;
+margin-bottom: 2vw;
+padding-bottom: 0px;
+}
+.footer{
+text-align: center;
+font-weight: 300;
+}
+.footer p{
+color: rgba(255, 255, 255, 0.438);
+margin-bottom: 15px;
+margin-top: 15px;
+font-family: 'Source Sans 3', sans-serif;  
+}
+.abt a{
+text-decoration: underline;
+color: rgb(252, 153, 82);
+cursor: pointer;
+font-family: 'Inconsolata', monospace;
+
+}
+hr{
+    height: 2px;
+    background: rgba(8, 8, 12, 0.082);
+    width: 100%;
+    border: 0;
+
+}
+@media only screen and (max-width:700px){
+    
+    .container{
+        margin: 20px auto;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0 0 30px rgba(126, 126, 126, 0.815);
+        width: 90%;
+        height: auto;
+        display: block;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-around;
+        border-radius: 10px;
+        padding: 10px 0;
+    }
+    .logo{
+        width: 120px;
+        height: 120px;
+        margin-top: 100px;
+    }
+    .header{
+        margin: 12vw 0;
+    }
+    .circle_loader{
+        margin: 10px;
+    }
+    h1{
+        font-family: 'Oswald', sans-serif;
+        margin: 0 auto;
+        color: rgb(252, 153, 82);
+        font-weight: 800;
+        font-size: 12vw;
+        line-height: 12vw;
+    }
+    button{
+        width: 60%;
+        font-size: 18;
+    }
+    .text{
+        margin: 40px 0;
+    }
+    p{
+        width: 80vw;
+        margin: 0 auto;
+    }
+    .student_image{
+        margin: 2px;
+        border-radius: 10px;
+    }
+    .footer{
+        font-size: 3.2vw;
+        line-height: 4vw;
+    }
+    .socialicons{
+        text-align: center;
+    }
+    .socialicons img{
+    height: 10vw;
+    width: 10vw;
+    text-align: center;
+    margin-bottom: 2vw;
+    padding-bottom: 0px;
+    }
+
+}

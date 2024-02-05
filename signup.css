@@ -1,0 +1,311 @@
+
+button:active{
+    transform: scale(0.9);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+    transition: 0.3s all;
+}
+.scrollable{
+    max-height: 100vh;
+    overflow: hidden;
+}
+body{
+    background-image: url("./images/cleanwhite.jpg");
+    background-size: cover;
+    padding: 0;
+    margin: 0;
+}
+#phone::-webkit-outer-spin-button,
+#phone::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type=number]{
+    -moz-appearance: textfield;
+}
+.logo{
+    width: 6vw;
+    height: 6vw;
+    margin-top: 10px;
+}
+header{
+    padding-top: 10px;
+    text-align: center;
+}
+header a{
+    height: 60px;
+    width: 60px;
+}
+.left-col{
+    
+    width: 70%;
+    padding-bottom: 20px;
+}
+.right-col{
+    width: 70%;
+    padding-bottom: 20px;
+}
+
+.container{
+
+    background-color: rgb(255, 255, 255);
+    display: block;
+    width: 80vw;
+    margin: 5% auto;
+    font-size: 20px;
+    color: rgb(8, 8, 12);
+    border-radius: 10px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align:center;
+    
+}
+.input-label{
+
+    font-family: 'Quicksand', sans-serif;
+    color: rgb(8, 8, 12);
+    font-weight: 600;
+    padding-bottom: 20px;
+    text-align: right;
+    padding-bottom: 20px;
+    width: 70vw;
+}
+.input-label input{
+
+    background: transparent;
+    height: 25px;
+}
+.container h1{
+    padding: 0;
+    margin: 0;
+    font-size: 30px;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+}
+.dropdown{
+    margin-left: 0;
+    display: inline-block;
+    padding-top: 20px;
+}
+.dropdown select{
+    background-color: rgb(252, 153, 82);
+    border: none;
+    border-radius: 10px;
+    width: 70% auto;
+    height: 30px;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer;
+    outline: none;
+    font-weight: 400;
+}
+
+.dropdown::after{
+    content: '';
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent;
+    border-left: rgb(252, 153, 82);
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    border-radius: 10px;
+
+}
+.container input{
+    width: 60%;
+    background: transparent;
+    border: none;
+    font-size: medium;
+    border-bottom: 1px solid rgb(37, 37, 43);
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 40px;
+    text-align: left;
+}
+::placeholder{
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: grey;
+}
+.container sup{
+    color: rgb(252, 153, 82);
+}
+.container #male{
+    width:15px;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.container .man{
+    margin-left: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.container #female{
+    width: 15px;
+}
+
+.container .woman{
+    margin-left: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.container .radio{
+padding-bottom: 30px;
+}
+
+.container #checkbox{
+    width: 15px;
+}
+
+.container .checkbox{
+    margin-left: 0;
+    color: rgb(252, 153, 82);
+    text-align: center;
+    font-size: 12px;
+}
+.container .login{
+    width: 40%;
+    margin: auto;
+    
+}
+.container .login button{
+    margin: 10px auto;
+    margin-left: 0%;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
+    width: 80%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    font-size: 15px;
+    text-align: center;
+    font-weight: 600;
+    color: rgb(8, 8, 12);
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(252, 153, 82);
+}
+.container .login .logout_btn{
+    background-color: rgb(255, 255, 255);
+    color: rgb(252, 153, 82);
+
+}
+.sign-up{
+    width: 60%;
+    margin: 0 auto;
+}
+.sign-up button{
+    margin: 0;
+    width: 40%;
+}
+a{
+    font-size: 15px;
+    color: rgb(252, 153, 82);
+    font-family: 'Inconsolata', monospace;
+
+}
+form .reg{
+    font-size: 10px;
+    text-align: center;
+}
+
+/* ----------for small screens------- */
+@media only screen and (max-width: 600px){
+    header{
+        font-size: 7vw;
+    }
+    header a{
+        height: 120px;
+        width: 120px;
+    }
+    .logo{
+        width: 120px;
+        height: 120px;
+        margin-top: 100px;
+      }
+    .container button{
+        width: 100%;
+        margin: 0 auto;
+    }
+    .container .input-label{
+        text-align: left;
+        width: 80vw; 
+        padding-left: 10%;
+        margin: 0;
+    }
+    .container input{
+        width: 80%;
+        background: white;
+        border: none;
+        font-size: medium;
+        border-bottom: 1px solid rgba(37, 37, 43,0.6);
+        font-family: Arial, Helvetica, sans-serif;
+        margin-bottom: 40px;
+        text-align: left;
+    }
+    .container .input-label label{
+        text-align: left;
+        margin-top: 10%;
+        padding-bottom: 5%;
+    }
+    .container{
+        width: 90%;
+    
+    }
+    .container h1{
+        font-size: 10vw;
+        margin-top: 0;
+        font-family: 'Oswald', sans-serif;
+
+    }
+    .container .h3reg{
+       
+        margin: 0 ;
+        padding: 0 ;
+        color: rgb(252, 153, 82);
+        font-weight: 600;
+        font-family: 'Oswald', sans-serif;
+
+    }
+    .container label{
+        font-family: 'Lato', sans-serif;
+        display: block;
+        text-align: left;
+        font-weight: 400;
+        width: auto;
+
+    }
+    form .reg{
+        
+        padding-top: 30px;
+        text-align: center;
+        color: rgb(8, 8, 12);
+        font-weight: 200;
+    }
+    .right-col{
+        margin: 0 auto;
+    }
+    .left-col{
+        margin: 0 auto;
+    }
+    .dropdown{
+        display: inline-block;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .container .login{
+        display: block;
+        margin: 0 auto;
+        width: 60%;
+    }
+    .dropdown select{
+        border: none;
+        border-radius: 10px;        
+        width: 50% ;
+        height: 40px;
+        text-align: center;
+        font-size: 15px;
+        cursor: pointer;
+        outline: none;
+        font-weight: 200;
+    }
+}

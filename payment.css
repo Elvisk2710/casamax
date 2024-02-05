@@ -1,0 +1,200 @@
+body{
+    background-image: linear-gradient(rgba(255, 255, 255, 0.3),rgba(0, 0, 0, 0.3)),url(images/cleanwhite.jpg);
+    background-size: cover;
+}
+.container{
+    width: 80%;
+    margin: 0 auto;
+   
+}
+.scrollable{
+    max-height: 100vh;
+    overflow: hidden;
+}
+.head{
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 100px;
+}
+.logo{
+    width: 6vw;
+    height: 6vw;
+    margin-top: 10px;
+}
+form{
+    text-align: center;
+}
+.phone_label{
+    color: white;
+    font-weight: 400;
+    font-size: 16px;
+    font-family: 'Quicksand', sans-serif;
+
+}
+.phone{
+    border-style: none;
+    height: 20px;
+    width: 10vw;
+    min-width: 120px;
+    border-radius: 10px;
+    text-align: center;
+}
+.phone::-webkit-outer-spin-button,
+.phone::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+      margin: 0;
+}
+input[type=number]{
+    -moz-appearance: textfield;
+}
+.subscription_buttons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    text-align: center;
+}
+.sub{
+    flex-basis: 20%;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+}
+h5{
+    font-size: 30px;
+    font-weight: 200;
+    opacity: 80%;
+}
+h2{
+    color: rgb(8, 8, 12);
+    font-size: 30px;
+    font-weight: 600;
+    font-family: 'Playfair Display', serif;
+    font-family: 'Oswald', sans-serif;    
+    
+}
+a{
+    text-decoration: none;
+    font-family: 'Inconsolata', monospace;
+    color: white;
+    font-weight: 800;
+}
+button{
+    background-color: rgb(252, 153, 82);
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px;
+    font-weight: 600;
+    text-align: center;
+    width: 120px;
+    height: 30px;
+
+}
+button:active{
+    transform: scale(0.9);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+    transition: 0.3s all;
+}
+p{
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    color: rgba(8, 8, 12, 0.5);
+    font-weight: 600;
+}
+
+/* footer */
+
+.socialicons .fab{
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 40px;
+    color: white;
+    margin: 10px auto;
+    cursor: pointer;
+}
+.socialicons{
+    text-align: center;
+}
+.socialicons img{
+height: 30px;
+width: 30px;
+text-align: center;
+margin-bottom: 40px;
+padding-bottom: 0px;
+}
+.footer{
+text-align: center;
+font-weight: 100;
+margin-top: 80px;
+}
+.footer p{
+color: rgba(0, 0, 0, 0.438);
+margin-bottom: 15px;
+margin-top: 15px;
+font-family: 'Source Sans 3', sans-serif;
+inline-size: 100%;
+color: rgba(255, 255, 255, 0.4);
+font-weight: 90;
+}
+.abt{
+    font-size: 16px;
+    color: white;
+}
+.abt a{
+text-decoration: underline;
+color: rgb(252, 153, 82);
+cursor: pointer;
+}
+hr{
+    height: 2px;
+    background: rgba(8, 8, 12, 0.082);
+    width: 100%;
+    border: 0;
+
+}
+@media only screen and (max-width:700px){
+    .container{
+        width: 100%;
+    }
+    .logo{
+        width: 120px;
+        height: 120px;
+        margin-top: 100px;
+        
+      }
+    .sub{
+        flex-basis: 50%;
+        margin: 20px 0 auto;
+        text-align: center;
+    }
+    .sub div{
+        margin: 0 auto;
+        width: 60%;
+    }
+    p{
+        
+        inline-size: 100%;
+    }
+    button{
+        margin: 60px 20px 20px 20px;
+    }
+    button:active{
+    transform: scale(0.7);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+    transition: 0.3s all;
+    }
+    a{
+        text-decoration: none;
+        font-family: 'Arvo', serif;
+        color: white;
+        font-weight: 800;
+        font-size: 20px;
+    }
+}
