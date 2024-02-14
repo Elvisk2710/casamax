@@ -3,9 +3,13 @@
     <div class="admin_advertise_container">
         <h1>Create Profile</h1>
 
-        <form action="" method="post" enctype="multipart/form-data" onsubmit="submitFn()">
+        <form action="../../homerunphp/admin_advertise_script.php" method="post" enctype="multipart/form-data" onsubmit="submitFn()">
 
             <div id="tab">
+                <div>
+                    <label>Admin ID:</label><br>
+                    <input type="text" name="admin_id" value=<?php echo $row['admin_id'] ?> readonly>
+                </div>
                 <h2>
                     Personal Details
                 </h2>
@@ -153,7 +157,7 @@
                     <div class="imagepreview">
 
                         <div>
-                            <img title="Choose an Image" src="../../images/addimage.png" accept="image/png, image/jpeg"id="image1" onclick="triggerClick()">
+                            <img title="Choose an Image" src="../../images/addimage.png" accept="image/png, image/jpeg" id="image1" onclick="triggerClick()">
                             <input type="file" id="inputimage1" name="image[]" multiple>
                             <br>
                             <h3 style="color: rgb(8, 8, 12);">
@@ -163,7 +167,7 @@
                     </div>
 
                 </div>
-                
+
             </div>
             <div id="tab">
                 <h2>
@@ -186,8 +190,8 @@
                     </h4>
                     <div class="imagepreview">
                         <div>
-                            <img title="Choose an Image" src="../../images/addimage.png" accept="image/png, image/jpeg, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" id="image2" onclick="triggerClick2()">
-                            <input type="file" id="inputimage2" name="image[]">
+                            <img title="Choose an Image" src="../../images/addimage.png" accept="image/png, image/jpeg, .doc,.docx,.wordprocessingml.document" id="image2" onclick="triggerClick2()">
+                            <input type="file" id="inputimage2" name="identityImage">
                             <br>
                         </div>
                     </div>
@@ -197,8 +201,8 @@
                     </h4>
                     <div class="imagepreview">
                         <div>
-                            <img title="Choose an Image" src="../../images/addimage.png" id="image3" accept="image/png, image/jpeg, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onclick="triggerClick3()">
-                            <input type="file" id="inputimage3" name="image[]">
+                            <img title="Choose an Image" src="../../images/addimage.png" id="image3" accept="image/png, image/jpeg, .doc,.docx,/msword,.formats-officedocument.wordprocessingml.document" onclick="triggerClick3()">
+                            <input type="file" id="inputimage3" name="residencyImage">
                             <br>
                         </div>
                     </div>

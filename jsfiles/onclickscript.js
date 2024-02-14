@@ -1,3 +1,15 @@
+//function for creating a cooking
+function setCookie(name, value, daysToExpire) {
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + daysToExpire);
+  
+    const cookieValue = encodeURIComponent(value) +
+      (daysToExpire ? "; expires=" + expirationDate.toUTCString() : "");
+  
+    document.cookie = name + "=" + cookieValue + "; path=/";
+  }
+
+//  functions for selecting images
 document.getElementById('image1').onclick = function triggerClick() {
     document.getElementById('inputimage1').click();
 }
@@ -94,9 +106,7 @@ function displayImage8(e) {
         reader.readAsDataURL(e.files[0]);
     }
 }
-
-
-
+// function for opening and closing the nav bar
 function togglebtn1() {
     var dropdown = document.getElementById("dropdown");
     navBar.classList.toggle("hideuni")
@@ -114,6 +124,7 @@ function togglebtn1() {
     var dropdown = document.getElementById("dropdown");
     navBar.classList.toggle("hideuni")
 }
+
 // open add listing form for admin portal
 
 function OpenAddListingForm() {
@@ -274,8 +285,10 @@ function validateForm() {
     return valid; // return the valid status
 }
 // opening house documents in admin
-function openDocs() {
-    document.getElementById("view_documents_pop_up").style.display = "flex"
+function openDocs(homeAdminSession) {
+    setCookie("homeAdminSession",homeAdminSession,1)
+    document.getElementById("view_documents_pop_up").style.display = "flex";
+    console.log(homeAdminSession)
 }
 function closeDocs() {
     document.getElementById("view_documents_pop_up").style.display = "none"

@@ -227,9 +227,9 @@
                     <div class="imagepreview">
                         <div>
                             <img title="Choose an Image" src="../images/addimage.png"
-                                accept="image/png, image/jpeg, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                accept="image/png, image/jpeg, .doc,.docx,/msword,.formats-officedocument.wordprocessingml.document"
                                 id="image2" onclick="triggerClick2()">
-                            <input type="file" id="inputimage2" name="image[]">
+                            <input type="file" id="inputimage2" name="identityImage">
                             <br>
                         </div>
                     </div>
@@ -240,9 +240,9 @@
                     <div class="imagepreview">
                         <div>
                             <img title="Choose an Image" src="../images/addimage.png" id="image3"
-                                accept="image/png, image/jpeg, .doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                accept="image/png, image/jpeg, .doc,.docx,/msword,.formats-officedocument.wordprocessingml.document"
                                 onclick="triggerClick3()">
-                            <input type="file" id="inputimage3" name="image[]">
+                            <input type="file" id="inputimage3" name="residencyImage">
                             <br>
                         </div>
                     </div>

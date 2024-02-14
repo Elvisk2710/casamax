@@ -1,5 +1,37 @@
 <?php
 session_start();
+if (empty($_SESSION['sessionAdmin'])) {
+    header("Location:../index.php?PleaseLogin");
+    echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
+    exit();
+} else {
+    $user = $_SESSION['sessionAdmin'];
+    require_once '../../homerunphp/advertisesdb.php';
+    $sql = "SELECT * FROM  admin_table WHERE admin_id = '$user' ";
+}
+if ($rs_result = mysqli_query($conn, $sql)) {
+    $row = mysqli_fetch_array($rs_result);
+    $admin_id = $row['admin_id'];
+}
+if (empty($user)) {
+    echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
+    header("refresh:0.1; ../index.php?error=youhavetologinfirst");
+    exit();
+} else {
+    $total_admin_houses_sql = "SELECT * FROM  homerunhouses WHERE admin_id = '$admin_id' ";
+    if ($home_result = mysqli_query($conn, $total_admin_houses_sql)) {
+        $total_admin_houses = mysqli_num_rows($home_result);
+        $verified_admin_houses_sql = "SELECT * FROM  homerunhouses WHERE verified = '1' AND admin_id = '$admin_id'";
+        if ($home_result = mysqli_query($conn, $verified_admin_houses_sql)) {
+            $verified_admin_houses = mysqli_num_rows($home_result);
+            $not_verified_admin_houses = $total_admin_houses - $verified_admin_houses;
+        }
+    } else {
+        echo '<script type="text/javascript"> alert("SQL Error") </script>';
+        header("refresh:0.1; ../index.php?error=SQLError");
+        exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +65,7 @@ session_start();
                     Total Listings
                 </h1>
                 <h1 class="number">
-                    13
+                    <?php echo $total_admin_houses?>
                 </h1>
             </div>
             <div class="listing_number">
@@ -41,7 +73,7 @@ session_start();
                     Verified
                 </h1>
                 <h1 class="number">
-                    5
+                <?php echo $verified_admin_houses?>
                 </h1>
             </div>
             <div class="listing_number">
@@ -49,7 +81,7 @@ session_start();
                     Not Verified
                 </h1>
                 <h1 class="number">
-                    8
+                <?php echo $not_verified_admin_houses?>
                 </h1>
             </div>
 
@@ -62,14 +94,15 @@ session_start();
                 <hr>
                 <div class="top_element">
                     <h1>
-                        Elvis Kadeya
+                    <?php echo ucfirst($row['first_name']). ' ' .ucfirst($row['last_name'])?>
+
                     </h1>
                     <div class="level">
                         <h3>
                             Admin Level
                         </h3>
                         <h3>
-                            3
+                        <?php echo ucfirst($row['access_level'])?>
                         </h3>
                     </div>
 
@@ -81,7 +114,8 @@ session_start();
                             Address
                         </h2>
                         <h3>
-                            28 Alfred Florida Mutare
+                        <?php echo ucfirst($row['address'])?>
+
                         </h3>
                     </div>
                     <div class="details">
@@ -89,7 +123,8 @@ session_start();
                             Email
                         </h2>
                         <h3>
-                            Kadeyaelvis@gmail.com
+                        <?php echo ucfirst($row['email'])?>
+
                         </h3>
                     </div>
                     <div class="details">
@@ -97,7 +132,8 @@ session_start();
                             Contact
                         </h2>
                         <h3>
-                            0786989144
+                        <?php echo ucfirst($row['contact'])?>
+
                         </h3>
                     </div>
                     <div class="details">
@@ -105,7 +141,8 @@ session_start();
                             Gender
                         </h2>
                         <h3>
-                            Male
+                        <?php echo ucfirst($row['sex'])?>
+
                         </h3>
                     </div>
                     <div class="details">
@@ -113,7 +150,8 @@ session_start();
                             Admin ID
                         </h2>
                         <h3>
-                            CMA0001
+                        <?php echo ucfirst($row['admin_id'])?>
+
                         </h3>
                     </div>
                     <!-- <div class="edit_profile">

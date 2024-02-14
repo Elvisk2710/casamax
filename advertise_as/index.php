@@ -31,7 +31,7 @@
        
 
             <div class="login">   
-            <a href="../advertise/index.php"><button type="button" name="submit">
+            <a href="../advertise/"><button type="button" name="submit">
                     LANDLORD
                     </button>
             </a>

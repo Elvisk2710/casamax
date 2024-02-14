@@ -39,9 +39,10 @@ if (isset($_POST['submit'])) {
                     echo '<script type="text/javascript"> alert("Wrong Password!") </script>';
                 } elseif ($passcheck == true) {
                     // starting the admin session
-                    $_SESSION['sessionAdmin'] = $email;
+                    $_SESSION['sessionAdmin'] = $row['admin_id'];
+                    $_SESSION['access'] = $row['access_level'];
                     header("Refresh: $sec; URL = ../admin/dashboard?error=success");
-
+                    
                 } else {
                     // for the wrong password
                     header("refresh:$sec; ../admin?error=wrongpass");

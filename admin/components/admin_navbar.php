@@ -6,9 +6,11 @@
     </div>
     <ul>
         <li>
-            <h2 class="sidebar_element">
-                Dashboard
-            </h2>
+        <a href="../dashboard/" class="sidebar_element">
+                <h2 class="sidebar_element">
+                    Dashboard
+                </h2>
+            </a>
         </li>
         <li>
             <h2 class="sidebar_element">

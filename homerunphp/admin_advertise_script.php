@@ -109,11 +109,12 @@ if (isset($_POST['create_profile'])) {
         }
     }
 
-    if (!empty($_FILES['identityImage']['name']) || !empty($_FILES['residencyImage']['name'])) {
+    if (!empty($_FILES['identityImage']['name']) || !empty($_FILES['residencyImage']['name']) || !empty($_POST['admin_id'])) {
+        $admin_id = $_POST['admin_id'];
         // identity image
         $identityImages = $_FILES['identityImage'];
         // residencial proof image
-        $residencyImages = $_FILES['residencyImage'];
+        $residencyImages = $_FILES['residencyImage']; 
 
         // declaring variables
         $firstname = $_POST['firstname'];
@@ -171,7 +172,7 @@ if (isset($_POST['create_profile'])) {
 
 
         if ($password !== $confirmpass) {
-            header("refresh:$sec;  ../advertise/index.php?error=passwordsdonotmatch" . $firstname);
+            header("refresh:$sec; ../admin/dashboard/index.php?error=passwordsdonotmatch" . $firstname);
             echo '<script type="text/javascript"> alert("Passwords Do Not Mtatch") </script>';
             exit();
         } else {
@@ -179,7 +180,7 @@ if (isset($_POST['create_profile'])) {
             $stmt = mysqli_stmt_init($conn);
 
             if (!mysqli_stmt_prepare($stmt, $sql)) {
-                header("refresh:$sec;  ../advertise/index.php?error=sqlerror");
+                header("refresh:$sec;  ../admin/dashboard/index.php?error=sqlerror");
                 echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
                 exit();
             } else {
@@ -189,7 +190,7 @@ if (isset($_POST['create_profile'])) {
                 $rowCount = mysqli_stmt_num_rows($stmt);
 
                 if ($rowCount > 0) {
-                    header("refresh:$sec;  ../advertise/index.php?error=usernamealreadyexists");
+                    header("refresh:$sec;  ../admin/dashboard/index.php?error=usernamealreadyexists");
                     echo '<script type="text/javascript"> alert("User Already Exists") </script>';
                     exit();
                 } else {
@@ -202,25 +203,27 @@ if (isset($_POST['create_profile'])) {
 
                     $home_id = $timestamp . '_' . $randomString . '_' . $rand_num . '_' . $trancated_text;
 
-                    $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,idnum,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,adrs,people_in_a_room,passw,id_image,res_image) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+                    $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,idnum,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,adrs,people_in_a_room,passw,admin_id,id_image,res_image) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
                     if (!$stmt = mysqli_stmt_init($conn)) {
                         echo '<script type="text/javascript"> alert("SQL ERROR init failure") </script>';
                         exit();
                     } else {
                         // directory path to folder for verification imaages
-                        $directoryPath = '../verification_images/' . $home_id . '/';
-                        $identityFileDestination = $directoryPath . $identityImages['name'];
-                        $residencyFileDestination = $directoryPath . $residencyImages['name'];
+                        $directoryPath = '../verification_images/' . $home_id .'/';
+                        $identityFileDestination = $directoryPath.$identityImages['name'];
+                        $residencyFileDestination = $directoryPath.$residencyImages['name'];
 
+                        // Create the directory
                         if (!file_exists($directoryPath)) {
                             if (mkdir($directoryPath, 0777, true)) {
-                                if (move_uploaded_file($residencyImages['tmp_name'], $residencyFileDestination) && move_uploaded_file($identityImages['tmp_name'], $identityFileDestination)) {
+                                // upload verification images
+                                if (move_uploaded_file($residencyImages['tmp_name'],$residencyFileDestination) && move_uploaded_file($identityImages['tmp_name'],$identityFileDestination)) {
                                     echo "Directory created successfully.";
                                     if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                        header("refresh:$sec;  ../advertise/index.php?error=sqlerror");
+                                        header("refresh:$sec;  ../admin/dashboard/index.php?error=sqlerror");
                                         exit();
                                     } else {
-                                        if (!mysqli_stmt_bind_param($stmt, "ssssisisssssssssssiiiiisisss", $home_id, $email, $firstname, $lastname, $phone, $idnum, $price, $description, $uni, $image1, $image2, $image3, $image4, $image5, $image6, $image7, $image8, $gender, $kitchen, $fridge, $wifi, $borehole, $transport, $address, $people, $hashedpass, $identityImages['name'], $residencyImages['name'])) {
+                                        if (!mysqli_stmt_bind_param($stmt, "ssssisisssssssssssiiiiisissss", $home_id, $email, $firstname, $lastname, $phone, $idnum, $price, $description, $uni, $image1, $image2, $image3, $image4, $image5, $image6, $image7, $image8, $gender, $kitchen, $fridge, $wifi, $borehole, $transport, $address, $people, $hashedpass, $admin_id,$identityImages['name'],$residencyImages['name'])) {
                                             echo '<script type="text/javascript"> alert("SQL ERROR binding stms failed") </script>';
                                         } else {
                                             if (!mysqli_stmt_execute($stmt)) {
@@ -228,10 +231,12 @@ if (isset($_POST['create_profile'])) {
                                                 print("Error : " . $error);
                                                 echo '<script type="text/javascript"> alert("SQL ERROR execute failure") </script>';
                                             } else {
+
                                                 if ($count <= 0) {
-                                                    header("location:../profile.php?error=Profilecreated");
+                                                    header("location:../admin/dashboard/index.php?error=Profilecreated");
                                                     $_SESSION['sessionowner'] = $email;
-                                                    echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") </script>';
+                                                    echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") 
+                                                                        </script>';
                                                     exit();
                                                 } else {
 
@@ -283,31 +288,32 @@ if (isset($_POST['create_profile'])) {
                                                 if ($statusMsg == 'error') {
                                                     echo '<script type="text/javascript"> alert("Some images were not uploaded due to unsupported images. Only JPG, JPEG, PNG files are currently supported")';
                                                 } elseif ($status == 'success') {
-                                                    header("location:../profile.php?error=Profilecreated");
+                                                    header("location:../admin/dashboard/index.php?error=Profilecreated");
                                                     $_SESSION['sessionowner'] = $email;
                                                     echo '<script type="text/javascript"> alert("Images  Uploaded Successfully") </script>';
                                                     exit();
                                                 } else {
-                                                    header("location:../profile.php?error=Profilecreated");
+                                                    header("location:../admin/dashboard/index.php?error=Profilecreated");
                                                     $_SESSION['sessionowner'] = $email;
-                                                    echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") </script>';
+                                                    echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") 
+                                                                            </script>';
                                                     exit();
                                                 }
                                             }
                                         }
                                     }
                                 } else {
-                                    header("refresh:$sec;  ../advertise/index.php?error=FailedToMoveImages");
+                                    header("location:../admin/dashboard/index.php?error=FailedToMoveImages");
                                     echo '<script type="text/javascript"> alert("Verification Images Failed") </script>';
                                     exit();
                                 }
                             } else {
-                                header("refresh:$sec;  ../advertise/index.php?error=FailedToCreateDirectoryForVerification");
+                                header("location:../admin/dashboard/index.php?error=FailedToCreateDirectoryForVerification");
                                 echo '<script type="text/javascript"> alert("Failed to create directory") </script>';
                                 exit();
                             }
                         } else {
-                            header("refresh:$sec;  ../advertise/index.php?error=DirectoryAlreadyExists");
+                            header("location:../admin/dashboard/index.php?error=DirectoryAlreadyExists");
                             echo '<script type="text/javascript"> alert("Directory Already Exists") </script>';
                             exit();
                         }
@@ -315,9 +321,9 @@ if (isset($_POST['create_profile'])) {
                 }
             }
         }
-    }
-} else {
-    header("location:../advertise/index.php?error=NoVerificationImages");
-    echo '<script type="text/javascript"> alert("NO images have been submitted for verification") 
+    } else {
+        header("location:../admin/dashboard/index.php?error=NoVerificationImages");
+        echo '<script type="text/javascript"> alert("NO images have been submitted for verification") 
 </script>';
+    }
 }
