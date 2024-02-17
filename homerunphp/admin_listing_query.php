@@ -43,9 +43,11 @@ while ($row = mysqli_fetch_array($result)) {
             ?>
         </td>
         <td class="button_holder">
-            <button class="view_button" onclick="openDocs('<?php echo $row['home_id']?>')" >
+            <a href="../admin_listings_dashboard/view_details.php?AdminHomeID=<?php echo $row['home_id']?>&verified=<?php echo $row['verified']?>" class="">
+            <button class="view_button" >
                 View Documents
             </button>
+            </a>
         </td>
     </tr>
 <?php

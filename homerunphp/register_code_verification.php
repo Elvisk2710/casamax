@@ -61,7 +61,7 @@ if(isset($_POST['register_code'])){
             $stmt = mysqli_stmt_init($conn);
 
             if (!mysqli_stmt_prepare($stmt, $sql)) {
-                // header("refresh:$sec; ../signup.php?error=sqlerror");
+                header("refresh:$sec; ../signup.php?error=sqlerror");
                 echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
                 exit();
             }else{

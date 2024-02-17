@@ -57,9 +57,6 @@ if (empty($_SESSION['sessionAdmin'])) {
     <div class="container">
         <?php
         include '../components/admin_navbar.php';
-        include './view_details.php';
-        include './verify_popup.php';
-
         ?>
         <div class="right_col">
             <div class="left_col_top">
