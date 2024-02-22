@@ -50,7 +50,7 @@ if(isset($_POST['submit'])){
             exit();
         
     }else{
-        if(strlen($contact) !== 9 ){
+        if(strlen($contact) > 12 ){
             header("refresh:$sec;  ./agent_register.php?error=EnterValidPhoneNumber".$firstname);
             echo '<script type="text/javascript"> alert("Please Enter a Valid Phone Number") </script>';
             exit();

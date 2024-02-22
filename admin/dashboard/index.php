@@ -40,12 +40,14 @@ if (empty($user)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./dashboard.css">
+    <link rel="icon" href="../../images/logowhite.png">
     <title>Admin Dashboard</title>
 </head>
 
 <body>
     <?php
-    include '../components/admin_advertise_form.php'
+    include '../components/admin_advertise_form.php';
+    require '../components/add_admin_agent.php';
     ?>
     <div class="container">
         <?php
@@ -60,12 +62,24 @@ if (empty($user)) {
                     +
                 </h1>
             </div>
+            <?php
+            if ($_SESSION['access'] == 1) {
+            ?>
+                <div class="add_listing" onclick="OpenAddAddAgent()">
+                    <h1>
+                        Add Agent
+                    </h1>
+                    <h1 class="number">
+                        +
+                    </h1>
+                </div>
+            <?php } ?>
             <div class="listing_number">
                 <h1>
                     Total Listings
                 </h1>
                 <h1 class="number">
-                    <?php echo $total_admin_houses?>
+                    <?php echo $total_admin_houses ?>
                 </h1>
             </div>
             <div class="listing_number">
@@ -73,7 +87,7 @@ if (empty($user)) {
                     Verified
                 </h1>
                 <h1 class="number">
-                <?php echo $verified_admin_houses?>
+                    <?php echo $verified_admin_houses ?>
                 </h1>
             </div>
             <div class="listing_number">
@@ -81,7 +95,7 @@ if (empty($user)) {
                     Not Verified
                 </h1>
                 <h1 class="number">
-                <?php echo $not_verified_admin_houses?>
+                    <?php echo $not_verified_admin_houses ?>
                 </h1>
             </div>
 
@@ -94,7 +108,7 @@ if (empty($user)) {
                 <hr>
                 <div class="top_element">
                     <h1>
-                    <?php echo ucfirst($row['first_name']). ' ' .ucfirst($row['last_name'])?>
+                        <?php echo ucfirst($row['first_name']) . ' ' . ucfirst($row['last_name']) ?>
 
                     </h1>
                     <div class="level">
@@ -102,7 +116,7 @@ if (empty($user)) {
                             Admin Level
                         </h3>
                         <h3>
-                        <?php echo ucfirst($row['access_level'])?>
+                            <?php echo ucfirst($row['access_level']) ?>
                         </h3>
                     </div>
 
@@ -114,7 +128,7 @@ if (empty($user)) {
                             Address
                         </h2>
                         <h3>
-                        <?php echo ucfirst($row['address'])?>
+                            <?php echo ucfirst($row['home_address']) ?>
 
                         </h3>
                     </div>
@@ -123,7 +137,7 @@ if (empty($user)) {
                             Email
                         </h2>
                         <h3>
-                        <?php echo ucfirst($row['email'])?>
+                            <?php echo ucfirst($row['email']) ?>
 
                         </h3>
                     </div>
@@ -132,7 +146,7 @@ if (empty($user)) {
                             Contact
                         </h2>
                         <h3>
-                        <?php echo ucfirst($row['contact'])?>
+                            <?php echo ucfirst($row['contact']) ?>
 
                         </h3>
                     </div>
@@ -141,7 +155,7 @@ if (empty($user)) {
                             Gender
                         </h2>
                         <h3>
-                        <?php echo ucfirst($row['sex'])?>
+                            <?php echo ucfirst($row['sex']) ?>
 
                         </h3>
                     </div>
@@ -150,15 +164,11 @@ if (empty($user)) {
                             Admin ID
                         </h2>
                         <h3>
-                        <?php echo ucfirst($row['admin_id'])?>
+                            <?php echo ucfirst($row['admin_id']) ?>
 
                         </h3>
                     </div>
-                    <!-- <div class="edit_profile">
-                        <button>
-                            Edit Profile
-                        </button>
-                    </div> -->
+                 
                 </div>
             </div>
         </div>

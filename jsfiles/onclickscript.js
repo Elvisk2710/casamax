@@ -10,6 +10,9 @@ function setCookie(name, value, daysToExpire) {
   }
 
 //  functions for selecting images
+document.getElementById('agentImageUploadImage').onclick = function triggerClickAgent() {
+    document.getElementById('agentImageUpload').click();
+}
 document.getElementById('image1').onclick = function triggerClick() {
     document.getElementById('inputimage1').click();
 }
@@ -133,6 +136,17 @@ function OpenAddListingForm() {
 }
 function CloseAddListingForm() {
     var addListingForm = document.getElementById("admin_advertise_form")
+    addListingForm.style.display = 'none'
+}
+
+// open add agents in admin form for admin portal
+
+function OpenAddAddAgent() {
+    var addListingForm = document.getElementById("admin_add_agent_form")
+    addListingForm.style.display = 'flex'
+}
+function CloseAddAddAgent() {
+    var addListingForm = document.getElementById("admin_add_agent_form")
     addListingForm.style.display = 'none'
 }
 

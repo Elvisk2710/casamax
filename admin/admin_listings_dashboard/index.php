@@ -18,10 +18,21 @@ if (empty($_SESSION['sessionAdmin'])) {
             $search_value = $_POST['admin_search_value'];
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id' AND lastname = '$search_value'";
         } elseif (isset($_POST['admin_clear_search'])) {
+            // checks if the session for verifying all houses is true and set then turns it to false
+            if(isset($_SESSION['verify_all']) && $_SESSION['verify_all']){
+                $_SESSION['verify_all'] = false;
+            }
             // resets the search value
             $_POST['admin_search_value'] != null;
-            $search_value = $_POST['admin_search_value'];
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id'";
+        }elseif(isset($_POST['admin_view_all_search'])|| (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)){
+            // starts a session to verify all houses
+            $_SESSION['verify_all'] = true;
+            if(isset( $_POST['admin_search_value']) && $_POST['admin_search_value'] != null){
+                $_SESSION['verify_all'] = false;
+                $_POST['admin_search_value'] != null;
+            }
+            $sql_home = "SELECT * FROM homerunhouses WHERE verified != '1' AND agent_id = '' OR agent_id = NULL";
         } else {
             // gets data of the houses
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id'";
@@ -99,12 +110,32 @@ if (empty($_SESSION['sessionAdmin'])) {
                             Search
                         </button>
                         <button type="submit" name="admin_clear_search" class="view_button">
-                            Clear
+                            Reset
                         </button>
+                        <?php
+                            if($_SESSION['access'] == 1 || $_SESSION['access'] == 2){
+                        ?>
+                        <button type="submit" name="admin_view_all_search" class="view_button">
+                            Verify Homes
+                        </button>
+                        <?php
+                            }
+                        ?>
                     </form>
                 </div>
             </div>
             <hr>
+            <?php
+                    if($total_records == 0){
+                ?>
+            <div>
+                <h2>
+                    NO Records Found!!!
+                </h2>
+            </div>
+            <?php
+                    }else{
+            ?>
             <div class="right_col_bottom">
                 <table>
                     <tr>
@@ -132,13 +163,22 @@ if (empty($_SESSION['sessionAdmin'])) {
                         <th>
                             Verified
                         </th>
-                        <th>
-                            Action
-                        </th>
+                        <?php
+                        if ($_SESSION['access'] == 1 || $_SESSION['access'] == 2) {
+                        ?>
+                            <th>
+                                Action
+                            </th>
+                        <?php
+                        }
+                        ?>
                     </tr>
                     <?php include '../../homerunphp/admin_listing_query.php' ?>
                 </table>
             </div>
+            <?php
+                    }
+            ?>
         </div>
     </div>
 

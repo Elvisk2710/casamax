@@ -43,6 +43,8 @@ if (isset($_POST['submit'])) {
 
                 }elseif($passcheck == true) {
                     $_SESSION['sessionagent'] = $row['email'];
+                    $_SESSION['verified'] = $row['verified'];
+                    $_SESSION['date_joined'] = $row['date_joined'];
                     header("refresh:$sec;  ./agent_profile.php?loginsuccess");
                     echo '<script type="text/javascript"> alert("You Have Logged-In Successfully") </script>';
                     exit();

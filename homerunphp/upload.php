@@ -8,23 +8,22 @@
         $fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
         strtolower($fileType);
         // Allow certain file formats 
-        $allowTypes = array('jpg','png','jpeg'); 
+        $allowTypes = array('jpg','png','jpeg','heic'); 
         if(in_array($fileType, $allowTypes)){ 
             // Image temp source 
             $imageTemp = $_FILES["$name"]["tmp_name"][$num]; 
-            echo 1;
             // Compress size and upload image 
              
             if(compressImage($imageTemp, $imageUploadPath, 50)){ 
-                echo 2;
                 $status = 'success'; 
                 // $statusMsg = "Image compressed successfully."; 
-
-            }else{ 
+            }else{
+                $status = 'error'; 
                 $statusMsg = "Image compress failed!"; 
             }
         }else{ 
-            $statusMsg = 'error'; 
+            $status = 'error'; 
+            $statusMsg = 'Some images were not uploaded due to unsupported images. Only JPG, JPEG, PNG files are currently supported'; 
 
         } 
 } 

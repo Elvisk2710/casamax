@@ -1,501 +1,623 @@
 <div class="add_info_container" id="add_info_container">
+  <style>
+    .add_info_container h1 {
+      color: rgb(252, 153, 82);
+      margin-top: 20px;
+      font-size: 50px;
+      text-align: center;
+      font-weight: 1000;
+      font-family: "Oswald", sans-serif;
+    }
+    .add_info_container h2 {
+      margin: 40px 0 0 0;
+      font-size: 30px;
+      text-align: center;
+      color: rgb(252, 153, 82);
+      font-weight: 600;
+      font-family: "Oswald", sans-serif;
+    }
+    .add_info_container label {
+      font-family: "Quicksand", sans-serif;
+      margin-bottom: 20px auto;
+      color: rgb(8, 8, 12);
+      font-weight: 600;
+      text-align: left;
+    }
+    .add_info_container form {
+      margin: 10%;
+    }
+    .add_info_container div {
+      margin-bottom: 15px;
+      width: 100%;
+    }
+    .add_info_container input {
+      padding: 10px;
+      width: 100%;
+      height: 20px;
+      border: none;
+      background: none;
+      color: rgb(8, 8, 12);
+      border-bottom: solid 1px rgba(8, 8, 12, 0.452);
+      border-radius: 10px;
+    }
+    /* amenitites */
+    .amenities {
+      display: flex;
+      flex-direction: row;
+    }
+    .left_amenities,
+    .right_amenities {
+      flex-basis: 50%;
+      height: fit-content;
+      margin-bottom: 5px;
+    }
+    .left_amenities label,
+    .right_amenities label {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      justify-items: center;
+      height: fit-content;
+    }
+    .amenities_radio {
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      justify-items: center;
+      margin: 0 5px;
+      align-items: center;
+    }
+    .prevNext {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      justify-items: center;
+      align-items: center;
+    }
+    .checkbox a {
+      color: rgba(8, 8, 12, 0.596);
+      font-size: medium;
+    }
+    .checkbox input {
+      width: 13px;
+      height: 13px;
+      padding: 0;
+      margin: 0;
+      vertical-align: bottom;
+      position: relative;
+      top: -4px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .radio {
+      text-align: center;
+    }
+    .radio h2 {
+      font-family: "Oswald", sans-serif;
+      font-size: 30px;
+      display: block;
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: rgb(252, 153, 82);
+    }
 
-    <style>
-    .add_info_container h1{
-        color: rgb(252, 153, 82);
-        margin-top: 20px;
-        font-size: 50px;
-        text-align: center;
-        font-weight: 1000;
-        font-family: 'Oswald', sans-serif;
+    .radio label {
+      font-family: "Quicksand", sans-serif;
+      text-align: center;
+      font-weight: 100;
+      font-size: 15px;
     }
-    .add_info_container h2{
-        margin: 40px 0 0 0 ;
-        font-size: 30px;
-        text-align: center;
-        color: rgb(252, 153, 82);
-        font-weight: 600;
-        font-family: 'Oswald', sans-serif;
-    
+    .navuni {
+      text-align: center;
+      width: 80%;
+      margin: 0.1rem auto;
     }
-    .add_info_container label{
-        font-family: 'Quicksand', sans-serif;
+    textarea {
+      width: 100%;
+      margin: 20px auto;
+      height: 100px;
+      border-radius: 10px;
+      font-size: 14px;
+      border: 1px solid rgb(8, 8, 12);
+      padding: 10px;
+    }
+    select {
+      width: 60%;
+      background-color: rgb(252, 153, 82);
+      margin-top: 20px;
+      height: 30px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    a {
+      text-decoration: none;
+      color: rgb(252, 153, 82);
+      font-weight: 300;
+    }
+    option {
+      text-align: center;
+      margin: 40px;
+      border: none;
+    }
+    .images input {
+      border: none;
+      display: none;
+    }
+    .imagepreview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      width: 40vw;
+      height: 20vh;
+      margin: 20px;
+      margin-right: 0px !important;
+      border: 2px rgb(252, 153, 82) dotted;
+      border-radius: 10px;
+    }
+    .imagepreview img {
+      width: 120px;
+      height: 120px;
+      border-radius: 10px;
+      margin: 10px;
+    }
+    #checkbox {
+      width: 10%;
+      height: 15px;
+      border: none;
+      background: none;
+      color: rgb(8, 8, 12);
+      border-bottom: solid 1px rgba(8, 8, 12, 0.452);
+    }
+    .div_button{
+        display: flex;
+        flex-basis: row;
+        gap: 10px;
+    }
+    button {
+        display: block;
+        margin: 5px auto;
+        width: 80%;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        font-size: 15px;
+        text-align: center;
+        font-weight: 500;
+        font-family: "Arvo", serif;
+        transition: 0.3s all;
+      }
+      #add_home{
+        background-color: rgb(252, 153, 82) !important;
+        color: white !important;
+      }
+      #cancel{
+        color: rgb(252, 153, 82) !important;
+        background-color: rgb(8, 8, 12) !important;
+      }
+      .terms{
+        display: flex;
+        flex-direction: row;
+      }
+      .terms a{
+        text-decoration: underline;
+      }
+      #submit_form_btn{
+        display: none;
+      }
+    /* --footer-- */
+    /* for small screens */
+    @media only screen and (max-width: 700px) {
+      .add_info_container {
+        width: 95vw;
+        margin: 10vh 2.5vw;
+      }
+      .add_info_container h1 {
+        font-size: 32px;
+        margin-top: 10vh;
+        font-family: "Oswald", sans-serif;
+        height: 20px;
+      }
+      .logo {
+        width: 120px;
+        height: 120px;
+        margin-top: 100px;
+      }
+      .add_info_container input {
+        width: 100%;
+        border: none;
+        background: none;
+        color: rgb(8, 8, 12);
+        border-bottom: solid 1px rgb(8, 8, 12);
+      }
+      .dropdown {
+        display: block;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin: 0 auto;
+      }
+      .navuni {
+        margin: 0;
+        padding: 0;
+      }
+      .navuni label {
+        font-family: "Quicksand", sans-serif;
+        text-align: center;
+        width: 200px;
+        display: block;
+      }
+      .navuni select {
+        background-color: rgb(252, 153, 82);
+        border: none;
+        border-radius: 10px;
+        width: 120%;
+        height: 35px;
+        font-size: 15px;
+        cursor: pointer;
+        outline: none;
+        font-weight: 400;
+      }
+      .edit_info_container label {
+        font-family: "Quicksand", sans-serif;
+        display: block;
         margin-bottom: 20px auto;
         color: rgb(8, 8, 12);
         font-weight: 600;
         text-align: left;
-    }
-    .add_info_container form{
-       margin: 15% ;
-    }
-    .add_info_container div{
-        margin-bottom: 20px;
-    }
-    .add_info_container input{
-        width: 90%;
-        height: 20px;
-        border: none;
-        background: none;
-        color: rgb(8, 8, 12);
-        border-bottom: solid 1px rgba(8, 8, 12, 0.452);
-    }
-    .checkbox label {
-        font-family: 'Quicksand', sans-serif;
-        display: block;
-        padding-left: 15px;
-        text-indent: -15px;
-    }
-    .checkbox input {
-        width: 13px;
-        height: 13px;
-        padding: 0;
-        margin:0;
-        vertical-align: bottom;
-        position: relative;
-        top: -4px;
-        overflow: hidden;
-        text-align: center;
+        padding-bottom: 0px 0px 0px 0px;
       }
-    .radio{
-        text-align: center;
-    }
-    .radio h2{
-        font-family: 'Oswald', sans-serif;
+      .add_info_container form {
+        margin: 15%;
+      }
+      .add_info_container div {
+        margin-bottom: 20px;
+      }
+      .add_info_container h2 {
         font-size: 30px;
-        display: block;
-        font-weight: 600;
+        text-align: center;
         text-decoration: underline;
-        text-decoration-color: rgb(252, 153, 82);
-    }
-    .radio label{
-        font-family: 'Quicksand', sans-serif;
+        text-decoration-color: rgba(252, 153, 82, 0.671);
+        font-family: "Oswald", sans-serif;
+      }
+      .radio {
+        margin: 0px 0px 40px;
+      }
+      .radio label {
+        font-family: "Quicksand", sans-serif;
         text-align: center;
-        font-weight: 100;
-        font-size: 15px;
-    }
-    .navuni{
-        text-align: center;
+        margin-bottom: 20px auto;
+        color: rgb(8, 8, 12);
+        font-weight: 600;
+        font-size: 20px;
+      }
+      button {
+        display: block;
+        margin: 5px auto;
         width: 80%;
-        margin: 40px auto;
-        padding-top: 40px;
-    }
-    textarea{
-        width: 100%;
-        margin: 20px auto;
-        height:100px;
+        padding: 10px;
+        border: none;
         border-radius: 10px;
-        font-size: 14px;
-        border:1px solid rgb(8,8,12);
-    }
-    select{
-        width: 60%;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        font-size: 15px;
+        text-align: center;
+        font-weight: 500;
+        font-family: "Arvo", serif;
+        transition: 0.3s all;
+      }
+      #add_home{
+        background-color: rgb(252, 153, 82) !important;
+        color: white !important;
+      }
+      #cancel{
+        color: rgb(252, 153, 82) !important;
+        background-color: rgb(8, 8, 12) !important;
+      }
+      select {
         background-color: rgb(252, 153, 82);
+        width: 60%;
         margin-top: 20px;
         height: 30px;
         border: none;
         border-radius: 10px;
-        font-weight: 600;
-    
-    }
-    a{
-        text-decoration: none;
-        color: rgb(252, 153, 82);
-        font-weight: 300;
-    }
-    option{
+        text-align: center;
+      }
+      option {
         text-align: center;
         margin: 40px;
         border: none;
-    }
-    .edit_info_button{
-        display: block;
-        margin: 20px auto;
-        width: 50%;
-        padding: 10px;
-        border: none;
-        border-radius: 10px;
-        background:rgb(252, 153, 82);
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        font-family: 'Arvo', serif;
-        font-size: 20px;
-        text-align: center;
-        font-weight: 600;
-        color: white;
-    }
-    .images input{
+      }
+      .images input {
         border: none;
         display: none;
-    
-    }
-    .imagepreview{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        justify-content: center;
-        width: 40vw;
-        height: 20vh;
-        margin: 20px;
-        margin-right: 0px !important;
-        border: 2px rgb(252, 153, 82) dotted;
+        font-family: "Arvo", sans-serif, serif;
+      }
+      #checkbox {
+        display: block;
+      }
+      .imagepreview {
+        margin: 10px 0px;
+        width: 100%;
+      }
+      .imagepreview img {
+        width: 80px;
+        height: 80px;
         border-radius: 10px;
-    }
-    .imagepreview img{
-        width: 120px;
-        height: 120px;
-        border-radius: 10px; 
         margin: 10px;
+      }
     }
-    #checkbox{
-        width: 10%;
-        height: 15px;
-        border: none;
-        background: none;
-        color: rgb(8, 8, 12);
-        border-bottom: solid 1px rgba(8, 8, 12, 0.452);
-    
-    }
-    /* --footer-- */
-    /* for small screens */
-    @media only screen and (max-width:700px) {
-        .add_info_container{
-            width: 95vw;
-            margin: 10vh 2.5vw;
-    
-        }
-        .add_info_container h1{
-            font-size: 32px;
-            margin-top: 10vh;
-            font-family: 'Oswald', sans-serif;
-            height: 20px;
-    
-        }
-        .logo{
-            width: 120px;
-            height: 120px;
-            margin-top: 100px;
-        }
-        .add_info_container input{
-            width: 100%;
-            border: none;
-            background: none;
-            color: rgb(8, 8, 12);
-            border-bottom: solid 1px rgb(8, 8, 12);
-        }
-        .checkbox input {
-            width: 13px;
-            height: 13px;
-            padding-left: 0;
-            margin:0;
-            inline-size: 20px;
-            vertical-align: bottom;
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-          }
-        .dropdown{
-            display: block;
-            padding-top: 20px;
-            padding-bottom: 20px;
-            margin: 0 auto;
-        }
-        .navuni{
-            margin: 0;
-            padding: 0;
-        }
-        .navuni label{
-            font-family: 'Quicksand', sans-serif;
-            text-align: center;
-            width: 200px;
-            display: block;
-        }
-        .navuni select{
-            background-color: rgb(252, 153, 82);
-            border: none;
-            border-radius: 10px;
-            width: 120% ;
-            height: 35px;
-            font-size: 15px;
-            cursor: pointer;
-            outline: none;
-            font-weight: 400;
-        }
-        .edit_info_container label{
-            font-family: 'Quicksand', sans-serif;
-            display: block;
-            margin-bottom: 20px auto;
-            color: rgb(8, 8, 12);
-            font-weight: 600;
-            text-align: left;
-            padding-bottom: 0px 0px 0px 0px;
-        }
-        .add_info_container form{
-           margin: 15% ;
-        }
-        .add_info_container div{
-            margin-bottom: 20px;
-        }
-        .add_info_container h2{
-            font-size: 30px;
-            text-align: center;
-            text-decoration: underline;
-            text-decoration-color: rgba(252, 153, 82, 0.671);
-            font-family: 'Oswald', sans-serif;
-        }
-        .radio{
-            margin: 0px 0px 40px;
-        }
-        .radio label{
-            font-family: 'Quicksand', sans-serif;
-            text-align: center;
-            margin-bottom: 20px auto;
-            color: rgb(8, 8, 12);
-            font-weight: 600;
-            font-size: 20px;
-        }
-        button{
-            display: block;
-            margin: 5px auto;
-            width: 80%;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            background:rgb(252, 153, 82);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-            font-size: 15px;
-            text-align: center;
-            font-weight: 500;
-            font-family: 'Arvo', serif;
-            transition: 0.3s all;
-        }
-        select{
-            background-color: rgb(252, 153, 82);
-            width: 60%;
-            margin-top: 20px;
-            height: 30px;
-            border: none;
-            border-radius: 10px;
-            text-align: center;
-        }
-        option{
-            text-align: center;
-            margin: 40px;
-            border: none;
-        }
-        .images input{
-            border: none;
-            display: none;
-            font-family: 'Arvo',sans-serif, serif;
-        }
-        #checkbox{
-            display: block;
-        }
-        .imagepreview{
-          margin: 10px 0px;
-          width: 100%;
-        }
-        .imagepreview img{
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            margin: 10px;
-        }
-    
-    }
-    </style>
-    
+  </style>
 
-                <h1>Add Home </h1> 
-    
-                <form action="add_house_script.php" method="post" enctype="multipart/form-data" onsubmit="submitFn()">
-    
-                <div>
-                <label>First-name (of landlord: Not Required):</label><br>
-                <input type="text" name="firstname" value="" placeholder="enter name that will show on the listing">
-                </div>
-    
-                <div>
-                <label>Last-name (of landlord: Not Required):</label><br>
-                <input type="text" name="lastname" value="" placeholder="enter last name">
-                </div>
-    
-                <div>
-                <label>Price/mnth:</label><br>
-                <input type="number" min="0" name="price" value="" placeholder="Rent per Month" required>
-                </div>
-                
-                <div>
-                <label>Location:</label><br>
-                <input type="text" name="location" value="" placeholder="general location eg. mt pleasant" required>
-                </div>
-                <div>
-                <label>Number of people wanted:</label><br>
-                <input type="number" min="0" name="spot" value="" placeholder="number of people currently wanted" required>
-                </div>
-    
-                <div>
-                <label>Number of people in a room:</label><br>
-                <input type="number"  min="0" name="people" value="" placeholder="# of people in one room " required>
-                </div>
-    
-                <h2>Amenities</h2><br>
-    
-            <div class="checkbox">
-    
-                <div>
-                <label>Kichen:
-                    <label style="font-weight:100;font: size 12px;">yes:<input type="radio" value="1" name="kitchen" required></label>
-                    <label style="font-weight:100;font: size 12px;">no:<input type="radio" value="" name="kitchen" required></label>
-                </label>
-                </div><br>
-    
-                <div>
-                <label>Fridge: 
-                    <label style="font-weight:100;font: size 12px;">yes:<input type="radio" value="1" name="fridge" required></label>
-                    <label style="font-weight:100;font: size 12px;">no:<input type="radio" value="0" name="fridge" required></label>
-               </label>
-                </div>
-    
-                <div>
-                <label>Wifi:
-                    <label style="font-weight:100; font: size 12px;">yes:<input type="radio" value="1" name="wifi" required></label>
-                    <label style="font-weight:100; font: size 12px;">no:<input type="radio" value="0" name="wifi" required></label>         
-                </label>
-                </div>
-    
-                <div>
-                <label>Borehole:
-                    <label style="font-weight:100;font: size 12px;">yes:<input type="radio" value="1" name="borehole" required></label>
-                    <label style="font-weight:100;font: size 12px;">no:<input type="radio" value="0" name="borehole" required></label>
-                </label>
-                </div>
-    
-                <div>
-                <label>Transport:
-                    <label style="font-weight:100;font: size 12px;">yes:<input type="radio" value="1" name="transport" required></label>
-                    <label style="font-weight:100;font: size 12px;">no:<input type="radio" value="0" name="transport" required></label>
-                </label>
-                </div>
-    
-            </div>
-    
-                <div class="navuni">
-                <label for="description" >House Rules and Additional Ammenities </label>
-                <textarea name="description" value="" placeholder=" add description, rules, curfew, security-status etc" required rows="3" cols=15></textarea><br>
-    
-                </div>
-    
-                <div class="navuni">
-    
-                        <label> <h2>Which University Do You Want To Cater For?</h2> <br>
-                            <select name="university" id="dropdown"  required>
-    
-                            <option value="University of Zimbabwe">University of Zimbabwe</option>
-                            <option value="Midlands State University">Midlands State University</option>
-                            <option value="Africa Univeristy">Africa Univeristy</option>
-                            <option value="Bindura State University">Bindura State University</option>
-                            <option value="Chinhoyi University of Science and Technology">Chinhoyi University of Science and Technology</option>
-                            <option value="Great Zimbabwe University">Great Zimbabwe University</option>
-                            <option value="Harare Institute of Technology">Harare Institue of Technology</option>
-                            <option value="National University of Science and Technology">National University of Science and Technology</option>
-    
-                        
-                        </select>                
-                         </label>
-    
-                       
-                       
-                    </div>
-                    <div class="navuni">
-    
-                        <label>
-                            <h2>Gender Basis</h2> <br>
-                            <select name="gender" id="dropdown"  required>
-    
-                            <option value="GIRLs">GIRLS BORDING HOUSE</option>
-                            <option value="BOYS">BOYS BORDING HOUSE</option>
-                            <option value="MIXED">BOYS/GIRLS</option>
-                            
-                        </select>                
-                        </label>
-                    </div>
-                    <div class="images">
+  <h1>Add Home</h1>
 
-                        <h2>Add Images</h2><br>
-                        <p>(best represented in landscape view)</p>
-            
-                            <div class="imagepreview">
-                                
-                                <div>
-            
-                                <img title="Choose an Image" src="../images/addimage.png" id="image1" onclick="triggerClick()">
-                                <input type="file" onchange="displayImage2(this)" id="inputimage1" name="image[]" multiple >
-                                <br>
-                                    <h3 style="color: rgb(8, 8, 12);">
-                                        Add Upto 8 Images
-                                    </h3>
-                                </div>
-            
-                                <!-- <div>
-                                <img title="Choose an Image" src="../images/addimage.png" id="image2" onclick="triggerClick2()">
-                                <input type="file" name="image2" id="inputimage2" onchange="displayImage2(this)">
-            
-                                </div>
-            
-            
-                                <div>
-                                <img title="Choose an Image" src="../images/addimage.png" id="image3" onclick="triggerClick3()">
-                                <input type="file" name="image3" id="inputimage3" onchange="displayImage3(this)">
-            
-                                </div>
-            
-                                <div>
-                                <img title="Choose an Image" src="../images/addimage.png" id="image4" onclick="triggerClick4()">
-                                <input type="file" name="image4" id="inputimage4" onchange="displayImage4(this)">
-            
-                                </div>
-            
-                                <div>
-                                <img title="Choose an Image" src="../images/addimage.png"id="image5" onclick="triggerClick5()">
-                                <input type="file" name="image5" id="inputimage5" onchange="displayImage5(this)">
-            
-                                </div>
-            
-                                <div>
-                                <img title="Choose an Image" src="../images/addimage.png" id="image6" onclick="triggerClick6()">
-                                <input type="file" name="image6" id="inputimage6" onchange="displayImage6(this)">
-            
-                                </div>
-            
-                                <div>
-                                <img title="Choose an Image" src="../images/addimage.png" id="image7" onclick="triggerClick7()">
-                                <input type="file" name="image7" id="inputimage7" onchange="displayImage7(this)">
-            
-                                </div>
-            
-                                <div>
-                                <img title="Choose an Image" src="../images/addimage.png" id="image8" onclick="triggerClick8()">
-                                <label for="image8"></label>
-                                <input type="file" name="image8" id="inputimage8" onchange="displayImage8(this)">
-            
-                                </div> -->
-                                
-                                
-                            </div>
-                             
-    
-                    <div>
-                        
-                    <label for="checkbox" class="terms"><input type="checkbox" id="checkbox" required style="display: block; color: rgb(8, 8, 12);"> <a href="../terms_of_service.html">I hereby accept all the terms and conditions</a> <span style="color: red; font-size:10px;">*</span></label>
-    
-    
-                    </div>
-                <button type="submit" class="edit_info_button" name="add_home" id="add_home">Add home</button>
-                <button type="button" class="edit_info_button" name="cancel" onclick="close_add()">cancel</button>
+  <form
+    action="add_house_script.php"
+    method="post"
+    enctype="multipart/form-data"
+    id="agent_add_listing_form"
+  >
+    <div>
+      <label>First-name (of landlord: Not Required):</label><br />
+      <input
+        type="text"
+        name="firstname"
+        placeholder="enter name that will show on your profile"
+        required
+      />
+    </div>
+
+    <div>
+      <label>Last-name (of landlord: Not Required):</label><br />
+      <input
+        type="text"
+        name="lastname"
+        placeholder="enter last name"
+        required
+      />
+    </div>
+
+    <div>
+      <label>Price/mnth:</label><br />
+      <input
+        type="number"
+        min="0"
+        name="price"
+        id="price"
+        placeholder="Rent per Month"
+        required
+      />
+    </div>
+
+    <div>
+      <label>Location:</label><br />
+      <input
+        type="text"
+        name="location"
+        id="address"
+        value=""
+        placeholder="general location eg. mt pleasant"
+        required
+      />
+    </div>
+    <div>
+      <label>Number of people wanted:</label><br />
+      <input
+        type="number"
+        min="0"
+        name="spot"
+        value=""
+        placeholder="number of people currently wanted"
+        required
+      />
+    </div>
+
+    <div>
+      <label>Number of people in a room:</label><br />
+      <input
+        type="number"
+        min="0"
+        name="people"
+        id="people"
+        placeholder="# of people in one room "
+        required
+      />
+      <h2>Amenities</h2>
+      <br />
+
+      <div class="amenities">
+        <div class="left_amenities">
+          <div>
+            <label
+              >Kichen:
+              <div class="amenities_radio">
+                <label style="font-weight: 100; font: size 12px"
+                  ><input type="checkbox" value="1" name="kitchen"
+                /></label>
+              </div>
+            </label>
+          </div>
+
+          <div>
+            <label
+              >Fridge:
+              <div class="amenities_radio">
+                <label style="font-weight: 100; font: size 12px"
+                  ><input type="checkbox" value="1" name="fridge"
+                /></label>
+              </div>
+            </label>
+          </div>
+
+          <div>
+            <label
+              >Wifi:
+              <div class="amenities_radio">
+                <label style="font-weight: 100; font: size 12px"
+                  ><input type="checkbox" value="1" name="wifi"
+                /></label>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="right_amenities">
+          <div>
+            <label
+              >Borehole:
+              <div class="amenities_radio">
+                <label style="font-weight: 100; font: size 12px"
+                  ><input type="checkbox" value="1" name="borehole"
+                /></label>
+              </div>
+            </label>
+          </div>
+
+          <div>
+            <label
+              >Transport:
+              <div class="amenities_radio">
+                <label style="font-weight: 100; font: size 12px"
+                  ><input type="checkbox" value="1" name="transport"
+                /></label>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="navuni">
+        <label for="description">House Rules and Additional Ammenities </label>
+        <textarea
+          name="description"
+          value=""
+          placeholder=" add description, rules, curfew, security-status etc"
+          required
+          rows="3"
+          cols="15"
+        ></textarea
+        ><br />
+      </div>
+
+      <div class="navuni">
+        <label>
+          <h2>Which University Do You Want To Cater For?</h2>
+          <br />
+          <select name="university" id="uni_dropdown" required>
+            <option value="">Choose University</option>
+            <option value="University of Zimbabwe">
+              University of Zimbabwe
+            </option>
+            <option value="Midlands State University">
+              Midlands State University
+            </option>
+            <option value="Africa Univeristy">Africa Univeristy</option>
+            <option value="Bindura State University">
+              Bindura State University
+            </option>
+            <option value="Chinhoyi University of Science and Technology">
+              Chinhoyi University of Science and Technology
+            </option>
+            <option value="Great Zimbabwe University">
+              Great Zimbabwe University
+            </option>
+            <option value="Harare Institute of Technology">
+              Harare Institue of Technology
+            </option>
+            <option value="National University of Science and Technology">
+              National University of Science and Technology
+            </option>
+          </select>
+        </label>
+      </div>
+      <div class="navuni">
+        <label>
+          <h2>Gender Basis</h2>
+          <br />
+          <select name="gender" id="gender_dropdown" required>
+            <option value="">Choose A Gender</option>
+            <option value="GIRLS">GIRLS BORDING HOUSE</option>
+            <option value="BOYS">BOYS BORDING HOUSE</option>
+            <option value="MIXED">BOYS/GIRLS</option>
+          </select>
+        </label>
+      </div>
+
+      <h2>Add Images</h2>
+      <br />
+      <div class="images">
+        <p>(best represented in landscape view)</p>
+
+        <div class="imagepreview">
+          <div>
+            <img
+              title="Choose an Image"
+              src="../images/addimage.png"
+              id="agentImageUploadImage"
+              onclick="triggerClickAgent()"
+            />
+            <input type="file" id="agentImageUpload" name="image[]" multiple>
+            <br />
+            <h3 style="color: rgb(8, 8, 12)">Add Upto 8 Images</h3>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label for="checkbox" class="terms"
+          ><input
+            type="checkbox"
+            id="checkbox"
+            required
+            style="display: block; color: rgb(8, 8, 12)"
+          />
+          <a href="../terms_of_service.html"
+            >I hereby accept all the terms and conditions</a
+          >
+          <span style="color: red; font-size: 10px">*</span>
+          </label
+        >
+      </div>
+      <div class="div_button">
+        <button
+        type="button"
+        class="button"
+        name="add_home"
+        id="add_home"
+        onclick="submitForm()"
+      >
+        Add home
+      </button>
+      <button type="submit" id="submit_form_btn" hidden>
+
+      </button>
+      <button
+        type="button"
+        class="button"
+        name="cancel"
+        id="cancel"
+        onclick="close_add()"
+      >
+        cancel
+      </button>
+      </div>
     
     </div>
-          </form>
-        <script src="../jsfiles/onclickscript.js"></script>
-    
-        </div>
-    
+  </form>
+  <script src="../jsfiles/onclickscript.js"></script>
+  <script>
+    function submitForm(){
+        console.log('clicked')
+        if (document.getElementById("agentImageUpload").value === "") {
+            // adding classname invalid
+            document.getElementById("agentImageUpload").classList.add("invalid")
+            // and set the current valid status to false:
+            alert("Please Add Images")
+        }else{
+            document.getElementById("submit_form_btn").click();
+        }
+    }
+      
+  </script>
+</div>

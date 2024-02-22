@@ -5,10 +5,8 @@
     <?php
     require '../required/header.php';
     ?>
-    <meta name="description"
-        content="Enjoy free advertising on CasaMax and make extra cash with shared spaces. Rent out your spare room, cottage, etc. to students in just a few simple steps">
-    <meta name="description"
-        content="Advertise your boarding house for students to view it and get in touch with you for enquiries">
+    <meta name="description" content="Enjoy free advertising on CasaMax and make extra cash with shared spaces. Rent out your spare room, cottage, etc. to students in just a few simple steps">
+    <meta name="description" content="Advertise your boarding house for students to view it and get in touch with you for enquiries">
     <link rel="icon" href="../images/logowhite.png">
     <title>CasaMax Advertise</title>
     <link rel="stylesheet" href="advertise.css">
@@ -37,8 +35,7 @@
                 </h2>
                 <div>
                     <label>First-name:</label><br>
-                    <input type="text" name="firstname" placeholder="enter name that will show on your profile"
-                        required>
+                    <input type="text" name="firstname" placeholder="enter name that will show on your profile" required>
                 </div>
 
                 <div>
@@ -58,8 +55,7 @@
 
                 <div>
                     <label for="upword">Confirm Password<span style="color: red; font-size:10px;">*</span></label>
-                    <input type="password" id="cpword" name="confirmpassword" placeholder="Enter your Password"
-                        required>
+                    <input type="password" id="cpword" name="confirmpassword" placeholder="Enter your Password" required>
                 </div>
 
                 <div>
@@ -69,7 +65,7 @@
 
                 <div>
                     <label>ID-Number:</label><br>
-                    <input type="text" name="idnum" min="0" placeholder="Enter your Id number">
+                    <input type="text" name="idnum" min="0" placeholder="Enter your Id number " required>
                 </div>
 
             </div>
@@ -88,8 +84,7 @@
                 </div>
                 <div>
                     <label>Number of people in a room:</label><br>
-                    <input type="number" min="0" name="people" id="people" placeholder="# of people in one room "
-                        required>
+                    <input type="number" min="0" name="people" id="people" placeholder="# of people in one room " required>
                 </div>
 
                 <h2>Amenities</h2><br>
@@ -99,22 +94,19 @@
                     <div class="left_amenities">
                         <div>
                             <label>Kichen:
-                                <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input
-                                            type="checkbox" value="1" name="kitchen" ></label></div>
+                                <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input type="checkbox" value="1" name="kitchen"></label></div>
                             </label>
                         </div>
 
                         <div>
                             <label>Fridge:
-                                <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input
-                                            type="checkbox" value="1" name="fridge" ></label></div>
+                                <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input type="checkbox" value="1" name="fridge"></label></div>
                             </label>
                         </div>
 
                         <div>
                             <label>Wifi:
-                                <div class="amenities_radio"><label style="font-weight:100; font: size 12px;"><input
-                                            type="checkbox" value="1" name="wifi" ></label></div>
+                                <div class="amenities_radio"><label style="font-weight:100; font: size 12px;"><input type="checkbox" value="1" name="wifi"></label></div>
                             </label>
                         </div>
 
@@ -123,15 +115,13 @@
                     <div class="right_amenities">
                         <div>
                             <label>Borehole:
-                                <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input
-                                            type="checkbox" value="1" name="borehole" ></label></div>
+                                <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input type="checkbox" value="1" name="borehole"></label></div>
                             </label>
                         </div>
 
                         <div>
                             <label>Transport:
-                                <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input
-                                            type="checkbox" value="1" name="transport" ></label></div>
+                                <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input type="checkbox" value="1" name="transport"></label></div>
                             </label>
                         </div>
 
@@ -140,9 +130,7 @@
 
                 <div class="navuni">
                     <label for="description">House Rules and Additional Ammenities </label>
-                    <textarea name="description" id="description"
-                        placeholder=" add description, rules, curfew, security-status etc" required rows="3"
-                        cols=15></textarea><br>
+                    <textarea name="description" id="description" placeholder=" add description, rules, curfew, security-status etc" required rows="3" cols=15></textarea><br>
 
                 </div>
 
@@ -192,8 +180,7 @@
                     <div class="imagepreview">
 
                         <div>
-                            <img title="Choose an Image" src="../images/addimage.png" id="image1"
-                                onclick="triggerClick()">
+                            <img title="Choose an Image" src="../images/addimage.png" id="image1" onclick="triggerClick()">
                             <input type="file" id="inputimage1" name="image[]" multiple>
                             <br>
                             <h3 style="color: rgb(8, 8, 12);">
@@ -226,9 +213,7 @@
                     </h4>
                     <div class="imagepreview">
                         <div>
-                            <img title="Choose an Image" src="../images/addimage.png"
-                                accept="image/png, image/jpeg, .doc,.docx,/msword,.formats-officedocument.wordprocessingml.document"
-                                id="image2" onclick="triggerClick2()">
+                            <img title="Choose an Image" src="../images/addimage.png" accept="image/png, image/jpeg, .doc,.docx,/msword,.formats-officedocument.wordprocessingml.document" id="image2" onclick="triggerClick2()">
                             <input type="file" id="inputimage2" name="identityImage">
                             <br>
                         </div>
@@ -239,9 +224,7 @@
                     </h4>
                     <div class="imagepreview">
                         <div>
-                            <img title="Choose an Image" src="../images/addimage.png" id="image3"
-                                accept="image/png, image/jpeg, .doc,.docx,/msword,.formats-officedocument.wordprocessingml.document"
-                                onclick="triggerClick3()">
+                            <img title="Choose an Image" src="../images/addimage.png" id="image3" accept="image/png, image/jpeg, .doc,.docx,/msword,.formats-officedocument.wordprocessingml.document" onclick="triggerClick3()">
                             <input type="file" id="inputimage3" name="residencyImage">
                             <br>
                         </div>
@@ -294,8 +277,7 @@
             <a href="https://www.facebook.com/Homerunzim-102221862615717/"><img src="../images/facebook.png" alt=""></a>
             <a href="https://www.instagram.com/casamax.co.zw/"><img src="../images/instagram.png" alt=""></a>
             <a href="https://wa.me/+263786989144"> <img src="../images/whatsapp.png" alt=""></a>
-            <a href="mailto:casamaxzim@gmail.com?subject=Feedback to CasaMax&cc=c"> <img src="../images/mail.png"
-                    alt=""></a>
+            <a href="mailto:casamaxzim@gmail.com?subject=Feedback to CasaMax&cc=c"> <img src="../images/mail.png" alt=""></a>
             <a href=""><img src="../images/twitter.png" alt=""></a>
         </div>
     </div>

@@ -204,11 +204,12 @@ if (isset($_POST['create_profile'])) {
 
                     $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,idnum,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,adrs,people_in_a_room,passw,id_image,res_image) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
                     if (!$stmt = mysqli_stmt_init($conn)) {
+                        header("refresh:$sec;  ../advertise/index.php?error=initFailure");
                         echo '<script type="text/javascript"> alert("SQL ERROR init failure") </script>';
                         exit();
                     } else {
                         // directory path to folder for verification imaages
-                        $directoryPath = '../verification_images/' . $home_id . '/';
+                        $directoryPath = '../verification_images/home_verification_images/' . $home_id . '/';
                         $identityFileDestination = $directoryPath . $identityImages['name'];
                         $residencyFileDestination = $directoryPath . $residencyImages['name'];
 
@@ -218,9 +219,11 @@ if (isset($_POST['create_profile'])) {
                                     echo "Directory created successfully.";
                                     if (!mysqli_stmt_prepare($stmt, $sql)) {
                                         header("refresh:$sec;  ../advertise/index.php?error=sqlerror");
+                                        echo '<script type="text/javascript"> alert("SQL stmt prepare failure") </script>';
                                         exit();
                                     } else {
                                         if (!mysqli_stmt_bind_param($stmt, "ssssisisssssssssssiiiiisisss", $home_id, $email, $firstname, $lastname, $phone, $idnum, $price, $description, $uni, $image1, $image2, $image3, $image4, $image5, $image6, $image7, $image8, $gender, $kitchen, $fridge, $wifi, $borehole, $transport, $address, $people, $hashedpass, $identityImages['name'], $residencyImages['name'])) {
+                                            header("refresh:$sec;  ../advertise/index.php?error=bindParamFailure");
                                             echo '<script type="text/javascript"> alert("SQL ERROR binding stms failed") </script>';
                                         } else {
                                             if (!mysqli_stmt_execute($stmt)) {

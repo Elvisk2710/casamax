@@ -42,6 +42,9 @@ while ($row = mysqli_fetch_array($result)) {
             }
             ?>
         </td>
+        <?php
+            if($_SESSION['access'] == 1 || $_SESSION['access'] == 2){
+        ?>
         <td class="button_holder">
             <a href="../admin_listings_dashboard/view_details.php?AdminHomeID=<?php echo $row['home_id']?>&verified=<?php echo $row['verified']?>" class="">
             <button class="view_button" >
@@ -49,6 +52,9 @@ while ($row = mysqli_fetch_array($result)) {
             </button>
             </a>
         </td>
+        <?php
+            }
+        ?>
     </tr>
 <?php
 }
