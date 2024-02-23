@@ -10,9 +10,7 @@ function setCookie(name, value, daysToExpire) {
   }
 
 //  functions for selecting images
-document.getElementById('agentImageUploadImage').onclick = function triggerClickAgent() {
-    document.getElementById('agentImageUpload').click();
-}
+
 document.getElementById('image1').onclick = function triggerClick() {
     document.getElementById('inputimage1').click();
 }

@@ -1,7 +1,6 @@
 <?php
 session_start();
 require '../homerunphp/advertisesdb.php';
-
 /* 
  * Custom function to compress image size and 
  * upload to the server using PHP 
@@ -185,6 +184,7 @@ if (isset($_SESSION['sessionagent'])) {
 
         $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,people_in_a_room, agent_id, spots_available, home_location) VALUES (?,?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         if (!$stmt = mysqli_stmt_init($conn)) {
+            header("location: ./agent_profile.php?message=updateSuccessful");
             echo '<script type="text/javascript"> alert("SQL ERROR init failure") </script>';
             exit();
         } else {
@@ -194,6 +194,7 @@ if (isset($_SESSION['sessionagent'])) {
                 exit();
             } else {
                 if (!mysqli_stmt_bind_param($stmt, "ssssiisssssssssssiiiiiisss", $home_id, $email, $firstname, $lastname,$contact, $price, $description, $uni, $image1, $image2, $image3, $image4, $image5, $image6, $image7, $image8, $gender, $kitchen, $fridge, $wifi, $borehole, $transport, $people, $agent_id, $spot, $location)) {
+                    header("location: ./agent_profile.php?message=updateSuccessful");
                     echo '<script type="text/javascript"> alert("SQL ERROR binding stms failed") </script>';
                 } else {
                     if (!mysqli_stmt_execute($stmt)) {
@@ -203,6 +204,7 @@ if (isset($_SESSION['sessionagent'])) {
                     } else {
 
                         $status = 'failed';
+                        $statusMsg ='failed';
                         if ($uni === "University of Zimbabwe") {
                             for ($num = 0; $num < $count; $num++) {
                                 $imageUploadPath = '../housepictures/uzpictures/' . basename($_FILES["$name"]["name"][$num]);
@@ -253,7 +255,7 @@ if (isset($_SESSION['sessionagent'])) {
                     }
                     if ($status == 'success') {
                         header("refresh:$sec;  ./agent_profile.php?error=HomeAddedSuccessfuly");
-                        echo '<script type="text/javascript"> alert("Images  Uploaded Successfully") </script>';
+                        echo '<script type="text/javascript"> alert("Images Uploaded Successfully") </script>';
                     } else {
                         header("refresh:$sec;  ./agent_profile.php?error=FailedToUploadImages-FileNotSupported");
                         echo '<script type="text/javascript"> alert("Failed to upload pictures...") </script>';

@@ -120,8 +120,6 @@ if (empty($_SESSION['sessionagent'])) {
                     </h1>
                 </div>
                 <div class="agent_details">
-
-
                     <span>
                         <h3>
                             Agent ID
@@ -177,14 +175,14 @@ if (empty($_SESSION['sessionagent'])) {
     $date1 = date_create($_SESSION['date_joined']);
     $today = new DateTime();
 
-    $interval = $today->diff($date1);
+    $interval = $date1->diff($today);
     $days_difference = $interval->format('%a');
 
     $days_left = 30 - $days_difference;
-    if ($_SESSION['verified'] != 1) {
+    if ($row['verification_image'] == null) {
 
     ?>
-        <div class="verification_container" id="verification_container">
+        <form action="./agent_update_images.php?agent_id=<?php echo $agent_id; ?>" method="post" enctype="multipart/form-data" class="verification_container" id="verification_container">
             <div class="verification_popup">
                 <h2>
                     Add verification documents
@@ -192,10 +190,10 @@ if (empty($_SESSION['sessionagent'])) {
                 <br>
                 <h1 style="color: rgb(252,153,82);">
                     <?php
-                    if($days_left <  30 && $days_left > 0){
-                        echo $days_left . " Days Left" ;
+                    if ($days_left <  30 && $days_left > 0) {
+                        echo $days_left . " Days Left";
                     }
-                        ?>
+                    ?>
                 </h1>
                 <br>
                 <p class="verification_text">
@@ -208,36 +206,35 @@ if (empty($_SESSION['sessionagent'])) {
                     </h2>
                     <br>
                     <div>
-
-                        <img title="Choose an Image" src="../images/addimage.png" accept="image/png, image/jpeg, .doc,.docx,.wordprocessingml.document" id="image2" onclick="AgentVerificationClick()">
+                        <img title="Choose an Image" src="../images/addimage.png" accept="image/png, image/jpeg, image/heif" id="image2" onclick="AgentVerificationClick()">
                         <input type="file" id="AgentVerificationImage" name="identityImage">
                         <br>
-                    </div>
                 </div>
-                <p class="verification_text">
-                    Upload a picture of your ID number. NB: Your ID number on the image should match the ID number you have uploaded when signing up.
-                </p>
-                <div class="button_holder">
-                    <button type="button" id="validate_form">
-                        Upload
-                    </button>
-                    <button type="submit" id="submit">
+            </div>
+            <p class="verification_text">
+                Upload a picture of your ID number. NB: Your ID number on the image should match the ID number you have uploaded when signing up.
+            </p>
+            <div class="button_holder">
+                <button type="button" id="validate_form" onclick="validatie_form()">
+                    Upload
+                </button>
+                <button type="submit" id="verification_submit" name="verification_submit">
 
-                    </button>
-                    <br>
-                    <?php
-                        if($days_difference < 30){
-                    ?>
+                </button>
+                <br>
+                <?php
+                if ($days_difference < 30) {
+                ?>
                     <button type="button" id="cancel" onclick="closeVerificationPopUp()">
                         Later
                     </button>
-                    <?php 
-                        }
-                    ?>
-                </div>
+                <?php
+                }
+                ?>
+            </div>
             </div>
 
-        </div>
+        </form>
     <?php
     }
     ?>
@@ -324,11 +321,20 @@ if (empty($_SESSION['sessionagent'])) {
         function closeVerificationPopUp() {
             document.getElementById("verification_container").style.display = 'none';
         }
-        if (document.getElementById('verification_container').style.display = 'flex') {
-            document.getElementsByClassName('scrollable').style.overflow = 'hidden';
-        } else {
-            document.getElementsByClassName('scrollable').style.overflow = 'auto';
+        function validatie_form(){
+            image = document.getElementById('AgentVerificationImage');
+            if(image.value == null || image.value == ""){
+                alert("Please Select An Image")
+            }else{
+                document.getElementById('verification_submit').click();
+            }
         }
+
+        // if (document.getElementById('verification_container').style.display = 'flex') {
+        //     document.getElementsByClassName('scrollable').style.overflow = 'hidden';
+        // } else {
+        //     document.getElementsByClassName('scrollable').style.overflow = 'auto';
+        // }
     </script>
 </body>
 

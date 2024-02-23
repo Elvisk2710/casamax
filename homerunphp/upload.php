@@ -16,16 +16,19 @@
              
             if(compressImage($imageTemp, $imageUploadPath, 50)){ 
                 $status = 'success'; 
+                $statusMsg = 'images uploaded successfully';
                 // $statusMsg = "Image compressed successfully."; 
             }else{
                 $status = 'error'; 
                 $statusMsg = "Image compress failed!"; 
             }
         }else{ 
-            $status = 'error'; 
+            $status = 'file_type_error'; 
             $statusMsg = 'Some images were not uploaded due to unsupported images. Only JPG, JPEG, PNG files are currently supported'; 
 
         } 
-} 
+} else{
+    echo 'empty images';
+}
  
 ?>

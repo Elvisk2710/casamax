@@ -539,55 +539,47 @@ if (empty($_SESSION['sessionagent'])) {
         <div class="home_container">
             <div class="right_col">
                 <?php
-                if (empty($row['image1']) && empty($row['image2']) && empty($row['image3']) && empty($row['image4']) && empty($row['image5']) && empty($row['image6']) && empty($row['image7']) && empty($row['image8'])) {
+                if (empty($home_row['image1']) && empty($home_row['image2']) && empty($home_row['image3']) && empty($home_row['image4']) && empty($home_row['image5']) && empty($home_row['image6']) && empty($home_row['image7']) && empty($home_row['image8'])) {
                 ?>
-                    <form action="">
-                        <h2>
-                            Add House Images
-                        </h2>
-
+                    <!-- Display the form for uploading images -->
+                    <form action="./agent_update_images.php?home_id=<?php echo $home_id; ?>&uni=<?php echo $home_row['uni']; ?>" method="post" enctype="multipart/form-data">
+                        <h2>Add House Images</h2>
                         <div class="images">
                             <p>(best represented in landscape view)</p>
-
                             <div class="imagepreview">
-
                                 <div>
                                     <img title="Choose an Image" src="../images/addimage.png" id="updateImages" onclick="triggerClick()">
-                                    <input type="file" id="updateImagesListInput" name="image[]" multiple>
+                                    <input type="file" id="updateImagesListInput" name="image_update[]" multiple>
                                     <br>
-                                    <h3 style="color: rgb(8, 8, 12);">
-                                        Add Upto 8 Images
-                                    </h3>
+                                    <h3 style="color: rgb(8, 8, 12);">Add Up to 8 Images</h3>
                                 </div>
                             </div>
-
+                            <div>
+                                <div class="delete">
+                                    <button name="update_images" type="submit" style="background-color: white;">Update Images</button>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 <?php
                 } else {
                 ?>
+                    <!-- Display the slideshow of images -->
                     <div class="content">
-                        <!-- The content which is placed at the center of the carousel -->
                         <div class="slideshow">
-                            <!-- carousel wrapper which contains all images -->
                             <div class="slideshow-wrapper">
                                 <div class="slide">
-                                    <?php echo '<img src="../housepictures/' . $folder . '/' . $home_row['image1'] . '" id =' . $home_row['home_id'] . 'alt="" title="" >'; ?>
-
+                                    <?php echo '<img src="../housepictures/' . $folder . '/' . $home_row['image1'] . '" id =' . $home_row['home_id'] . 'alt="" title="">'; ?>
                                 </div>
                                 <div class="slide">
-                                    <?php echo '<img src="../housepictures/' . $folder . '/' . $home_row['image1'] . '" id =' . $home_row['home_id'] . 'alt="" title="" >'; ?>
-
+                                    <?php echo '<img src="../housepictures/' . $folder . '/' . $home_row['image1'] . '" id =' . $home_row['home_id'] . 'alt="" title="">'; ?>
                                 </div>
                                 <div class="slide">
-                                    <?php echo '<img src="../housepictures/' . $folder . '/' . $home_row['image2'] . '" id =' . $home_row['home_id'] . 'alt="" title="" >'; ?>
-
+                                    <?php echo '<img src="../housepictures/' . $folder . '/' . $home_row['image2'] . '" id =' . $home_row['home_id'] . 'alt="" title="">'; ?>
                                 </div>
                                 <div class="slide">
-                                    <?php echo '<img src="../housepictures/' . $folder . '/' . $home_row['image3'] . '" id =' . $home_row['home_id'] . 'alt="" title="" >'; ?>
-
+                                    <?php echo '<img src="../housepictures/' . $folder . '/' . $home_row['image3'] . '" id =' . $home_row['home_id'] . 'alt="" title="">'; ?>
                                 </div>
-
                             </div>
                         </div>
                     </div>

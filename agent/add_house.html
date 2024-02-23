@@ -607,6 +607,11 @@
   </form>
   <script src="../jsfiles/onclickscript.js"></script>
   <script>
+
+    document.getElementById('agentImageUploadImage').onclick = function triggerClickAgent() {
+    document.getElementById('agentImageUpload').click();
+}
+
     function submitForm(){
         console.log('clicked')
         if (document.getElementById("agentImageUpload").value === "") {
@@ -616,6 +621,8 @@
             alert("Please Add Images")
         }else{
             document.getElementById("submit_form_btn").click();
+            document.getElementById('submit_form_btn').disabled = true;
+            document.getElementById('add_home').disabled = true;
         }
     }
       
