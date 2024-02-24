@@ -37,7 +37,7 @@
             </a>
             </div>
             <div class="login">
-                <a href="../agent/index.php"><button type="button" name="submit">
+                <a href="../agent/agent_register.php"><button type="button" name="submit">
                    ACCOMMODATION AGENT
                 </button></a>
             </div>     

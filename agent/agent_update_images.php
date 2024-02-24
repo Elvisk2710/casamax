@@ -192,13 +192,19 @@ if (isset($_POST['verification_submit'])) {
         // creates your folder
         if (mkdir($directoryPath, 0777, true)) {
             // uploads the file to the folder
-            if (move_uploaded_file($verification_image['tmp_name'], $verificationImageDestination && mysqli_query($conn, $sql))) {
+            if (move_uploaded_file($verification_image['tmp_name'], $verificationImageDestination)) {
                 // updates database
-                header("refresh:$sec;  ./agent_profile.php?error=Verification Image Uploaded");
-                echo '<script type="text/javascript"> alert(Verification Image Upload) </script>';
+               
+                if(mysqli_query($conn, $sql)){
+                    header("refresh:$sec;  ./agent_profile.php?error=Verification Image Uploaded");
+                    echo '<script type="text/javascript"> alert(Verification Image Upload) </script>';
+                }else{
+                    header("refresh:$sec;  ./agent_profile.php?error=SQL ERROR Failed To Update Database ");
+                    echo '<script type="text/javascript"> alert(SQL ERROR Failed To Update Database ) </script>';
+                }
             } else {
-                header("refresh:$sec;  ./agent_profile.php?error=SQL ERROR Failed To Update Database ");
-                echo '<script type="text/javascript"> alert(SQL ERROR Failed To Update Database ) </script>';
+                header("refresh:$sec;  ./agent_profile.php?error=Error: Failed to upload Images ");
+                echo '<script type="text/javascript"> alert(Error: Failed To Load Images ) </script>';
             }
         } else {
             header("refresh:$sec;  ./agent_profile.php?error=Failed To Make Your Directory");

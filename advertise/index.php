@@ -26,6 +26,9 @@
 
     <div class="container">
         <h1>Create Your Profile</h1>
+        <p>
+            Are you a landlord with multiple houses? <br> Click <a href="../agent/agent_register.php">here to sign up as an agent instead</a>
+        </p>
 
         <form action="../homerunphp/advertisescript.php?new_user=true" method="post" enctype="multipart/form-data" id="admin_advertise_form">
 

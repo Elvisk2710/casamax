@@ -65,7 +65,7 @@ $start_from = ($page - 1) * 8;
 if (isset($_GET['price']) and ($_GET['filter'] == "search")) {
     $pricesearch = $_GET['price'];
     $sql_num = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' and price <= '$pricesearch'";
-    $sql = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' and price <='$pricesearch' LIMIT $start_from,$num_per_page ";
+    $sql = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' and price <='$pricesearch' ORDER BY id DESC LIMIT $start_from,$num_per_page";
     $price_url = "&filter=search&price=$pricesearch";
 } else {
     if (isset($_GET['kitchen'])) {
@@ -105,8 +105,7 @@ if (isset($_GET['price']) and ($_GET['filter'] == "search")) {
         }
     }
 
-    $sql = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' $kitchen_query $wifi_query  $borehole_query $fridge_query $transport_query $gender_query $price_query LIMIT $start_from,$num_per_page";
-
+    $sql = "SELECT * FROM homerunhouses WHERE uni = '$university' AND available = '1' $kitchen_query $wifi_query $borehole_query $fridge_query $transport_query $gender_query $price_query ORDER BY id DESC LIMIT $start_from, $num_per_page";
     $sql_num = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' $kitchen_query $wifi_query  $borehole_query $fridge_query $transport_query $gender_query $price_query";
 }
 $filter_url = $kitchen_url . $wifi_url . $borehole_url . $transport_url . $fridge_url . $price_url . $gender_url;

@@ -1,15 +1,16 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require '../phpMailer/PHPMailer-master/src/Exception.php';
 require '../phpMailer/PHPMailer-master/src/PHPMailer.php';
 require '../phpMailer/PHPMailer-master/src/SMTP.php';
-$rand = rand(10000,1000000);
-setcookie("code", $rand, time() + (900 * 1), "/");  
-
+$rand = rand(10000, 1000000);
+setcookie("code", $rand, time() + (900 * 1), "/");
+$_SESSION['code'] = $rand;
 
 $message = '<!DOCTYPE html>
                 <html lang="en">
@@ -25,9 +26,9 @@ $message = '<!DOCTYPE html>
                     <h1>THANK YOU FOR USING CASAMAX</h1>
                 </header>
                 
-                <h2>HEY!!'.$firstname.'<h2><br>
+                <h2>HEY!!' . $firstname . '<h2><br>
                 <h3>Your CasaMax Code is:</h3><br>
-                    <h1>'.$rand.'</h1>
+                    <h1>' . $rand . '</h1>
                 </div>
                 </body>
                 
@@ -102,34 +103,30 @@ $message = '<!DOCTYPE html>
                 </body>
                 </html>
                 ';
-try{
-$mail = new PHPMailer(true);
-$mail -> isSMTP();
-$mail->Host = 'smtp.gmail.com';
+try {
+    $mail = new PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
 
-$mail->SMTPAuth = true;
-$mail->Username ='casamaxzim@gmail.com';
-$mail->Password = 'znvsyhhgoivwzyds';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'casamaxzim@gmail.com';
+    $mail->Password = 'znvsyhhgoivwzyds';
 
-$mail->SMTPSecure = 'ssl';
-$mail->Port = '465';
+    $mail->SMTPSecure = 'ssl';
+    $mail->Port = '465';
 
-$mail->setFrom('casamaxzim@gmail.com', 'Casamax Investments');
+    $mail->setFrom('casamaxzim@gmail.com', 'Casamax Investments');
 
-$mail->addAddress($email);
-$mail->isHTML(true);
-$mail->Subject = $subject;
-$mail -> Body = $message;
+    $mail->addAddress($email);
+    $mail->isHTML(true);
+    $mail->Subject = $subject;
+    $mail->Body = $message;
 
-if (!$mail->send()) {
-    echo 'Email sending failed: ' . $smtp->getError();
-   } else{
-       Echo '<script>alert("Email sent successfully")</script>';
-   }
-
-}
-catch(Exception $e){
+    if (!$mail->send()) {
+        echo 'Email sending failed: ' . $smtp->getError();
+    } else {
+        echo '<script>alert("Email sent successfully")</script>';
+    }
+} catch (Exception $e) {
     echo 'SMTP connection failed: ' . $e->getMessage();
 }
-
-?>  
