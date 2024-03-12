@@ -192,13 +192,13 @@ hr {
 }
 /* error animation */
 @keyframes errorInvalid {
-  0%{
+  0% {
     border: 2px solid #ff0000 !important;
   }
-  50%{
-    border: 2px solid rgb(8,8,12) !important;
+  50% {
+    border: 2px solid rgb(8, 8, 12) !important;
   }
-  100%{
+  100% {
     border: 2px solid #ff0000af !important;
   }
 }
@@ -437,19 +437,19 @@ button {
   justify-items: center;
   top: 1rem;
 }
-.admin_add_admin_form{
+.admin_add_admin_form {
   margin: 5%;
   background-color: white;
   border-radius: 10px;
 }
-.admin_add_admin_form h2{
+.admin_add_admin_form h2 {
   font-size: 30px;
   text-align: center;
   color: rgb(8, 8, 12);
   font-weight: 600;
   font-family: "Oswald", sans-serif;
 }
-.gender{
+.gender {
   display: flex;
   margin: 20px 0;
   flex-direction: row;
@@ -458,10 +458,10 @@ button {
   align-items: start;
   width: 20%;
 }
-.gender input{
+.gender input {
   width: 20px;
 }
-.add_admin_form_buttons{
+.add_admin_form_buttons {
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -469,9 +469,18 @@ button {
 }
 /* for small screens */
 @media only screen and (max-width: 700px) {
+  /* dashboard */
   .container {
     width: 95%;
-    margin: 20% auto;
+    margin: 10% auto;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: start;
+  }
+  .number{
+    font-size: 32px;
   }
   .container h1 {
     font-size: 15vw;
@@ -489,6 +498,108 @@ button {
     background: none;
     color: rgb(8, 8, 12);
     border-bottom: solid 1px rgb(8, 8, 12);
+  }
+  .left_col {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    justify-items: center;
+    align-items: center;
+  }
+  .add_listing {
+    width: 90vw;
+  }
+  .add_listing h1 {
+    font-size: 18px;
+    padding: 0 20px;
+  }
+  .listing_number {
+    width: 90vw;
+    height: 140px;
+  }
+  .listing_number h1 {
+    font-size: 22px;
+  }
+  .right_container {
+    display: none;
+  }
+  .right_col{
+    display: none;
+  }
+  .left_col{
+    margin-top: 20px;
+  }
+    
+  /* forms */
+  .admin_advertise_form {
+    backdrop-filter: blur(10px) brightness(60%);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    min-height: 100vh;
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    top: 1rem;
+  }
+  .admin_advertise_container {
+    width: 90%;
+    background-color: white;
+    font-size: 20px;
+    color: rgb(8, 8, 12);
+    border-radius: 20px;
+    text-align: left;
+    position: relative;
+  }
+  .admin_advertise_container h1 {
+    color: rgb(252, 153, 82);
+    margin-top: 20px;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 600;
+    font-family: "Oswald", sans-serif;
+  }
+  .admin_advertise_container h2 {
+    font-size: 20px;
+    text-align: center;
+    color: rgb(8, 8, 12);
+    font-weight: 600;
+    font-family: "Oswald", sans-serif;
+    margin: 10px 0;
+  }
+  .admin_advertise_container label {
+    font-family: "Quicksand", sans-serif;
+    margin-bottom: 2px;
+    font-size: 18px;
+    color: rgb(8, 8, 12);
+    font-weight: 600;
+    text-align: left;
+  }
+  .admin_advertise_container form {
+    margin: 10%;
+  }
+  .admin_advertise_container div {
+    /* margin-bottom: 0.8rem; */
+  }
+  .admin_advertise_container input {
+    padding: 10px;
+    width: 90%;
+    height: 20px;
+    border: none;
+    background: none;
+    color: rgb(8, 8, 12);
+    border-bottom: solid 1px rgba(8, 8, 12, 0.452);
+    border-radius: 10px;
+  }
+  #nextBtn, #cancelBtn, #admin_create_profile{
+    width: 120px;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  #cancelBtn{
+    background-color: rgb(8, 8, 12);
   }
   .checkbox input {
     width: 13px;
