@@ -71,7 +71,7 @@
             </p>
             </div>
 
-            <a href="<?php echo $location?>">
+            <a href="<?php echo $_COOKIE['subscriptionRedirect']?>">
             <button>
                 click to find your next home
             </button>

@@ -19,6 +19,9 @@ body {
   justify-content: center;
   justify-items: center;
 }
+.small_screen_overlay{
+  display: none;
+}
 .right_col {
   flex-basis: 85%;
   display: flex;
@@ -264,4 +267,40 @@ svg{
   height: 30px;
   padding: 2px;
   font-weight: 600;
+}
+@media only screen and (max-width:700px)  {
+  .sidebar{
+    
+  }
+  .container{
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .sidebar .logo{
+    margin-top: 20px !important;
+  }
+  .small_screen_overlay{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 80px;
+    backdrop-filter: blur(10px);
+  }
+  .overlay_center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+  }
+  .overlay_center h1{
+    text-align: center;
+  }
 }

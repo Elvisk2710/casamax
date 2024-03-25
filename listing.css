@@ -54,27 +54,37 @@ header{
     text-align: center;
 
 }
+.button_form{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+    gap: 4px;
+    margin: 10px;
+}
 h1{
     font-size: 40px;
     text-align: center;
     margin: 1vh 5vw;
     font-family: 'Oswald', sans-serif;
-
 }
 h3{
     margin: 30px auto;
     font-family: 'Oswald', sans-serif;    
-
 }
-.house-title a{
+.house-title form{
     text-align: center;
     margin: 5px 0;
-    width: 20vw;
+    width: 40vw;
     font-family: 'Inconsolata', monospace;
     text-decoration: none;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
 
 }
-.house-title a button{
+.house-title form button{
     width: 20vw;
     margin: 0vh 0vw;
     border: none;
@@ -86,11 +96,15 @@ h3{
     transition: 0.3s all;
     color: white;
     text-align: center;
-
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
 }
-.house-title a button img{
-    width: 15px;
-    height: 15px;
+.house-title form button img{
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
 }
 #whatsapp{
@@ -264,7 +278,7 @@ hr{
         font-family: 'Oswald', sans-serif;
 
     }
-    .house-title a button{
+    .house-title form button{
         width: 60vw;
         height: fit-content;
         padding: 10px;
@@ -276,12 +290,14 @@ hr{
         background: transparent;
         box-shadow: none;
     }
-    .house-title a{
+    .house-title form{
         width: 80vw;
         display: flex;
+        flex-direction: column;
         text-align: center;
         justify-content: center;
         align-items: center;
+        gap: 10px;
     }
     .table{
        

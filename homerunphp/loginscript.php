@@ -42,7 +42,7 @@ if (isset($_POST['submit'])) {
             $uni =  $row['university'];
 
 // query for subscribers table
-            $sub_check = "SELECT * FROM subscribers WHERE userid = '".$userid."'";
+            $sub_check = "SELECT * FROM subscribers WHERE user_id = '$userid'";
             $sub_db_check = mysqli_query($conn,$sub_check);
                                         
 // check if the user is subscribed.
@@ -63,7 +63,7 @@ if (isset($_POST['submit'])) {
                     $results = mysqli_fetch_array($sub_db_check);
                     $today = strtotime(date('y-m-d'));
                                 
-                    if(strtotime($results['end_of_sub']) < $today){
+                    if(strtotime($results['due_date']) < $today){
 
                         $sub_check = "DELETE FROM subscribers WHERE userid = '".$userid."'";
 

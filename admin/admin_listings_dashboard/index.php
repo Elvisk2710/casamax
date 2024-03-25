@@ -19,16 +19,16 @@ if (empty($_SESSION['sessionAdmin'])) {
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id' AND lastname = '$search_value'";
         } elseif (isset($_POST['admin_clear_search'])) {
             // checks if the session for verifying all houses is true and set then turns it to false
-            if(isset($_SESSION['verify_all']) && $_SESSION['verify_all']){
+            if (isset($_SESSION['verify_all']) && $_SESSION['verify_all']) {
                 $_SESSION['verify_all'] = false;
             }
             // resets the search value
             $_POST['admin_search_value'] != null;
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id'";
-        }elseif(isset($_POST['admin_view_all_search'])|| (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)){
+        } elseif (isset($_POST['admin_view_all_search']) || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
             // starts a session to verify all houses
             $_SESSION['verify_all'] = true;
-            if(isset( $_POST['admin_search_value']) && $_POST['admin_search_value'] != null){
+            if (isset($_POST['admin_search_value']) && $_POST['admin_search_value'] != null) {
                 $_SESSION['verify_all'] = false;
                 $_POST['admin_search_value'] != null;
             }
@@ -69,6 +69,21 @@ if (empty($_SESSION['sessionAdmin'])) {
         <?php
         include '../components/admin_navbar.php';
         ?>
+        <div class="small_screen_overlay">
+            <div class="overlay_center">
+                <h1>
+                    This screen is only optimised for a lorger screen (i.e laptops)
+                </h1>
+                <br>
+                <h3>
+                    Download Your Records Instead
+                </h3>
+                <br>
+                <button type="button" name="download_pdf" class="view_button">
+                    Download Pdf File
+                </button>
+            </div>
+        </div>
         <div class="right_col">
             <div class="left_col_top">
                 <div class="left_col_top_left">
@@ -112,72 +127,82 @@ if (empty($_SESSION['sessionAdmin'])) {
                         <button type="submit" name="admin_clear_search" class="view_button">
                             Reset
                         </button>
-                        <?php
-                            if($_SESSION['access'] == 1 || $_SESSION['access'] == 2){
-                        ?>
-                        <button type="submit" name="admin_view_all_search" class="view_button">
-                            Verify Homes
+
+                    </form>
+                    <div>
+                        <button type="button" name="download_pdf" class="view_button">
+                            Download Pdf File
                         </button>
                         <?php
-                            }
+                        if ($_SESSION['access'] == 1 || $_SESSION['access'] == 2) {
                         ?>
-                    </form>
+                            <button type="submit" name="admin_view_all_search" class="view_button">
+                                Verify Homes
+                            </button>
+                            <button type="submit" name="admin_view_all_search" class="view_button">
+                                Verify Agents
+                            </button>
+                        <?php
+                        }
+                        ?>
+                    </div>
+
                 </div>
             </div>
             <hr>
             <?php
-                    if($total_records == 0){
-                ?>
-            <div>
-                <h2>
-                    NO Records Found!!!
-                </h2>
-            </div>
-            <?php
-                    }else{
+            if ($total_records == 0) {
             ?>
-            <div class="right_col_bottom">
-                <table>
-                    <tr>
-                        <th>
-                            Home ID
-                        </th>
-                        <th>
-                            Email
-                        </th>
-                        <th>
-                            Firstname
-                        </th>
-                        <th>
-                            Lastname
-                        </th>
-                        <th>
-                            Contact
-                        </th>
-                        <th>
-                            ID Number
-                        </th>
-                        <th>
-                            Address
-                        </th>
-                        <th>
-                            Verified
-                        </th>
-                        <?php
-                        if ($_SESSION['access'] == 1 || $_SESSION['access'] == 2) {
-                        ?>
-                            <th>
-                                Action
-                            </th>
-                        <?php
-                        }
-                        ?>
-                    </tr>
-                    <?php include '../../homerunphp/admin_listing_query.php' ?>
-                </table>
-            </div>
+                <div>
+                    <h2>
+                        NO Records Found!!!
+                    </h2>
+                </div>
             <?php
-                    }
+            } else {
+            ?>
+                <div class="right_col_bottom">
+                    <table>
+                        <tr>
+                            <th>
+                                Home ID
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Firstname
+                            </th>
+                            <th>
+                                Lastname
+                            </th>
+                            <th>
+                                Contact
+                            </th>
+                            <th>
+                                ID Number
+                            </th>
+                            <th>
+                                Address
+                            </th>
+                            <th>
+                                Verified
+                            </th>
+                            <?php
+                            if ($_SESSION['access'] == 1 || $_SESSION['access'] == 2) {
+                            ?>
+                                <th>
+                                    Action
+                                </th>
+                            <?php
+                            }
+                            ?>
+                        </tr>
+                        <?php include '../../homerunphp/admin_listing_query.php' ?>
+                    </table>
+                </div>
+            <?php
+            }
             ?>
         </div>
     </div>

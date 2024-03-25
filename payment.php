@@ -1,12 +1,10 @@
 <?php
     session_start();
     require './required/ads_query.php';
-    if(empty($_COOKIE['cookiestudent'])){
+    if(!isset($_SESSION['sessionstudent'])){
         header("Location: ./login.php?pleaseloginfirst");
         echo '<script type="text/javascript"> alert("PLEASE LOGIN FIRST") </script>';
         exit();
-    }else{
-        setcookie("cookieUserID", '', time() + (-86400 * 1), "/");
     }
     if(isset($_GET['error'])){
         echo '
@@ -32,12 +30,12 @@
 
 </head>
 
-
-<body onunload="" class="scrollable">
-
 <?php
     require_once 'required/pageloader.php';
 ?>    
+<body onunload="" class="scrollable">
+
+
 <div class="head">
         <a href="index.php">  <img src="images/logowhite.png" alt="home" class="logo"></a>
     </div>
@@ -83,7 +81,7 @@
                 <p>
                     This will give you acces to CasaMax services for 1 day!
                 </p>
-                <button type="submit" name="1day">
+                <button id="subscriptionBtn" type="submit" name="1day" onclick="disableBtn()">
                     SUBSCRIBE
                 </button>
             
@@ -97,7 +95,7 @@
                     This will give you acces to CasaMax sevices for 3 days!
                 </p>
                 
-                <button type="submit" name="3day">
+                <button id="subscriptionBtn" type="submit" name="3day" onclick="disableBtn()">
                     SUBSCRIBE
                 </button>
                    
@@ -110,7 +108,7 @@
                 <p>
                     This will give you acces to CasaMax services for 7 days!
                 </p>
-                <button type="submit" name="1week">
+                <button id="subscriptionBtn" type="submit" name="1week" onclick="disableBtn()">
                     SUBSCRIBE
                 </button>
             
@@ -124,39 +122,6 @@
                     browse boarding-houses instead....
                 </button>
                 </a>
-                
-                <style>
-                    .browse_btn{
-                        width: 20vw;
-                        position: absolute;
-                        display: flex;
-                        text-align: center;
-                        align-items: center;
-                        justify-content: center;
-                        margin: auto;
-                        right: 50;
-                        left: 50;
-                    }
-                    .browse_btn button{
-                        border: none;
-                        border-radius: 10px; 
-                        color: rgb(252, 153, 82);
-                        font-weight: 500;
-                        margin-top: 2vw;
-                        padding: 1.5vw 2vw;
-                        font-size: 18px;
-                        transform: translate(0%,-50%);
-                        box-shadow: 3px 10px 22px 1px rgba(0, 0, 0, 0.24);
-                        background-color: rgba(8, 8, 12, 1)
-                        /* Lowering the shadow */
-                    }
-                    @media only screen and (max-width: 700px) {
-                        .browse_btn{
-                        width: 40vw;
-                        top: 0;
-                    }
-                    }
-                </style>
             </div>
     </div>
 
@@ -200,6 +165,11 @@ function togglebtn1(){
 navBar.classList.toggle("hideuni")
 }
 
-</script>?>
+// function disableBtn(){
+//     button = document.getElementById("subscriptionBtn");
+//     button.disabled = true;
+//     button.textContent = "Loading...."
+// }
+</script>
 </body>
 </html>
