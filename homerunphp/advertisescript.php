@@ -272,7 +272,7 @@ if (isset($_POST['create_profile'])) {
                                                     } elseif ($uni === "Harare Institute of Technology") {
                                                         for ($num = 0; $num < $count; $num++) {
                                                             $imageUploadPath = '../housepictures/hitpictures/' . basename($_FILES["$name"]["name"][$num]);
-                                                            require '../homerunphp/upload.phpupload.php';
+                                                            require '../homerunphp/upload.php';
                                                         }
                                                     } elseif ($uni === "National University of Science and Technology") {
                                                         for ($num = 0; $num < $count; $num++) {

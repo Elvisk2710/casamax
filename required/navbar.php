@@ -6,7 +6,7 @@
     <br>
     <div class="navbar_link">
         <a href="../index.php" class="home">HOME</a>
-        <a href="../bordinghouse.php">BOARDING-HOUSE</a>
+        <!-- <a href="../bordinghouse.php">BOARDING-HOUSE</a> -->
         <a href="../advertise_as/index.php">ADVERTISE</a>
         <a href="../help.php">HELP</a>
         <?php

@@ -16,12 +16,9 @@ if (!empty($_FILES["$name"]["name"][$num])) {
         // Validate file size (e.g., maximum 5MB)
         $maxFileSize = 5 * 1024 * 1024; // 5MB
         if ($_FILES["$name"]["size"][$num] <= $maxFileSize) {
-            // Generate a unique file name
-            $uniqueFileName = uniqid() . '.' . $fileType;
-            $imageUploadPath = '/path/to/upload/directory/' . $uniqueFileName;
 
             // Compress size and upload image
-            if (compressImage($fileTemp, $imageUploadPath, 50)) {
+            if (compressImage($fileTemp, $imageUploadPath, 60)) {
                 $status = 'success';
                 $statusMsg = 'Image uploaded successfully';
             } else {
@@ -43,5 +40,3 @@ if (!empty($_FILES["$name"]["name"][$num])) {
 
 // Output status and status message
 echo $status . ': ' . $statusMsg;
-
-?>

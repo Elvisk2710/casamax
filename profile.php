@@ -256,41 +256,39 @@ if (empty($user)) {
     } else {
     ?>
         <div class="container">
-            <h1>
-                <div class="house-info">
-                    <h2 style="color: black;">Your House ID is <?php echo $row['home_id'] ?></h2>
-                    <br>
-                    <button  class="update" onclick="copyToClipboard()">
-                        Copy Home ID
-                    </button>
-                    <br>
-                    <h2>Your Home Is Currently Waiting Verification</h2>
-                    <br>
-                    <h2>Verification Takes 2 to 7 Working Days. To Speed Up The Process WhatsApp Us On +263 78 698 9144 Stating Your Email Address And House ID.</h2>
-                    <br>
-                    <h2>Thank you</h2>
+            <div class="house-info" style="width:100%; margin: 0 auto;">
+                <h2 style="color: black; font-size:20px; font-weight:600;">Your House ID is <?php echo $row['home_id'] ?></h2>
+                <br>
+                <button class="update" onclick="copyToClipboard()">
+                    Copy Home ID
+                </button>
+                <br>
+                <h2 style="margin: 5% 5%; font-size: 1.4rem; font-weight:700;">Your Home Is Currently Waiting Verification</h2>
+                <br>
+                <h2 style="margin: 5% 5%; font-size: 1.2rem;">Verification Takes 2 to 7 Working Days. To Speed Up The Process WhatsApp Us On +263 78 698 9144 Stating Your Email Address And House ID.</h2>
+                <br>
+                <h2 style="margin: 10% 0; font-size: 1.8rem; color:rgb(252, 153, 82)">Thank you</h2>
 
-                </div>
-            </h1>
+            </div>
         </div>
         <script>
-        function copyToClipboard() {
-            var home_id = '<?php echo $row['home_id']; ?>';
+            function copyToClipboard() {
+                var home_id = '<?php echo $row['home_id']; ?>';
 
-            var tempInput = document.createElement("input");
-            tempInput.value = home_id;
-            document.body.appendChild(tempInput);
+                var tempInput = document.createElement("input");
+                tempInput.value = home_id;
+                document.body.appendChild(tempInput);
 
-            tempInput.select();
-            tempInput.setSelectionRange(0, 99999);
+                tempInput.select();
+                tempInput.setSelectionRange(0, 99999);
 
-            document.execCommand("copy");
+                document.execCommand("copy");
 
-            document.body.removeChild(tempInput);
+                document.body.removeChild(tempInput);
 
-            alert("PHP variable copied to clipboard: " + home_id);
-        }
-    </script>
+                alert("Home ID Has Been Copied To Clipboard: " + home_id);
+            }
+        </script>
     <?php
     }
     ?>

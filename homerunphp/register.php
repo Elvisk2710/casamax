@@ -1,10 +1,9 @@
 <?php
 $sec = "0.1";
-//add database connection
+// Add database connection
 require 'homerunuserdb.php';
 
 if (isset($_POST['submit'])) {
-
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $password = $_POST['password'];
@@ -21,18 +20,17 @@ if (isset($_POST['submit'])) {
     $gender = filter_var($gender, FILTER_SANITIZE_SPECIAL_CHARS);
     $contact = filter_var($contact, FILTER_SANITIZE_NUMBER_INT);
 
-
-    if (empty($firstname) or empty($lastname) or empty($password) or empty($confirmpass) or empty($email) or empty($dob) or empty($gender) or empty($contact) or $uni == "none") {
-        header("refresh:$sec;  ../signup.php?error=emptyfields&firstname=" . $firstname);
+    if (empty($firstname) || empty($lastname) || empty($password) || empty($confirmpass) || empty($email) || empty($dob) || empty($gender) || empty($contact) || $uni === "none") {
+        header("refresh:$sec;  ../signup.php?error=emptyfields&firstname=" . urlencode($firstname));
         exit();
     } elseif ($password !== $confirmpass) {
-        header("refresh:$sec; ../signup.php?error=passwordsdonotmatch" . $firstname);
+        header("refresh:$sec; ../signup.php?error=passwordsdonotmatch&firstname=" . urlencode($firstname));
         exit();
     } else {
         $sql = "SELECT email FROM homerunuserdb WHERE email = ?";
         $stmt = mysqli_stmt_init($conn);
 
-        // preparing sql statement
+        // Preparing SQL statement
         if (!mysqli_stmt_prepare($stmt, $sql)) {
             header("refresh:$sec;  ../signup.php?error=sqlerror");
             exit();
@@ -47,11 +45,12 @@ if (isset($_POST['submit'])) {
                 echo '<script type="text/javascript"> alert("OOPS! EMAIL ALREADY EXISTS") </script>';
                 exit();
             } else {
-
                 $hashedpass = password_hash($password, PASSWORD_DEFAULT);
 
-                $lastid = mysqli_insert_id($conn);
+                $lastid = mysqli_insert_id($conn); 
                 $randcode = rand(1, 99999);
+                $uni_code = ''; // Initialize the variable
+
                 switch ($uni) {
                     case "University of Zimbabwe":
                         $uni_code = "uz";
@@ -59,7 +58,7 @@ if (isset($_POST['submit'])) {
                     case "Midlands State University":
                         $uni_code = "msu";
                         break;
-                    case "Africa Univeristy":
+                    case "Africa University":
                         $uni_code = "au";
                         break;
                     case "Bindura State University":
@@ -77,31 +76,34 @@ if (isset($_POST['submit'])) {
                     case "National University of Science and Technology":
                         $uni_code = "nust";
                         break;
+                }
+
+                if (empty($uni_code)) {
+                    header("refresh:$sec; ./signup.php?FailedToGenerateID");
+                    echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
+                    exit();
+                }
+
+                $userid = $uni_code . "_" . $randcode . "_" . $lastid;
+                $sql = "INSERT INTO homerunuserdb (firstname, lastname, passw, email, dob, sex, contact, university, userid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmt = mysqli_prepare($conn, $sql);
+
+                if ($stmt) {
+                    mysqli_stmt_bind_param($stmt, "sssssssss", $firstname, $lastname, $hashedpass, $email, $dob, $gender, $contact, $uni, $userid);
+                    if (mysqli_stmt_execute($stmt)) {
+                        header("refresh:$sec; ../login.php?youhavesuccessfullyregistered");
+                        echo '<script type="text/javascript"> alert("YOU HAVE SUCCESSFULLY REGISTERED!") </script>';
+                        exit();
+                    } else {
+                        header("refresh:$sec; ./signup.php?FailedToGenerateID");
+                        echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
+                        exit();
                     }
-
-                        $userid = $uni_code . "_" . $randcode . "_" . $lastid;
-                        $sql = "INSERT INTO homerunuserdb (firstname, lastname, passw, email, dob, sex, contact, university, userid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                        $stmt = mysqli_prepare($conn, $sql);
-
-                        if ($stmt) {
-
-                            mysqli_stmt_bind_param($stmt, "sssssssss", $firstname, $lastname, $hashedpass, $email, $dob, $gender, $contact, $uni, $userid);
-                            if (mysqli_stmt_execute($stmt)) {
-                                header("refresh:$sec; ../login.php?youhavesuccessfullyregistered");
-                                echo '<script type="text/javascript"> alert("YOU HAVE SUCCESSFULLY REGISTERED!") </script>';
-                                exit();
-                            } else {
-                                $query_code = "DELETE FROM homerunuserdb WHERE email ='$email";
-                                $res = mysqli_query($conn, $query_code);
-                                header("refresh:$sec; ./signup.php?FailedToGenerateID");
-                                echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
-                                exit();
-                            }
-                        } else {
-                            header("refresh:$sec; ./signup.php?FailedToGenerateID");
-                            echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
-                            exit();
-                        }
+                } else {
+                    header("refresh:$sec; ./signup.php?FailedToGenerateID");
+                    echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
+                    exit();
+                }
             }
         }
     }

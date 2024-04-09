@@ -1,4 +1,4 @@
-
+<?php
 echo"<div class='house'>";
                     echo"<div class='house-img'>";
 

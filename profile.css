@@ -147,7 +147,11 @@ tr .value{
 .address_info{
     display: flex;
     vertical-align: middle;
-    margin: 12px 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    justify-items: center;
+    margin: 8px 0;
 
 }
 .address h3{
@@ -224,7 +228,7 @@ tr .value{
 }
 .container .edit{
     text-align: center;
-    margin: 0 auto;
+    height: fit-content;
 }
 button:active{
     transform: scale(0.9);

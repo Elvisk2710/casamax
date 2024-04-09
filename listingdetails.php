@@ -3,7 +3,7 @@ session_start();;
 
 require_once 'homerunphp/advertisesdb.php';
 
-if (!empty($_GET['clicked_id'])) {
+if (!empty($_GET['clicked_id']) && isset($_GET['clicked_id'])) {
     $user  = $_GET['clicked_id'];
 
     $sql = "SELECT * FROM  homerunhouses WHERE home_id = '$user'";
@@ -37,6 +37,8 @@ if (!empty($_GET['clicked_id'])) {
             $uni_folder = 'uzpictures';
         }
     }
+}else{
+    header('Location: ./index.php?error=' . urlencode("Clicked Id Not Set"));
 }
 
 $currentURL = "http";

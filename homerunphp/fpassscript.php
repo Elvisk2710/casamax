@@ -28,7 +28,7 @@ if(isset($_POST['submit_code'])){
                     setcookie("code", '', time() + (-900 * 1), "/");    
                     setcookie("password", '', time() + (-900 * 1), "/"); 
                     header("Refresh:0.1, ../".$_COOKIE['loginPage']."");
-                    echo '<script type="text/javascript"> alert(" YOU HAVE SUCCESSFULLY CHANGED YOUR PASSWORD") </script>';
+                    echo '<script type="text/javascript"> alert("YOU HAVE SUCCESSFULLY CHANGED YOUR PASSWORD") </script>';
 
 
                 }

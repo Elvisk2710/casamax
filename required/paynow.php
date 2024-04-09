@@ -1,7 +1,7 @@
 <?php
 try {
-    // Sanitize and validate phone number
-    $phone = filter_var($_POST["phone_number"], FILTER_SANITIZE_STRING);
+    // Validate and sanitize phone number
+    $phone = $_POST["phone_number"];
     if (!preg_match('/^\d{10}$/', $phone)) {
         // Handle invalid phone number
         exit('Invalid phone number');
@@ -76,6 +76,10 @@ try {
         }
     }
 } catch (Exception $ex) {
+    // Log the error
+    error_log('Failed to connect to PayNow: ' . $ex->getMessage());
+
+    // Display a generic error message to the user
     header("location: ../payment.php?error=FailedToConnectToPayNow");
     exit;
 }

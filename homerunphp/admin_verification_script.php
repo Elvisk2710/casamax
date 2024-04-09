@@ -1,68 +1,82 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// Verify if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Connection to the database
-    require_once './advertisesdb.php';
-    var_dump($_POST);   
+    // Check for necessary data
     if (isset($_POST['home_id'])) {
         $home_id = $_POST['home_id'];
-    // Prepare the SQL statement
-    $stmt = $conn->prepare("UPDATE homerunhouses SET verified = '1' WHERE home_id = ?");
-    $stmt->bind_param("s", $home_id); // "s" represents a string, adjust the data type if necessary
 
-    // Execute the prepared statement
-    $result = $stmt->execute();
+        // Sanitize user input
+        $home_id = filter_var($home_id, FILTER_SANITIZE_STRING);
 
-    if ($result) {
-        $response = [
-            'status' => 'success',
-            'verified' => $home_id,
-            'message' => 'Verification successful' // Add the message field
-        ];
-        // Set the appropriate headers
-        header('Content-Type: application/json');
+        // Validate input
+        if (empty($home_id)) {
+            $response = [
+                'status' => 'failed',
+                'message' => 'Missing home ID'
+            ];
+            http_response_code(400);
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            exit();
+        }
 
-        // Send the response
-        header("refresh: 0.01; ../admin/admin_listings_dashboard/index.php?UpdateSuccessful");
-        echo json_encode($response);
-        echo '<script type="text/javascript"> alert("Update Successful") </script>';
-        exit();
+        // Connection to the database
+        require_once './advertisesdb.php';
+
+        // Prepare the SQL statement
+        $stmt = $conn->prepare("UPDATE homerunhouses SET verified = '1' WHERE home_id = ?");
+        $stmt->bind_param("s", $home_id); // "s" represents a string, adjust the data type if necessary
+
+        // Execute the prepared statement
+        $result = $stmt->execute();
+
+        if ($result) {
+            $response = [
+                'status' => 'success',
+                'verified' => $home_id,
+                'message' => 'Verification successful'
+            ];
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            exit();
+        } else {
+            $response = [
+                'status' => 'failed',
+                'verified' => $home_id,
+                'message' => 'Verification failed'
+            ];
+            http_response_code(500);
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            exit();
+        }
+
+        // Close the statement and database connection
+        $stmt->close();
+        $conn->close();
     } else {
         $response = [
             'status' => 'failed',
-            'verified' => $home_id,
-            'message' => 'Verification failed' // Add the message field
+            'message' => 'Missing home ID'
         ];
-        // Set the appropriate headers
+        http_response_code(400);
         header('Content-Type: application/json');
-        header("refresh: 0.01; ../admin/admin_listings_dashboard/index.php?UpdateFailed");
         echo json_encode($response);
-        echo '<script type="text/javascript"> alert("Update Failed") </script>';
         exit();
-        // Send the response
-        
     }
-
-    // Close the statement and database connection
-    $stmt->close();
-    $conn->close();
-}else{
+} else {
     $response = [
         'status' => 'failed',
-        'verified' => $home_id,
-        'message' => 'empty variables' // Add the message field
+        'message' => 'Invalid request method'
     ];
-    // Set the appropriate headers
+    http_response_code(405);
     header('Content-Type: application/json');
-
-    // Send the response
     echo json_encode($response);
-    header('Content-Type: application/json');
-    header("refresh: 0.01; ../admin/admin_listings_dashboard/index.php?MissingVariables");
-    echo json_encode($response);
-    echo '<script type="text/javascript"> alert("Empty Fields") </script>';
     exit();
 }
-}
+?>

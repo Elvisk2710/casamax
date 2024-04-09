@@ -1,206 +1,134 @@
 <?php
 session_start();
-$status = ''; 
-$sec = 0.1;
-    // checks if user has logged in or not.
 
-if(isset($_POST['profile_photos']) and (!empty($_SESSION['sessionowner']))){
-    
-    /* 
-    * Custom function to compress image size and 
-    * upload to the server using PHP 
-    */ 
-    function compressImage($source, $destination, $quality) { 
-        // Get image info 
-        $imgInfo = getimagesize($source); 
-        $mime = $imgInfo['mime']; 
-        
-        // Create a new image from file 
-        switch($mime){ 
-            case 'image/jpeg': 
-                $image = imagecreatefromjpeg($source); 
-                break; 
-            case 'image/png': 
-                $image = imagecreatefrompng($source); 
-                break; 
-            case 'image/gif': 
-                $image = imagecreatefromgif($source); 
-                break; 
-            default: 
-                $image = imagecreatefromjpeg($source); 
-        } 
-        
-        // Save image 
-        imagejpeg($image, $destination, $quality); 
-        
-    // Return compressed image 
-    return $destination; 
+// Perform necessary security checks
+if (isset($_POST['profile_photos']) && !empty($_SESSION['sessionowner'])) {
+    // Custom function to sanitize and validate user input
+    function sanitizeInput($input)
+    {
+        // Implement your sanitization logic here
+        $input = trim($input);
+        $input = stripslashes($input);
+        $input = htmlspecialchars($input);
+        return $input;
     }
-    // database connection
-    require 'advertisesdb.php';
-    
-    $name = "image";
-    $countfiles = 8;
-    $count = 0;
-    for($i=0;$i<$countfiles;$i++){
-        switch($i){
-            case 0:
-                if(!empty($_FILES['image']['name'][$i])){
-                    $image1 = $_FILES['image']['name'][$i];
-                    $count ++;
-                }else{
-                    $image1 = "";
-                }
-                break;
-                case 1:
-                      if(!empty($_FILES['image']['name'][$i])){
-                        $image2 = $_FILES['image']['name'][$i];
-                        $count ++;
-                        }else{
-                            $image2 = "";
-                        }
-                    break;
-                    case 2:
-                          if(!empty($_FILES['image']['name'][$i])){
-                            $image3 = $_FILES['image']['name'][$i];
-                            $count ++;
-                            }else{
-                                $image3 = "";
-                            }
-                        break;
-                        case 3:
-                              if(!empty($_FILES['image']['name'][$i])){
-                                    $image4 = $_FILES['image']['name'][$i];
-                                    $count ++;
-                                }else{
-                                    $image4 = "";
-                                }
-                            break;
-                            case 4:
-                                  if(!empty($_FILES['image']['name'][$i])){
-                                    $image5 = $_FILES['image']['name'][$i];
-                                    $count ++;
-                                    }else{
-                                        $image5 = "";
-                                    }
-                                break;
-                                case 5:
-                                      if(!empty($_FILES['image']['name'][$i])){
-                                        $image6 = $_FILES['image']['name'][$i];
-                                        $count ++;
-                                        }else{
-                                            $image6 = "";
-                                        }
-                                    break;
-                                    case 6:
-                                          if(!empty($_FILES['image']['name'][$i])){
-                                            $image7 = $_FILES['image']['name'][$i];
-                                            $count ++;
-                                            }else{
-                                                $image7 = "";
-                                            }
-                                        break;
-                                        case 7:
-                                              if(!empty($_FILES['image']['name'][$i])){
-                                            $image8 = $_FILES['image']['name'][$i];
-                                            $count ++;
-                                            }else{
-                                                $image8 = "";
-                                            }
-                                            break;
+
+    // Function to generate a random and unique filename
+    function generateUniqueFilename($extension)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $randomString = '';
+        $length = 10;
+
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
         }
+
+        return $randomString . '.' . $extension;
     }
+
+    // Checks if a file is a valid image
+    function isValidImage($file)
+    {
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $fileInfo = getimagesize($file['tmp_name']);
+        return in_array($fileInfo['mime'], $allowedTypes);
+    }
+
+    // Checks if a file size is within the limit
+    function isFileSizeWithinLimit($file)
+    {
+        $maxFileSize = 5 * 1024 * 1024; // 5MB
+        return $file['size'] <= $maxFileSize;
+    }
+
+    // Compresses and saves the image
+    function compressAndSaveImage($source, $destination, $quality)
+    {
+        $imgInfo = getimagesize($source);
+        $mime = $imgInfo['mime'];
+
+        switch ($mime) {
+            case 'image/jpeg':
+                $image = imagecreatefromjpeg($source);
+                break;
+            case 'image/png':
+                $image = imagecreatefrompng($source);
+                break;
+            case 'image/gif':
+                $image = imagecreatefromgif($source);
+                break;
+            default:
+                $image = imagecreatefromjpeg($source);
+        }
+
+        imagejpeg($image, $destination, $quality);
+        imagedestroy($image);
+    }
+
+    // Database connection
+    require 'advertisesdb.php';
+
     $email = $_SESSION['sessionowner'];
-    $sql = "SELECT * FROM  homerunhouses WHERE email = '$email' ";
+    $sql = "SELECT * FROM homerunhouses WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     
-    if (!$rs_result = mysqli_query($conn,$sql)){
-        echo mysqli_error($conn);
-        
-    }else{
-        $row = mysqli_fetch_array($rs_result);
+    if ($row = mysqli_fetch_assoc($result)) {
         $uni = $row['uni'];
 
-        $sql = "UPDATE homerunhouses SET image1=? ,image2=? ,image3=? ,image4=? ,image5=? ,image6=? ,image7=? ,image8=?  WHERE email=?";
-        $stmt = mysqli_stmt_init($conn);
+        $imageCount = 8;
+        $uploadedImages = [];
 
-        if (!mysqli_stmt_prepare($stmt, $sql)){
-            header("refresh:$sec;  ../profile.php?error=sqlerror");
-            echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
-            exit();
-        }else{  
-            mysqli_stmt_bind_param($stmt,'sssssssss', $image1,$image2,$image3,$image4,$image5,$image6,$image7,$image8,$email);
-            // runs sql
-            if(mysqli_stmt_execute($stmt)){
-                if($uni === "University of Zimbabwe"){
-                    for ($num = 0; $num < $count; $num++){ 
-                        $imageUploadPath = '../housepictures/uzpictures/' . basename($_FILES["$name"]["name"][$num]);
-                        require '../homerunphp/upload.php';
-                        }
-                        
-                }elseif($uni === "Midlands State University"){
-                    for ($num = 0; $num < $count; $num++){ 
-                        $imageUploadPath = '../housepictures/msupictures/' . basename($_FILES["$name"]["name"][$num]);
-                        require '../homerunphp/upload.php';
-                        }
-                        
-                }elseif($uni === "Africa Univeristy"){
-                    for ($num = 0; $num < $count; $num++){ 
-                        $imageUploadPath = '../housepictures/aupictures/' . basename($_FILES["$name"]["name"][$num]);
-                        require '../homerunphp/upload.php';
-                        }
-                        
-                }elseif($uni === "Bindura State University"){
-                    for ($num = 0; $num < $count; $num++){ 
-                        $imageUploadPath = '../housepictures/bsupictures/' . basename($_FILES["$name"]["name"][$num]);
-                        require '../homerunphp/upload.php';
-                        }
-                        
-                }elseif($uni ==="Chinhoyi University of Science and Technology"){
-                    for ($num = 0; $num < $count; $num++){ 
-                        $imageUploadPath = '../housepictures/cutpictures/' . basename($_FILES["$name"]["name"][$num]);
-                        require '../homerunphp/upload.php';
-                        }
-                        
-                }elseif($uni === "Great Zimbabwe University"){
-                    for ($num = 0; $num < $count; $num++){ 
-                        $imageUploadPath = '../housepictures/gzpictures/' . basename($_FILES["$name"]["name"][$num]);
-                        require '../homerunphp/upload.php';
-                        }
-                        
-                }elseif($uni === "Harare Institute of Technology"){
-                    for ($num = 0; $num < $count; $num++){
-                        $imageUploadPath = '../housepictures/hitpictures/' . basename($_FILES["$name"]["name"][$num]);
-                        require '../homerunphp/upload.phpupload.php';
-                        }
-                        
-                }elseif($uni === "National University of Science and Technology"){
-                    for ($num = 0; $num < $count; $num++){ 
-                    $imageUploadPath = '../housepictures/nustpictures/' . basename($_FILES["$name"]["name"][$num]);
-                    require '../homerunphp/upload.php';
-                    }
-            
-                    }else{
-                        header("refresh:$sec;  ../profile.php?error=FailedtoUploadImages");
-                        echo '<script type="text/javascript"> alert("Error while uploading") </script>';
+        // Process each uploaded image
+        for ($i = 0; $i < $imageCount; $i++) {
+            $file = $_FILES['image']['name'][$i];
 
-                    }
-                    if($status == 'success'){
-                        header("refresh:$sec;  ../profile.php?status=Profilecreated");
-                        $_SESSION['sessionowner'] = $email;
-                        echo '<script type="text/javascript"> alert("Images  Uploaded Successfully") </script>';
+            if (!empty($file)) {
+                $fileTmp = $_FILES['image']['tmp_name'][$i];
+                $fileSize = $_FILES['image']['size'][$i];
+                $fileError = $_FILES['image']['error'][$i];
 
-                        exit();
-                    }else{
-                        header("refresh:$sec;  ../profile.php?error=FailedtoUploadImages");
-                        echo '<script type="text/javascript"> alert("Failed to Upload Images") </script>';    
+                // Perform security checks on the file
+                $file = sanitizeInput($file);
 
-                    }
-            }else{
-                header("refresh:$sec;  ../profile.php?error=FailedtoUploadImages");
-                echo '<script type="text/javascript"> alert("Images Not Uploaded") </script>';
-            
+                if ($fileError === 0 && isValidImage($_FILES['image'][$i]) && isFileSizeWithinLimit($_FILES['image'][$i])) {
+                    $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
+                    $newFilename = generateUniqueFilename($fileExtension);
+                    $destination = '../housepictures/' . $uni . 'pictures/' . $newFilename;
+
+                    // Compress and save the image
+                    compressAndSaveImage($fileTmp, $destination, 80);
+
+                    $uploadedImages[] = $newFilename;
+                }
             }
         }
+
+        // Update the database with the uploaded image names
+        $sql = "UPDATE homerunhouses SET image1=?, image2=?, image3=?, image4=?, image5=?, image6=?, image7=?, image8=? WHERE email=?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, 'ssssssssss', ...$uploadedImages, $email);
+        mysqli_stmt_execute($stmt);
+
+        if (mysqli_stmt_affected_rows($stmt) > 0) {
+            // Images uploaded successfully
+            header("Location: ../profile.php?status=Profilecreated");
+            exit();
+        } else {
+            // Failed to update database
+            header("Location: ../profile.php?error=FailedtoUploadImages");
+            exit();
+        }
+    } else {
+        // User not found in the database
+        header("Location: ../profile.php?error=UserNotFound");
+        exit();
     }
+} else {
+    // Invalidsession or form submission
+    header("Location: ../profile.php?error=InvalidSession");
+    exit();
 }
-?>
