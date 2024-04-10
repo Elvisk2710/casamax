@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -25,7 +26,7 @@ try {
             <h1>THANK YOU FOR USING CASAMAX</h1>
         </header>
         
-        <h2>HEY!!' . $firstname . '<h2><br>
+        <h2>HEY ' . $firstname . '!!<h2><br>
         <h3>Your CasaMax Code is:</h3><br>
             <h1>' . $rand . '</h1>
         </div>
@@ -108,8 +109,8 @@ try {
     $mail->Host = 'smtp.gmail.com';
 
     $mail->SMTPAuth = true;
-    $mail->Username = getenv('SMTP_USERNAME'); // Replace with your SMTP username
-    $mail->Password = getenv('SMTP_PASSWORD'); // Replace with your SMTP password
+    $mail->Username = 'casamaxzim@gmail.com';
+    $mail->Password = 'znvsyhhgoivwzyds';
 
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
@@ -119,6 +120,7 @@ try {
     // Validate and sanitize email address
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
     if (!$email) {
+        header("location: ./agent_register.php?error=Invalid email address!");
         exit('Invalid email address');
     }
 
@@ -128,11 +130,13 @@ try {
     $mail->Body = $message;
 
     if (!$mail->send()) {
+        $mailStatus = "failed";
         echo 'Email sending failed: ' . $mail->ErrorInfo;
+        echo '<script>alert("Email sending failed: "' . $mail->ErrorInfo . ')</script>';
     } else {
+        $mailStatus = "success";
         echo '<script>alert("Email sent successfully")</script>';
     }
 } catch (Exception $e) {
     echo 'SMTP connection failed: ' . $e->getMessage();
 }
-?>

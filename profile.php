@@ -186,73 +186,73 @@ if (empty($user)) {
         <p>' . $row['email'] . '</p>
         </div>
 
-    </div>
-      
+    </div>';
+
     ?>
-    <div class="edit">
-        <button type="button" class="edit-btn" onclick="openForm()">Edit My info</button>
-    </div>
+        <div class="edit">  
+            <a href="./listingdetails.php?clicked_id=<?php echo $row['home_id']?>">
+                <div class="btn-div">
+                    <button class="edit-btn" name="viewpage">
+                        Page Preview
+                    </button>
+                </div>
 
-    <div class="profile-bottom">
+            </a>
+        </div>
 
-        <form action="homerunphp/update.php" method="POST">
-            <p>Is your Home...</p>
+        <div class="profile-bottom">
 
-            <label for="available">
-                <input type="radio" name="availability" id="available" value="1">
-                Available
-            </label> or
-            <label for="occupied">
-                <input type="radio" name="availability" id="occupied" value="0">
-                Occupied
-            </label>
+            <form action="./homerunphp/update.php" method="POST">
+                <p>Is your Home...</p>
 
-            <br>
+                <label for="available">
+                    <input type="radio" name="availability" id="available" value="1">
+                    Available
+                </label> or
+                <label for="occupied">
+                    <input type="radio" name="availability" id="occupied" value="0">
+                    Occupied
+                </label>
 
-            <button class="update" name="update">
-                Update
-            </button>
+                <br>
 
-            <p class="desc">
-                this will allow your home to either be removed temporarily (Occupied) or be placed back onto the platform (Available)
-            </p>
-    </div>
+                <button class="update" name="update">
+                    Update
+                </button>
 
-    <button class="update" name="viewpage">
-        Page Preview
-    </button>
-    </div>
+                <p class="desc">
+                    this will allow your home to either be removed temporarily (Occupied) or be placed back onto the platform (Available)
+                </p>
+        </div>
+        </div>
+        </div>
+        </form>
 
+        </div>
 
+        <script>
+            function triggerClick() {
+                document.getElementById("inputimage1").click();
+            }
 
-    </div>
-    </form>
+            // edit info onclick
+            function openForm() {
+                document.getElementById("myForm").style.display = "block";
+            }
 
-    </div>
+            function closeForm() {
+                document.getElementById("myForm").style.display = "none";
+            }
 
-    <script>
-        function triggerClick() {
-            document.getElementById("inputimage1").click();
-        }
+            function open_Verification_popup() {
+                document.getElementById("verify_popup").style.display = "block";
+            }
 
-        // edit info onclick
-        function openForm() {
-            document.getElementById("myForm").style.display = "block";
-        }
-
-        function closeForm() {
-            document.getElementById("myForm").style.display = "none";
-        }
-
-        function open_Verification_popup() {
-            document.getElementById("verify_popup").style.display = "block";
-        }
-
-        function close_Verification_popup() {
-            document.getElementById("verify_popup").style.display = "none";
-        }
-    </script>
-    ';
+            function close_Verification_popup() {
+                document.getElementById("verify_popup").style.display = "none";
+            }
+        </script>
+    <?php
     } else {
     ?>
         <div class="container">

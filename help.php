@@ -77,6 +77,11 @@
             </div>
        
         </div>
+        <br>
+        <h2>
+            Are You An Agent Trying To Register?
+        </h2>
+
         <div class="col">
             <br>
 

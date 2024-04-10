@@ -329,7 +329,7 @@ if (isset($_GET['error'])) {
 
 
             <div class="socialicons">
-                <a href="https://www.facebook.com/Homerunzim-102221862615717/" data-tabs="timeline"><img src="./images/facebook.png" alt="" title="Our-Facebook-page"></a>
+                <a href="https://www.facebook.com/profile.php?id=100093414304668" data-tabs="timeline"><img src="./images/facebook.png" alt="" title="Our-Facebook-page"></a>
                 <a href="https://www.instagram.com/homerunzim/"><img src="./images/instagram.png" alt="" title="Our-Instagram-page"></a>
                 <a href="https://wa.me/+263786989144"> <img src="./images/whatsapp.png" alt="" title="Our-WhatsApp-page"></a>
                 <a href="mailto:homerunzim@gmail.com?subject=Feedback to HomeRun&cc=c"> <img src="./images/mail.png" alt="" title="Email"></a>

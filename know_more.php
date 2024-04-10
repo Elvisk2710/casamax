@@ -101,7 +101,7 @@
          
       
         <div class="socialicons">
-          <a href="https://www.facebook.com/Homerunzim-102221862615717/"><img src="./images/facebook.png" alt=""></a>
+          <a href="https://www.facebook.com/profile.php?id=100093414304668"><img src="./images/facebook.png" alt=""></a>
           <a href="https://www.instagram.com/casamax.co.zw/"><img src="./images/instagram.png" alt=""></a>
           <a href="https://wa.me/+263786989144"> <img src="./images/whatsapp.png" alt=""></a>
           <a href="mailto:casamazim@gmail.com?subject=Feedback to HomeRun&cc=c"> <img src="./images/mail.png" alt=""></a>

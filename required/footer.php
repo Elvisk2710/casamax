@@ -14,7 +14,7 @@
           </p>
 
         <div class="socialicons">
-        <a href="https://www.facebook.com/Homerunzim-102221862615717/" data-tabs="timeline" target="blank"><img src="../images/facebook.png" alt="" title="Our-Facebook-page"></a>
+        <a href="https://www.facebook.com/profile.php?id=100093414304668" data-tabs="timeline" target="blank"><img src="../images/facebook.png" alt="" title="Our-Facebook-page"></a>
           <a href="https://www.instagram.com/casamax.co.zw/" target="blank"><img src="../images/instagram.png" alt="" title="Our-Instagram-page"></a>
           <a href="https://wa.me/+263786989144" target="blank"> <img src="../images/whatsapp.png" alt="" title="Our-WhatsApp-page"></a>
           <a href="mailto:casamaxzim@gmail.com?subject=Feedback to CasaMax&cc=c" target="blank"> <img src="../images/mail.png" alt="" title="Email" ></a>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require "./advertisesdb.php";
 $sec = "0.1";
 
 if (isset($_POST['update'])) {
@@ -8,17 +8,21 @@ if (isset($_POST['update'])) {
     $user = $_SESSION['sessionowner'];
 
     if (empty($user)) {
-        header("refresh:$sec;  ../homeownerlogin.php?error=youhavetologinfirst");
+        header("refresh:$sec;  ../homeownerlogin.php?error=You Have To Login First");
         exit();
     } else {
-        $user = mysqli_real_escape_string($conn, $_COOKIE['update']);
-        $update = mysqli_real_escape_string($conn, $_POST['availability']);
+        $user = $_SESSION['sessionowner']; // Use session variable instead of cookie
+        $update = $_POST['availability'];
 
-        $updatesql = "UPDATE homerunhouses SET available = '$update' WHERE email = '$user'";
+        // Validate and sanitize input
+        $update = mysqli_real_escape_string($conn, $update);
+        // Additional validation if needed
 
-        $query_run = mysqli_query($conn, $updatesql);
+        $stmt = $conn->prepare("UPDATE homerunhouses SET available = ? WHERE email = ?");
+        $stmt->bind_param("ss", $update, $user);
+        $stmt->execute();
 
-        if ($query_run) {
+        if ($stmt->affected_rows > 0) {
             header("refresh:$sec; ../profile.php?success=updatesuccessful");
             echo '<script type="text/javascript"> alert("Update Successfully") </script>';
         } else {
@@ -26,11 +30,4 @@ if (isset($_POST['update'])) {
             echo '<script type="text/javascript"> alert("SQLError") </script>';
         }
     }
-}
-
-if (isset($_POST['viewpage'])) {
-    $home_id = mysqli_real_escape_string($conn, $_COOKIE['update']);
-    header("refresh:$sec; ../listingdetails.php?clicked_id=$home_id");
-    setcookie("clicked_id", $home_id, time() + (86400 * 1), "/");
-    setcookie("viewpage", mysqli_real_escape_string($conn, $_SESSION['sessionowner']), time() + (86400 * 1), "/");
 }

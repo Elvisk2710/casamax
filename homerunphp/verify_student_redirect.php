@@ -85,7 +85,7 @@ function handleSubscriptionLandlord($conn, $student, $home_id, $contactMethod)
                         if ($contactMethod === "whatsapp") {
                             $url = "https://wa.me/263" . $contact . "?text=Hello.%20I%20saw%20your%20boarding%20house%20on%20CasaMax.co.zw%20and%20I%20am%20interested%20in%20being%20a%20tenant%20there.%20Is%20it%20still%20available%3F";
                         } elseif ($contactMethod === "call") {
-                            $url = "tel:263" . $contact;
+                            $url = "tel:+263" . $contact;
                         }
 
                         $options = [
@@ -181,7 +181,7 @@ function handleSubscriptionAgent($conn, $student, $agent_id, $home_id, $contactM
                     if ($contactMethod === "whatsapp") {
                         $url = "https://wa.me/263" . $contact . "?text=Hello.%20I%20saw%20your%20boarding%20house%20on%20CasaMax.co.zw%20and%20I%20am%20interested%20in%20being%20a%20tenant%20there.%20Is%20it%20still%20available%3F";
                     } elseif ($contactMethod === "call") {
-                        $url = "tel:263" . $contact;
+                        $url = "tel:+263" . $contact;
                     }
 
                     $options = [

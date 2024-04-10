@@ -239,62 +239,42 @@ if (isset($_POST['create_profile'])) {
                                                 } else {
 
                                                     $status = 'failed';
-                                                    if ($uni === "University of Zimbabwe") {
+                                                    switch ($uni) {
+                                                        case "University of Zimbabwe":
+                                                            $uploadPath = '../housepictures/uzpictures/';
+                                                            break;
+                                                        case "Midlands State University":
+                                                            $uploadPath = '../housepictures/msupictures/';
+                                                            break;
+                                                        case "Africa Univeristy":
+                                                            $uploadPath = '../housepictures/aupictures/';
+                                                            break;
+                                                        case "Bindura State University":
+                                                            $uploadPath = '../housepictures/bsupictures/';
+                                                            break;
+                                                        case "Chinhoyi University of Science and Technology":
+                                                            $uploadPath = '../housepictures/cutpictures/';
+                                                            break;
+                                                        case "Great Zimbabwe University":
+                                                            $uploadPath = '../housepictures/gzpictures/';
+                                                            break;
+                                                        case "Harare Institute of Technology":
+                                                            $uploadPath = '../housepictures/hitpictures/';
+                                                            break;
+                                                        case "National University of Science and Technology":
+                                                            $uploadPath = '../housepictures/nustpictures/';
+                                                            break;
+                                                    }
+
+                                                    if (!empty($uploadPath)) {
                                                         for ($num = 0; $num < $count; $num++) {
-                                                            $imageUploadPath = '../housepictures/uzpictures/' . basename($_FILES["$name"]["name"][$num]);
+                                                            $imageUploadPath = $uploadPath . basename($_FILES["$name"]["name"][$num]);
                                                             require '../homerunphp/upload.php';
-                                                        }
-                                                    } elseif ($uni === "Midlands State University") {
-                                                        for ($num = 0; $num < $count; $num++) {
-                                                            $imageUploadPath = '../housepictures/msupictures/' . basename($_FILES["$name"]["name"][$num]);
-                                                            require '../homerunphp/upload.php';
-                                                        }
-                                                    } elseif ($uni === "Africa Univeristy") {
-                                                        for ($num = 0; $num < $count; $num++) {
-                                                            $imageUploadPath = '../housepictures/aupictures/' . basename($_FILES["$name"]["name"][$num]);
-                                                            require '../homerunphp/upload.php';
-                                                        }
-                                                    } elseif ($uni === "Bindura State University") {
-                                                        for ($num = 0; $num < $count; $num++) {
-                                                            $imageUploadPath = '../housepictures/bsupictures/' . basename($_FILES["$name"]["name"][$num]);
-                                                            require '../homerunphp/upload.php';
-                                                        }
-                                                    } elseif ($uni === "Chinhoyi University of Science and Technology") {
-                                                        for ($num = 0; $num < $count; $num++) {
-                                                            $imageUploadPath = '../housepictures/cutpictures/' . basename($_FILES["$name"]["name"][$num]);
-                                                            require '../homerunphp/upload.php';
-                                                        }
-                                                    } elseif ($uni === "Great Zimbabwe University") {
-                                                        for ($num = 0; $num < $count; $num++) {
-                                                            $imageUploadPath = '../housepictures/gzpictures/' . basename($_FILES["$name"]["name"][$num]);
-                                                            require '../homerunphp/upload.php';
-                                                        }
-                                                    } elseif ($uni === "Harare Institute of Technology") {
-                                                        for ($num = 0; $num < $count; $num++) {
-                                                            $imageUploadPath = '../housepictures/hitpictures/' . basename($_FILES["$name"]["name"][$num]);
-                                                            require '../homerunphp/upload.php';
-                                                        }
-                                                    } elseif ($uni === "National University of Science and Technology") {
-                                                        for ($num = 0; $num < $count; $num++) {
-                                                            $imageUploadPath = '../housepictures/nustpictures/' . basename($_FILES["$name"]["name"][$num]);
-                                                            require '../homerunphp/upload.php';
+                                                            echo $num;
                                                         }
                                                     } else {
                                                         echo '<script type="text/javascript"> alert("Error while uploading") </script>';
                                                     }
-                                                }
-                                                if ($statusMsg == 'error') {
-                                                    echo '<script type="text/javascript"> alert("Some images were not uploaded due to unsupported images. Only JPG, JPEG, PNG files are currently supported")';
-                                                } elseif ($status == 'success') {
-                                                    header("location:../profile.php?error=Profilecreated");
-                                                    $_SESSION['sessionowner'] = $email;
-                                                    echo '<script type="text/javascript"> alert("Images  Uploaded Successfully") </script>';
-                                                    exit();
-                                                } else {
-                                                    header("location:../profile.php?error=Profilecreated");
-                                                    $_SESSION['sessionowner'] = $email;
-                                                    echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") </script>';
-                                                    exit();
                                                 }
                                             }
                                         }

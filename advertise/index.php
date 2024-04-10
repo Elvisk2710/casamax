@@ -184,7 +184,7 @@
 
                         <div>
                             <img title="Choose an Image" src="../images/addimage.png" id="image1" onclick="triggerClick()">
-                            <input type="file" id="inputimage1" name="image[]" multiple>
+                            <input type="file" id="inputimage1" name="image[]" multiple accept="image/jpeg, image/png, image/heif, image/heif-sequence">
                             <br>
                             <h3 style="color: rgb(8, 8, 12);">
                                 Add Upto 8 Images
@@ -216,8 +216,8 @@
                     </h4>
                     <div class="imagepreview">
                         <div>
-                            <img title="Choose an Image" src="../images/addimage.png" accept="image/png, image/jpeg, .doc,.docx,/msword,.formats-officedocument.wordprocessingml.document" id="image2" onclick="triggerClick2()">
-                            <input type="file" id="inputimage2" name="identityImage">
+                            <img title="Choose an Image" src="../images/addimage.png" id="image2" onclick="triggerClick2()">
+                            <input type="file" id="inputimage2" name="identityImage" accept="image/jpeg, image/png, image/heif, image/heif-sequence">
                             <br>
                         </div>
                     </div>
@@ -227,8 +227,8 @@
                     </h4>
                     <div class="imagepreview">
                         <div>
-                            <img title="Choose an Image" src="../images/addimage.png" id="image3" accept="image/png, image/jpeg, .doc,.docx,/msword,.formats-officedocument.wordprocessingml.document" onclick="triggerClick3()">
-                            <input type="file" id="inputimage3" name="residencyImage">
+                            <img title="Choose an Image" src="../images/addimage.png" id="image3" onclick="triggerClick3()">
+                            <input type="file" id="inputimage3" name="residencyImage" accept="image/jpeg, image/png, image/heif, image/heif-sequence">
                             <br>
                         </div>
                     </div>
@@ -277,7 +277,7 @@
 
 
         <div class="socialicons">
-            <a href="https://www.facebook.com/Homerunzim-102221862615717/"><img src="../images/facebook.png" alt=""></a>
+            <a href="https://www.facebook.com/profile.php?id=100093414304668"><img src="../images/facebook.png" alt=""></a>
             <a href="https://www.instagram.com/casamax.co.zw/"><img src="../images/instagram.png" alt=""></a>
             <a href="https://wa.me/+263786989144"> <img src="../images/whatsapp.png" alt=""></a>
             <a href="mailto:casamaxzim@gmail.com?subject=Feedback to CasaMax&cc=c"> <img src="../images/mail.png" alt=""></a>

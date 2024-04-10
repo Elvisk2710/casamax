@@ -190,7 +190,7 @@ if (empty($_SESSION['sessionagent'])) {
                 <br>
                 <h1 style="color: rgb(252,153,82);">
                     <?php
-                    if ($days_left <  30 && $days_left > 0) {
+                    if ($days_left <=  30 && $days_left > 0) {
                         echo $days_left . " Days Left";
                     }
                     ?>
@@ -206,34 +206,33 @@ if (empty($_SESSION['sessionagent'])) {
                     </h2>
                     <br>
                     <div>
-                        <img title="Choose an Image" src="../images/addimage.png" accept="image/png, image/jpeg, image/heif" id="image2" onclick="AgentVerificationClick()">
-                        <input type="file" id="AgentVerificationImage" name="identityImage">
+                        <img title="Choose an Image" src="../images/addimage.png" id="image2" onclick="AgentVerificationClick()">
+                        <input type="file" id="AgentVerificationImage" name="identityImage" accept="image/jpeg, image/png, image/heif, image/heif-sequence">
                         <br>
+                    </div>
+                </div>
+                <p class="verification_text">
+                    Upload a picture of your ID number. NB: Your ID number on the image should match the ID number you have uploaded when signing up.
+                </p>
+                <div class="button_holder">
+                    <button type="button" id="validate_form" onclick="validatie_form()">
+                        Upload
+                    </button>
+                    <button type="submit" id="verification_submit" name="verification_submit">
+
+                    </button>
+                    <br>
+                    <?php
+                    if ($days_difference < 30) {
+                    ?>
+                        <button type="button" id="cancel" onclick="closeVerificationPopUp()">
+                            Later
+                        </button>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
-            <p class="verification_text">
-                Upload a picture of your ID number. NB: Your ID number on the image should match the ID number you have uploaded when signing up.
-            </p>
-            <div class="button_holder">
-                <button type="button" id="validate_form" onclick="validatie_form()">
-                    Upload
-                </button>
-                <button type="submit" id="verification_submit" name="verification_submit">
-
-                </button>
-                <br>
-                <?php
-                if ($days_difference < 30) {
-                ?>
-                    <button type="button" id="cancel" onclick="closeVerificationPopUp()">
-                        Later
-                    </button>
-                <?php
-                }
-                ?>
-            </div>
-            </div>
-
         </form>
     <?php
     }
@@ -290,7 +289,7 @@ if (empty($_SESSION['sessionagent'])) {
 
         <br>
         <div class="socialicons">
-            <a href="https://www.facebook.com/Homerunzim-102221862615717/" data-tabs="timeline" target="blank"><img src="../images/facebook.png" alt="" title="Our-Facebook-page"></a>
+            <a href="https://www.facebook.com/profile.php?id=100093414304668" data-tabs="timeline" target="blank"><img src="../images/facebook.png" alt="" title="Our-Facebook-page"></a>
             <a href="https://www.instagram.com/casamax.co.zw/" target="blank"><img src="../images/instagram.png" alt="" title="Our-Instagram-page"></a>
             <a href="https://wa.me/+263786989144" target="blank"> <img src="../images/whatsapp.png" alt="" title="Our-WhatsApp-page"></a>
             <a href="mailto:casamaxzim@gmail.com?subject=Feedback to CasaMax&cc=c" target="blank"> <img src="../images/mail.png" alt="" title="Email"></a>
@@ -321,11 +320,12 @@ if (empty($_SESSION['sessionagent'])) {
         function closeVerificationPopUp() {
             document.getElementById("verification_container").style.display = 'none';
         }
-        function validatie_form(){
+
+        function validatie_form() {
             image = document.getElementById('AgentVerificationImage');
-            if(image.value == null || image.value == ""){
+            if (image.value == null || image.value == "") {
                 alert("Please Select An Image")
-            }else{
+            } else {
                 document.getElementById('verification_submit').click();
             }
         }

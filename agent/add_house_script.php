@@ -35,7 +35,7 @@ function compressImage($source, $destination, $quality)
 
 $sec = "0.1";
 
-if (isset($_SESSION['sessionagent'])) {
+if (isset($_SESSION['sessionagent']) && isset($_POST['add_home'])) {
 
     $email = $_SESSION['sessionagent'];
     $agent_sql = "SELECT * FROM agents WHERE email = '$email' ";
@@ -137,7 +137,6 @@ if (isset($_SESSION['sessionagent'])) {
         $gender = $_POST['gender'];
         $description = $_POST['description'];
         $uni = $_POST['university'];
-        $spot = $_POST['spot'];
         $location = $_POST['location'];
         $email = $_SESSION['sessionagent'];
         $contact = '';
@@ -148,7 +147,6 @@ if (isset($_SESSION['sessionagent'])) {
         $lastname = filter_var($lastname, FILTER_SANITIZE_SPECIAL_CHARS);
         $gender = filter_var($gender, FILTER_SANITIZE_SPECIAL_CHARS);
         $price = filter_var($price, FILTER_SANITIZE_NUMBER_INT);
-        $spot = filter_var($spot, FILTER_SANITIZE_NUMBER_INT);
         $location = filter_var($location, FILTER_SANITIZE_SPECIAL_CHARS);
 
         if (!empty($_POST['kitchen'])) {
@@ -182,9 +180,9 @@ if (isset($_SESSION['sessionagent'])) {
 
         $home_id = $timestamp . '_' . $randomString . '_' . $rand_num;
 
-        $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,people_in_a_room, agent_id, spots_available, home_location) VALUES (?,?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,people_in_a_room, agent_id, home_location) VALUES (?,?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         if (!$stmt = mysqli_stmt_init($conn)) {
-            header("location: ./agent_profile.php?message=updateSuccessful");
+            header("location: ./agent_profile.php?message=Update Successful");
             echo '<script type="text/javascript"> alert("SQL ERROR init failure") </script>';
             exit();
         } else {
@@ -193,8 +191,8 @@ if (isset($_SESSION['sessionagent'])) {
                 header("refresh:$sec;  ./agent_profile.php?error=sqlerror");
                 exit();
             } else {
-                if (!mysqli_stmt_bind_param($stmt, "ssssiisssssssssssiiiiiisss", $home_id, $email, $firstname, $lastname,$contact, $price, $description, $uni, $image1, $image2, $image3, $image4, $image5, $image6, $image7, $image8, $gender, $kitchen, $fridge, $wifi, $borehole, $transport, $people, $agent_id, $spot, $location)) {
-                    header("location: ./agent_profile.php?message=updateSuccessful");
+                if (!mysqli_stmt_bind_param($stmt, "ssssiisssssssssssiiiiisss", $home_id, $email, $firstname, $lastname, $contact, $price, $description, $uni, $image1, $image2, $image3, $image4, $image5, $image6, $image7, $image8, $gender, $kitchen, $fridge, $wifi, $borehole, $transport, $people, $agent_id, $location)) {
+                    header("location: ./agent_profile.php?message=Update Failed");
                     echo '<script type="text/javascript"> alert("SQL ERROR binding stms failed") </script>';
                 } else {
                     if (!mysqli_stmt_execute($stmt)) {
@@ -202,9 +200,8 @@ if (isset($_SESSION['sessionagent'])) {
                         print("Error : " . $error);
                         echo '<script type="text/javascript"> alert("SQL ERROR execute failure") </script>';
                     } else {
-
                         $status = 'failed';
-                        $statusMsg ='failed';
+                        $statusMsg = 'failed';
                         if ($uni === "University of Zimbabwe") {
                             for ($num = 0; $num < $count; $num++) {
                                 $imageUploadPath = '../housepictures/uzpictures/' . basename($_FILES["$name"]["name"][$num]);
@@ -243,14 +240,14 @@ if (isset($_SESSION['sessionagent'])) {
                         } elseif ($uni === "National University of Science and Technology") {
                             for ($num = 0; $num < $count; $num++) {
                                 $imageUploadPath = '../housepictures/nustpictures/' . basename($_FILES["$name"]["name"][$num]);
-                                require '../homerunphp/upload.php';
+                                require "../homerunphp/upload.php";
                             }
                         } else {
                             echo '<script type="text/javascript"> alert("Error while uploading") </script>';
                         }
                     }
                     if ($statusMsg == 'error') {
-                        header("refresh:$sec;  ./agent_profile.php?error=FileNotSupported");
+                        header("refresh:$sec;  ./agent_profile.php?error=File Not Supported");
                         echo '<script type="text/javascript"> alert("Some images were not uploaded due to unsupported images. Only JPG, JPEG, PNG files are currently supported")';
                     }
                     if ($status == 'success') {
@@ -272,7 +269,7 @@ if (isset($_POST['Update'])) {
     $update_sql = "UPDATE homerunhouses SET spots_available = '$spot',available = '$available' WHERE home_id = '$home_id'";
 
     if (!mysqli_query($conn, $update_sql)) {
-        header("location: ./agent_profile.php?error=FailedToUpdate");
+        header("location: ./agent_profile.php?error=Failed To Update");
         echo '<script type="text/javascript"> alert("Sorry! Failed to update info...") 
         </script>';
         exit();
@@ -283,92 +280,79 @@ if (isset($_POST['Update'])) {
     }
 }
 if (isset($_POST['delete'])) {
-    $home_id = $_GET['home_id'];
-    $sql = "DELETE FROM homerunhouses WHERE home_id = '$home_id'";
-    $delete = mysqli_query($conn, $sql);
-    if (!$delete) {
-        header("location: ./agent_profile.php?error=Failed To Deleted");
-        echo '<script type="text/javascript"> alert("Sorry! Failed to update info...") 
-        </script>';
+    $home_id = mysqli_real_escape_string($conn, $_GET['home_id']);
+
+    // Prepare the SQL statement using prepared statements
+    $stmt = $conn->prepare("DELETE FROM homerunhouses WHERE home_id = ?");
+    $stmt->bind_param("s", $home_id);
+    $stmt->execute();
+
+    if ($stmt->affected_rows > 0) {
+        header("location: ./agent_profile.php?error=Deleted");
+        echo '<script type="text/javascript"> alert("Your listing has been successfully deleted.") </script>';
         exit();
     } else {
-        header("location: ./agent_profile.php?error=Deleted");
-        echo '<script type="text/javascript"> alert("Your listing has been successfully updated...") 
-        </script>';
+        header("location: ./agent_profile.php?error=Failed-To-Delete");
+        echo '<script type="text/javascript"> alert("Sorry! Failed to delete the listing.") </script>';
         exit();
     }
 }
-if (isset($_POST['edit_agent_info']) and isset($_SESSION['sessionagent'])) {
+if (isset($_POST['edit_agent_info']) && isset($_SESSION['sessionagent'])) {
+    $agent_id = mysqli_real_escape_string($conn, $_COOKIE['agent_id']);
+    $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
+    $lastname = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $contact = mysqli_real_escape_string($conn, $_POST['contact']);
 
-    $agent_id = $_COOKIE['agent_id'];
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $email = $_POST['email'];
-    $contact = $_POST['contact'];
-    $sql = "UPDATE agents SET  firstname = '$firstname',lastname = '$lastname',email = '$email', contact = '$contact' WHERE agent_id = '$agent_id'";
+    // Prepare the SQL statement using prepared statements
+    $stmt = $conn->prepare("UPDATE agents SET firstname = ?, lastname = ?, contact = ? WHERE agent_id = ?");
+    $stmt->bind_param("ssss", $firstname, $lastname, $contact, $agent_id);
+    $stmt->execute();
 
-    if (mysqli_query($conn, $sql)) {
+    if ($stmt->affected_rows > 0) {
         $_SESSION['sessionagent'] = $email;
-        header("refresh:$sec;  ./agent_profile.php?error=Updeate-Successful");
-        echo '<script type="text/javascript"> alert("update successful") </script>';
+        header("refresh:$sec;  ./agent_profile.php?error=Update-Successful");
+        echo '<script type="text/javascript"> alert("Update Successful") </script>';
         exit();
     } else {
         header("refresh:$sec;  ./agent_profile.php?error=Update-Failed");
         $error = mysqli_error($conn);
-        print("Error : " . $error);
-        echo '<script type="text/javascript"> alert("update fialed") </script>';
+        print("Error: " . $error);
+        echo '<script type="text/javascript"> alert("Update Failed") </script>';
         exit();
     }
 }
-if (isset($_POST['edit_home']) and isset($_SESSION['sessionagent'])) {
-    $home_id = $_GET['home_id'];
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $price = $_POST['price'];
-    $location = $_POST['location'];
-    $people = $_POST['people'];
-    $gender = $_POST['gender'];
-    $description = $_POST['description'];
-    $uni = $_POST['university'];
+if (isset($_POST['edit_home']) && isset($_SESSION['sessionagent'])) {
+    $home_id = mysqli_real_escape_string($conn, $_GET['home_id']);
+    $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
+    $lastname = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $price = mysqli_real_escape_string($conn, $_POST['price']);
+    $location = mysqli_real_escape_string($conn, $_POST['location']);
+    $people = mysqli_real_escape_string($conn, $_POST['people']);
+    $gender = mysqli_real_escape_string($conn, $_POST['gender']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $uni = mysqli_real_escape_string($conn, $_POST['university']);
 
-    if (!empty($_POST['kitchen'])) {
-        $kitchen = 1;
-    } else {
-        $kitchen = 0;
-    }
-    if (!empty($_POST['fridge'])) {
-        $fridge = 1;
-    } else {
-        $fridge = 0;
-    }
-    if (!empty($_POST['wifi'])) {
-        $wifi = 1;
-    } else {
-        $wifi = 0;
-    }
-    if (!empty($_POST['borehole'])) {
-        $borehole = 1;
-    } else {
-        $borehole = 0;
-    }
-    if (!empty($_POST['transport'])) {
-        $transport = 1;
-    } else {
-        $transport = 0;
-    }
+    // Convert checkbox values to integers
+    $kitchen = isset($_POST['kitchen']) ? 1 : 0;
+    $fridge = isset($_POST['fridge']) ? 1 : 0;
+    $wifi = isset($_POST['wifi']) ? 1 : 0;
+    $borehole = isset($_POST['borehole']) ? 1 : 0;
+    $transport = isset($_POST['transport']) ? 1 : 0;
 
-    $add_home_sql = "UPDATE homerunhouses SET firstname= '$firstname', lastname = '$lastname', home_location = '$location', people_in_a_room = '$people', gender = '$gender', price = $price, rules = '$description', uni = '$uni', kitchen = '$kitchen', fridge = '$fridge', wifi = '$wifi', borehole = '$borehole', transport = '$transport' WHERE home_id = '$home_id' ";
-    $result = mysqli_query($conn, $add_home_sql);
-    if (!$result) {
-        header("location: ./agent_profile.php?error=Update-Failed");
-        echo mysqli_error($conn);
-        echo '<script type="text/javascript"> alert("Your listing has failed to update...") 
-            </script>';
+    // Prepare the SQL statement using prepared statements
+    $stmt = $conn->prepare("UPDATE homerunhouses SET firstname = ?, lastname = ?, home_location = ?, people_in_a_room = ?, gender = ?, price = ?, rules = ?, uni = ?, kitchen = ?, fridge = ?, wifi = ?, borehole = ?, transport = ? WHERE home_id = ?");
+    $stmt->bind_param("ssssssssiiiiis", $firstname, $lastname, $location, $people, $gender, $price, $description, $uni, $kitchen, $fridge, $wifi, $borehole, $transport, $home_id);
+    $stmt->execute();
+
+    if ($stmt->affected_rows > 0) {
+        header("location: ./agent_profile.php?error=Update-successful");
+        echo '<script type="text/javascript"> alert("Your listing has been successfully updated.") </script>';
         exit();
     } else {
-        header("location: ./agent_profile.php?error=Update-successful");
-        echo '<script type="text/javascript"> alert("Your listing has been successfully updated...") 
-            </script>';
+        header("location: ./agent_profile.php?error=Update-Failed");
+        $error = mysqli_error($conn);
+        echo "Error: " . $error;
+        echo '<script type="text/javascript"> alert("Your listing has failed to update.") </script>';
         exit();
     }
 }

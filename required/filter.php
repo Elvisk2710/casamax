@@ -9,27 +9,27 @@
         <h3>Amenities</h3> 
         
         <div>
-        <label for="wifi">Wifi :<input id="wifi" type="checkbox" name="wifi" value="1"> </label>
+        <label for="wifi">Wifi :<input id="wifi" type="checkbox" name="wifi" value="1" <?php if(isset($_GET['wifi']) && $_GET['wifi']=1){echo "checked";}?>> </label>
         </div>
         <br>
         
         <div>
-        <label for="kitchen">Kitchen :<input id="kitchen" type="checkbox" name="kitchen" value="1"></label>
+        <label for="kitchen">Kitchen :<input id="kitchen" type="checkbox" name="kitchen" value="1" <?php if(isset($_GET['kitchen']) && $_GET['kitchen']=1){echo "checked";}?>></label>
         </div>
         <br>
 
         <div>
-        <label for="borehole">Borehole :<input id="borehole" type="checkbox" name="borehole" value="1"></label>
+        <label for="borehole">Borehole :<input id="borehole" type="checkbox" name="borehole" value="1" <?php if(isset($_GET['borehole']) && $_GET['borehole']=1){echo "checked";}?>></label>
         </div>
         <br>
                 
         <div>
-        <label for="fridge"> Fridge :<input id="fridge" type="checkbox" name="fridge" value="1"></label>
+        <label for="fridge"> Fridge :<input id="fridge" type="checkbox" name="fridge" value="1" <?php if(isset($_GET['fridge']) && $_GET['fridge']=1){echo "checked";}?>></label>
         </div> 
         <br>
         
         <div>
-        <label for="Transport"> Transport :<input id="Transport" type="checkbox" name="transport" value="1"></label>
+        <label for="Transport"> Transport :<input id="Transport" type="checkbox" name="transport" value="1" <?php if(isset($_GET['transport']) && $_GET['transport']=1){echo "checked";}?>></label>
         </div> 
         <br>
 

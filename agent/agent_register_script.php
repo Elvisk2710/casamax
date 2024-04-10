@@ -1,5 +1,6 @@
 <?php
 $sec = "0.1";
+$mailStatus = "failed";
 //add database connection
 require '../homerunphp/homerunuserdb.php';
 
@@ -71,11 +72,16 @@ if (isset($_POST['submit'])) {
                         echo '<script type="text/javascript"> alert("OOPS! EMAIL ALREADY EXISTS, PLEASE LOGIN") </script>';
                         exit();
                     } else {
-                        header("refresh:$sec; ../required/code_register.php?agent=true");
                         mysqli_stmt_close($stmt);
                         mysqli_close($conn);
                         $subject = 'Agent Registration';
                         require '../required/sendMail.php';
+                        echo $mailStatus;
+                        if ($mailStatus == "success") {
+                            header("refresh:$sec; ../required/code_register.php?agent=true");
+                        } else {
+                            header("location: ./agent_register.php?error=Failed to Send Email!"); 
+                        }
                         exit();
                     }
                 }

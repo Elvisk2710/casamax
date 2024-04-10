@@ -37,15 +37,15 @@ if (!empty($_GET['clicked_id']) && isset($_GET['clicked_id'])) {
             $uni_folder = 'uzpictures';
         }
     }
-}else{
+} else {
     header('Location: ./index.php?error=' . urlencode("Clicked Id Not Set"));
 }
 
 $currentURL = "http";
-if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
     $currentURL .= "s";
 }
-$currentURL .= "://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+$currentURL .= "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
 ?>
@@ -257,28 +257,23 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
     }
     if (!empty($row["image1"]) and !empty($row["image2"]) and !empty($row["image3"]) and !empty($row["image4"]) and !empty($row["image5"]) and !empty($row["image6"]) and !empty($row["image7"]) and !empty($row["image8"])) {
         echo "
+        <a href='#gallery_container'>
             <button class='more-pictures' id='more-pictures' onclick = 'open_gallery()'>
-            <a href='#gallery_container'>
-            </a>
                 view more pictures
-            </button>";
+            </button>
+        </a>";
     }
     echo "
         <h2>
-
         Additional Info:
-
         </h2>
         <p>
             " . $row['rules'] . "
         </p>
         <h2>
         Amenities:
-
         </h2>
-
         <div class='amenities-list'>
-
        ";
     if ($row['kitchen'] == 1) {
         echo "<h3 class='amenities'>
@@ -345,7 +340,7 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
 
 
         <div class="socialicons">
-            <a href="https://www.facebook.com/Homerunzim-102221862615717/" data-tabs="timeline"><img src="./images/facebook.png" alt="" title="Our-Facebook-page"></a>
+            <a href="https://www.facebook.com/profile.php?id=100093414304668" data-tabs="timeline"><img src="./images/facebook.png" alt="" title="Our-Facebook-page"></a>
             <a href="https://www.instagram.com/homerunzim/"><img src="./images/instagram.png" alt="" title="Our-Instagram-page"></a>
             <a href="https://wa.me/+263786989144"> <img src="./images/whatsapp.png" alt="" title="Our-WhatsApp-page"></a>
             <a href="mailto:casamaxzim@gmail.com?subject=Feedback to Casamax&cc=c"> <img src="./images/mail.png" alt="" title="Email"></a>
