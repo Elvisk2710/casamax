@@ -31,6 +31,7 @@ if (isset($_POST['submit'])) {
             if ($row = mysqli_fetch_assoc($results)) {
                 $storedPassword = $row['passw'];
                 if (password_verify($password, $storedPassword)) {
+                // if ($password == $row['passw']) {
                     // Password verification using password_verify function
                     $_SESSION['sessionAdmin'] = $row['admin_id'];
                     $_SESSION['access'] = $row['access_level'];
@@ -50,7 +51,6 @@ if (isset($_POST['submit'])) {
             }
         }
     }
-
 } elseif (isset($_POST['logout'])) {
 
     if (isset($_SESSION['sessionAdmin'])) {
@@ -60,4 +60,3 @@ if (isset($_POST['submit'])) {
     echo '<script type="text/javascript"> alert("You Have Successfully Logged Out") </script>';
     exit();
 }
-?>
