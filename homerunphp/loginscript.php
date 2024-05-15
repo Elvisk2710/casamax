@@ -35,6 +35,7 @@ if (isset($_POST['submit'])) {
                     $email = $row['email'];
                     $userid = $row['userid'];
                     $uni = $row['university'];
+                    $_SESSION['sessionstudent'] = $email;
 
                     // Check if the user is subscribed
                     $sub_check = "SELECT * FROM subscribers WHERE user_id = ?";
@@ -52,29 +53,14 @@ if (isset($_POST['submit'])) {
                         if (!$rowCount > 0) {
                             setcookie("cookiestudent", $userid, time() + (86400 * 1), "/");
                             setcookie("emailstudent", $email, time() + (86400 * 1), "/");
-                            $_SESSION['sessionstudent'] = $email;
                             header("Location: ../payment.php?subscribe");
                             exit();
                         } else {
                             $results = mysqli_fetch_array($sub_db_check);
                             $today = strtotime(date('y-m-d'));
-
-                            if (strtotime($results['due_date']) < $today) {
-                                $sub_check = "DELETE FROM subscribers WHERE userid = ?";
-                                $stmt = mysqli_stmt_init($conn);
-
-                                if (mysqli_stmt_prepare($stmt, $sub_check)) {
-                                    mysqli_stmt_bind_param($stmt, "s", $userid);
-                                    mysqli_stmt_execute($stmt);
-                                    header("Location: ../payment.php?subscription has ended");
-                                    exit();
-                                } else {
-                                    header("Location: ./index.php?error=sqlerror");
-                                    exit();
-                                }
+                            if (strtotime($results['due_date']) < $today || $results['number_of_houses'] == 0 || $results['completed'] == 1) {
+                                header("Location: ../payment.php?subscription has ended");
                             } else {
-                                $_SESSION['sessionstudent'] = $email;
-
                                 // Redirect based on university
                                 $universityMapping = array(
                                     "University of Zimbabwe" => "../unilistings/uzlisting.php",

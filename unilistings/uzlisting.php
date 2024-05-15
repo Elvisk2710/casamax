@@ -68,7 +68,7 @@
             <div class="left-col">
                 <h2>Recommended For UZ</h2>
         <!-- includes the query for looping the houses -->
-
+ 
             <?php
             // google ads
                 require_once '../required/listing_query.php';

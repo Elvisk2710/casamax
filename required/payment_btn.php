@@ -7,28 +7,31 @@ require 'subscriber_billing.php';
 $this_date = date('y-m-d');
 
 
-if (isset($_POST['1day'])) {
-    $sub_type = "1 house";
+if (isset($_POST['starter'])) {
+    $sub_type = "1 house subscription!!";
     $number_of_houses = 1;
     $time_unit = 'daily';
-    $period = 1;
-    $amount = 13;
+    $period = 30;
+    $amount = 14;
+    echo "starter";
 
     require './paynow.php';
-} elseif (isset($_POST['4day'])) {
-    $sub_type = "5 house";
+} elseif (isset($_POST['basic'])) {
+    $sub_type = "5 house subscription!!";
     $number_of_houses = 5;
     $time_unit = 'daily';
-    $period = 3;
-    $amount = 39;
+    $period = 30;
+    $amount = 42;
+    echo "basic";
 
     require './paynow.php';
-} elseif (isset($_POST['1week'])) {
-    $sub_type = "15 house";
-    $number_of_houses = 10;
+} elseif (isset($_POST['pro'])) {
+    $sub_type = "15 house subscription!!";
+    $number_of_houses = 15;
     $time_unit = 'daily';
-    $period = 7;
-    $amount = 78;
+    $period = 30;
+    $amount = 70;
+    echo "pro";
 
     require './paynow.php';
 }

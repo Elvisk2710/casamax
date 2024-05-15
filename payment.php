@@ -19,6 +19,9 @@ if (isset($_GET['error'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+<?php
+require_once 'required/pageloader.php';
+?>
 
 <head>
     <?php
@@ -30,12 +33,9 @@ if (isset($_GET['error'])) {
     <link rel="stylesheet" href="payment.css">
 </head>
 
-<?php
-require_once 'required/pageloader.php';
-?>
+
 
 <body onunload="" class="scrollable">
-
 
     <div class="head">
         <a href="index.php"> <img src="images/logowhite.png" alt="home" class="logo"></a>
@@ -66,52 +66,47 @@ require_once 'required/pageloader.php';
 
         <form method="post" action="./required/payment_btn.php">
 
-            <div class="phone_number">
-                <label for="phone" class="phone_label">Phone Number</label>
-                <input type="number" class="phone" min="0" name="phone_number" required placeholder="0777777777">
-            </div>
-            <br>
-
             <div class="subscription_buttons">
 
                 <div class="sub">
-                    <h5>starter</h5>
-                    <h2>ZWL 8 000</h2>
+                    <h5>Starter</h5>
+                    <h2>ZIG 14</h2>
                     <hr>
                     <p>
-                        This will give you acces to CasaMax services for 1 day!
+                        This will give you acces to contact 1 <b>CasaMax Home</b> The Subscription expires in a month
                     </p>
-                    <button id="subscriptionBtn" type="submit" name="1day" onclick="disableBtn()">
+                    <!-- <a href='https://www.paynow.co.zw/Payment/BillPaymentLink/?q=aWQ9MTM0MzQmYW1vdW50PTQyLjAwJmFtb3VudF9xdWFudGl0eT0wLjAwJmw9MQ%3d%3d' target='_blank'> -->
+                    <button id="subscriptionBtn" type="submit" name="starter" onclick="disableBtn()">
                         SUBSCRIBE
                     </button>
-
+                    <!-- </a> -->
                 </div>
 
                 <div class="sub">
-                    <h5>basic</h5>
-                    <h2>ZWL 16 000</h2>
+                    <h5>Basic</h5>
+                    <h2>ZIG 42 </h2>
                     <hr>
                     <p>
-                        This will give you acces to CasaMax sevices for 3 days!
+                        This will give you acces to contact 5 <b>CasaMax Homes</b> The Subscription expires in a month
                     </p>
-
-                    <button id="subscriptionBtn" type="submit" name="3day" onclick="disableBtn()">
+                    <!-- <a href='https://www.paynow.co.zw/Payment/BillPaymentLink/?q=aWQ9MTM0MzMmYW1vdW50PTE0LjAwJmFtb3VudF9xdWFudGl0eT0wLjAwJmw9MQ%3d%3d' target='_blank'>  -->
+                    <button id="subscriptionBtn" type="submit" name="basic" onclick="disableBtn()">
                         SUBSCRIBE
                     </button>
-
+                    <!-- </a> -->
                 </div>
-
                 <div class="sub">
-                    <h5>pro</h5>
-                    <h2>ZWL 28 000</h2>
+                    <h5>Pro</h5>
+                    <h2>ZWL 70</h2>
                     <hr>
                     <p>
-                        This will give you acces to CasaMax services for 7 days!
+                        This will give you acces to contact 15 <b>CasaMax Homes</b>. The Subscription expires in a month
                     </p>
-                    <button id="subscriptionBtn" type="submit" name="1week" onclick="disableBtn()">
+                    <!-- <a href='https://www.paynow.co.zw/Payment/BillPaymentLink/?q=aWQ9MTM0MzUmYW1vdW50PTcyLjAwJmFtb3VudF9xdWFudGl0eT0wLjAwJmw9MQ%3d%3d' target='_blank'> -->
+                    <button id="subscriptionBtn" type="submit" name="pro" onclick="disableBtn()">
                         SUBSCRIBE
                     </button>
-
+                    <!-- </a> -->
                 </div>
 
             </div>
@@ -162,7 +157,7 @@ require_once 'required/pageloader.php';
             navBar.classList.toggle("hideuni")
         }
 
-        // function disableBtn(){
+        // function disableBtn() {
         //     button = document.getElementById("subscriptionBtn");
         //     button.disabled = true;
         //     button.textContent = "Loading...."

@@ -79,9 +79,6 @@ if (empty($user)) {
     <link rel="stylesheet" href="profile.css">
     <title>My Profile</title>
 </head>
-<script>
-
-</script>
 
 <body onunload="" class="scrollable">
 
