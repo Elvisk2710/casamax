@@ -157,11 +157,12 @@ require_once 'required/pageloader.php';
             navBar.classList.toggle("hideuni")
         }
 
-        // function disableBtn() {
-        //     button = document.getElementById("subscriptionBtn");
-        //     button.disabled = true;
-        //     button.textContent = "Loading...."
-        // }
+        function disableBtn() {
+            button = document.getElementById("subscriptionBtn");
+            button.disabled = true;
+            button.textContent = "Loading...."
+            button.click();
+        }
     </script>
 </body>
 

@@ -3,20 +3,6 @@ session_start();
 
 require_once '../Paynow-PHP-SDK-master/autoloader.php';
 
-function checkPaymentStatus($pollUrl)
-{
-    // Send a GET request to the pollUrl using cURL or any other HTTP library of your choice
-    $ch = curl_init($pollUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
-
-    // Parse the response
-    $responseData = json_decode($response, true);
-
-    return $responseData;
-}
-
 $paynow = new Paynow\Payments\Paynow(
     '15123',
     '6e65b63a-6da2-4685-a277-855713f19af1',
@@ -48,9 +34,8 @@ if ($response->success()) {
     // Redirect the user to the Paynow payment page
     header("Location: $redirectUrl");
     // Check the status of the transaction
-    $paymentStatus = checkPaymentStatus($pollUrl);
 
-    $timeout = 20;
+    $timeout = 30;
     $count = 0;
     $success = false;
 
