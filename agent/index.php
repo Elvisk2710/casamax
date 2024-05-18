@@ -96,7 +96,7 @@
 
                    echo '<script type="text/javascript"> alert("Logout Successful")</script>';
 
-                header("refresh:$sec;  ../index.php?Logoutsuccessful");
+                header("refresh:$sec;  ../index.php?error=Log-Out Successful");
             
                 }
         ?>

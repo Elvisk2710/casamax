@@ -51,7 +51,7 @@ if (isset($_POST['register_code'])) {
         }
 
         if (empty($uni_code)) {
-            header("refresh:$sec; ./required/code_register.php?FailedToGenerateID");
+            header("refresh:$sec; ./required/code_register.php?Failed To Generate ID");
             echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
             exit();
         }
@@ -76,16 +76,16 @@ if (isset($_POST['register_code'])) {
                 setcookie("uni", "", time() - 900, "/");  
                 mysqli_stmt_close($stmt);
                 mysqli_close($conn);
-                header("refresh:$sec; ../login.php?youhavesuccessfullyregistered");
+                header("refresh:$sec; ../login.php?error=You Have Successfully Registered");
                 echo '<script type="text/javascript"> alert("YOU HAVE SUCCESSFULLY REGISTERED!") </script>';
                 exit();
             } else {
-                header("refresh:$sec; ./required/code_register.php?FailedToGenerateID");
+                header("refresh:$sec; ./required/code_register.php?Failed To Generate ID");
                 echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
                 exit();
             }
         } else {
-            header("refresh:$sec; ./required/code_register.php?FailedToGenerateID");
+            header("refresh:$sec; ./required/code_register.php?Failed To Generate ID");
             echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
             exit();
         }

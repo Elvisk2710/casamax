@@ -28,7 +28,7 @@ if (!mysqli_stmt_prepare($stmt, $sql)) {
             $sub_db_check = mysqli_stmt_get_result($stmt);
 
             if (!$sub_db_check) {
-                header("Location: ../payment.php?PleaseSubscribe");
+                header("Location: ../payment.php?Please Subscribe");
                 exit();
             } else {
                 $rowCount = mysqli_num_rows($sub_db_check);
@@ -56,7 +56,7 @@ if (!mysqli_stmt_prepare($stmt, $sql)) {
                             $_SESSION['sessionstudent'] = $email;
                         } else {
                             header("Location: ../payment.php");
-                            echo '<script type="text/javascript"> alert("Sorry!! we are facing difficulties with your subscription") </script>';
+                            echo '<script type="text/javascript"> alert("Sorry!! We Are facing Difficulties With Your Subscription") </script>';
                         }
                     }
                 }

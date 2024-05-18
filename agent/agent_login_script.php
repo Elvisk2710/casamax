@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
        
    
     if (empty($email) or empty($password)){ 
-        header("refresh:$sec;  ./index.php?error=emptyfields");
+        header("refresh:$sec;  ./index.php?error=Empty Fields");
         echo '<script type="text/javascript"> alert("Empty Fields") </script>';
         exit();
     }else{
@@ -23,7 +23,7 @@ if (isset($_POST['submit'])) {
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $sql)){
-            header("refresh:$sec;   ./index.php?error=sqlerror");
+            header("refresh:$sec;   ./index.php?error=SQl Error");
             echo '<script type="text/javascript"> alert("SQL Error") </script>';
             exit();
 
@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
                 $passcheck = password_verify($password, $row['passw']);
 
                 if($passcheck == false){
-                    header("refresh:$sec;  ./index.php?error=wrongpass");
+                    header("refresh:$sec;  ./index.php?error=Wrong Password");
                     echo '<script type="text/javascript"> alert("Wrong Password") </script>';
                 exit();
 
@@ -46,12 +46,12 @@ if (isset($_POST['submit'])) {
                     $_SESSION['sessionagentId'] = $row['agent_id'];
                     $_SESSION['verified'] = $row['verified'];
                     $_SESSION['date_joined'] = $row['date_joined'];
-                    header("refresh:$sec;  ./agent_profile.php?loginsuccess");
+                    header("refresh:$sec;  ./agent_profile.php?error=Logged In Successfully");
                     echo '<script type="text/javascript"> alert("You Have Logged-In Successfully") </script>';
                     exit();
                 }
             }else{
-                header("refresh:$sec;   ./index.php?error=UserNotFound");
+                header("refresh:$sec;   ./index.php?error=User Not Found");
                 echo '<script type="text/javascript"> alert("User Not Found") </script>';
                 exit();
 
@@ -63,7 +63,7 @@ if (isset($_POST['submit'])) {
 }elseif(isset($_POST['logout'])){
     if(isset($_SESSION['sessionagent'])){
         session_destroy();
-            header("refresh:$sec; ../index.php?error=LoggedOut");
+            header("refresh:$sec; ../index.php?error=Logged Out");
             echo '<script type="text/javascript"> alert("You Have Successfully Logged Out") </script>';
         exit();
     }else{
@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
     }
     
 }else{
-    header("refresh:$sec;  ../index.php?error=accessdenied");
+    header("refresh:$sec;  ../index.php?error=Access Denied");
     echo '<script type="text/javascript"> alert("Access Denied") </script>';
     exit();
 

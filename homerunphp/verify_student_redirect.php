@@ -102,12 +102,12 @@ function handleSubscriptionLandlord($conn, $student, $home_id, $contactMethod)
                             echo $response;
                         } else {
                             // Error occurred while opening the URL
-                            redirectToListingDetails($home_id, "Failed to execute URL request");
+                            redirectToListingDetails($home_id, "Failed To Execute URL Request");
                         }
                     }
                 } else {
                     // Handle case when Failed to execute stmt request
-                    redirectToListingDetails($home_id, "Failed to execute stmt request'");
+                    redirectToListingDetails($home_id, "Failed To Execute Stmt Request'");
                 }
             } else {
                 // Handle case when user has no houses left
@@ -117,7 +117,7 @@ function handleSubscriptionLandlord($conn, $student, $home_id, $contactMethod)
                     redirectToPaymentPage("No Houses Left");
                 } else {
                     // Handle case when query execution fails
-                    redirectToListingDetails($home_id, "Failed to execute query");
+                    redirectToListingDetails($home_id, "Failed To Execute Query");
                 }
             }
         } else {
@@ -126,7 +126,7 @@ function handleSubscriptionLandlord($conn, $student, $home_id, $contactMethod)
         }
     } else {
         // Handle case when query execution fails
-        redirectToListingDetails($home_id, 'Failed to execute query'); // Redirect with generic error message
+        redirectToListingDetails($home_id, 'Failed To Execute Query'); // Redirect with generic error message
     }
 }
 function handleSubscriptionAgent($conn, $student, $agent_id, $home_id, $contactMethod)
@@ -204,7 +204,7 @@ function handleSubscriptionAgent($conn, $student, $agent_id, $home_id, $contactM
                     } else {
                         // Error occurred while opening the URL
                         logError('Failed to open the URL.'); // Log the error internally
-                        redirectToListingDetails($home_id, 'Failed to execute URL request'); // Redirect with generic error message
+                        redirectToListingDetails($home_id, 'Failed To Execute URL Request'); // Redirect with generic error message
                     }
                 } else {
                     logError('Failed To Retrieve Agent Info.'); // Log the error internally
@@ -223,7 +223,7 @@ function handleSubscriptionAgent($conn, $student, $agent_id, $home_id, $contactM
             redirectToListingDetails($home_id, 'User Not Subscribed'); // Redirect with generic error message
         }
     } else {
-        redirectToListingDetails($home_id, 'Failed to retrieve user subscription details'); // Redirect with generic error message
+        redirectToListingDetails($home_id, 'Failed To Retrieve User Subscription Details'); // Redirect with generic error message
     }
 }
 

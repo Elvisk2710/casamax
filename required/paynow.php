@@ -54,13 +54,13 @@ if ($response->success()) {
         $count++;
 
         if ($count > $timeout) {
-            // header('location: ../payment.php?error=TransactionTimeoutReached&success=false');
+            header('location: ../payment.php?error=Transaction TimeOut Reached&success=false');
             exit('<script>alert("Transaction Timeout Reached");</script>');
         }
     }
 } else {
     var_dump($response);
-    // header('location: ../payment.php?success=false');
+    header('location: ../payment.php?success=false');
     setcookie("success", "false", time() + (8600 * 1), "/", "", true, true);
     $_SESSION['payment_status'] = "failed";
     exit('<script>alert("Transaction failed");</script>');

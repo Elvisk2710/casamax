@@ -12,14 +12,14 @@ if (isset($_POST['submit'])) {
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
     if (empty($email) || empty($password)) {
-        header("Location: ../homeownerlogin.php?error=emptyfields");
+        header("Location: ../homeownerlogin.php?error=Empty Fields");
         exit();
     } else {
         $sql = "SELECT * FROM homerunhouses WHERE email = ?";
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("Location: ../homeownerlogin.php?error=sqlerror");
+            header("Location: ../homeownerlogin.php?error=SQl Error");
             exit();
         } else {
             mysqli_stmt_bind_param($stmt, "s", $email);
@@ -30,7 +30,7 @@ if (isset($_POST['submit'])) {
                 $passcheck = password_verify($password, $row['passw']);
 
                 if ($passcheck == false) {
-                    header("Location: ../homeownerlogin.php?error=wrongpass");
+                    header("Location: ../homeownerlogin.php?error=Wrong Password");
                     exit();
                 } elseif ($passcheck == true) {
                     $_SESSION['sessionowner'] = $row['email'];
@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
                     exit();
                 }
             } else {
-                header("Location: ../homeownerlogin.php?error=UserNotFound");
+                header("Location: ../homeownerlogin.php?error=User Not Found");
                 exit();
             }
         }
@@ -46,13 +46,13 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_POST['logout'])) {
     if (isset($_SESSION['sessionowner'])) {
         session_destroy();
-        header("Location: ../index.php?error=LoggedOut");
+        header("Location: ../index.php?error=Logged Out");
         exit();
     } else {
         header("Location: ../index.php");
         exit();
     }
 } else {
-    header("Location: ../index.php?error=accessdenied");
+    header("Location: ../index.php?error=Access Denied");
     exit();
 }

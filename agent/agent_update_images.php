@@ -102,23 +102,23 @@ if (isset($_POST['update_images'])) {
                 echo $num;
             }
         } else {
-            echo '<script type="text/javascript"> alert("Error while uploading") </script>';
+            echo '<script type="text/javascript"> alert("Error While Uploading") </script>';
         }
     }
     
     mysqli_stmt_close($stmt);
 
     if ($status == 'error') {
-        header("refresh:$sec; ./agent_profile.php?error=CompressionError");
+        header("refresh:$sec; ./agent_profile.php?error=Compression Error");
         echo '<script type="text/javascript"> alert("' . $statusMsg . '")  </script>';
     } elseif ($status == 'success') {
-        header("refresh:$sec; ./agent_profile.php?error=HomeAddedSuccessfully");
+        header("refresh:$sec; ./agent_profile.php?error=Home Added Successfully");
         echo '<script type="text/javascript"> alert("' . $statusMsg . '") </script>';
     } elseif ($status == 'file_type_error') {
-        header("refresh:$sec; ./agent_profile.php?error=FileNotSupported");
+        header("refresh:$sec; ./agent_profile.php?error=File Not Supported");
         echo '<script type="text/javascript"> alert("' . $statusMsg . '") </script>';
     } else {
-        header("refresh:$sec; ./agent_profile.php?error=FailedToUploadImages-FileNotSupported");
+        header("refresh:$sec; ./agent_profile.php?error=Failed To Upload Images-FileNotSupported");
         echo '<script type="text/javascript"> alert("' . $statusMsg . '") </script>';
     }
 }

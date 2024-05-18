@@ -42,7 +42,7 @@ if (isset($_SESSION['sessionagent']) && isset($_POST['add_home'])) {
     $result = mysqli_query($conn, $agent_sql);
 
     if (!$row = mysqli_fetch_array($result)) {
-        header("refresh:$sec;  ./agent_profile.php?error=sqlerror");
+        header("refresh:$sec;  ./agent_profile.php?error=SQL Error");
         echo '<script type="text/javascript"> alert("SQL ERROR binding stms failed") </script>';
     } else {
 
@@ -188,17 +188,17 @@ if (isset($_SESSION['sessionagent']) && isset($_POST['add_home'])) {
         } else {
 
             if (!mysqli_stmt_prepare($stmt, $sql)) {
-                header("refresh:$sec;  ./agent_profile.php?error=sqlerror");
+                header("refresh:$sec;  ./agent_profile.php?error=SQL Error");
                 exit();
             } else {
                 if (!mysqli_stmt_bind_param($stmt, "ssssiisssssssssssiiiiisss", $home_id, $email, $firstname, $lastname, $contact, $price, $description, $uni, $image1, $image2, $image3, $image4, $image5, $image6, $image7, $image8, $gender, $kitchen, $fridge, $wifi, $borehole, $transport, $people, $agent_id, $location)) {
                     header("location: ./agent_profile.php?message=Update Failed");
-                    echo '<script type="text/javascript"> alert("SQL ERROR binding stms failed") </script>';
+                    echo '<script type="text/javascript"> alert("SQL ERROR Binding Stms Failed") </script>';
                 } else {
                     if (!mysqli_stmt_execute($stmt)) {
                         $error = mysqli_stmt_error($stmt);
                         print("Error : " . $error);
-                        echo '<script type="text/javascript"> alert("SQL ERROR execute failure") </script>';
+                        echo '<script type="text/javascript"> alert("SQL ERROR Execute Failure") </script>';
                     } else {
                         $status = 'failed';
                         $statusMsg = 'failed';
@@ -243,7 +243,7 @@ if (isset($_SESSION['sessionagent']) && isset($_POST['add_home'])) {
                                 require "../homerunphp/upload.php";
                             }
                         } else {
-                            echo '<script type="text/javascript"> alert("Error while uploading") </script>';
+                            echo '<script type="text/javascript"> alert("Error While Uploading") </script>';
                         }
                     }
                     if ($statusMsg == 'error') {
@@ -251,10 +251,10 @@ if (isset($_SESSION['sessionagent']) && isset($_POST['add_home'])) {
                         echo '<script type="text/javascript"> alert("Some images were not uploaded due to unsupported images. Only JPG, JPEG, PNG files are currently supported")';
                     }
                     if ($status == 'success') {
-                        header("refresh:$sec;  ./agent_profile.php?error=HomeAddedSuccessfuly");
+                        header("refresh:$sec;  ./agent_profile.php?error=Home Added Successfuly");
                         echo '<script type="text/javascript"> alert("Images Uploaded Successfully") </script>';
                     } else {
-                        header("refresh:$sec;  ./agent_profile.php?error=FailedToUploadImages-FileNotSupported");
+                        header("refresh:$sec;  ./agent_profile.php?error=Failed To Upload Images-FileNotSupported");
                         echo '<script type="text/javascript"> alert("Failed to upload pictures...") </script>';
                     }
                 }
@@ -274,7 +274,7 @@ if (isset($_POST['Update'])) {
         </script>';
         exit();
     } else {
-        header("location: ./agent_profile.php?message=updateSuccessful");
+        header("location: ./agent_profile.php?message=Update Successful");
         echo '<script type="text/javascript"> alert("Your listing has been successfully updated...") 
         </script>';
     }
@@ -345,14 +345,14 @@ if (isset($_POST['edit_home']) && isset($_SESSION['sessionagent'])) {
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
-        header("location: ./agent_profile.php?error=Update-successful");
-        echo '<script type="text/javascript"> alert("Your listing has been successfully updated.") </script>';
+        header("location: ./agent_profile.php?error=Update-Successful");
+        echo '<script type="text/javascript"> alert("Your Listing Has Been Successfully Updated.") </script>';
         exit();
     } else {
         header("location: ./agent_profile.php?error=Update-Failed");
         $error = mysqli_error($conn);
         echo "Error: " . $error;
-        echo '<script type="text/javascript"> alert("Your listing has failed to update.") </script>';
+        echo '<script type="text/javascript"> alert("Your Listing Has Failed To Update.") </script>';
         exit();
     }
 }

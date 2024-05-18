@@ -41,16 +41,16 @@ if (isset($_POST['submit'])) {
 
 
     if (empty($tagline) or !isset($agent_fee) or empty($firstname) or empty($lastname) or empty($password) or empty($confirmpass) or empty($email) or empty($gender) or empty($contact) or empty($id_num)) {
-        header("refresh:$sec; ./agent_register.php?error=emptyfields&firstname=" . $firstname);
+        header("refresh:$sec; ./agent_register.php?error=Empty Fields&firstname=" . $firstname);
         exit();
     } else {
         if ($password !== $confirmpass) {
-            header("refresh:$sec; ./agent_register.php?error=PasswordDoNotMatch" . $firstname);
+            header("refresh:$sec; ./agent_register.php?error=Password Do No tMatch" . $firstname);
             echo '<script type="text/javascript"> alert("Passwords Do Not Match") </script>';
             exit();
         } else {
             if (strlen($contact) > 12) {
-                header("refresh:$sec;  ./agent_register.php?error=EnterValidPhoneNumber" . $firstname);
+                header("refresh:$sec;  ./agent_register.php?error=Enter Valid Phone Number" . $firstname);
                 echo '<script type="text/javascript"> alert("Please Enter a Valid Phone Number") </script>';
                 exit();
             } else {
@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
 
                 // preparing sql statement
                 if (!mysqli_stmt_prepare($stmt, $sql)) {
-                    header("refresh:$sec;  ./agent_register.php?error=sqlerror");
+                    header("refresh:$sec;  ./agent_register.php?error=SQL Error");
                     exit();
                 } else {
                     mysqli_stmt_bind_param($stmt, "s", $email);
@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
                     $rowCount = mysqli_stmt_num_rows($stmt);
 
                     if ($rowCount > 0) {
-                        header("refresh:$sec; ./index.php?error=emailalreadyinuse");
+                        header("refresh:$sec; ./index.php?error=Email Already In Use");
                         echo '<script type="text/javascript"> alert("OOPS! EMAIL ALREADY EXISTS, PLEASE LOGIN") </script>';
                         exit();
                     } else {
@@ -80,7 +80,7 @@ if (isset($_POST['submit'])) {
                         if ($mailStatus == "success") {
                             header("refresh:$sec; ../required/code_register.php?agent=true");
                         } else {
-                            header("location: ./agent_register.php?error=Failed to Send Email!"); 
+                            header("location: ./agent_register.php?error=Failed To Send Email!"); 
                         }
                         exit();
                     }
@@ -118,7 +118,7 @@ if (isset($_POST['register_code'])) {
         $currentDate = date("Y-m-d");
 
         if (empty($tagline) or !isset($agent_fee) or empty($firstname) or empty($lastname) or empty($password) or empty($confirmpass) or empty($email) or empty($gender) or empty($contact) or empty($id_num)) {
-            header("refresh:$sec; ./agent_register.php?error=emptyfields&firstname=" . $firstname);
+            header("refresh:$sec; ./agent_register.php?error=Empty Fields&firstname=" . $firstname);
             exit();
         } else {
             // preparing sql statement
@@ -140,7 +140,7 @@ if (isset($_POST['register_code'])) {
                 setcookie("contact", $contact, time() + (-900 * 1), "/");
                 setcookie("id_num", $id_num, time() + (-900 * 1), "/");
 
-                header("refresh:$sec; ./index.php?youhavesuccessfullyregistered");
+                header("refresh:$sec; ./index.php?error=You Have Successfully Registered");
                 echo '<script type="text/javascript"> alert("YOU HAVE SUCCESSFULLY REGISTERED!") </script>';
             }
             exit();

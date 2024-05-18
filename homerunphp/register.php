@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
         header("refresh:$sec;  ../signup.php?error=emptyfields&firstname=" . urlencode($firstname));
         exit();
     } elseif ($password !== $confirmpass) {
-        header("refresh:$sec; ../signup.php?error=passwordsdonotmatch&firstname=" . urlencode($firstname));
+        header("refresh:$sec; ../signup.php?error=Passwwords Do Not Match&firstname=" . urlencode($firstname));
         exit();
     } else {
         $sql = "SELECT email FROM homerunuserdb WHERE email = ?";
@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
 
         // Preparing SQL statement
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("refresh:$sec;  ../signup.php?error=sqlerror");
+            header("refresh:$sec;  ../signup.php?error=SQL Error");
             exit();
         } else {
             mysqli_stmt_bind_param($stmt, "s", $email);
@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
             $rowCount = mysqli_stmt_num_rows($stmt);
 
             if ($rowCount > 0) {
-                header("refresh:$sec; ../signup.php?error=emailalreadyinuse");
+                header("refresh:$sec; ../signup.php?error=Email Already In Use");
                 echo '<script type="text/javascript"> alert("OOPS! EMAIL ALREADY EXISTS") </script>';
                 exit();
             } else {
@@ -80,7 +80,7 @@ if (isset($_POST['submit'])) {
 
                 if (empty($uni_code)) {
                     header("refresh:$sec; ./signup.php?FailedToGenerateID");
-                    echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
+                    echo '<script type="text/javascript"> alert("Sorry Failed To Generate Agent ID!") </script>';
                     exit();
                 }
 
@@ -91,16 +91,16 @@ if (isset($_POST['submit'])) {
                 if ($stmt) {
                     mysqli_stmt_bind_param($stmt, "sssssssss", $firstname, $lastname, $hashedpass, $email, $dob, $gender, $contact, $uni, $userid);
                     if (mysqli_stmt_execute($stmt)) {
-                        header("refresh:$sec; ../login.php?youhavesuccessfullyregistered");
+                        header("refresh:$sec; ../login.php?You Have Successfully Registered");
                         echo '<script type="text/javascript"> alert("YOU HAVE SUCCESSFULLY REGISTERED!") </script>';
                         exit();
                     } else {
-                        header("refresh:$sec; ./signup.php?FailedToGenerateID");
+                        header("refresh:$sec; ./signup.php?Failed To Generate ID");
                         echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
                         exit();
                     }
                 } else {
-                    header("refresh:$sec; ./signup.php?FailedToGenerateID");
+                    header("refresh:$sec; ./signup.php?Failed To Generate ID");
                     echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
                     exit();
                 }

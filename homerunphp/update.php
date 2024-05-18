@@ -23,10 +23,10 @@ if (isset($_POST['update'])) {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            header("refresh:$sec; ../profile.php?success=updatesuccessful");
+            header("refresh:$sec; ../profile.php?success=Update Successful");
             echo '<script type="text/javascript"> alert("Update Successfully") </script>';
         } else {
-            header("refresh:$sec; ../profile.php?error=SQLError");
+            header("refresh:$sec; ../profile.php?error=SQL Error");
             echo '<script type="text/javascript"> alert("SQLError") </script>';
         }
     }

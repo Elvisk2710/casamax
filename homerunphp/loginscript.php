@@ -11,14 +11,14 @@ if (isset($_POST['submit'])) {
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
     if (empty($email) || empty($password)) {
-        header("Location: ../login.php?error=emptyfields");
+        header("Location: ../login.php?error=Empty Fields");
         exit();
     } else {
         $sql = "SELECT * FROM homerunuserdb WHERE email = ?";
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("Location: ../login.php?error=sqlerror");
+            header("Location: ../login.php?error=SQL Error");
             exit();
         } else {
             mysqli_stmt_bind_param($stmt, "s", $email);
@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
                 $passcheck = password_verify($password, $row['passw']);
 
                 if ($passcheck == false) {
-                    header("Location: ../login.php?error=wrongpass");
+                    header("Location: ../login.php?error=Wrong Pass");
                     exit();
                 } elseif ($passcheck == true) {
                     $email = $row['email'];
@@ -42,7 +42,7 @@ if (isset($_POST['submit'])) {
                     $stmt = mysqli_stmt_init($conn);
 
                     if (!mysqli_stmt_prepare($stmt, $sub_check)) {
-                        header("Location: ../login.php?error=sqlerror");
+                        header("Location: ../login.php?error=Sql Error");
                         exit();
                     } else {
                         mysqli_stmt_bind_param($stmt, "s", $userid);
@@ -53,13 +53,13 @@ if (isset($_POST['submit'])) {
                         if (!$rowCount > 0) {
                             setcookie("cookiestudent", $userid, time() + (86400 * 1), "/");
                             setcookie("emailstudent", $email, time() + (86400 * 1), "/");
-                            header("Location: ../payment.php?subscribe");
+                            header("Location: ../payment.php?error=Subscribe");
                             exit();
                         } else {
                             $results = mysqli_fetch_array($sub_db_check);
                             $today = strtotime(date('y-m-d'));
                             if (strtotime($results['due_date']) < $today || $results['number_of_houses'] == 0 || $results['completed'] == 1) {
-                                header("Location: ../payment.php?subscription has ended");
+                                header("Location: ../payment.php?eeror=Subscription Has Ended");
                             } else {
                                 // Redirect based on university
                                 $universityMapping = array(
@@ -82,11 +82,11 @@ if (isset($_POST['submit'])) {
                         }
                     }
                 } else {
-                    header("Location: ../login.php?error=wrongpass");
+                    header("Location: ../login.php?error=Wrong Pass");
                     exit();
                 }
             } else {
-                header("Location: ../login.php?error=UserNotFound");
+                header("Location: ../login.php?error=User Not Found");
                 exit();
             }
         }
@@ -95,6 +95,6 @@ if (isset($_POST['submit'])) {
     if (isset($_SESSION['sessionstudent'])) {
         session_destroy();
     }
-    header("Location: ../index.php?error=LoggedOut");
+    header("Location: ../index.php?error=Logged Out");
     exit();
 }

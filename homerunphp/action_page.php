@@ -35,10 +35,10 @@ $user = $_SESSION['sessionowner'];
         $query_run = mysqli_query($conn,$sql);
         
         if(!$query_run){
-            header("refresh:$sec;  ../profile.php?error=SQLError");
-            echo '<script type="text/javascript"> alert("SQLError") </script>';
+            header("refresh:$sec;  ../profile.php?error=SQL Error");
+            echo '<script type="text/javascript"> alert("SQL Error") </script>';
         }else{  
-            header("refresh:$sec; ../profile.php?error=UpdateSuccess");
+            header("refresh:$sec; ../profile.php?error=Update Success");
             $_SESSION['sessionowner'] = $email;  
             echo '<script type="text/javascript"> alert("Update Successfully") </script>';
           
@@ -51,7 +51,7 @@ $user = $_SESSION['sessionowner'];
     $user = $_SESSION['sessionstudent'];
 
     if (empty($user)){
-        header("refresh:$sec; ../login.php?error=youhavetologinfirst");
+        header("refresh:$sec; ../login.php?error=You Have To Login First");
         echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
         exit();
     }else{
@@ -73,10 +73,10 @@ $user = $_SESSION['sessionowner'];
 
         $query_run = mysqli_query($conn,$sql);
         if(!$query_run){
-            header("refresh:$sec;  ../student_profile.php?error=SQLError");
-            echo '<script type="text/javascript"> alert("SQLError") </script>';
+            header("refresh:$sec;  ../student_profile.php?error=SQL Error");
+            echo '<script type="text/javascript"> alert("SQL Error") </script>';
         }else{  
-            header("refresh:$sec; ../student_profile.php?error=UpdateSuccess");
+            header("refresh:$sec; ../student_profile.php?error=Update Success");
             echo '<script type="text/javascript"> alert("Update Successfully") </script>';
             exit();
              
@@ -87,7 +87,7 @@ $user = $_SESSION['sessionowner'];
         session_unset();
         header("location: ../login.php");
 }else{
-    header("refresh:$sec;  ../index.php?error=AccessDenied");
+    header("refresh:$sec;  ../index.php?error=Access Denied");
     echo '<script type="text/javascript"> alert("Access Denied") </script>';
 }
 

@@ -172,7 +172,7 @@ if (isset($_POST['create_profile'])) {
 
 
         if ($password !== $confirmpass) {
-            header("refresh:$sec; ../admin/dashboard/index.php?error=passwordsdonotmatch" . $firstname);
+            header("refresh:$sec; ../admin/dashboard/index.php?error=Passwords Do Not Match" . $firstname);
             echo '<script type="text/javascript"> alert("Passwords Do Not Mtatch") </script>';
             exit();
         } else {
@@ -180,7 +180,7 @@ if (isset($_POST['create_profile'])) {
             $stmt = mysqli_stmt_init($conn);
 
             if (!mysqli_stmt_prepare($stmt, $sql)) {
-                header("refresh:$sec;  ../admin/dashboard/index.php?error=sqlerror");
+                header("refresh:$sec;  ../admin/dashboard/index.php?error=SQL Error");
                 echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
                 exit();
             } else {
@@ -190,7 +190,7 @@ if (isset($_POST['create_profile'])) {
                 $rowCount = mysqli_stmt_num_rows($stmt);
 
                 if ($rowCount > 0) {
-                    header("refresh:$sec;  ../admin/dashboard/index.php?error=usernamealreadyexists");
+                    header("refresh:$sec;  ../admin/dashboard/index.php?error=User Already Exists");
                     echo '<script type="text/javascript"> alert("User Already Exists") </script>';
                     exit();
                 } else {
@@ -220,7 +220,7 @@ if (isset($_POST['create_profile'])) {
                                 if (move_uploaded_file($residencyImages['tmp_name'], $residencyFileDestination) && move_uploaded_file($identityImages['tmp_name'], $identityFileDestination)) {
                                     echo "Directory created successfully.";
                                     if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                        header("refresh:$sec;  ../admin/dashboard/index.php?error=prepareStmtError");
+                                        header("refresh:$sec;  ../admin/dashboard/index.php?error=Stmt Prepare Error");
                                         echo '<script type="text/javascript"> alert("SQL ERROR preparing stmt failed") </script>';
                                         exit();
                                     } else {
@@ -234,7 +234,7 @@ if (isset($_POST['create_profile'])) {
                                             } else {
 
                                                 if ($count <= 0) {
-                                                    header("location:../admin/dashboard/index.php?error=Profilecreated");
+                                                    header("location:../admin/dashboard/index.php?error=Profile Created");
                                                     $_SESSION['sessionowner'] = $email;
                                                     echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") 
                                                                         </script>';
@@ -283,19 +283,19 @@ if (isset($_POST['create_profile'])) {
                                                             require '../homerunphp/upload.php';
                                                         }
                                                     } else {
-                                                        echo '<script type="text/javascript"> alert("Error while uploading") </script>';
+                                                        echo '<script type="text/javascript"> alert("Error While Uploading") </script>';
                                                     }
                                                 }
                                                 if ($status == 'error') {
                                                     header("refresh:$sec;  ../admin/dashboard/index.php?error=$statusMsg");
                                                     echo '<script type="text/javascript"> alert('.$statusMsg.')';
                                                 } elseif ($status == 'success') {
-                                                    header("location:../admin/dashboard/index.php?error=Profilecreated");
+                                                    header("location:../admin/dashboard/index.php?error=Profile Created");
                                                     $_SESSION['sessionowner'] = $email;
                                                     echo '<script type="text/javascript"> alert('.$statusMsg.')';
                                                     exit();
                                                 } else {
-                                                    header("location:../admin/dashboard/index.php?error=Profilecreated");
+                                                    header("location:../admin/dashboard/index.php?error=Profile Created");
                                                     $_SESSION['sessionowner'] = $email;
                                                     echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") 
                                                                             </script>';
@@ -305,17 +305,17 @@ if (isset($_POST['create_profile'])) {
                                         }
                                     }
                                 } else {
-                                    header("location:../admin/dashboard/index.php?error=FailedToMoveImages");
+                                    header("location:../admin/dashboard/index.php?error=Failed To Move Images");
                                     echo '<script type="text/javascript"> alert("Verification Images Failed") </script>';
                                     exit();
                                 }
                             } else {
-                                header("location:../admin/dashboard/index.php?error=FailedToCreateDirectoryForVerification");
+                                header("location:../admin/dashboard/index.php?error=Failed To Create Directory For Verification");
                                 echo '<script type="text/javascript"> alert("Failed to create directory") </script>';
                                 exit();
                             }
                         } else {
-                            header("location:../admin/dashboard/index.php?error=DirectoryAlreadyExists");
+                            header("location:../admin/dashboard/index.php?error=Directory Already Exists");
                             echo '<script type="text/javascript"> alert("Directory Already Exists") </script>';
                             exit();
                         }
@@ -324,7 +324,7 @@ if (isset($_POST['create_profile'])) {
             }
         }
     } else {
-        header("location:../admin/dashboard/index.php?error=NoVerificationImages");
+        header("location:../admin/dashboard/index.php?error=No Verification Images");
         echo '<script type="text/javascript"> alert("NO images have been submitted for verification") 
 </script>';
     }

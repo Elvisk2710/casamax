@@ -115,20 +115,20 @@ if (isset($_POST['profile_photos']) && !empty($_SESSION['sessionowner'])) {
 
         if (mysqli_stmt_affected_rows($stmt) > 0) {
             // Images uploaded successfully
-            header("Location: ../profile.php?status=Profilecreated");
+            header("Location: ../profile.php?status=Profile Created");
             exit();
         } else {
             // Failed to update database
-            header("Location: ../profile.php?error=FailedtoUploadImages");
+            header("Location: ../profile.php?error=Failed To Upload Images");
             exit();
         }
     } else {
         // User not found in the database
-        header("Location: ../profile.php?error=UserNotFound");
+        header("Location: ../profile.php?error=User Not Found");
         exit();
     }
 } else {
     // Invalidsession or form submission
-    header("Location: ../profile.php?error=InvalidSession");
+    header("Location: ../profile.php?error=Invalid Session");
     exit();
 }

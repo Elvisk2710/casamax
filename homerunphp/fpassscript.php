@@ -53,7 +53,7 @@ if (isset($_POST['submit_code'])) {
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("refresh:s$sec; ../" . $_COOKIE['loginPage'] . "?error=sqlerror");
+            header("refresh:s$sec; ../" . $_COOKIE['loginPage'] . "?error=SQL Error");
             echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
             exit();
         } else {

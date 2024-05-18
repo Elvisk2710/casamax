@@ -3,7 +3,7 @@ session_start();
 require_once '../homerunphp/advertisesdb.php';
 
 if (empty($_SESSION['sessionagent'])) {
-    header("Location:index.php?PleaseLogin");
+    header("Location:index.php?eeror=Please Login");
     echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
     exit();
 } else {
@@ -17,12 +17,12 @@ if (empty($_SESSION['sessionagent'])) {
         $sql_home = "SELECT * FROM  homerunhouses WHERE agent_id = '$agent_id' ";
 
         if (!$home_result = mysqli_query($conn, $sql_home)) {
-            header("Location:index.php?SQL_ERROR");
+            header("Location:index.php?error=SQL ERROR");
             echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
             exit();
         }
     } else {
-        header("Location:index.php?PleaseLogin");
+        header("Location:index.php?error=Please Login");
         echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
         exit();
     }

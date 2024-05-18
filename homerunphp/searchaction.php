@@ -33,7 +33,7 @@ if (isset($_POST['pricesearch']) and isset($_POST['university'])){
     }elseif($unisearch == "Great Zimbabwe University"){
             $unilocation = "gzlisting.php";
     }else{
-        header("refresh:0.1;  ../index.php?error=PleaseSelectUniversityOnSearch");
+        header("refresh:0.1;  ../index.php?error=Please Select University On Search");
         echo '<script type="text/javascript"> alert("Please Enter a Univeristy on Search") </script>';
         exit();
     }

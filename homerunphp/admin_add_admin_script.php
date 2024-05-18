@@ -31,7 +31,7 @@ if (isset($_POST['admin_create_profile'])) {
     $access_level = filter_var($access_level, FILTER_SANITIZE_NUMBER_INT);
 
     if ($password !== $confirmPass) {
-        header("refresh:$sec; ../admin/dashboard/index.php?error=passwordsdonotmatch" . $firstname);
+        header("refresh:$sec; ../admin/dashboard/index.php?error=Passwords DO Not Match" . $firstname);
         echo '<script type="text/javascript"> alert("Passwords Do Not Match") </script>';
         exit();
     }
@@ -39,7 +39,7 @@ if (isset($_POST['admin_create_profile'])) {
     $sql = "SELECT email FROM admin_table WHERE email = ?";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("refresh:$sec; ../admin/dashboard/index.php?error=sqlerror");
+        header("refresh:$sec; ../admin/dashboard/index.php?error=SQL Error");
         echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
         exit();
     }
@@ -49,7 +49,7 @@ if (isset($_POST['admin_create_profile'])) {
     mysqli_stmt_store_result($stmt);
     $rowCount = mysqli_stmt_num_rows($stmt);
     if ($rowCount > 0) {
-        header("refresh:$sec; ../admin/dashboard/index.php?error=userAlreadyExists");
+        header("refresh:$sec; ../admin/dashboard/index.php?error=User Already Exists");
         echo '<script type="text/javascript"> alert("User Already Exists") </script>';
         exit();
     }
@@ -65,7 +65,7 @@ if (isset($_POST['admin_create_profile'])) {
         $sql = "INSERT INTO admin_table (first_name,last_name,id_num,passw,access_level,home_address,dob,sex,contact,email,admin_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = mysqli_stmt_init($conn);
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("refresh:$sec; ../admin/dashboard/index.php?error=prepareFailed");
+            header("refresh:$sec; ../admin/dashboard/index.php?error=Stmt Prepare Failed");
             echo '<script type="text/javascript"> alert("SQL stmt prepare failure") </script>';
             exit();
         }
@@ -79,10 +79,10 @@ if (isset($_POST['admin_create_profile'])) {
             exit();
         }
 
-        header("refresh:$sec; ../admin/dashboard/index.php?error=SuccessfullyAddedAdmin");
+        header("refresh:$sec; ../admin/dashboard/index.php?error=Successfully Added Admin");
         echo '<script type="text/javascript"> alert("Adding Admin Agent Was Successful") </script>';
     } else {
-        header("refresh:$sec; ../admin/dashboard/index.php?error=accessLevelOutOfRange");
+        header("refresh:$sec; ../admin/dashboard/index.php?error=Access Level Out Of Range");
         echo '<script type="text/javascript"> alert("Access Level Is Out Of Range") </script>';
         exit();
     }
