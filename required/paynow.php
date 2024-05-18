@@ -13,7 +13,7 @@ $paynow = new Paynow\Payments\Paynow(
 $invoice_name = "Casamax Invoice " . time();
 $user_email = filter_var($_SESSION['sessionstudent'], FILTER_SANITIZE_EMAIL);
 
-# $paynow->setResultUrl('');
+$paynow->setResultUrl('https://localhost/casamax/homerunphp/handle_transaction.php');
 # $paynow->setReturnUrl('');
 
 $payment = $paynow->createPayment($invoice_name, $user_email);
@@ -48,7 +48,7 @@ if ($response->success()) {
             $success = true;
             setcookie("success", "true", time() + (8600 * 1), "/", "", true, true);
             $_SESSION['payment_status'] = "success";
-            // require_once 'payment_btn_content.php';
+            require_once 'payment_btn_content.php';
         }
 
         $count++;
