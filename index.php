@@ -31,7 +31,7 @@ if (isset($_GET['error'])) {
 <html lang="en">
 
 <head>
-<script>
+    <script>
         // fn to close app install
         function close_ad() {
             document.getElementById("app_install_container_div").style.display = "none";
@@ -85,7 +85,7 @@ if (isset($_GET['error'])) {
     <meta name="theme-color" content="#08080C" />
     <link rel="apple-touch-icon" href="images/android-icon-192x192-seochecker-manifest-4016.png">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5154867814880124" crossorigin="anonymous"></script>
-  
+
 
 </head>
 <script src="index.js"></script>

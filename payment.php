@@ -7,12 +7,13 @@ if (!isset($_SESSION['sessionstudent'])) {
     exit();
 }
 if (isset($_GET['error'])) {
-    echo '
+    $error_name = $_GET['error'];
+    echo "
         <script>
-            alert(' . $_GET['error'] . ')
+            alert(" . $error_name . ")
         </script>
 
-        ';
+        ";
     unset($_GET['error']);
 }
 
@@ -75,11 +76,9 @@ require_once 'required/pageloader.php';
                     <p>
                         This will give you acces to contact 1 <b>CasaMax Home</b> The Subscription expires in a month
                     </p>
-                    <!-- <a href='https://www.paynow.co.zw/Payment/BillPaymentLink/?q=aWQ9MTM0MzQmYW1vdW50PTQyLjAwJmFtb3VudF9xdWFudGl0eT0wLjAwJmw9MQ%3d%3d' target='_blank'> -->
-                    <button id="subscriptionBtn" type="submit" name="starter" onclick="disableBtn()">
+                    <button id="subscriptionBtn1" type="submit" name="starter" value="subscriptionBtn1" onclick="disableBtn(e.value)">
                         SUBSCRIBE
                     </button>
-                    <!-- </a> -->
                 </div>
 
                 <div class="sub">
@@ -89,11 +88,9 @@ require_once 'required/pageloader.php';
                     <p>
                         This will give you acces to contact 5 <b>CasaMax Homes</b> The Subscription expires in a month
                     </p>
-                    <!-- <a href='https://www.paynow.co.zw/Payment/BillPaymentLink/?q=aWQ9MTM0MzMmYW1vdW50PTE0LjAwJmFtb3VudF9xdWFudGl0eT0wLjAwJmw9MQ%3d%3d' target='_blank'>  -->
-                    <button id="subscriptionBtn" type="submit" name="basic" onclick="disableBtn()">
+                    <button id="subscriptionBtn2" type="submit" name="basic" value="subscriptionBtn2" onclick="disableBtn(e.value)">
                         SUBSCRIBE
                     </button>
-                    <!-- </a> -->
                 </div>
                 <div class="sub">
                     <h5>Pro</h5>
@@ -102,11 +99,9 @@ require_once 'required/pageloader.php';
                     <p>
                         This will give you acces to contact 15 <b>CasaMax Homes</b>. The Subscription expires in a month
                     </p>
-                    <!-- <a href='https://www.paynow.co.zw/Payment/BillPaymentLink/?q=aWQ9MTM0MzUmYW1vdW50PTcyLjAwJmFtb3VudF9xdWFudGl0eT0wLjAwJmw9MQ%3d%3d' target='_blank'> -->
-                    <button id="subscriptionBtn" type="submit" name="pro" onclick="disableBtn()">
+                    <button id="subscriptionBtn3" type="submit" name="pro" value="subscriptionBtn3" onclick="disableBtn(e.value)">
                         SUBSCRIBE
                     </button>
-                    <!-- </a> -->
                 </div>
 
             </div>
@@ -157,11 +152,13 @@ require_once 'required/pageloader.php';
             navBar.classList.toggle("hideuni")
         }
 
-        function disableBtn() {
-            button = document.getElementById("subscriptionBtn");
+        function disableBtn(e) {
+            button.click();
+            button = document.getElementById("subscriptionBtn1");
+            button = document.getElementById("subscriptionBtn2");
+            button = document.getElementById("subscriptionBtn3");
             button.disabled = true;
             button.textContent = "Loading...."
-            button.click();
         }
     </script>
 </body>

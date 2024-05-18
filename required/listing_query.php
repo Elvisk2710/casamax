@@ -1,19 +1,5 @@
 <?php
 
-echo '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5154867814880124"
-    crossorigin="anonymous"></script>
-    <ins class="adsbygoogle"
-    style="display:block"
-    data-ad-format="fluid"
-    data-ad-layout-key="-f9+5v+4m-d8+7b"
-    data-ad-client="ca-pub-5154867814880124"
-    data-ad-slot="8966832753"></ins>
-
-<script>
-   window.onload = function(){
-    (adsbygoogle = window.adsbygoogle || []).push({});
-   }
-</script>';
 
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
     $url = "https://";
@@ -153,19 +139,7 @@ while ($row = mysqli_fetch_array($result)) {
                 $agent_tagline = "Landlord%20No%20Agent%20Fee";
             }
         }
-        echo '
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5154867814880124"
-                 crossorigin="anonymous"></script>
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-format="fluid"
-                 data-ad-layout-key="-gw-3+1f-3d+2z"
-                 data-ad-client="ca-pub-5154867814880124"
-                 data-ad-slot="8429383309"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-        </div>';
+       echo '</div>';
 
         echo "<div class='house-info'> <h3>"
             . $row['gender'] . " Boarding House </h3>
