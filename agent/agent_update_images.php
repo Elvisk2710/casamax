@@ -105,7 +105,7 @@ if (isset($_POST['update_images'])) {
             echo '<script type="text/javascript"> alert("Error While Uploading") </script>';
         }
     }
-    
+
     mysqli_stmt_close($stmt);
 
     if ($status == 'error') {

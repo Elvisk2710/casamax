@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
             } else {
                 $hashedpass = password_hash($password, PASSWORD_DEFAULT);
 
-                $lastid = mysqli_insert_id($conn); 
+                $lastid = mysqli_insert_id($conn);
                 $randcode = rand(1, 99999);
                 $uni_code = ''; // Initialize the variable
 

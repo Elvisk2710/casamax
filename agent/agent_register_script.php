@@ -80,7 +80,7 @@ if (isset($_POST['submit'])) {
                         if ($mailStatus == "success") {
                             header("refresh:$sec; ../required/code_register.php?agent=true");
                         } else {
-                            header("location: ./agent_register.php?error=Failed To Send Email!"); 
+                            header("location: ./agent_register.php?error=Failed To Send Email!");
                         }
                         exit();
                     }

@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
             if ($row = mysqli_fetch_assoc($results)) {
                 $storedPassword = $row['passw'];
                 if (password_verify($password, $storedPassword)) {
-                // if ($password == $row['passw']) {
+                    // if ($password == $row['passw']) {
                     // Password verification using password_verify function
                     $_SESSION['sessionAdmin'] = $row['admin_id'];
                     $_SESSION['access'] = $row['access_level'];

@@ -20,7 +20,7 @@ if (isset($_POST['register_code'])) {
         $contact = $_COOKIE['contact'];
         $uni = $_COOKIE['uni'];
 
-        $lastid = mysqli_insert_id($conn); 
+        $lastid = mysqli_insert_id($conn);
 
         $randcode = rand(1, 99999);
         switch ($uni) {
@@ -65,15 +65,15 @@ if (isset($_POST['register_code'])) {
             $hashedpass = password_hash($password, PASSWORD_DEFAULT);
             mysqli_stmt_bind_param($stmt, "sssssssss", $userid, $firstname, $lastname, $hashedpass, $email, $dob, $gender, $contact, $uni);
             if (mysqli_stmt_execute($stmt)) {
-                setcookie("firstname", "", time() - 900, "/");  
-                setcookie("lastname", "", time() - 900, "/");  
-                setcookie("password", "", time() - 900, "/");  
-                setcookie("confirmpass", "", time() - 900, "/"); 
-                setcookie("email", "", time() - 900, "/");   
-                setcookie("dob", "", time() - 900, "/");  
-                setcookie("gender", "", time() - 900, "/");  
-                setcookie("contact", "", time() - 900, "/");  
-                setcookie("uni", "", time() - 900, "/");  
+                setcookie("firstname", "", time() - 900, "/");
+                setcookie("lastname", "", time() - 900, "/");
+                setcookie("password", "", time() - 900, "/");
+                setcookie("confirmpass", "", time() - 900, "/");
+                setcookie("email", "", time() - 900, "/");
+                setcookie("dob", "", time() - 900, "/");
+                setcookie("gender", "", time() - 900, "/");
+                setcookie("contact", "", time() - 900, "/");
+                setcookie("uni", "", time() - 900, "/");
                 mysqli_stmt_close($stmt);
                 mysqli_close($conn);
                 header("refresh:$sec; ../login.php?error=You Have Successfully Registered");
@@ -94,4 +94,3 @@ if (isset($_POST['register_code'])) {
         echo '<script type="text/javascript"> alert("SORRY YOUR CODE DOES NOT MATCH!!") </script>';
     }
 }
-?>

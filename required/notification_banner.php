@@ -12,7 +12,7 @@ if (isset($_GET['error'])) {
             </h4>
         </div>
         <h3>
-            
+
         </h3>
     </div>
 </div>

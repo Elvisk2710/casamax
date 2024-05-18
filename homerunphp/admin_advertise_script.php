@@ -288,11 +288,11 @@ if (isset($_POST['create_profile'])) {
                                                 }
                                                 if ($status == 'error') {
                                                     header("refresh:$sec;  ../admin/dashboard/index.php?error=$statusMsg");
-                                                    echo '<script type="text/javascript"> alert('.$statusMsg.')';
+                                                    echo '<script type="text/javascript"> alert(' . $statusMsg . ')';
                                                 } elseif ($status == 'success') {
                                                     header("location:../admin/dashboard/index.php?error=Profile Created");
                                                     $_SESSION['sessionowner'] = $email;
-                                                    echo '<script type="text/javascript"> alert('.$statusMsg.')';
+                                                    echo '<script type="text/javascript"> alert(' . $statusMsg . ')';
                                                     exit();
                                                 } else {
                                                     header("location:../admin/dashboard/index.php?error=Profile Created");
