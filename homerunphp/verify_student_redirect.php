@@ -220,7 +220,7 @@ function handleSubscriptionAgent($conn, $student, $agent_id, $home_id, $contactM
                 }
             }
         } else {
-            redirectToListingDetails($home_id, 'User Not Subscribed'); // Redirect with generic error message
+            redirectToPaymentPage($home_id, 'User Not Subscribed'); // Redirect with generic error message
         }
     } else {
         redirectToListingDetails($home_id, 'Failed To Retrieve User Subscription Details'); // Redirect with generic error message

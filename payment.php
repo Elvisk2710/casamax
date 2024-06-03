@@ -76,7 +76,7 @@ require_once 'required/pageloader.php';
                     <p>
                         This will give you acces to contact 1 <b>CasaMax Home</b> The Subscription expires in a month
                     </p>
-                    <button id="subscriptionBtn1" type="submit" name="starter" value="subscriptionBtn1" onclick="disableBtn(e.value)">
+                    <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="starter" value="subscriptionBtn1">
                         SUBSCRIBE
                     </button>
                 </div>
@@ -88,7 +88,7 @@ require_once 'required/pageloader.php';
                     <p>
                         This will give you acces to contact 5 <b>CasaMax Homes</b> The Subscription expires in a month
                     </p>
-                    <button id="subscriptionBtn2" type="submit" name="basic" value="subscriptionBtn2" onclick="disableBtn(e.value)">
+                    <button id="subscriptionBtn2" type="submit" onclick="disableBtn()" name="basic" value="subscriptionBtn2">
                         SUBSCRIBE
                     </button>
                 </div>
@@ -99,7 +99,7 @@ require_once 'required/pageloader.php';
                     <p>
                         This will give you acces to contact 15 <b>CasaMax Homes</b>. The Subscription expires in a month
                     </p>
-                    <button id="subscriptionBtn3" type="submit" name="pro" value="subscriptionBtn3" onclick="disableBtn(e.value)">
+                    <button id="subscriptionBtn3" type="submit" onclick="disableBtn()" name="pro" value="subscriptionBtn3">
                         SUBSCRIBE
                     </button>
                 </div>
@@ -152,14 +152,10 @@ require_once 'required/pageloader.php';
             navBar.classList.toggle("hideuni")
         }
 
-        function disableBtn(e) {
-            button.click();
-            button = document.getElementById("subscriptionBtn1");
-            button = document.getElementById("subscriptionBtn2");
-            button = document.getElementById("subscriptionBtn3");
-            button.disabled = true;
-            button.textContent = "Loading...."
-        }
+        function disableBtn() {
+            document.querySelector(".container_loader").classList.remove("container_loader--hidden");
+            document.querySelector("body").classList.add("scrollable");
+         }
     </script>
 </body>
 

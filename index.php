@@ -84,7 +84,6 @@ if (isset($_GET['error'])) {
     <link rel="icon" type="image/png" href="./images/logowhite.png">
     <meta name="theme-color" content="#08080C" />
     <link rel="apple-touch-icon" href="images/android-icon-192x192-seochecker-manifest-4016.png">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5154867814880124" crossorigin="anonymous"></script>
 
 
 </head>
@@ -92,7 +91,7 @@ if (isset($_GET['error'])) {
 
 <body onunload="">
 
-    <div class="container ">
+    <div class="container">
 
         <header>
             <a href="index.php">
@@ -103,8 +102,7 @@ if (isset($_GET['error'])) {
                 <h3 class="smltxt">CasaMax</h3>
                 <img src="images/menu.webp" alt="menu" onclick="togglebtn()" class="fas">
                 <br>
-                <a href="https://casamax.co.zw/" class="home">HOME</a>
-                <!-- <a href="bordinghouse.php">BOARDING-HOUSE</a> -->
+                <a href="./index.php" class="home">HOME</a>
                 <a href="./manage/index.php">MANAGE RENTAL</a>
                 <a href="advertise_as/index.php">ADVERTISE</a>
                 <a href="help.php">HELP</a>
@@ -147,8 +145,7 @@ if (isset($_GET['error'])) {
 
             <!-- main content -->
             <h1>
-                Casa,<br>
-                Max
+                CasaMax
             </h1>
             <a href="#cta" style="color:white; text-decoration: none;  animation: text 2s ease infinite;">Click to know about us!</a>
 
@@ -198,14 +195,8 @@ if (isset($_GET['error'])) {
         </header>
         <!-- BROWSE Student -->
         <div class="containersub">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5154867814880124" crossorigin="anonymous"></script>
-            <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-f9+5v+4m-d8+7b" data-ad-client="ca-pub-5154867814880124" data-ad-slot="8966832753"></ins>
-
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
             <hr>
-            <h2 class="sub-title">
+            <h2 class="sub-title text-blue-600">
                 BROWSE
                 <p>
                     (BOARDING HOUSES BY UNI)

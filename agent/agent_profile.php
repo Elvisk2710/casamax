@@ -179,9 +179,10 @@ if (empty($_SESSION['sessionagent'])) {
     $days_difference = $interval->format('%a');
 
     $days_left = 30 - $days_difference;
-    if ($row['verification_image'] == null) {
+    $directoryPath = '../verification_images/agents_verification_images/' . $agent_id . '/';
+    if ($row['verification_image'] == null && !file_exists($directoryPath)) {
 
-    ?>
+    ?> 
         <form action="./agent_update_images.php?agent_id=<?php echo $agent_id; ?>" method="post" enctype="multipart/form-data" class="verification_container" id="verification_container">
             <div class="verification_popup">
                 <h2>
