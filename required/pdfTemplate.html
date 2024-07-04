@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Report</title>
+    <style>
+      /* Add any styles you want for the PDF page */
+      * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+      body {
+        font-family: Arial, sans-serif;
+      }
+      h1 {
+        text-align: center;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      .logo {
+        width: 6vw;
+        height: 6vw;
+        margin-top: 10px;
+      }
+      header {
+        text-align: left;
+        padding: 5px 14px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        border-bottom: 2px solid rgb(252, 153, 82);
+      }
+      .title h1{
+        padding: 14px;
+        font-size: 32px;
+        font-weight: 700;
+        color: rgb(252, 153, 82);
+      }
+      .title_contiainer{
+        display: flex;
+        justify-items: center;
+        justify-content: center;
+
+      }
+      .left_col_top_left{
+        text-align: left;
+        width: 40%;
+      }
+      .left_col_top_left_details{
+        font-size: 11px;
+        padding: 5px;
+      }
+      .left_col_top_right{
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 20px;
+      }
+      h1{
+        font-size: 18px;
+      }
+      table{
+        padding: 20px;
+      }
+      .table_body{
+        padding: 2vw;
+      }
+      footer{
+        background-color: rgb(8, 8, 12);
+        color: white;
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        width: 100vw;
+        display: flex;
+        flex-direction: row;
+      }
+      .left_footer{
+        flex-basis: 40%;
+        padding: 10px;
+      }
+      .righ_footer{
+        flex-basis: 60%;
+        padding: 10px;
+      }
+      p{
+        padding: 10px;
+        font-size: 12px;
+      }
+      .left_col_top_left_details{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        justify-items: center;
+      }
+    </style>
+  </head>
+  <header>
+    <div class="title_contiainer"">
+      <img src="../images/logoblack.png" alt="logo" class="logo" />
+      <div class="title">
+        <h1>
+            Casamax.co.zw
+        </h1>
+    </div>
+</div>
+
+    <div class="left_col_top_left">
+        <div class="left_col_top_left_details">
+            <h2>
+                Casamax Agent Id:
+            </h2>
+            <h2>
+                <?php echo $_SESSION['sessionAdmin'] ?>
+            </h2>
+        </div>
+        <div class="left_col_top_left_details">
+            <h2>
+                Total Listings:
+            </h2>
+            <h2>
+                <?php echo $total_records ?>
+            </h2>
+        </div>
+        <div class="left_col_top_left_details">
+            <h2>
+                Verified Listings:
+            </h2>
+            <h2>
+                <?php echo $total_verified_records ?>
+            </h2>
+        </div>
+        <div class="left_col_top_right">
+            <div class="amount_earned">
+                <h2>
+                    Amount Earned: 
+                </h2>
+            </div>
+    </div>
+  </div>
+  </header>
+  <body>
+    <h1>Data Report</h1>
+    <div class="table_body">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Age</th>
+          <th>Contact</th>
+          <th>Verified</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${data .map( (item) => `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.email}</td>
+          <td>${item.age}</td>
+          <td>${item.contact}</td>
+          <td>${item.verified}</td>
+        </tr>
+        ` ) .join("")}
+      </tbody>
+    </table>
+</div>
+  </body>
+  <footer>
+    <div class="left_footer">
+        <h5>
+            Phone: +263 78 698 9144
+        </h5>
+        <h5>
+            Email: info@casamax.co.zw
+        </h5>
+    </div>
+    <div class="right_footer">
+        <p>
+            Looking for off-campus accommodation?
+            Welcome to CasaMax, where we provide all the available
+            Homes and Rental properties at the tip of your fingers        </p>
+        <p>
+            visit:https://casamax.co.zw/aboutus.php for more info. <br>
+            T&Cs Apply
+        </p>
+
+    </div>
+  </footer>
+</html>

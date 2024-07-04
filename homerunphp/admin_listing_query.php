@@ -5,7 +5,13 @@ while ($row = mysqli_fetch_array($result)) {
 ?>
     <tr>
         <td>
-            <?php echo $row['home_id'] ?>
+            <?php
+            if (isset($row['home_id'])) {
+                echo $row['home_id'];
+            } elseif (isset($row['agent_id'])) {
+                echo $row['agent_id'];
+            }
+            ?>
         </td>
         <td>
             <?php echo $row['email'] ?>
@@ -22,11 +28,23 @@ while ($row = mysqli_fetch_array($result)) {
 
         </td>
         <td>
-            <?php echo $row['idnum'] ?>
-
+            <?php
+            if (isset($row['idnum'])) {
+                echo $row['idnum'];
+            } elseif (isset($row['id_num'])) {
+                echo $row['id_num'];
+            }
+            ?>
         </td>
         <td>
-            <?php echo $row['adrs'] ?>
+            <?php
+            if (isset($row['adrs'])) {
+                echo $row['adrs'];
+            } else {
+                echo '---';
+            }
+            ?>
+
         </td>
         <td>
             <?php
@@ -43,17 +61,23 @@ while ($row = mysqli_fetch_array($result)) {
             ?>
         </td>
         <?php
-            if($_SESSION['access'] == 1 || $_SESSION['access'] == 2){
+        if ($_SESSION['access'] == 1 || $_SESSION['access'] == 2) {
         ?>
-        <td class="button_holder">
-            <a href="../admin_listings_dashboard/view_details.php?AdminHomeID=<?php echo $row['home_id']?>&verified=<?php echo $row['verified']?>" class="">
-            <button class="view_button" >
-                View Documents
-            </button>
-            </a>
-        </td>
+            <td class="button_holder">
+                <a href="../admin_listings_dashboard/view_details.php?<?php
+                                                                        if (isset($row['home_id'])) {
+                                                                            echo 'AdminHomeID=' . $row['home_id'];
+                                                                        } elseif ($row['agent_id']) {
+                                                                            echo 'AdminAgentID=' . $row['agent_id'];
+                                                                        }
+                                                                        ?>&verified=<?php echo $row['verified'] ?>" class="">
+                    <button class="view_button">
+                        View Documents
+                    </button>
+                </a>
+            </td>
         <?php
-            }
+        }
         ?>
     </tr>
 <?php

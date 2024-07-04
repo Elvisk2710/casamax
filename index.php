@@ -95,7 +95,7 @@ if (isset($_GET['error'])) {
 
         <header>
             <a href="index.php">
-                <img src="images/logowhite.png" alt="logo" class="logo">
+                <img src="images/logowhite.png" alt="logo" class="logo"> 
             </a>
 
             <nav id="navBar">

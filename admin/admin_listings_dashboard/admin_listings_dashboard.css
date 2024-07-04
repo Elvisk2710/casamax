@@ -117,7 +117,7 @@ tr {
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid rgba(252, 153, 82, 0.6);
-  background-color: rgba(233, 233, 233, 0.521);
+  background-color: rgba(250, 250, 250, 0.521);
   margin: 6px 0;
   padding: 4px; 
   border-radius: 10px;
@@ -126,7 +126,9 @@ tr {
 tr:hover{
   transform: scale(0.99 );
   transition-duration: 500ms;
-  transition-delay: 200ms;
+  transition-delay: 100ms;
+  background-color: rgba(228, 228, 228, 0.521);
+
 }
 th {
   font-size: 1.2rem;
@@ -136,7 +138,7 @@ th {
 }
 td {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   width: 11.11%;
   word-wrap: break-word;
   margin: 0 2px;

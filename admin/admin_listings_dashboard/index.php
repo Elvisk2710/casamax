@@ -7,6 +7,7 @@ if (empty($_SESSION['sessionAdmin'])) {
 } else {
     require_once '../../homerunphp/advertisesdb.php';
     $admin_id = $_SESSION['sessionAdmin'];
+    $table_name = '';
     // gets details of the admin
     $sql = "SELECT * FROM  admin_table WHERE admin_id = '$admin_id' ";
     if ($rs_result = mysqli_query($conn, $sql)) {
@@ -25,19 +26,16 @@ if (empty($_SESSION['sessionAdmin'])) {
             // resets the search value
             $_POST['admin_search_value'] != null;
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id'";
-        } elseif (isset($_POST['admin_view_all_search']) || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
-            // starts a session to verify all houses
-            $_SESSION['verify_all'] = true;
-            if (isset($_POST['admin_search_value']) && $_POST['admin_search_value'] != null) {
-                $_SESSION['verify_all'] = false;
-                $_POST['admin_search_value'] != null;
-            }
-            $sql_home = "SELECT * FROM homerunhouses WHERE verified != '1' AND agent_id = '' OR agent_id = NULL";
+        } elseif (isset($_POST['admin_view_house_search']) || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
+            $table_name = 'House';
+            $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id' AND verified != '1'";
+        } elseif (isset($_POST['admin_view_agents_search']) || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
+            $table_name = 'Agents';
+            $sql_home = "SELECT * FROM agents WHERE verified != '1' OR verification_image != NULL";
         } else {
             // gets data of the houses
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id'";
         }
-
         // gets the number of verified houses
         $num_result_verified = mysqli_query($conn, $sql_verified);
         $total_verified_records = mysqli_num_rows($num_result_verified);
@@ -62,6 +60,7 @@ if (empty($_SESSION['sessionAdmin'])) {
     <link rel="icon" href="../../images/logowhite.png">
     <link rel="stylesheet" href="./admin_listings_dashboard.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../../jsfiles/onclickscript.js"></script>
 </head>
 
 <body>
@@ -79,7 +78,7 @@ if (empty($_SESSION['sessionAdmin'])) {
                     Download Your Records Instead
                 </h3>
                 <br>
-                <button type="button" name="download_pdf" class="view_button">
+                <button type="button" name="download_pdf" class="view_button" onclick="generatePdf()">
                     Download Pdf File
                 </button>
             </div>
@@ -130,21 +129,27 @@ if (empty($_SESSION['sessionAdmin'])) {
 
                     </form>
                     <div>
-                        <button type="button" name="download_pdf" class="view_button">
-                            Download Pdf File
-                        </button>
-                        <?php
-                        if ($_SESSION['access'] == 1 || $_SESSION['access'] == 2) {
-                        ?>
-                            <button type="submit" name="admin_view_all_search" class="view_button">
-                                Verify Homes
+                        <form action="./" method="post">
+                            <button type="button" name="download_pdf" class="view_button" onclick="generatePDF()">
+                                Download Pdf File
                             </button>
-                            <button type="submit" name="admin_view_all_search" class="view_button">
-                                Verify Agents
-                            </button>
-                        <?php
-                        }
-                        ?>
+                            <?php
+                            if ($_SESSION['access'] == 1 || $_SESSION['access'] == 2) {
+                            ?>
+                                <button type="submit" style="<?php if ($table_name == 'House') {
+                                                                    echo 'background-color: rgb(252, 153, 82); color: white; duration: 500;';
+                                                                } ?>" name="admin_view_house_search" class="view_button">
+                                    Verify Homes
+                                </button>
+                                <button type="submit" style="<?php if ($table_name == 'Agents') {
+                                                                    echo 'background-color: rgb(252, 153, 82); color: white; duration: 500;';
+                                                                } ?>" name="admin_view_agents_search" class="view_button">
+                                    Verify Agents
+                                </button>
+                            <?php
+                            }
+                            ?>
+                        </form>
                     </div>
 
                 </div>
@@ -152,8 +157,10 @@ if (empty($_SESSION['sessionAdmin'])) {
             <hr>
             <?php
             if ($total_records == 0) {
+
             ?>
-                <div>
+
+                <div class="right_col_bottom">
                     <h2>
                         NO Records Found!!!
                     </h2>
@@ -165,7 +172,7 @@ if (empty($_SESSION['sessionAdmin'])) {
                     <table>
                         <tr>
                             <th>
-                                Home ID
+                                ID
                             </th>
                             <th>
                                 Email
@@ -198,11 +205,15 @@ if (empty($_SESSION['sessionAdmin'])) {
                             }
                             ?>
                         </tr>
-                        <?php include '../../homerunphp/admin_listing_query.php' ?>
+                        <?php
+                        include '../../homerunphp/admin_listing_query.php'
+                        ?>
                     </table>
                 </div>
+
             <?php
             }
+
             ?>
         </div>
     </div>

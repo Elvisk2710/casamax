@@ -3,7 +3,7 @@
               <a href="../aboutus.php">About</a> CasaMax
             </h3>
             <p>
-              Looking for a House to Rent?
+              Looking for off-campus accommodation?
           Welcome to CasaMax, where we provide all the available
           Homes and Rental properties at the tip of your fingers
           </p>
