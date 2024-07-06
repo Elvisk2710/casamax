@@ -19,13 +19,12 @@ if ($student == false) {
     $sql = "SELECT * FROM homerunuserdb WHERE userid = '$sender_id'";
 }
 
-echo $sql;
 if ($results = mysqli_query($conn, $sql)) {
     $row = mysqli_fetch_array($results);
     $name = $row['firstname'];
     $lastname = $row['lastname'];
     if ($student == false) {
-        $home_id = $row['userid'];
+        $home_id = $row['home_id'];
     }
     $status = $row['status'];
 }

@@ -8,7 +8,7 @@ if (empty($_SESSION['sessionowner'])) {
 } else {
     $user = $_SESSION['sessionowner'];
     require_once 'homerunphp/advertisesdb.php';
-    $sql = "SELECT * FROM  homerunhouses WHERE email = '$user' ";
+    $sql = "SELECT * FROM  homerunhouses WHERE home_id = '$user' ";
 }
 
 if ($rs_result = mysqli_query($conn, $sql)) {
@@ -62,7 +62,7 @@ if (empty($user)) {
 
         $location = "housepictures/hitpictures/";
     } else {
-        header("Location:./index.php?error=sqlerror");
+        // header("Location:./index.php?error=sqlerror");
     }
 }
 ?>

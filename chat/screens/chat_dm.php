@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </div>
             <div class="logout">
                 <?php
-                if ($student == false) {
+                if ($student == 1) {
                 ?>
                     <a href='https://localhost/casamax/listingdetails.php?clicked_id=<?php echo $chat_id ?>'>
                         <button class="logout_btn">
