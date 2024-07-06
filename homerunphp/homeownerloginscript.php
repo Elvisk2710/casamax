@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
                     header("Location: ../homeownerlogin.php?error=Wrong Password");
                     exit();
                 } elseif ($passcheck == true) {
-                    $_SESSION['sessionowner'] = $row['email'];
+                    $_SESSION['sessionowner'] = $row['home_id'];
                     header("Location: ../profile.php?loginsuccess");
                     exit();
                 }

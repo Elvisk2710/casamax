@@ -67,7 +67,7 @@ if (isset($_POST['submit'])) {
         $contact = filter_var($contact, FILTER_SANITIZE_NUMBER_INT);
         $uni = filter_var($uni, FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $sql = "UPDATE homerunuserdb SET firstname = '$firstname', lastname = '$lastname', dob = '$dob', sex = '$gender', contact = '$contact', university = '$uni' WHERE email = '$user'";
+        $sql = "UPDATE homerunuserdb SET firstname = '$firstname', lastname = '$lastname', dob = '$dob', sex = '$gender', contact = '$contact', university = '$uni' WHERE userid = '$user'";
 
         $query_run = mysqli_query($conn, $sql);
         if (!$query_run) {

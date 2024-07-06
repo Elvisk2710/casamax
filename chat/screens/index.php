@@ -1,53 +1,108 @@
+<?php
+session_start();
+// connection to databse
+require '../../homerunphp/advertisesdb.php';
+$student = false;
+if (isset($_SESSION['sessionstudent'])) {
+    $sender_id = $_SESSION['sessionstudent'];
+    $student = true;
+} elseif (isset($_SESSION['sessionowner'])) {
+    $sender_id = $_SESSION['sessionowner'];
+    $student = false;
+} else {
+    echo "Please Login";
+}
+// API endpoint for retrieving data
+if ($student == false) {
+    $sql = "SELECT * FROM homerunhouses WHERE home_id = '$sender_id'";
+} else {
+    $sql = "SELECT * FROM homerunuserdb WHERE userid = '$sender_id'";
+}
+
+echo $sql;
+if ($results = mysqli_query($conn, $sql)) {
+    $row = mysqli_fetch_array($results);
+    $name = $row['firstname'];
+    $lastname = $row['lastname'];
+    if ($student == false) {
+        $home_id = $row['userid'];
+    }
+    $status = $row['status'];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa Chat</title>
+    <?php
+    require_once '../../required/header.php';
+    ?>
+    <meta name="description" content="Login as a Student and enjoy vast options of homes to choose for your off-campus accommodation">
+    <link rel="icon" href="../../images/logowhite.png">
     <link rel="stylesheet" href="../css/index.css">
+    <title>CasaMax Chats</title>
+
 </head>
 
-<body>
+<body onunload="" class="scrollable">
+
+    <?php
+    require_once '../../required/pageloader.php';
+    ?>
     <div class="container">
-        <?php include '../components/header.php'; ?>
+        <div class="header">
+            <div class="header_img">
+                <img src="../../images/background2.jpg" alt="">
+            </div>
+            <div class="header_info">
+                <div class="name">
+                    <div class="name_value">
+                        <h2>
+                            <?php echo $name ?>
+                        </h2>
+                    </div>
+                    <div class="name_value">
+                        <h2>
+                            <?php echo $lastname ?>
+                        </h2>
+                    </div>
+                </div>
+                <div class="status">
+                    <p>
+                        <?php echo $status ?>
+                    </p>
+                </div>
+            </div>
+            <div class="logout">
+                <?php
+                if ($student == false) {
+                ?>
+                    <a href='https://localhost/casamax/listingdetails.php?clicked_id=<?php echo $chat_id ?>'>
+                        <button class="logout_btn">
+                            View Home
+                        </button>
+                    </a>
+                <?php
+                }
+                ?>
+            </div>
+        </div>
         <div class="search">
             <div class="search_bar">
                 <input type="text" placeholder="Search By Name">
             </div>
             <div class="search_icon">
-            <img src="../../images/searchicon.webp" alt="search icon">
+                <img src="../../images/searchicon.webp" alt="search icon">
             </div>
         </div>
         <div class="chat_list_container">
             <div class="chat_list">
-                <a href="./chat_dm.php">
-                <div class="chat_element_container">
-                    <div class="chat_details">
-                    <div class="chat_img">
-                        <img src="../../images/background2.jpg" alt="">
-                    </div>
-                    <div class="chat_info">
-                        <div class="chat_name">
-                            <h2>
-                                Elvis Kadeya
-                            </h2>
-                        </div>
-                        <div class="chat_msg">
-                            This is the last message
-                        </div>
-                    </div>
-                    </div>
-                    <div class="online_status">
-                        <div class="online_status_icon">
-                            Active
-                        </div>
-                    </div>
-                </div>
-                </a>
+
             </div>
         </div>
     </div>
+    <script src="../scriptjs/get_users.js"></script>
+
 </body>
 
 </html>

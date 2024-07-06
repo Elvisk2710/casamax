@@ -32,7 +32,7 @@ function handleSubscriptionLandlord($conn, $student, $home_id, $contactMethod)
     $sql = 'SELECT subscribers.due_date, subscribers.number_of_houses_left, homerunuserdb.userid, homerunuserdb.email, subscribers.completed
             FROM homerunuserdb
             JOIN subscribers ON homerunuserdb.userid = subscribers.user_id
-            WHERE homerunuserdb.email = ?';
+            WHERE homerunuserdb.userid = ?';
 
     $sql_home = "SELECT contact FROM homerunhouses WHERE home_id = ?";
 
@@ -135,7 +135,7 @@ function handleSubscriptionAgent($conn, $student, $agent_id, $home_id, $contactM
     $sql = 'SELECT subscribers.due_date, subscribers.number_of_houses_left, homerunuserdb.userid, homerunuserdb.email, subscribers.completed
             FROM homerunuserdb
             JOIN subscribers ON homerunuserdb.userid = subscribers.user_id
-            WHERE homerunuserdb.email = ?';
+            WHERE homerunuserdb.userid = ?';
 
     $sql_agent = "SELECT contact FROM agents WHERE agent_id = ?";
 

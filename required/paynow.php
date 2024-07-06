@@ -2,7 +2,7 @@
 session_start();
 
 require_once '../Paynow-PHP-SDK-master/autoloader.php';
-
+require '../homerunphp/advertisesdb.php';
 $paynow = new Paynow\Payments\Paynow(
     '15123',
     '6e65b63a-6da2-4685-a277-855713f19af1',
@@ -11,7 +11,14 @@ $paynow = new Paynow\Payments\Paynow(
 );
 
 $invoice_name = "Casamax Invoice " . time();
-$user_email = filter_var($_SESSION['sessionstudent'], FILTER_SANITIZE_EMAIL);
+$user_id = filter_var($_SESSION['sessionstudent'], FILTER_SANITIZE_EMAIL);
+
+$sql = "SELECT * FROM homerunuserdb WHERE userid = $user_id";
+
+$result = mysqli_query($conn, $sql);
+if ($row = mysqli_fetch_assoc($result)) {
+    $user_email = $row['email'];
+}
 
 $paynow->setResultUrl('https://casamax.co.zw/homerunphp/handle_transaction.php');
 

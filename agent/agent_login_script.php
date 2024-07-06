@@ -40,6 +40,8 @@ if (isset($_POST['submit'])) {
                     echo '<script type="text/javascript"> alert("Wrong Password") </script>';
                     exit();
                 } elseif ($passcheck == true) {
+                    session_destroy();
+                    session_start();
                     $_SESSION['sessionagent'] = $row['email'];
                     $_SESSION['sessionagentId'] = $row['agent_id'];
                     $_SESSION['verified'] = $row['verified'];

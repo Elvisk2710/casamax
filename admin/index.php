@@ -91,7 +91,7 @@ setcookie("loginPage", "login.php", time() + (900 * 1), "/");
 
         if (isset($_POST['logout'])) {
             unset($_SESSION['sessionstudent']);
-
+            session_destroy();
             echo '<script type="text/javascript"> alert("Logout Successful")</script>';
 
             header("refresh:$sec;  index.php?Logoutsuccessful");

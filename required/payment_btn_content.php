@@ -53,7 +53,7 @@ if (!mysqli_stmt_prepare($stmt, $sql)) {
                             header("refresh:$sec;../thank_you.php?university=" . $uni . "&firstname=" . $firstname);
                             echo '<script type="text/javascript"> alert("You have successfully subscribed for our ' . $sub_type . ' package. ENJOY!!") </script>';
 
-                            $_SESSION['sessionstudent'] = $email;
+                            $_SESSION['sessionstudent'] = $userid;
                         } else {
                             header("Location: ../payment.php");
                             echo '<script type="text/javascript"> alert("Sorry!! We Are facing Difficulties With Your Subscription") </script>';

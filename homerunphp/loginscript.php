@@ -35,7 +35,9 @@ if (isset($_POST['submit'])) {
                     $email = $row['email'];
                     $userid = $row['userid'];
                     $uni = $row['university'];
-                    $_SESSION['sessionstudent'] = $email;
+                    session_destroy();
+                    session_start();
+                    $_SESSION['sessionstudent'] = $userid;
 
                     // Check if the user is subscribed
                     $sub_check = "SELECT * FROM subscribers WHERE user_id = ?";
