@@ -2,6 +2,7 @@
 session_start();
 $sec = "0.1";
 setcookie("scriptPage", "homeownerloginscript.php", time() + (900 * 1), "/");
+include '../required/alerts.php';
 
 if (isset($_POST['submit'])) {
     require 'homerunuserdb.php';
@@ -12,14 +13,14 @@ if (isset($_POST['submit'])) {
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
     if (empty($email) || empty($password)) {
-        header("Location: ../homeownerlogin.php?error=Empty Fields");
+        redirect("../homeownerlogin.php?error=All Fields Are Required");
         exit();
     } else {
         $sql = "SELECT * FROM homerunhouses WHERE email = ?";
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("Location: ../homeownerlogin.php?error=SQl Error");
+            redirect("../homeownerlogin.php?error=Sorry SQL Error");
             exit();
         } else {
             mysqli_stmt_bind_param($stmt, "s", $email);
@@ -30,15 +31,17 @@ if (isset($_POST['submit'])) {
                 $passcheck = password_verify($password, $row['passw']);
 
                 if ($passcheck == false) {
-                    header("Location: ../homeownerlogin.php?error=Wrong Password");
+                    redirect("../homeownerlogin.php?error=Oops!! Wrong Password");
+
                     exit();
                 } elseif ($passcheck == true) {
                     $_SESSION['sessionowner'] = $row['home_id'];
-                    header("Location: ../profile.php?loginsuccess");
+                    redirect("../profile.php??error=You Have Logged In Successfully");
+
                     exit();
                 }
             } else {
-                header("Location: ../homeownerlogin.php?error=User Not Found");
+                redirect("../profile.php??error=Oops!! User Not Found");
                 exit();
             }
         }
@@ -46,13 +49,14 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_POST['logout'])) {
     if (isset($_SESSION['sessionowner'])) {
         session_destroy();
-        header("Location: ../index.php?error=Logged Out");
+        redirect("../index.php??error=You Have Logged Out Successfully");
+
         exit();
     } else {
-        header("Location: ../index.php");
+        redirect("../index.php??error=You Have Logged Out Successfully");
         exit();
     }
 } else {
-    header("Location: ../index.php?error=Access Denied");
+    redirect("../index.php??error=Access Denied");
     exit();
 }

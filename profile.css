@@ -27,18 +27,17 @@ header{
     overflow: hidden;
 }
 body{
-    background-color: white;
+    background-color: rgb(248, 248, 248);
 }
 .container{
     margin: 20px auto;
-    box-shadow: 0 0 10px rgba(44, 44, 44, 0.815);
-    width: 80%;
+    box-shadow: 0 0 10px rgba(44, 44, 44, 0.115);
+    width: 60%;
     height: 40%;
-    display: block;
     align-items: center;
     border-radius: 10px;
-    position: static; 
     padding: 20px;
+    background-color: white;
 }
 .logo{
     width: 6vw;
@@ -231,6 +230,11 @@ tr .value{
     text-align: center;
     height: fit-content;
 }
+.edit button{
+    width: 140px;
+    padding: 10px 10px;
+    max-width: 140px;
+}
 button:active{
     transform: scale(0.9);
     /* Scaling button to 0.98 to its original size */
@@ -244,13 +248,11 @@ button:active{
     border: none;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    padding: 15px 20px ;
     border-radius: 10px;
     font-weight: 600;
     font-size: 14px;
     transition: 0.3s all;
-    flex-basis: 50%;
-
+    margin: 0 auto;
 }
 .edit{
     display: flex;
@@ -258,7 +260,7 @@ button:active{
     justify-content: center;
     justify-items: center;
     align-items: center;
-    gap: 40px;
+    gap: 20px;
 }
 .profile-bottom{
     text-align: center;

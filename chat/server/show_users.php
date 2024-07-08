@@ -13,11 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Get the parameters from the query string
     if (isset($_SESSION['sessionstudent'])) {
         $user_id = $_SESSION['sessionstudent'];
-        $sql = "SELECT * FROM homerunhouses";
-        $student = true;
+        $sql = "SELECT email, home_id,firstname,lastname, status
+        FROM homerunhouses
+        WHERE agent_id = '' OR admin_id = '' GROUP BY email, home_id";
+         $student = true;
     } elseif (isset($_SESSION['sessionowner'])) {
         $user_id = $_SESSION['sessionowner'];
-        $sql = "SELECT * FROM homerunuserdb";
+        $sql = "SELECT DISTINCT email,userid,status FROM homerunuserdb ";
     } else {
         $user_id = null;
         $output .= "Please Login First";
@@ -40,8 +42,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             } else {
                 $chat_id =  $row['userid'];
             }
+            $sqlMsg = "SELECT * 
+            FROM messages
+            WHERE (incoming_msg_id = '{$user_id}' OR outgoing_msg_id = '{$user_id}') 
+              AND (outgoing_msg_id = '{$chat_id}' OR incoming_msg_id = '{$chat_id}')
+            ORDER BY msg_id DESC
+            LIMIT 1";
+
+            $resultMsg = mysqli_query($conn, $sqlMsg);
+            $rowMsg = mysqli_fetch_assoc($resultMsg);
+
+            if (mysqli_num_rows($resultMsg) > 0) {
+                $resultText = $rowMsg['msg'];
+
+            } else {
+                $resultText = "No Messages Available";
+            }
+            if(strlen($resultText) > 28){
+                $msg = substr($resultText, 0, 28) . '....' ;
+                ($user_id == $rowMsg['outgoing_msg_id']) ? $you = 'You: ' : $you = '';
+
+             }else{
+                $msg = $resultText;
+                $you ='';
+             } 
+
+
+            // trimming message if the words are more than 28
+            $offline = false;
+            if ($row['status'] == "offline") {
+                $offline = true;
+                $status = $row['status'];
+                $div = '<div class="online_status_icon offline">';
+            } else {
+                $offline = false;
+                $status = $row['status'];
+                $div = '<div class="online_status_icon">';
+            }
             $output .= '
-                  <a href="./chat_dm.php?chat_id='. $chat_id .'&student='.$student.'">
+                  <a href="./chat_dm.php?chat_id=' . $chat_id . '&student=' . $student . '">
                     <div class="chat_element_container">
                         <div class="chat_details">
                             <div class="chat_img">
@@ -54,13 +93,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     </h2>
                                 </div>
                                 <div class="chat_msg">
-                                    This is the last message
+                                    ' . $you . $msg . '
                                 </div>
                             </div>
                         </div>
-                        <div class="online_status">
-                            <div class="online_status_icon">
-                                '.$row['status'].'
+                        <div class="online_status">' .
+                $div
+                . '
+                                ' . $status . '
                             </div>
                         </div>
                     </div>

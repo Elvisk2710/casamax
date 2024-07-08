@@ -2,6 +2,7 @@
 $sec = "0.1";
 // Add database connection
 require 'homerunuserdb.php';
+require '../required/alerts.php';
 
 if (isset($_POST['submit'])) {
     $firstname = $_POST['firstname'];
@@ -21,19 +22,16 @@ if (isset($_POST['submit'])) {
     $contact = filter_var($contact, FILTER_SANITIZE_NUMBER_INT);
 
     if (empty($firstname) || empty($lastname) || empty($password) || empty($confirmpass) || empty($email) || empty($dob) || empty($gender) || empty($contact) || $uni === "none") {
-        header("refresh:$sec;  ../signup.php?error=emptyfields&firstname=" . urlencode($firstname));
-        exit();
+        redirect("../signup.php?error=emptyfields&firstname=" . urlencode($firstname));
     } elseif ($password !== $confirmpass) {
-        header("refresh:$sec; ../signup.php?error=Passwwords Do Not Match&firstname=" . urlencode($firstname));
-        exit();
+        redirect("../signup.php?error=Passwwords Do Not Match&firstname=" . urlencode($firstname));
     } else {
         $sql = "SELECT email FROM homerunuserdb WHERE email = ?";
         $stmt = mysqli_stmt_init($conn);
 
         // Preparing SQL statement
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("refresh:$sec;  ../signup.php?error=SQL Error");
-            exit();
+            redirect("refresh:$sec;  ../signup.php?error=SQL Error");
         } else {
             mysqli_stmt_bind_param($stmt, "s", $email);
             mysqli_stmt_execute($stmt);
@@ -41,9 +39,7 @@ if (isset($_POST['submit'])) {
             $rowCount = mysqli_stmt_num_rows($stmt);
 
             if ($rowCount > 0) {
-                header("refresh:$sec; ../signup.php?error=Email Already In Use");
-                echo '<script type="text/javascript"> alert("OOPS! EMAIL ALREADY EXISTS") </script>';
-                exit();
+                redirect("../signup.php?error=Email Already In Use");
             } else {
                 $hashedpass = password_hash($password, PASSWORD_DEFAULT);
 
@@ -79,9 +75,7 @@ if (isset($_POST['submit'])) {
                 }
 
                 if (empty($uni_code)) {
-                    header("refresh:$sec; ./signup.php?FailedToGenerateID");
-                    echo '<script type="text/javascript"> alert("Sorry Failed To Generate Agent ID!") </script>';
-                    exit();
+                    redirect("../signup.php?error=Failed To Generate ID");
                 }
 
                 $userid = $uni_code . "_" . $randcode . "_" . $lastid;
@@ -91,18 +85,15 @@ if (isset($_POST['submit'])) {
                 if ($stmt) {
                     mysqli_stmt_bind_param($stmt, "sssssssss", $firstname, $lastname, $hashedpass, $email, $dob, $gender, $contact, $uni, $userid);
                     if (mysqli_stmt_execute($stmt)) {
-                        header("refresh:$sec; ../login.php?You Have Successfully Registered");
-                        echo '<script type="text/javascript"> alert("YOU HAVE SUCCESSFULLY REGISTERED!") </script>';
-                        exit();
+                        redirect("../login.php?You Have Successfully Registered");
                     } else {
-                        header("refresh:$sec; ./signup.php?Failed To Generate ID");
-                        echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
-                        exit();
+                        redirect("../signup.php?error=Failed To Generate ID");
                     }
                 } else {
-                    header("refresh:$sec; ./signup.php?Failed To Generate ID");
+                    header("refresh:$sec; ../signup.php?error=Failed To Generate ID");
                     echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
                     exit();
+                    redirect("../signup.php?error=Failed Stmt");
                 }
             }
         }

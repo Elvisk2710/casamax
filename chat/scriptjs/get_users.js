@@ -6,7 +6,6 @@ setInterval(() => {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
         let data = xhr.response;
-        console.log(userList);
         userList.innerHTML = data;
       }
     }

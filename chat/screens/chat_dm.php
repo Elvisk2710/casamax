@@ -2,6 +2,7 @@
 session_start();
 // connection to databse
 require '../../homerunphp/advertisesdb.php';
+$chat = true;
 $student = false;
 if (isset($_SESSION['sessionstudent'])) {
     $sender_id = $_SESSION['sessionstudent'];
@@ -64,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <div class="container">
         <div class="header">
             <div class="header_img">
-                <img src="../../images/background2.jpg" alt="">
+                <img src="../../images/logowhite.png" alt="">
             </div>
             <div class="header_info">
                 <div class="name">
@@ -118,5 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     </div>
 </body>
 <script src="../scriptjs/chats.js"></script>
+<script src="../scriptjs/user_status.js"></script>
 
 </html>

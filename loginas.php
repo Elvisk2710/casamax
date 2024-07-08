@@ -18,6 +18,7 @@ require './required/ads_query.php';
 <body onunload="" class="scrollable">
     <?php
     require_once 'required/pageloader.php';
+    $chat = true;
     ?>
     <header>
         <a href="index.php">
@@ -29,13 +30,13 @@ require './required/ads_query.php';
             <h1>Log-In As</h1>
         </div>
         <div class="login">
-            <a href="homeownerlogin.php"><button type="button" name="submit">
+            <a href="homeownerlogin.php?redirect=<?php echo $redirect ?>"><button type="button" name="submit">
                     HOME OWNER
                 </button>
             </a>
         </div>
         <div class="login">
-            <a href="login.php"><button type="button" name="submit">
+            <a href="login.php?redirect=<?php echo $redirect ?>"><button type="button" name="submit">
                     STUDENT
                 </button></a>
         </div>
@@ -44,7 +45,6 @@ require './required/ads_query.php';
                     AGENT
                 </button></a>
         </div>
-
     </div>
 </body>
 

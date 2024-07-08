@@ -1,7 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+ /* floating chat icon */
+ .floating_chat_icon {
+    background-color: rgb(252, 153, 82);
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    bottom: 10vh;
+    right: 5vw;
+    z-index: 1000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
 
+.floating_chat_icon:active {
+    transform: scale(0.95);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+    transition: 0.3s all;
+}
+
+.floating_chat_icon a:active {
+    transform: scale(0.95);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+    transition: 0.3s all;
+}
+
+.floating_chat_icon a img:active {
+    transform: scale(0.95);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+    transition: 0.3s all;
+}
+
+.floating_chat_icon a {
+    width: 40px;
+    height: 40px;
+}
+
+.floating_chat_icon a img {
+    width: 40px;
+    height: 40px;
+}
+/* home styling */
 *{
     margin: 0;
     padding: 0; 

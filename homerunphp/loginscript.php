@@ -1,24 +1,26 @@
 <?php
 session_start();
 $sec = "0.1";
-
+require 'homerunuserdb.php';
+include '../required/alerts.php';
 if (isset($_POST['submit'])) {
-    require 'homerunuserdb.php';
-
+    if (isset($_GET['redirect'])) {
+        $redirect = $_GET['redirect'];
+    }
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
     if (empty($email) || empty($password)) {
-        header("Location: ../login.php?error=Empty Fields");
+        redirect("../login.php?error=All Fields Are Required");
         exit();
     } else {
         $sql = "SELECT * FROM homerunuserdb WHERE email = ?";
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("Location: ../login.php?error=SQL Error");
+            redirect("../login.php?error=Sorry SQL Error");
             exit();
         } else {
             mysqli_stmt_bind_param($stmt, "s", $email);
@@ -29,7 +31,7 @@ if (isset($_POST['submit'])) {
                 $passcheck = password_verify($password, $row['passw']);
 
                 if ($passcheck == false) {
-                    header("Location: ../login.php?error=Wrong Pass");
+                    redirect("../login.php?error=Sorry Wrong Password!!");
                     exit();
                 } elseif ($passcheck == true) {
                     $email = $row['email'];
@@ -44,7 +46,7 @@ if (isset($_POST['submit'])) {
                     $stmt = mysqli_stmt_init($conn);
 
                     if (!mysqli_stmt_prepare($stmt, $sub_check)) {
-                        header("Location: ../login.php?error=Sql Error");
+                        redirect("../login.php?error=Sorry SQL Error");
                         exit();
                     } else {
                         mysqli_stmt_bind_param($stmt, "s", $userid);
@@ -55,13 +57,13 @@ if (isset($_POST['submit'])) {
                         if (!$rowCount > 0) {
                             setcookie("cookiestudent", $userid, time() + (86400 * 1), "/");
                             setcookie("emailstudent", $email, time() + (86400 * 1), "/");
-                            header("Location: ../payment.php?error=Subscribe");
+                            redirect("../payment.php?error=Please Subscribe");
                             exit();
                         } else {
                             $results = mysqli_fetch_array($sub_db_check);
                             $today = strtotime(date('y-m-d'));
                             if (strtotime($results['due_date']) < $today || $results['number_of_houses'] == 0 || $results['completed'] == 1) {
-                                header("Location: ../payment.php?eeror=Subscription Has Ended");
+                                redirect("../payment.php?eeror=Subscription Has Ended");
                             } else {
                                 // Redirect based on university
                                 $universityMapping = array(
@@ -77,18 +79,22 @@ if (isset($_POST['submit'])) {
 
                                 if (array_key_exists($uni, $universityMapping)) {
                                     $redirectUrl = $universityMapping[$uni];
-                                    header("Location: $redirectUrl?success=" . $email);
+                                    if ($redirect == "chat") {
+                                        redirect("../chat/screens/index.php?error=You Have Logged In Successfully");
+                                    } else {
+                                        redirect($redirectUrl . "?error=You Have Logged In Successfully");
+                                    }
                                     exit();
                                 }
                             }
                         }
                     }
                 } else {
-                    header("Location: ../login.php?error=Wrong Pass");
+                    redirect("../login.php?error=Wrong Password");
                     exit();
                 }
             } else {
-                header("Location: ../login.php?error=User Not Found");
+                redirect(" ../login.php?error=Sorry, User Not Found");
                 exit();
             }
         }
@@ -97,6 +103,6 @@ if (isset($_POST['submit'])) {
     if (isset($_SESSION['sessionstudent'])) {
         session_destroy();
     }
-    header("Location: ../index.php?error=Logged Out");
+    redirect(" ../index.php?error=Logged Out");
     exit();
 }

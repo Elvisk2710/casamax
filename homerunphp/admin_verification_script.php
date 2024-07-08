@@ -3,6 +3,8 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
+include '../required/alerts.php';
+
 // Verify if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check for necessary data

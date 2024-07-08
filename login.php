@@ -3,11 +3,6 @@ session_start();
 require './required/ads_query.php';
 setcookie("page_pass", "homerunuserdb", time() + (900 * 1), "/");
 setcookie("loginPage", "login.php", time() + (900 * 1), "/");
-
-if (isset($_GET['error'])) {
-    $error = $_GET['error'];
-    echo "<script>alert('$error')</script>";
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +27,7 @@ if (isset($_GET['error'])) {
     </header>
 
     <div class="container">
-        <form action="./homerunphp/loginscript.php" method="post">
+        <form action="./homerunphp/loginscript.php?redirect=<?php echo $redirect ?>" method="post">
             <div>
                 <h3 class="h3reg">Student</h3>
                 <h1>Log-In</h1>

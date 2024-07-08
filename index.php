@@ -95,7 +95,7 @@ if (isset($_GET['error'])) {
 
         <header>
             <a href="index.php">
-                <img src="images/logowhite.png" alt="logo" class="logo"> 
+                <img src="images/logowhite.png" alt="logo" class="logo">
             </a>
 
             <nav id="navBar">
@@ -106,8 +106,14 @@ if (isset($_GET['error'])) {
                 <a href="./manage/index.php">MANAGE RENTAL</a>
                 <a href="advertise_as/index.php">ADVERTISE</a>
                 <a href="help.php">HELP</a>
-                <a href="loginas.php" class="sign_in" name="loginbtn">LOGIN</a>
-
+                <a href="./chat/screens/">MY CHATS</a>
+                <?php
+                if (!isset($_SESSION['sessionstudent'])) {
+                    echo '<a href="./loginas.php" class="sign_in" name="loginbtn">LOGIN</a>';
+                } else {
+                    echo '<a href="./student_profile.php" class="sign_in" name="loginbtn">MY PROFILE</a>';
+                }
+                ?>
             </nav>
 
             <!-- popup for cookie consent -->
@@ -328,9 +334,20 @@ if (isset($_GET['error'])) {
             </div>
         </div>
     </div>
-
+    <?php
+    if (!isset($_GET['chat_id'])) {
+    ?>
+        <div class="floating_chat_icon" title="chats">
+            <a href="https://localhost/casamax/chat/screens/">
+                <img src="https://localhost/casamax/images/logowhite.png" alt="">
+            </a>
+        </div>
+    <?php
+    }
+    ?>
     <script src="./jsfiles/onclickscript.js"></script>
     <script src="app.js"></script>
+    <script src="./chat/scriptjs/user_status.js"></script>
 </body>
 
 </html>

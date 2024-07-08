@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'advertisesdb.php';
+include '../required/alerts.php';
 
 /* 
  * Custom function to compress image size and 
@@ -172,17 +173,13 @@ if (isset($_POST['create_profile'])) {
 
 
         if ($password !== $confirmpass) {
-            header("refresh:$sec; ../admin/dashboard/index.php?error=Passwords Do Not Match" . $firstname);
-            echo '<script type="text/javascript"> alert("Passwords Do Not Mtatch") </script>';
-            exit();
+            redirect("../admin/dashboard/index.php?error=Passwords Do Not Match" . $firstname);
         } else {
             $sql = "SELECT email FROM homerunhouses WHERE email = ?";
             $stmt = mysqli_stmt_init($conn);
 
             if (!mysqli_stmt_prepare($stmt, $sql)) {
-                header("refresh:$sec;  ../admin/dashboard/index.php?error=SQL Error");
-                echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
-                exit();
+                redirect("../admin/dashboard/index.php?error=SQL Error");
             } else {
                 mysqli_stmt_bind_param($stmt, "s", $email);
                 mysqli_stmt_execute($stmt);
@@ -190,9 +187,7 @@ if (isset($_POST['create_profile'])) {
                 $rowCount = mysqli_stmt_num_rows($stmt);
 
                 if ($rowCount > 0) {
-                    header("refresh:$sec;  ../admin/dashboard/index.php?error=User Already Exists");
-                    echo '<script type="text/javascript"> alert("User Already Exists") </script>';
-                    exit();
+                    redirect(" ../admin/dashboard/index.php?error=User Already Exists");
                 } else {
 
                     $hashedpass = password_hash($password, PASSWORD_DEFAULT);
@@ -205,8 +200,7 @@ if (isset($_POST['create_profile'])) {
 
                     $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,idnum,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,adrs,people_in_a_room,passw,admin_id,id_image,res_image) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
                     if (!$stmt = mysqli_stmt_init($conn)) {
-                        echo '<script type="text/javascript"> alert("SQL ERROR init failure") </script>';
-                        exit();
+                        redirect(" ../admin/dashboard/index.php?error=SQL Error Init Failed");
                     } else {
                         // directory path to folder for verification imaages
                         $directoryPath = '../verification_images/' . $home_id . '/';
@@ -220,25 +214,20 @@ if (isset($_POST['create_profile'])) {
                                 if (move_uploaded_file($residencyImages['tmp_name'], $residencyFileDestination) && move_uploaded_file($identityImages['tmp_name'], $identityFileDestination)) {
                                     echo "Directory created successfully.";
                                     if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                        header("refresh:$sec;  ../admin/dashboard/index.php?error=Stmt Prepare Error");
-                                        echo '<script type="text/javascript"> alert("SQL ERROR preparing stmt failed") </script>';
-                                        exit();
+                                        redirect(" ../admin/dashboard/index.php?error=Stmt Prepare Error");
                                     } else {
                                         if (!mysqli_stmt_bind_param($stmt, "ssssisisssssssssssiiiiisissss", $home_id, $email, $firstname, $lastname, $phone, $idnum, $price, $description, $uni, $image1, $image2, $image3, $image4, $image5, $image6, $image7, $image8, $gender, $kitchen, $fridge, $wifi, $borehole, $transport, $address, $people, $hashedpass, $admin_id, $identityImages['name'], $residencyImages['name'])) {
-                                            echo '<script type="text/javascript"> alert("SQL ERROR binding stms failed") </script>';
+                                            redirect(" ../admin/dashboard/index.php?error=SQL ERROR binding stms failed");
                                         } else {
                                             if (!mysqli_stmt_execute($stmt)) {
                                                 $error = mysqli_stmt_error($stmt);
-                                                print("Error : " . $error);
-                                                echo '<script type="text/javascript"> alert("SQL ERROR execute failure") </script>';
+                                                redirect(" ../admin/dashboard/index.php?error=$error");
                                             } else {
 
                                                 if ($count <= 0) {
                                                     header("location:../admin/dashboard/index.php?error=Profile Created");
-                                                    $_SESSION['sessionowner'] = $email;
-                                                    echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") 
-                                                                        </script>';
-                                                    exit();
+                                                    $_SESSION['sessionowner'] = $home_id;
+                                                    redirect(" ../admin/dashboard/index.php?error=Profile Created!! NO images have been uploaded. Please go toyour profile page and upload images");
                                                 } else {
 
                                                     $status = 'failed';
@@ -283,49 +272,35 @@ if (isset($_POST['create_profile'])) {
                                                             require '../homerunphp/upload.php';
                                                         }
                                                     } else {
-                                                        echo '<script type="text/javascript"> alert("Error While Uploading") </script>';
+                                                        redirect(" ../admin/dashboard/index.php?error=Error While Uploading");
                                                     }
                                                 }
                                                 if ($status == 'error') {
-                                                    header("refresh:$sec;  ../admin/dashboard/index.php?error=$statusMsg");
-                                                    echo '<script type="text/javascript"> alert(' . $statusMsg . ')';
+                                                    redirect("  ../admin/dashboard/index.php?error=$statusMsg");
                                                 } elseif ($status == 'success') {
-                                                    header("location:../admin/dashboard/index.php?error=Profile Created");
-                                                    $_SESSION['sessionowner'] = $email;
-                                                    echo '<script type="text/javascript"> alert(' . $statusMsg . ')';
-                                                    exit();
+                                                    $_SESSION['sessionowner'] = $home_id;
+                                                    header("../admin/dashboard/index.php?error=Profile Created");
                                                 } else {
-                                                    header("location:../admin/dashboard/index.php?error=Profile Created");
-                                                    $_SESSION['sessionowner'] = $email;
-                                                    echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") 
-                                                                            </script>';
-                                                    exit();
+                                                    $_SESSION['sessionowner'] = $home_id;
+                                                    redirect(" ../admin/dashboard/index.php?error=Profile Created!! NO images have been uploaded. Please go toyour profile page and upload images");
                                                 }
                                             }
                                         }
                                     }
                                 } else {
-                                    header("location:../admin/dashboard/index.php?error=Failed To Move Images");
-                                    echo '<script type="text/javascript"> alert("Verification Images Failed") </script>';
-                                    exit();
+                                    redirect(" ../admin/dashboard/index.php?error=Failed To Move Images");
                                 }
                             } else {
-                                header("location:../admin/dashboard/index.php?error=Failed To Create Directory For Verification");
-                                echo '<script type="text/javascript"> alert("Failed to create directory") </script>';
-                                exit();
+                                redirect("../admin/dashboard/index.php?error=Failed To Create Directory For Verification");
                             }
                         } else {
-                            header("location:../admin/dashboard/index.php?error=Directory Already Exists");
-                            echo '<script type="text/javascript"> alert("Directory Already Exists") </script>';
-                            exit();
+                            redirect("../admin/dashboard/index.php?error=Directory Already Exists");
                         }
                     }
                 }
             }
         }
     } else {
-        header("location:../admin/dashboard/index.php?error=No Verification Images");
-        echo '<script type="text/javascript"> alert("NO images have been submitted for verification") 
-</script>';
+        redirect("../admin/dashboard/index.php?error=No Verification Images");
     }
 }

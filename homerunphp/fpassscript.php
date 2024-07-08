@@ -1,5 +1,5 @@
 <?php
-
+include '../required/alerts.php';
 session_start();
 $table = $_COOKIE['page_pass'];
 

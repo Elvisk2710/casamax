@@ -1,15 +1,14 @@
 <?php
 session_start();
 require './advertisesdb.php';
+require '../required/alerts.php';
 if (isset($_SESSION['sessionstudent'])) {
     $student = $_SESSION['sessionstudent'];
     $home_id = $_GET['home_id'];
 
     if ($_GET['route'] == "landlord") {
-        if (isset($_POST['check_sub_whatsapp_landlord']) || $_POST['check_sub_whatsapp_landlord']) {
-            handleSubscriptionLandlord($conn, $student, $home_id, "whatsapp");
-        } elseif (isset($_POST['check_sub_call_landlord']) || $_POST['check_sub_call_landlord']) {
-            handleSubscriptionLandlord($conn, $student, $home_id, "call");
+        if (isset($_POST['check_sub_chat_landlord']) || $_POST['check_sub_chat_landlord']) {
+            handleSubscriptionChat($conn, $student, $home_id, "chat");
         }
     } elseif ($_GET['route'] == "agent" && isset($_GET['agent_id'])) {
         $agent_id = $_GET['agent_id'];
@@ -26,7 +25,7 @@ if (isset($_SESSION['sessionstudent'])) {
     header("Location: ../login.php?error='Login First'");
     exit;
 }
-function handleSubscriptionLandlord($conn, $student, $home_id, $contactMethod)
+function handleSubscriptionChat($conn, $student, $home_id, $contactMethod)
 {
     // Update the SQL query to use prepared statements
     $sql = 'SELECT subscribers.due_date, subscribers.number_of_houses_left, homerunuserdb.userid, homerunuserdb.email, subscribers.completed
@@ -79,31 +78,21 @@ function handleSubscriptionLandlord($conn, $student, $home_id, $contactMethod)
                     $result_home = mysqli_stmt_get_result($stmt_home);
                     if ($result_home) {
                         $row_home = mysqli_fetch_array($result_home);
-                        $contact = $row_home['contact'];
-                        $contact = preg_replace('/[^0-9]/', '', $contact); // Remove non-numeric characters
-
-                        if ($contactMethod === "whatsapp") {
-                            $url = "https://wa.me/263" . $contact . "?text=Hello.%20I%20saw%20your%20boarding%20house%20on%20CasaMax.co.zw%20and%20I%20am%20interested%20in%20being%20a%20tenant%20there.%20Is%20it%20still%20available%3F";
-                        } elseif ($contactMethod === "call") {
-                            $url = "tel:+263" . $contact;
-                        }
-
-                        $options = [
-                            'http' => [
-                                'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-                                'ignore_errors' => true // Ignore HTTP errors
-                            ]
-                        ];
-                        $context = stream_context_create($options);
-                        $response = file_get_contents($url, false, $context);
-                        if ($response !== false) {
-                            // Successfully retrieved the URL content
-                            echo 'openPage()';
-                            echo $response;
-                        } else {
-                            // Error occurred while opening the URL
-                            redirectToListingDetails($home_id, "Failed To Execute URL Request");
-                        }
+                        redirect("../chat/screens/chat_dm.php?chat_id=" . $home_id . "&student=1");
+                        // $options = [
+                        //     'http' => [
+                        //         'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+                        //         'ignore_errors' => true // Ignore HTTP errors
+                        //     ]
+                        // ];
+                        // $context = stream_context_create($options);
+                        // $response = file_get_contents($url, true, $context);
+                        // if ($response !== false) {
+                        //     // Successfully retrieved the URL content
+                        // } else {
+                        //     // Error occurred while opening the URL
+                        //     redirectToListingDetails($home_id, "Failed To Execute URL Request");
+                        // }
                     }
                 } else {
                     // Handle case when Failed to execute stmt request
@@ -240,17 +229,13 @@ function logError($errorMessage)
 function redirectToListingDetails($home_id, $errorMessage)
 {
     // Implement your logic to redirect the user to the listing details page with an error message.
-    header('Location: ../listingdetails.php?clicked_id=' . $home_id . '&error=' . urlencode($errorMessage));
-    echo "<script> alert($errorMessage)</script>";
-    exit();
+    redirect("../listingdetails.php?clicked_id=' . $home_id . '&error=' . urlencode($errorMessage)");
 }
 // redirect to Payment page
 function redirectToPaymentPage($errorMessage)
 {
     // Implement your logic to redirect the user to the payment page with an error message.
-    header('Location: ../payment.php?error=' . urlencode($errorMessage));
-    echo "<script> alert($errorMessage)</script>";
-    exit();
+    redirect("../payment.php?error=' . urlencode($errorMessage)");
 }
 ?>
 

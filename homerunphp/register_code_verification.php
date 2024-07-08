@@ -2,6 +2,7 @@
 $sec = "0.1";
 // Add database connection
 require 'homerunuserdb.php';
+require '../required/alerts.php';
 
 if (isset($_POST['register_code'])) {
     $code = $_POST['code'];
@@ -51,9 +52,7 @@ if (isset($_POST['register_code'])) {
         }
 
         if (empty($uni_code)) {
-            header("refresh:$sec; ./required/code_register.php?Failed To Generate ID");
-            echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
-            exit();
+            redirect("./required/code_register.php?Failed To Generate ID");
         }
 
         $userid = $uni_code . "_" . $randcode . "_" . $lastid;
@@ -76,21 +75,14 @@ if (isset($_POST['register_code'])) {
                 setcookie("uni", "", time() - 900, "/");
                 mysqli_stmt_close($stmt);
                 mysqli_close($conn);
-                header("refresh:$sec; ../login.php?error=You Have Successfully Registered");
-                echo '<script type="text/javascript"> alert("YOU HAVE SUCCESSFULLY REGISTERED!") </script>';
-                exit();
+                redirect("../login.php?error=You Have Successfully Registered");
             } else {
-                header("refresh:$sec; ./required/code_register.php?Failed To Generate ID");
-                echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
-                exit();
+                redirect("./required/code_register.php?Failed To Generate ID");
             }
         } else {
-            header("refresh:$sec; ./required/code_register.php?Failed To Generate ID");
-            echo '<script type="text/javascript"> alert("Sorry Failed to generate agent ID!") </script>';
-            exit();
+            redirect("./required/code_register.php?Failed To Generate ID");
         }
     } else {
-        header("Refresh:0.1, ../required/code_register.php");
-        echo '<script type="text/javascript"> alert("SORRY YOUR CODE DOES NOT MATCH!!") </script>';
+        redirect("../required/code_register.php?error=Sorry You Code Does Not Match");
     }
 }

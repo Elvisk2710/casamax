@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'advertisesdb.php';
-
+include '../required/alerts.php';
 /* 
  * Custom function to compress image size and 
  * upload to the server using PHP 
@@ -109,7 +109,7 @@ if (isset($_POST['create_profile'])) {
         }
     }
 
-    if (!empty($_FILES['identityImage']['name']) || !empty($_FILES['residencyImage']['name'])) {
+    if (!empty($_FILES['identityImage']['name']) || !empty($_FILES['residencyImage']['name']) || $count = 0) {
         // identity image
         $identityImages = $_FILES['identityImage'];
         // residencial proof image
@@ -171,17 +171,13 @@ if (isset($_POST['create_profile'])) {
 
 
         if ($password !== $confirmpass) {
-            header("refresh:$sec;  ../advertise/index.php?error=Passwords Do Not Match" . $firstname);
-            echo '<script type="text/javascript"> alert("Passwords Do Not Mtatch") </script>';
-            exit();
+            redirect("../advertise/index.php?error=Passwords Do Not Match");
         } else {
             $sql = "SELECT email FROM homerunhouses WHERE email = ?";
             $stmt = mysqli_stmt_init($conn);
 
             if (!mysqli_stmt_prepare($stmt, $sql)) {
-                header("refresh:$sec;  ../advertise/index.php?error=SQL Error");
-                echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
-                exit();
+                redirect(" ../advertise/index.php?error=SQL Error");
             } else {
                 mysqli_stmt_bind_param($stmt, "s", $email);
                 mysqli_stmt_execute($stmt);
@@ -189,11 +185,8 @@ if (isset($_POST['create_profile'])) {
                 $rowCount = mysqli_stmt_num_rows($stmt);
 
                 if ($rowCount > 0) {
-                    header("refresh:$sec;  ../advertise/index.php?error=User Name Already Exists");
-                    echo '<script type="text/javascript"> alert("User Already Exists") </script>';
-                    exit();
+                    redirect(" ../advertise/index.php?error=User Name Already Exists");
                 } else {
-
                     $hashedpass = password_hash($password, PASSWORD_DEFAULT);
                     $timestamp = time(); // Current timestamp
                     $randomString = bin2hex(random_bytes(4)); // Generate a random string
@@ -204,9 +197,7 @@ if (isset($_POST['create_profile'])) {
 
                     $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,idnum,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,adrs,people_in_a_room,passw,id_image,res_image) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
                     if (!$stmt = mysqli_stmt_init($conn)) {
-                        header("refresh:$sec;  ../advertise/index.php?error=Init Failure");
-                        echo '<script type="text/javascript"> alert("SQL ERROR init failure") </script>';
-                        exit();
+                        redirect("../advertise/index.php?error=Init Failure");
                     } else {
                         // directory path to folder for verification imaages
                         $directoryPath = '../verification_images/home_verification_images/' . $home_id . '/';
@@ -218,24 +209,18 @@ if (isset($_POST['create_profile'])) {
                                 if (move_uploaded_file($residencyImages['tmp_name'], $residencyFileDestination) && move_uploaded_file($identityImages['tmp_name'], $identityFileDestination)) {
                                     echo "Directory created successfully.";
                                     if (!mysqli_stmt_prepare($stmt, $sql)) {
-                                        header("refresh:$sec;  ../advertise/index.php?error=SQL Error");
-                                        echo '<script type="text/javascript"> alert("SQL stmt prepare failure") </script>';
-                                        exit();
+                                        redirect("../advertise/index.php?error=SQL Error");
                                     } else {
                                         if (!mysqli_stmt_bind_param($stmt, "ssssisisssssssssssiiiiisisss", $home_id, $email, $firstname, $lastname, $phone, $idnum, $price, $description, $uni, $image1, $image2, $image3, $image4, $image5, $image6, $image7, $image8, $gender, $kitchen, $fridge, $wifi, $borehole, $transport, $address, $people, $hashedpass, $identityImages['name'], $residencyImages['name'])) {
-                                            header("refresh:$sec;  ../advertise/index.php?error=Bind Param Failure");
-                                            echo '<script type="text/javascript"> alert("SQL ERROR binding stms failed") </script>';
+                                            redirect("../advertise/index.php?error=Bind Param Failure");
                                         } else {
                                             if (!mysqli_stmt_execute($stmt)) {
                                                 $error = mysqli_stmt_error($stmt);
                                                 print("Error : " . $error);
-                                                echo '<script type="text/javascript"> alert("SQL ERROR execute failure") </script>';
+                                                redirect("../advertise/index.php?error=$error");
                                             } else {
                                                 if ($count <= 0) {
-                                                    header("location:../profile.php?error=Profile Created");
-                                                    $_SESSION['sessionowner'] = $email;
-                                                    echo '<script type="text/javascript"> alert("NO images have been uploaded. Please go toyour profile page and upload images") </script>';
-                                                    exit();
+                                                    redirect("../advertise/index.php?error=NO images have been uploaded. Please Try Again");
                                                 } else {
 
                                                     $status = 'failed';
@@ -272,35 +257,30 @@ if (isset($_POST['create_profile'])) {
                                                             require '../homerunphp/upload.php';
                                                             echo $num;
                                                         }
+                                                        redirect("../profile.php?error=Images Uploaded successfully");
                                                     } else {
-                                                        echo '<script type="text/javascript"> alert("Error while uploading") </script>';
+                                                        redirect("../advertise/index.php?error=NO images have been uploaded. Please Try Again");
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 } else {
-                                    header("refresh:$sec;  ../advertise/index.php?error=Failed To Move Images");
-                                    echo '<script type="text/javascript"> alert("Verification Images Failed") </script>';
-                                    exit();
+                                    redirect("../advertise/index.php?error=Failed To Move Images");
                                 }
                             } else {
-                                header("refresh:$sec;  ../advertise/index.php?error=Failed To Create Directory For Verification");
-                                echo '<script type="text/javascript"> alert("Failed to create directory") </script>';
-                                exit();
+                                redirect("../advertise/index.php?error=Failed To Create Directory For Verification");
                             }
                         } else {
-                            header("refresh:$sec;  ../advertise/index.php?error=Directory Already Exists");
-                            echo '<script type="text/javascript"> alert("Directory Already Exists") </script>';
-                            exit();
+                            redirect("../advertise/index.php?error=Directory Already Exists");
                         }
                     }
                 }
             }
         }
+    } else {
+        redirect("../advertise/index.php?error=Please Upload The Required Documents");
     }
 } else {
-    header("location:../advertise/index.php?error=NoVerificationImages");
-    echo '<script type="text/javascript"> alert("NO images have been submitted for verification") 
-</script>';
+    redirect("../ndex.php?error=Access Denied");
 }

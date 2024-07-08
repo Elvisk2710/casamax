@@ -1,5 +1,6 @@
 <?php
 session_start();
+require '../required/alerts.php';
 require "./advertisesdb.php";
 $sec = "0.1";
 
@@ -8,8 +9,7 @@ if (isset($_POST['update'])) {
     $user = $_SESSION['sessionowner'];
 
     if (empty($user)) {
-        header("refresh:$sec;  ../homeownerlogin.php?error=You Have To Login First");
-        exit();
+        redirect(" ../homeownerlogin.php?error=You Have To Login First");
     } else {
         $user = $_SESSION['sessionowner']; // Use session variable instead of cookie
         $update = $_POST['availability'];
@@ -23,11 +23,9 @@ if (isset($_POST['update'])) {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            header("refresh:$sec; ../profile.php?success=Update Successful");
-            echo '<script type="text/javascript"> alert("Update Successfully") </script>';
+            redirect(" ../profile.php?success=Update Successful");
         } else {
-            header("refresh:$sec; ../profile.php?error=SQL Error");
-            echo '<script type="text/javascript"> alert("SQLError") </script>';
+            redirect(" ../profile.php?error=SQL Error");
         }
     }
 }

@@ -10,7 +10,8 @@ if (isset($_SESSION['sessionstudent'])) {
     $sender_id = $_SESSION['sessionowner'];
     $student = false;
 } else {
-    echo "Please Login";
+    header("location: ../../loginas.php?redirect=chat");
+    exit("<>");
 }
 // API endpoint for retrieving data
 if ($student == false) {
@@ -51,7 +52,7 @@ if ($results = mysqli_query($conn, $sql)) {
     <div class="container">
         <div class="header">
             <div class="header_img">
-                <img src="../../images/background2.jpg" alt="">
+                <img src="../../images/logowhite.png" alt="">
             </div>
             <div class="header_info">
                 <div class="name">
@@ -101,6 +102,7 @@ if ($results = mysqli_query($conn, $sql)) {
         </div>
     </div>
     <script src="../scriptjs/get_users.js"></script>
+    <script src="../scriptjs/user_status.js"></script>
 
 </body>
 

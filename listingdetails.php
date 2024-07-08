@@ -119,16 +119,12 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
     } else {
     ?>
         <!-- landlord contact -->
-        <form action="./homerunphp/verify_student_redirect.php?home_id=<?php echo $user ?>&route=landlord" method="post">
-            <button class='contact-host' id='whatsapp' name="check_sub_whatsapp_landlord" type="submit"><img src='images/whatsapp.png' alt=''>
-                WhatsApp Me!
-            </button>
-
-            <button class='contact-host' id='call' name="check_sub_call_landlord" type="submit"><img src='images/dialer.png' alt=''>
-                Call Me!
+        <form action="./homerunphp/verify_student_redirect.php?home_id=<?php echo $user ?>&route=landlord&student=1" method="post">
+            <button class='chatBtn' id='chatBtn' name="check_sub_chat_landlord" type="submit">
+                Chat With Me
             </button>
         </form>
-
+      
         </div>
 
         <h2> Address: "<?php echo $row['adrs'] ?> "</h2>
@@ -139,7 +135,6 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
     ?>
     <div class='map'>
         <a href="http://maps.google.com/?q=<?php echo $row['home_location'] . " Zimbabwe" ?>" style='text-decoration: none; animation: text 2s ease infinite; color: rgb(252,153,82);' target='blank'>View in Maps!</a>
-        <p><?php echo $row['spots_available'] ?> Spots Available</p>
     </div>
 
     <?php

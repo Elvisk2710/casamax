@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require '../required/alerts.php';
 // Perform necessary security checks
 if (isset($_POST['profile_photos']) && !empty($_SESSION['sessionowner'])) {
     // Custom function to sanitize and validate user input
@@ -110,25 +110,21 @@ if (isset($_POST['profile_photos']) && !empty($_SESSION['sessionowner'])) {
         // Update the database with the uploaded image names
         $sql = "UPDATE homerunhouses SET image1=?, image2=?, image3=?, image4=?, image5=?, image6=?, image7=?, image8=? WHERE email=?";
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, 'ssssssssss', ...$uploadedImages, $email);
+        mysqli_stmt_bind_param($stmt, 'ssssssssss', $email, ...$uploadedImages);
         mysqli_stmt_execute($stmt);
 
         if (mysqli_stmt_affected_rows($stmt) > 0) {
             // Images uploaded successfully
-            header("Location: ../profile.php?status=Profile Created");
-            exit();
+            redirect("Location: ../profile.php?status=Profile Updated");
         } else {
             // Failed to update database
-            header("Location: ../profile.php?error=Failed To Upload Images");
-            exit();
+            redirect("Location: ../profile.php?status=Failed To Update Images");
         }
     } else {
         // User not found in the database
-        header("Location: ../profile.php?error=User Not Found");
-        exit();
+        redirect("Location: ../profile.php?error=User Not Found");
     }
 } else {
     // Invalidsession or form submission
-    header("Location: ../profile.php?error=Invalid Session");
-    exit();
+    redirect("Location: ../profile.php?error=Invalid Session");
 }

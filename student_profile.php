@@ -8,7 +8,7 @@ if (empty($_SESSION['sessionstudent'])) {
 } else {
     $user = $_SESSION['sessionstudent'];
     require_once 'homerunphp/advertisesdb.php';
-    $sql = "SELECT * FROM  homerunuserdb WHERE user_id = '$user' ";
+    $sql = "SELECT * FROM  homerunuserdb WHERE userid = '$user' ";
 
     setcookie("update", $user, time() + (86400 * 1), "/");
 }

@@ -2,15 +2,13 @@
 
 session_start();
 require 'advertisesdb.php';
-
-$sec = "0.1";
+include '../required/alerts.php';
 
 if (isset($_POST['submit'])) {
     $user = $_SESSION['sessionowner'];
 
     if (empty($user)) {
-        header("refresh:$sec; ../homeownerlogin.php?error=youhavetologinfirst");
-        echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
+        redirect("../homeownerlogin.php?error=You Have To Login First");
         exit();
     } else {
 
@@ -30,28 +28,21 @@ if (isset($_POST['submit'])) {
         $address = filter_var($address, FILTER_SANITIZE_SPECIAL_CHARS);
 
 
-        $sql = "UPDATE homerunhouses SET firstname = '$firstname', lastname ='$lastname' ,contact = '$phone', price = '$price', people_in_a_room = '$rooms',adrs ='$address' WHERE email = '$user'";
+        $sql = "UPDATE homerunhouses SET firstname = '$firstname', lastname ='$lastname' ,contact = '$phone', price = '$price', people_in_a_room = '$rooms',adrs ='$address' WHERE home_id = '$user'";
 
         $query_run = mysqli_query($conn, $sql);
 
         if (!$query_run) {
-            header("refresh:$sec;  ../profile.php?error=SQL Error");
-            echo '<script type="text/javascript"> alert("SQL Error") </script>';
+            redirect("../profile.php?error=SQL ERROr");
         } else {
-            header("refresh:$sec; ../profile.php?error=Update Success");
-            $_SESSION['sessionowner'] = $email;
-            echo '<script type="text/javascript"> alert("Update Successfully") </script>';
-
-            exit();
+            redirect("../profile.php?error=Update Successful");
         }
     }
 } elseif (isset($_POST['student_submit'])) {
     $user = $_SESSION['sessionstudent'];
 
     if (empty($user)) {
-        header("refresh:$sec; ../login.php?error=You Have To Login First");
-        echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
-        exit();
+        redirect("../login.php?error=You Have To Login First");
     } else {
 
         $firstname = $_POST['firstname'];
@@ -71,18 +62,14 @@ if (isset($_POST['submit'])) {
 
         $query_run = mysqli_query($conn, $sql);
         if (!$query_run) {
-            header("refresh:$sec;  ../student_profile.php?error=SQL Error");
-            echo '<script type="text/javascript"> alert("SQL Error") </script>';
+            redirect("../student_profile.php?error=SQL Error");
         } else {
-            header("refresh:$sec; ../student_profile.php?error=Update Success");
-            echo '<script type="text/javascript"> alert("Update Successfully") </script>';
-            exit();
+            redirect(" ../student_profile.php?error=Update Success");
         }
     }
 } elseif (isset($_POST['student_logout'])) {
     session_unset();
-    header("location: ../login.php");
+    redirect(" ../login.php?error=You Have Logged Out Successfully");
 } else {
-    header("refresh:$sec;  ../index.php?error=Access Denied");
-    echo '<script type="text/javascript"> alert("Access Denied") </script>';
+    redirect(" ../index.php?error=Access Denied");
 }

@@ -1,6 +1,7 @@
 <?php
 session_start();
 $sec = "0.1";
+include '../required/alerts.php';
 
 if (isset($_POST['submit'])) {
 
@@ -12,17 +13,13 @@ if (isset($_POST['submit'])) {
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
     if (empty($email) || empty($password)) {
-        header("refresh:$sec; ../admin?error=Empty Fields");
-        echo '<script type="text/javascript"> alert("Empty Fields") </script>';
-        exit();
+        redirect("../admin?error=All Fields Are Required");
     } else {
         $sql = "SELECT * FROM admin_table WHERE email = ?";
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("refresh:$sec; ../admin?error=SQL Error");
-            echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
-            exit();
+            redirect("../admin?error=SQL Error");
         } else {
             mysqli_stmt_bind_param($stmt, "s", $email);
             mysqli_stmt_execute($stmt);
@@ -36,19 +33,14 @@ if (isset($_POST['submit'])) {
                     session_start();
                     $_SESSION['sessionAdmin'] = $row['admin_id'];
                     $_SESSION['access'] = $row['access_level'];
-                    header("Refresh: $sec; URL = ../admin/dashboard?error=success");
-                    exit();
+                    redirect("../admin/dashboard?error=You Have Logged In Successfully");
                 } else {
                     // Incorrect password
-                    header("Refresh: $sec; URL = ../admin?error=Wrong Pass");
-                    echo '<script type="text/javascript"> alert("Wrong Password!") </script>';
-                    exit();
+                    redirect("./admin?error=Wrong Password");
                 }
             } else {
                 // User not found
-                header("Refresh:$sec; ../admin?error=User Not Found");
-                echo '<script type="text/javascript"> alert("OOPS! Could Not Find User") </script>';
-                exit();
+                redirect("../admin?error=User Not Found");
             }
         }
     }
@@ -57,7 +49,5 @@ if (isset($_POST['submit'])) {
     if (isset($_SESSION['sessionAdmin'])) {
         session_destroy();
     }
-    header("refresh:$sec; ../index.php?error=Logged Out");
-    echo '<script type="text/javascript"> alert("You Have Successfully Logged Out") </script>';
-    exit();
+    redirect("../index.php?error=You Have Logged Out Successfully");
 }

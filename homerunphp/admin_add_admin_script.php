@@ -1,5 +1,6 @@
 <?php
 $sec = 0.1;
+include '../required/alerts.php';
 
 if (isset($_POST['admin_create_profile'])) {
     $access_level_max = 3;
@@ -31,59 +32,45 @@ if (isset($_POST['admin_create_profile'])) {
     $access_level = filter_var($access_level, FILTER_SANITIZE_NUMBER_INT);
 
     if ($password !== $confirmPass) {
-        header("refresh:$sec; ../admin/dashboard/index.php?error=Passwords DO Not Match" . $firstname);
-        echo '<script type="text/javascript"> alert("Passwords Do Not Match") </script>';
-        exit();
-    }
+        redirect(" ../admin/dashboard/index.php?error=Passwords DO Not Match" . $firstname);
+    } else {
 
-    $sql = "SELECT email FROM admin_table WHERE email = ?";
-    $stmt = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("refresh:$sec; ../admin/dashboard/index.php?error=SQL Error");
-        echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
-        exit();
-    }
-
-    mysqli_stmt_bind_param($stmt, "s", $email);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
-    $rowCount = mysqli_stmt_num_rows($stmt);
-    if ($rowCount > 0) {
-        header("refresh:$sec; ../admin/dashboard/index.php?error=User Already Exists");
-        echo '<script type="text/javascript"> alert("User Already Exists") </script>';
-        exit();
-    }
-
-    $hashedpass = password_hash($password, PASSWORD_DEFAULT);
-    $timestamp = time(); // Current timestamp
-    $randomString = bin2hex(random_bytes(4)); // Generate a random string
-    $rand_num = rand(10, 100);
-
-    if ($access_level >= 1  && $access_level <= $access_level_max) {
-        $admin_id =  "admin" . '_' . $timestamp . '_' . $rand_num;
-
-        $sql = "INSERT INTO admin_table (first_name,last_name,id_num,passw,access_level,home_address,dob,sex,contact,email,admin_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        $sql = "SELECT email FROM admin_table WHERE email = ?";
         $stmt = mysqli_stmt_init($conn);
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            header("refresh:$sec; ../admin/dashboard/index.php?error=Stmt Prepare Failed");
-            echo '<script type="text/javascript"> alert("SQL stmt prepare failure") </script>';
-            exit();
+            redirect(" ../admin/dashboard/index.php?error=SQL ERROR");
         }
 
-        mysqli_stmt_bind_param($stmt, "ssssisssiss", $firstname, $lastname, $idnum, $hashedpass, $access_level, $address, $dob, $gender, $phone, $email, $admin_id);
-        if (!mysqli_stmt_execute($stmt)) {
-            $error = mysqli_stmt_error($stmt);
-            print("Error: " . $error);
-            header("refresh:$sec; ../admin/dashboard/index.php?error=$error");
-            echo '<script type="text/javascript"> alert("SQL ERROR execute failure") </script>';
-            exit();
+        mysqli_stmt_bind_param($stmt, "s", $email);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        $rowCount = mysqli_stmt_num_rows($stmt);
+        if ($rowCount > 0) {
+            redirect(" ../admin/dashboard/index.php?error=User Already ExistsR");
         }
 
-        header("refresh:$sec; ../admin/dashboard/index.php?error=Successfully Added Admin");
-        echo '<script type="text/javascript"> alert("Adding Admin Agent Was Successful") </script>';
-    } else {
-        header("refresh:$sec; ../admin/dashboard/index.php?error=Access Level Out Of Range");
-        echo '<script type="text/javascript"> alert("Access Level Is Out Of Range") </script>';
-        exit();
+        $hashedpass = password_hash($password, PASSWORD_DEFAULT);
+        $timestamp = time(); // Current timestamp
+        $randomString = bin2hex(random_bytes(4)); // Generate a random string
+        $rand_num = rand(10, 100);
+
+        if ($access_level >= 1  && $access_level <= $access_level_max) {
+            $admin_id =  "admin" . $timestamp . $rand_num;
+
+            $sql = "INSERT INTO admin_table (first_name,last_name,id_num,passw,access_level,home_address,dob,sex,contact,email,admin_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = mysqli_stmt_init($conn);
+            if (!mysqli_stmt_prepare($stmt, $sql)) {
+                redirect(" ../admin/dashboard/index.php?error=Stmt Prepare Failed");
+            }
+
+            mysqli_stmt_bind_param($stmt, "ssssisssiss", $firstname, $lastname, $idnum, $hashedpass, $access_level, $address, $dob, $gender, $phone, $email, $admin_id);
+            if (!mysqli_stmt_execute($stmt)) {
+                $error = mysqli_stmt_error($stmt);
+                redirect(" ../admin/dashboard/index.php?error=$error");
+            }
+            redirect(" ../admin/dashboard/index.php?error=Successfully Added Admin");
+        } else {
+            redirect("../admin/dashboard/index.php?error=Access Level Out Of Range");
+        }
     }
 }

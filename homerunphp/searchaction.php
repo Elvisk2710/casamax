@@ -1,4 +1,5 @@
 <?php
+require '../required/alerts.php';
 if (isset($_POST['pricesearch']) and isset($_POST['university'])) {
 
     $unisearch = $_POST['university'];
@@ -31,5 +32,5 @@ if (isset($_POST['pricesearch']) and isset($_POST['university'])) {
         exit();
     }
 
-    header("Location: ../unilistings/" . $unilocation . "?filter=search&price=" . $pricesearch);
+    redirect("../unilistings/" . $unilocation . "?filter=search&price=" . $pricesearch);
 }

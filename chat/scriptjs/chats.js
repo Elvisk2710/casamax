@@ -17,6 +17,7 @@ sendBtn.onclick = () => {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
         inputField.value = ""; //resets the value of the input
+        scrollToBottom();
       }
     }
   };
@@ -24,6 +25,22 @@ sendBtn.onclick = () => {
   xhr.send(formData);
 };
 
+// deteching touch for mobile to stop scrolling
+// Add event listeners for touch events
+chatBox.addEventListener("touchstart", handleTouchStart);
+chatBox.addEventListener("touchmove", handleTouchStart);
+chatBox.addEventListener("touchend", handleTouchStart);
+chatBox.addEventListener("touchcancel", handleTouchStart);
+
+function handleTouchStart(event) {
+  // Get the touch information
+  chatBox.classList.add("active");
+}
+
+// senses mouse events
+chatBox.addEventListener("mouseenter", () => {
+  chatBox.classList.add("active");
+});
 setInterval(() => {
   let xhr = new XMLHttpRequest();
   xhr.open(
@@ -35,7 +52,12 @@ setInterval(() => {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
         let data = xhr.response;
+        // serts data into the chat
         chatBox.innerHTML = data;
+        if (!chatBox.classList.contains("active")) {
+          //if it is not active it will automatically scroll
+          scrollToBottom();
+        }
       }
     }
   };
@@ -43,3 +65,7 @@ setInterval(() => {
   let formData = new FormData(form);
   xhr.send(formData);
 }, 500);
+
+function scrollToBottom() {
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
