@@ -3,6 +3,7 @@ session_start();
 // connection to databse
 require '../../homerunphp/advertisesdb.php';
 $student = false;
+$_GET['chat_id']=true;
 if (isset($_SESSION['sessionstudent'])) {
     $sender_id = $_SESSION['sessionstudent'];
     $student = true;
@@ -77,9 +78,9 @@ if ($results = mysqli_query($conn, $sql)) {
                 <?php
                 if ($student == false) {
                 ?>
-                    <a href='https://localhost/casamax/listingdetails.php?clicked_id=<?php echo $chat_id ?>'>
+                    <a href='https://localhost/casamax/listingdetails.php?clicked_id=<?php echo $home_id ?>'>
                         <button class="logout_btn">
-                            View Home
+                            My Home
                         </button>
                     </a>
                 <?php

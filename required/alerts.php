@@ -45,7 +45,7 @@ function redirect($redirect)
         position: absolute;
         background-color: rgba(255, 255, 255, 0.2);
         justify-content: center;
-
+        z-index: 1000;
     }
 
     @keyframes openAnimation {

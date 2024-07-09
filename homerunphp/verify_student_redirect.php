@@ -33,8 +33,6 @@ function handleSubscriptionChat($conn, $student, $home_id, $contactMethod)
             JOIN subscribers ON homerunuserdb.userid = subscribers.user_id
             WHERE homerunuserdb.userid = ?';
 
-    $sql_home = "SELECT contact FROM homerunhouses WHERE home_id = ?";
-
     // Prepare and bind parameters for the first query
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "s", $student);
@@ -72,31 +70,9 @@ function handleSubscriptionChat($conn, $student, $home_id, $contactMethod)
                 $stmt_update = mysqli_prepare($conn, "UPDATE subscribers SET number_of_houses_left = ? WHERE user_id = ?");
                 mysqli_stmt_bind_param($stmt_update, "is", $houses_left_update, $user_id);
                 if (mysqli_stmt_execute($stmt_update)) {
-                    $stmt_home = mysqli_prepare($conn, $sql_home);
-                    mysqli_stmt_bind_param($stmt_home, "s", $home_id);
-                    mysqli_stmt_execute($stmt_home);
-                    $result_home = mysqli_stmt_get_result($stmt_home);
-                    if ($result_home) {
-                        $row_home = mysqli_fetch_array($result_home);
-                        redirect("../chat/screens/chat_dm.php?chat_id=" . $home_id . "&student=1");
-                        // $options = [
-                        //     'http' => [
-                        //         'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-                        //         'ignore_errors' => true // Ignore HTTP errors
-                        //     ]
-                        // ];
-                        // $context = stream_context_create($options);
-                        // $response = file_get_contents($url, true, $context);
-                        // if ($response !== false) {
-                        //     // Successfully retrieved the URL content
-                        // } else {
-                        //     // Error occurred while opening the URL
-                        //     redirectToListingDetails($home_id, "Failed To Execute URL Request");
-                        // }
-                    }
+                    redirect("../chat/screens/chat_dm.php?chat_id=" . $home_id . "&student=1");
                 } else {
-                    // Handle case when Failed to execute stmt request
-                    redirectToListingDetails($home_id, "Failed To Execute Stmt Request'");
+                    redirect("../listingdetails.php?clicked_id=" . $home_id . "&error=Failed To Reach Chat Page");
                 }
             } else {
                 // Handle case when user has no houses left
@@ -170,9 +146,8 @@ function handleSubscriptionAgent($conn, $student, $agent_id, $home_id, $contactM
                     if ($contactMethod === "whatsapp") {
                         $url = "https://wa.me/263" . $contact . "?text=Hello.%20I%20saw%20your%20boarding%20house%20on%20CasaMax.co.zw%20and%20I%20am%20interested%20in%20being%20a%20tenant%20there.%20Is%20it%20still%20available%3F";
                     } elseif ($contactMethod === "call") {
-                        $url = "tel:+263" . $contact;
+                        $url = "https://tel:+263" . $contact;
                     }
-
                     $options = [
                         'http' => [
                             'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
@@ -184,7 +159,6 @@ function handleSubscriptionAgent($conn, $student, $agent_id, $home_id, $contactM
                     if ($response !== false) {
                         // Successfully retrieved the URL content
                         echo 'openPage()';
-                        echo $response;
                         $houses_left_update = $houses_left - 1;
                         // Prepare and bind parameters for the update query
                         $stmt_update = mysqli_prepare($conn, "UPDATE subscribers SET number_of_houses_left = ? WHERE user_id = ?");

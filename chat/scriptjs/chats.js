@@ -1,3 +1,5 @@
+
+
 const form = document.querySelector(".text_area");
 inputField = form.querySelector(".input_field");
 sendBtn = form.querySelector("button");
@@ -18,6 +20,8 @@ sendBtn.onclick = () => {
       if (xhr.status === 200) {
         inputField.value = ""; //resets the value of the input
         scrollToBottom();
+        let data = xhr.response;
+        console.log(data);
       }
     }
   };
@@ -69,3 +73,24 @@ setInterval(() => {
 function scrollToBottom() {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
+// update the  is_read attribute
+function updateRead(element) {
+  const msgId = element.getAttribute('data-msg-id');
+  console.log(msgId);
+  let xhr = new XMLHttpRequest();
+  xhr.open(
+    "POST",
+    "https://localhost/casamax/chat/server/update_is_read.php",
+    true
+  );
+  xhr.onload = () => {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        let data = xhr.response;
+        // serts data into the chat
+        console.log(data);
+      }
+    }
+  };
+
+  xhr.send(JSON.stringify({ "msg_id": msgId }));}

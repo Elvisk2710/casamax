@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             <div class="input_msg">
                 <input name="message" class="input_field" placeholder="Type your message here">
             </div>
-            <div class="input_icon">
+            <div class="input_icon" >
                 <button>
                     send
                 </button>

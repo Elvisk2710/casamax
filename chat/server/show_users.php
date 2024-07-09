@@ -10,21 +10,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $student = false;
     $output = "";
     $chat_id = "";
+    $you = '';
+    $countMsg = '';
+    $msgStyle = '';
     // Get the parameters from the query string
     if (isset($_SESSION['sessionstudent'])) {
         $user_id = $_SESSION['sessionstudent'];
-        $sql = "SELECT email, home_id,firstname,lastname, status
-        FROM homerunhouses
-        WHERE agent_id = '' OR admin_id = '' GROUP BY email, home_id";
-         $student = true;
+        $sql = "SELECT email, home_id, firstname, lastname, status
+                FROM homerunhouses
+                WHERE (agent_id = '' OR admin_id = '') OR (admin_id IS NULL OR agent_id IS NULL)
+                GROUP BY email, home_id";
+        $student = true;
     } elseif (isset($_SESSION['sessionowner'])) {
         $user_id = $_SESSION['sessionowner'];
-        $sql = "SELECT DISTINCT email,userid,status FROM homerunuserdb ";
+        $sql = "SELECT 
+                email,userid,status,firstname,lastname, m.incoming_msg_id,m.outgoing_msg_id , t.home_id
+                FROM homerunuserdb h 
+                INNER JOIN 
+                (SELECT home_id FROM homerunhouses) t 
+                JOIN messages m 
+                WHERE (t.home_id = m.incoming_msg_id OR h.userid = m.incoming_msg_id) AND (h.userid = m.outgoing_msg_id OR t.home_id = m.outgoing_msg_id)
+                GROUP BY email, userid;";
     } else {
         $user_id = null;
         $output .= "Please Login First";
         exit();
     }
+
+
 
     $result = mysqli_query($conn, $sql);
     // Prepare and execute the SQL statement
@@ -51,21 +64,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             $resultMsg = mysqli_query($conn, $sqlMsg);
             $rowMsg = mysqli_fetch_assoc($resultMsg);
-
             if (mysqli_num_rows($resultMsg) > 0) {
                 $resultText = $rowMsg['msg'];
-
+                $msg_id = $rowMsg['msg_id'];
+                if ($user_id == $rowMsg['outgoing_msg_id']) {
+                    $you = "You: ";
+                }
+                // check if message is read
+                if ($rowMsg['is_read'] == 0) {
+                    $countMsg = '
+                <div class="msg_count">
+                    
+                </div>';
+                    $msgStyle = 'style = "color:rgb(252,153,82)"';
+                } 
             } else {
                 $resultText = "No Messages Available";
-            }
-            if(strlen($resultText) > 28){
-                $msg = substr($resultText, 0, 28) . '....' ;
-                ($user_id == $rowMsg['outgoing_msg_id']) ? $you = 'You: ' : $you = '';
+                $msg_id = '';
+                $countMsg = '';
+                $msgStyle = '';
 
-             }else{
+            }
+            if (strlen($resultText) > 28) {
+                $msg = substr($resultText, 0, 28) . '....';
+            } else {
                 $msg = $resultText;
-                $you ='';
-             } 
+            }
+
 
 
             // trimming message if the words are more than 28
@@ -80,8 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $div = '<div class="online_status_icon">';
             }
             $output .= '
-                  <a href="./chat_dm.php?chat_id=' . $chat_id . '&student=' . $student . '">
-                    <div class="chat_element_container">
+                  <a onclick="updateRead(this)" data-msg-id="' . $msg_id . '"href="./chat_dm.php?chat_id=' . $chat_id . '&student=' . $student . '">
+                    <div class="chat_element_container" >
                         <div class="chat_details">
                             <div class="chat_img">
                                 <img src="../../images/background2.jpg" alt="">
@@ -92,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                         ' . $row['firstname'] . " " . $row['lastname'] . '
                                     </h2>
                                 </div>
-                                <div class="chat_msg">
+                                <div class="chat_msg" ' . $msgStyle . '>
                                     ' . $you . $msg . '
                                 </div>
                             </div>
@@ -101,7 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $div
                 . '
                                 ' . $status . '
+                                 ' . $countMsg . '
                             </div>
+                           
                         </div>
                     </div>
                 </a>

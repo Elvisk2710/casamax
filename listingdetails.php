@@ -117,6 +117,7 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
         <hr>
     <?php
     } else {
+        if(!isset($_SESSION['sessionowner'])){
     ?>
         <!-- landlord contact -->
         <form action="./homerunphp/verify_student_redirect.php?home_id=<?php echo $user ?>&route=landlord&student=1" method="post">
@@ -131,6 +132,7 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
 
         <hr>
     <?php
+        }
     }
     ?>
     <div class='map'>

@@ -14,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 if ($row['outgoing_msg_id'] === $outgoing_id) { //if this is equal to the ougoing then he is the sender
+                    // if($row['is_read'] == 0){
+                    //     updateIsRead($row['msg_id']);
+                    // }
                     $output .= '
                     <div class="outgoing_message_container">
                         <div class="outgoing_message">
@@ -22,7 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     ';
                 } else { //he is the msg receiver
-
+                    if($row['is_read'] == 0){
+                        updateIsRead($row['msg_id']);
+                    }
                     $output .= '
                     <div class="incoming_message_container">
                         <div class="incoming_message">
@@ -37,4 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         header("location: ../screens/login.php");
     }
+}
+function updateIsRead($msg_id){
+    include '../../homerunphp/advertisesdb.php';
+    $sql = "UPDATE messages SET is_read = 1 WHERE msg_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $msg_id);
+    $stmt->execute();
 }

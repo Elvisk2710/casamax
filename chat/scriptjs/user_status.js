@@ -1,10 +1,8 @@
-let lastActivityTime = Date.now();
-const activityCheckInterval = 10000; // 10 seconds
 myStatusContainer = document.querySelector(".status");
 
 setInterval(() => {
   const now = Date.now();
-  if (now - lastActivityTime >= activityCheckInterval) {
+  if (now - lastActivityTime >= 10000) {
     lastActivityTime = now;
     // Send AJAX request to update user's status
     let xhr = new XMLHttpRequest();
@@ -54,3 +52,4 @@ document.addEventListener("keydown", () => {
 document.addEventListener("scroll", () => {
   lastActivityTime = Date.now();
 });
+ 

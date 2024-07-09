@@ -177,4 +177,4 @@
             height: 40px;
         }
     </style>
-    <script src="./chat/scriptjs/user_status.js"></script>
+    <script src="https://localhost/casamax/chat/scriptjs/user_status.js"></script>
