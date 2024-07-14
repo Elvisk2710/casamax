@@ -4,14 +4,6 @@ require './required/ads_query.php';
 setcookie("scriptPage", "fpassscript.php", time() + (900 * 1), "/");
 setcookie("page_pass", "homerunhouses", time() + (900 * 1), "/");
 setcookie("loginPage", "homeownerlogin.php", time() + (900 * 1), "/");
-$redirect = '';
-if (isset($_GET['error'])) {
-    $error = $_GET['error'];
-    custonAlert($error);
-}
-if (isset($_GET['redirect'])) {
-    $redirect = $_GET['redirect'];
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">

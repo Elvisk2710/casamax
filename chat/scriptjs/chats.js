@@ -9,6 +9,7 @@ form.onsubmit = (e) => {
   e.preventDefault();
 };
 sendBtn.onclick = () => {
+  if(inputField.value !="" && inputField.value != null){
   let xhr = new XMLHttpRequest();
   xhr.open(
     "POST",
@@ -27,6 +28,7 @@ sendBtn.onclick = () => {
   };
   let formData = new FormData(form);
   xhr.send(formData);
+}
 };
 
 // deteching touch for mobile to stop scrolling

@@ -71,6 +71,9 @@ if (isset($_GET['error'])) {
                 });
             }
         });
+        if (typeof navigator.serviceWorker !== 'undefined') {
+            navigator.serviceWorker.register('sw.js')
+        }
     </script>
     <meta name="google-site-verification" content="3DpOPyMzbY1JYLNtsHzbAZ_z6o249iU0lE5DYE_mLJA" />
     <meta charset="UTF-8">
@@ -83,13 +86,13 @@ if (isset($_GET['error'])) {
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="./images/logowhite.png">
     <meta name="theme-color" content="#08080C" />
-    <link rel="apple-touch-icon" href="images/android-icon-192x192-seochecker-manifest-4016.png">
+    <link rel="apple-touch-icon" href="iconsicons/192x192.png">
 
 
 </head>
-<script src="index.js"></script>
 
 <body onunload="">
+<script src="index.js"></script>
 
     <div class="container">
 
@@ -339,7 +342,7 @@ if (isset($_GET['error'])) {
     ?>
         <div class="floating_chat_icon" title="chats">
             <a href="https://localhost/casamax/chat/screens/">
-                <img src="https://localhost/casamax/images/logowhite.png" alt="">
+                <img src="https://localhost/casamax/images/new-message.png" alt="">
             </a>
         </div>
     <?php

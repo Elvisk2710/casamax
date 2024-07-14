@@ -195,10 +195,11 @@ button:active {
   align-items: center;
   gap: 10px;
 }
-img {
+.chat_img img {
   width: 50px;
   height: 50px;
   border-radius: 50px;
+  padding: 7px;
 }
 .search {
   width: 100%;
@@ -344,28 +345,36 @@ a {
 .input_msg input {
   width: 100%;
   height: 100%;
-  background: transparent;
-  border: none;
+  background: white;
+  margin: 0 5px;
   font-size: medium;
   font-family: Arial, Helvetica, sans-serif;
   text-align: left;
-  padding: 1px 4px;
+  padding: 1px 8px;
+  border: 0;
 }
 .input_msg input:active {
   border: none;
 }
-.input_msg input:focus-within {
+.input_msg input:focus {
   border: none;
+  outline: none;
 }
 .input_icon {
   flex-basis: 20%;
   text-align: center;
-  background-color: rgb(8, 8, 12);
   height: 100%;
   align-items: center;
   display: flex;
   justify-content: center;
-  border-radius: 10%;
+  border-radius: 50%;
+}
+.input_icon button{
+  border-radius: 50px;
+}
+.input_icon img{
+  height: 25px;
+
 }
 .input_icon button {
   width: 3.2rem;
@@ -387,6 +396,9 @@ a {
     height: 100vh;
     min-width: 100%;
 
+  }
+  .chat_container{
+    margin-bottom: 35px;
   }
   .search {
     height: fit-content;
@@ -420,5 +432,10 @@ a {
   }
   .outgoing_message {
     max-width: 70vw;
+  }
+  .text_area{
+    position: fixed;
+    bottom: 0;
+    background-color: white ;
   }
 }

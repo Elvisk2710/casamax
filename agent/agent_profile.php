@@ -56,7 +56,7 @@ if (empty($_SESSION['sessionagent'])) {
     <meta name="description" content=" Quick and Easy way to find your next home off-campus for tertiary students at an affordable price....">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#08080C" />
-    <link rel="apple-touch-icon" href="images/android-icon-192x192-seochecker-manifest-4016.png">
+    <link rel="apple-touch-icon" href="iconsicons/192x192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&family=Oswald:wght@600&family=Quicksand&family=Source+Sans+3:wght@200&display=swap" rel="stylesheet">

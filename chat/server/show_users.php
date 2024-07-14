@@ -16,10 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Get the parameters from the query string
     if (isset($_SESSION['sessionstudent'])) {
         $user_id = $_SESSION['sessionstudent'];
-        $sql = "SELECT email, home_id, firstname, lastname, status
+        $sql = "SELECT email, home_id, firstname, lastname, status, admin_id, agent_id
                 FROM homerunhouses
-                WHERE (agent_id = '' OR admin_id = '') OR (admin_id IS NULL OR agent_id IS NULL)
-                GROUP BY email, home_id";
+                WHERE (agent_id IS NULL AND admin_id IS NULL)
+                GROUP BY email, home_id;";
         $student = true;
     } elseif (isset($_SESSION['sessionowner'])) {
         $user_id = $_SESSION['sessionowner'];
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <div class="chat_element_container" >
                         <div class="chat_details">
                             <div class="chat_img">
-                                <img src="../../images/background2.jpg" alt="">
+                                <img src="../../images/profile_icon.png" alt="">
                             </div>
                             <div class="chat_info">
                                 <div class="chat_name">

@@ -25,7 +25,7 @@
     ?>
         <div class="floating_chat_icon" title="chats">
         <a href="https://localhost/casamax/chat/screens/">
-                <img src="https://localhost/casamax/images/logowhite.png" alt="">
+                <img src="https://localhost/casamax/images/new-message.png" alt="">
             </a>
         </div>
     <?php
@@ -132,7 +132,7 @@
 
         /* floating chat icon */
         .floating_chat_icon {
-            background-color: rgb(252, 153, 82);
+            background-color: rgb(8, 8, 12);
             width: 60px;
             height: 60px;
             position: fixed;

@@ -11,7 +11,7 @@ if (isset($_SESSION['sessionstudent'])) {
     $sender_id = $_SESSION['sessionowner'];
     $student = false;
 } else {
-    echo "Please Login";
+    redirect('./index.php');
 }
 // API endpoint for retrieving data
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </div>
             <div class="input_icon" >
                 <button>
-                    send
+                   <img src="../../images/sendIcon.png" alt="">
                 </button>
             </div>
         </form>
