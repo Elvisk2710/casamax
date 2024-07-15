@@ -78,7 +78,7 @@ if (isset($_POST['submit'])) {
                     redirect("../signup.php?error=Failed To Generate ID");
                 }
 
-                $userid = $uni_code . "_" . $randcode . "_" . $lastid;
+                $userid = $uni_code . $randcode . $lastid;
                 $sql = "INSERT INTO homerunuserdb (firstname, lastname, passw, email, dob, sex, contact, university, userid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = mysqli_prepare($conn, $sql);
 
