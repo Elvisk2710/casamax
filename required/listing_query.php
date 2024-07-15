@@ -11,18 +11,29 @@ $url .= $_SERVER['HTTP_HOST'];
 // Append the requested resource location to the URL   
 $url .= $_SERVER['REQUEST_URI'];
 
-$filter_link = $url . "#filter";
-// <div class="remove_ads">
-// <a href="../login.php">REMOVE ADs!!</a>
-// </div>
-echo '
-<div class="remove_ads">
-<a href="' . $filter_link . '">
-    Go to Filters
-</a>
+?>
+<div class="filter_div">
+    <button class="filter_button" onclick="openFilter()">
+        <img src="../images/filter.png" alt="open filter">
+        <h3>
+            Filters
+        </h3>
+    </button>
 </div>
-';
 
+<script>
+       function openFilter() {
+          console.log("openFilter() called");
+          const sidebarElement = document.querySelector(".sidebar");
+          if (sidebarElement) {
+               sidebarElement.style.display = "block";
+          } else {
+               console.error("Element with class 'sidebar' not found.");
+          }
+     }
+</script>
+
+<?php
 $num_per_page = 8;
 $kitchen_query = '';
 $wifi_query = '';
@@ -139,7 +150,7 @@ while ($row = mysqli_fetch_array($result)) {
                 $agent_tagline = "Landlord%20No%20Agent%20Fee";
             }
         }
-       echo '</div>';
+        echo '</div>';
 
         echo "<div class='house-info'> <h3>"
             . $row['gender'] . " Boarding House </h3>
