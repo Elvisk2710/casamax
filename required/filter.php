@@ -6,7 +6,7 @@
      </div>
      <form action="<?php $page_filter_name ?>" method="get">
 
-          <h2>APPLY FILTER</h2>
+          <h2>Apply Filters</h2>
 
           <div class="filter" id="filter">
                <h3>Amenities</h3>
@@ -58,6 +58,17 @@
 
           </div>
 
+          <div class="price_filter">
+               <?php
+               if (isset($_GET['price'])) {
+                    $price = $_GET['price'];
+               } else {
+                    $price = '';
+               }
+               ?>
+               <label for="price">Budget $:</label>
+               <input type="number" id="price" name="price" value="<?php echo $price ?>" placeholder="What's Your $Budget">
+          </div>
           <div class="sidebar-link">
                <button name="filter">Apply Filter</button>
                <br>
