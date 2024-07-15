@@ -11,7 +11,6 @@ function setCookie(name, value, daysToExpire) {
 }
 
 //  functions for selecting images
-
 document.getElementById("image1").onclick = function triggerClick() {
   document.getElementById("inputimage1").click();
 };
@@ -21,93 +20,38 @@ document.getElementById("image2").onclick = function triggerClick2() {
 document.getElementById("image3").onclick = function triggerClick3() {
   document.getElementById("inputimage3").click();
 };
-function displayImage(e) {
-  if (e.files[0]) {
-    var reader = new FileReader();
 
+// image preview functions
+function displayImage(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
     reader.onload = function (e) {
-      document.querySelector("#image1").setAttribute("src", e.target.result);
+      document.getElementById("image1").src = e.target.result;
     };
-    reader.readAsDataURL(e.files[0]);
+    reader.readAsDataURL(input.files[0]);
   }
 }
 
-function displayImage2(e) {
-  if (e.files[0]) {
+function displayImage2(input) {
+  if (input.files && input.files[0]) {
     var reader = new FileReader();
-
     reader.onload = function (e) {
-      document.querySelector("#image2").setAttribute("src", e.target.result);
+      document.getElementById("image2").src = e.target.result;
     };
-    reader.readAsDataURL(e.files[0]);
+    reader.readAsDataURL(input.files[0]);
   }
 }
 
-function displayImage3(e) {
-  if (e.files[0]) {
+function displayImage3(input) {
+  if (input.files && input.files[0]) {
     var reader = new FileReader();
-
     reader.onload = function (e) {
-      document.querySelector("#image3").setAttribute("src", e.target.result);
+      document.getElementById("image3").src = e.target.result;
     };
-    reader.readAsDataURL(e.files[0]);
+    reader.readAsDataURL(input.files[0]);
   }
 }
 
-function displayImage4(e) {
-  if (e.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      document.querySelector("#image4").setAttribute("src", e.target.result);
-    };
-    reader.readAsDataURL(e.files[0]);
-  }
-}
-
-function displayImage5(e) {
-  if (e.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      document.querySelector("#image5").setAttribute("src", e.target.result);
-    };
-    reader.readAsDataURL(e.files[0]);
-  }
-}
-
-function displayImage6(e) {
-  if (e.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      document.querySelector("#image6").setAttribute("src", e.target.result);
-    };
-    reader.readAsDataURL(e.files[0]);
-  }
-}
-
-function displayImage7(e) {
-  if (e.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      document.querySelector("#image7").setAttribute("src", e.target.result);
-    };
-    reader.readAsDataURL(e.files[0]);
-  }
-}
-
-function displayImage8(e) {
-  if (e.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      document.querySelector("#image8").setAttribute("src", e.target.result);
-    };
-    reader.readAsDataURL(e.files[0]);
-  }
-}
 // function for opening and closing the nav bar
 function togglebtn1() {
   var dropdown = document.getElementById("dropdown");
@@ -195,8 +139,14 @@ function nextPrev(n) {
   // if you have reached the end of the form... :
   if (currentTab + 1 >= x.length - 1 && n === 2) {
     //...the form gets submitted:
+    document
+      .querySelector(".container_loader")
+      .classList.add("container_loader--hidden");
+    document.querySelector("body").classList.remove("scrollable");
     document.getElementById("submit").click();
+    document.getElementById("submit").disabled();
     var addListingForm = document.getElementById("admin_advertise_form");
+
     // addListingForm.style.display = 'none'
   } else {
     // Increase or decrease the current tab by 1:

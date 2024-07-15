@@ -550,18 +550,16 @@
         <p>(best represented in landscape view)</p>
 
         <div class="imagepreview">
+
           <div>
-            <img
-              title="Choose an Image"
-              src="../images/addimage.png"
-              id="agentImageUploadImage"
-              onclick="triggerClickAgent()"
-            />
-            <input type="file" id="agentImageUpload" name="image[]" multiple accept="image/jpeg, image/png, image/heif, image/heif-sequence">
-            <br />
-            <h3 style="color: rgb(8, 8, 12)">Add Upto 8 Images</h3>
+              <img title="Choose an Image" src="../images/addimage.png" id="image1" onclick="triggerClick()">
+              <input type="file" id="inputimage1" name="image[]" multiple accept="image/jpeg, image/png, image/heif, image/heif-sequence" onchange="displayImage(this)">
+              <br>
+              <h3 style="color: rgb(8, 8, 12);">
+                  Add Upto 8 Images
+              </h3>
           </div>
-        </div>
+      </div>
       </div>
 
       <div>

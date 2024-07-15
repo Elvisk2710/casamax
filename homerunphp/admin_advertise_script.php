@@ -192,11 +192,12 @@ if (isset($_POST['create_profile'])) {
 
                     $hashedpass = password_hash($password, PASSWORD_DEFAULT);
                     $timestamp = time(); // Current timestamp
-                    $randomString = bin2hex(random_bytes(4)); // Generate a random string
-                    $rand_num = rand(10, 1000);
+                    $randomString = bin2hex(random_bytes(2)); // Generate a random string
+                    $rand_num = rand(1, 100);
                     $trancated_text = substr($hashedpass, 0, 5);
 
-                    $home_id = $timestamp . '_' . $randomString . '_' . $rand_num . '_' . $trancated_text;
+                    $home_id = $timestamp . $randomString . $rand_num;
+                    $home_id = preg_replace('/[^0-9]/', '', $home_id);
 
                     $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,idnum,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,adrs,people_in_a_room,passw,admin_id,id_image,res_image) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
                     if (!$stmt = mysqli_stmt_init($conn)) {

@@ -10,7 +10,7 @@
     <link rel="icon" href="../images/logowhite.png">
     <title>CasaMax Advertise</title>
     <link rel="stylesheet" href="advertise.css">
-
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 
 <body onunload="" class="scrollable">
@@ -184,7 +184,7 @@
 
                         <div>
                             <img title="Choose an Image" src="../images/addimage.png" id="image1" onclick="triggerClick()">
-                            <input type="file" id="inputimage1" name="image[]" multiple accept="image/jpeg, image/png, image/heif, image/heif-sequence">
+                            <input type="file" id="inputimage1" name="image[]" multiple accept="image/jpeg, image/png, image/heif, image/heif-sequence" onchange="displayImage(this)">
                             <br>
                             <h3 style="color: rgb(8, 8, 12);">
                                 Add Upto 8 Images
@@ -217,7 +217,7 @@
                     <div class="imagepreview">
                         <div>
                             <img title="Choose an Image" src="../images/addimage.png" id="image2" onclick="triggerClick2()">
-                            <input type="file" id="inputimage2" name="identityImage" accept="image/jpeg, image/png, image/heif, image/heif-sequence">
+                            <input type="file" id="inputimage2" name="identityImage" accept="image/jpeg, image/png, image/heif, image/heif-sequence" onchange="displayImage2(this)">
                             <br>
                         </div>
                     </div>
@@ -228,7 +228,7 @@
                     <div class="imagepreview">
                         <div>
                             <img title="Choose an Image" src="../images/addimage.png" id="image3" onclick="triggerClick3()">
-                            <input type="file" id="inputimage3" name="residencyImage" accept="image/jpeg, image/png, image/heif, image/heif-sequence">
+                            <input type="file" id="inputimage3" name="residencyImage" accept="image/jpeg, image/png, image/heif, image/heif-sequence" onchange="displayImage3(this)">
                             <br>
                         </div>
                     </div>

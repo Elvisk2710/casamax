@@ -2,7 +2,7 @@
 session_start();
 require './required/ads_query.php';
 if (empty($_SESSION['sessionowner'])) {
-    header("Location:homeownerlogin.php?PleaseLogin");
+    header("Location:homeownerlogin.php?error=Please Login");
     echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
     exit();
 } else {
