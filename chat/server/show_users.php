@@ -23,14 +23,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $student = true;
     } elseif (isset($_SESSION['sessionowner'])) {
         $user_id = $_SESSION['sessionowner'];
-        $sql = "SELECT 
-                email,userid,status,firstname,lastname, m.incoming_msg_id,m.outgoing_msg_id , t.home_id
-                FROM homerunuserdb h 
-                INNER JOIN 
-                (SELECT home_id FROM homerunhouses) t 
-                JOIN messages m 
-                WHERE (t.home_id = m.incoming_msg_id OR h.userid = m.incoming_msg_id) AND (h.userid = m.outgoing_msg_id OR t.home_id = m.outgoing_msg_id)
-                GROUP BY email, userid;";
+        $sql = "SELECT
+    hu.email,
+    hu.userid,
+    hu.status,
+    hu.firstname,
+    hu.lastname,
+    m.incoming_msg_id,
+    m.outgoing_msg_id,
+    hh.home_id
+FROM homerunuserdb hu
+JOIN messages m ON (m.incoming_msg_id = hu.userid OR m.outgoing_msg_id = hu.userid)
+JOIN homerunhouses hh ON (m.incoming_msg_id = hh.home_id OR m.outgoing_msg_id = hh.home_id)
+WHERE hh.home_id = '$user_id'
+GROUP BY hu.email, hu.userid, hh.home_id;";
     } else {
         $user_id = null;
         $output .= "Please Login First";
