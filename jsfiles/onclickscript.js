@@ -141,8 +141,8 @@ function nextPrev(n) {
     //...the form gets submitted:
     document
       .querySelector(".container_loader")
-      .classList.add("container_loader--hidden");
-    document.querySelector("body").classList.remove("scrollable");
+      .classList.remove("container_loader--hidden");
+    document.querySelector("body").classList.add("scrollable");
     document.getElementById("submit").click();
     document.getElementById("submit").disabled();
     var addListingForm = document.getElementById("admin_advertise_form");
@@ -154,7 +154,14 @@ function nextPrev(n) {
   }
   // Otherwise, display the correct tab:
   showTab(currentTab);
+  if(currentTab + 1 == x.length){
+    document
+    .querySelector(".container_loader")
+    .classList.add("container_loader--hidden");
+document.querySelector("body").classList.add("scrollable");
 }
+}
+
 function validateForm() {
   // This function deals with validation of the form fields
   var x,

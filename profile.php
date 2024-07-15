@@ -2,9 +2,7 @@
 session_start();
 require './required/ads_query.php';
 if (empty($_SESSION['sessionowner'])) {
-    header("Location:homeownerlogin.php?error=Please Login");
-    echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
-    exit();
+    redirect("./homeownerlogin.php?error=Please Login");
 } else {
     $user = $_SESSION['sessionowner'];
     require_once 'homerunphp/advertisesdb.php';
@@ -18,9 +16,7 @@ if ($rs_result = mysqli_query($conn, $sql)) {
 }
 
 if (empty($user)) {
-    echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
-    header("refresh:$sec; ../homeownerlogin.php?error=youhavetologinfirst");
-    exit();
+    redirect("./homeownerlogin.php?error=Please Login");
 } else {
 
     if ($row['verified'] == 1) {
@@ -59,10 +55,9 @@ if (empty($user)) {
         $location = "housepictures/hitpictures/";
     } elseif ($row['uni'] == "National University of Science and Technology") {
         setcookie("uni_folder", "nustpictures", time() + (86400 * 1), "/");
-
         $location = "housepictures/hitpictures/";
     } else {
-        // header("Location:./index.php?error=sqlerror");
+        redirect("./index.php?error=Failed To Get Uni In Profile");
     }
 }
 ?>
@@ -86,141 +81,127 @@ if (empty($user)) {
     if ($verified == true) {
         require_once 'required/pageloader.php';
 
-        echo '    
+    ?>
         <header>
-        
-        <a href="index.php"><img src="images/logowhite.png" alt="logo" class="logo"></a>
-        ';
-        if ($row['available'] != 1) {
-            // alerts whether the house is being shown on the platfrom or not.
-            echo '
-        <div class="alert_off">
 
-        <p> Your current listing is not visible on CasaMax. To make it visible click available and update <a href="#available">Right Here!</a></p>
-        
-        </div>';
-        }
-        echo '
-        <h1>
-            
-            Hey ' . ucfirst($row['firstname']) . '!
-            
-        </h1>
+            <a href="index.php"><img src="images/logowhite.png" alt="logo" class="logo"></a>
+            <?php if ($row['available'] != 1) { ?>
+                // alerts whether the house is being shown on the platfrom or not.
+                <div class="alert_off">
+
+                    <p> Your current listing is not visible on CasaMax. To make it visible click available and update <a href="#available">Right Here!</a></p>
+
+                </div>
+            <?php } ?>
+            <h1>
+                <?php echo "Hey " . ucfirst($row['firstname']) . "!"; ?>
+            </h1>
         </header>
-    ';
-        if (!empty($row['image1'])) {
-            echo '
-    <div class="profile-photo">
 
-    <img src="' . $location . $row["image1"] . '" alt="">
+        <?php if (!empty($row['image1'])) { ?>
+            <div class="profile-photo">
 
-    </div>';
-        }
-        if (empty($row['image1']) and empty($row['image2']) and empty($row['image3']) and empty($row['image4']) and empty($row['image5']) and empty($row['image6']) and empty($row['image7']) and empty($row['image8'])) {
+                <img src=" <?php echo $location . $row["image1"]; ?>" alt="">
 
-            echo '
-    <div class="add_photos">
-        <p>YOUR PROFILE DOES NOT HAVE ANY PHOTOS. PLEASE ADD YOUR PHOTOS HERE!!</p>
-        <form action="homerunphp/profile_photo_upload.php" enctype="multipart/form-data" method="POST" class="photo_form">
-        <div class="profile_page_photo_upload">
-     
-            <div>
-                
-            <img title="Choose an Image" src="./images/addimage.png" id="image1" onclick="triggerClick()">
-            <input type="file" onchange="displayImage2(this)" id="inputimage1" name="image[]" multiple >
-            <br>
-                <h3 style="color: rgb(8, 8, 12);">
-                    Add Upto 8 Images
-                </h3>
+            </div>
+        <?php } ?>
+        <?php if (empty($row['image1']) and empty($row['image2']) and empty($row['image3']) and empty($row['image4']) and empty($row['image5']) and empty($row['image6']) and empty($row['image7']) and empty($row['image8'])) {
+        ?>
+            <div class="add_photos">
+                <p>YOUR PROFILE DOES NOT HAVE ANY PHOTOS. PLEASE ADD YOUR PHOTOS HERE!!</p>
+                <form action="homerunphp/profile_photo_upload.php" enctype="multipart/form-data" method="POST" class="photo_form">
+                    <div class="profile_page_photo_upload">
+
+                        <div>
+
+                            <img title="Choose an Image" src="./images/addimage.png" id="image1" onclick="triggerClick()">
+                            <input type="file" onchange="displayImage2(this)" id="inputimage1" name="image[]" multiple>
+                            <br>
+                            <h3 style="color: rgb(8, 8, 12);">
+                                Add Upto 8 Images
+                            </h3>
+                        </div>
+
+                    </div>
+                    <button class="photo_button" name="profile_photos">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        <?php } ?>
+
+        <div class="container">
+            <div class="house-info">
+                <h2>YOUR HOUSE INFO</h2>
+            </div>
+            <div class="table">
+                <table>
+                    <tr>
+                        <th class="value">$ <?php echo $row['price']; ?> </th>
+                        <th class="value"> <?php echo $row['people_in_a_room']; ?> </th>
+                        <th class="value"> <?php echo $row['gender']; ?> </th>
+                    </tr>
+                    <tr>
+                        <th>AMOUNT PER MONTH</th>
+                        <th>PEOPLE IN A ROOM</th>
+                        <th>GIRLS, BOYS OR BOTH</th>
+                    </tr>
+                </table>
             </div>
 
-        </div>
-        <button class="photo_button" name="profile_photos">
-            Submit
-        </button>
-        </form>
-    </div>';
-        }
-
-        echo '
-        <div class="container">
-
-
-        <div class="house-info">
-            <h2>YOUR HOUSE INFO</h2>
-
-        </div>
-    <div class="table">
-    <table>
-            <tr>
-                <th class="value">$' . $row['price'] . '</th>
-                <th class="value">' . $row['people_in_a_room'] . '</th>
-                <th class="value">' . $row['gender'] . '</th>
-            </tr>
-            <tr>
-                <th>AMOUNT PER MONTH</th>
-                <th>PEOPLE IN A ROOM</th>
-                <th>GIRLS, BOYS OR BOTH</th>
-            </tr>
-        </table>
-    </div>';
-
-        echo '
-   
-    <div class="address">
-        <div class = "address_info">
-        <h3>ADDRESS</h3>
-        <p>' . $row['adrs'] . '</p>
-        </div>
-
-        <div class = "address_info">
-        <h3>PHONE</h3>
-        <p>0' . $row['contact'] . '</p>
-        </div>
-
-        <div class = "address_info">
-        <h3>EMAIL</h3>
-        <p>' . $row['email'] . '</p>
-        </div>
-
-    </div>';
-
-    ?>
-        <div class="edit">  
-            <a href="./listingdetails.php?clicked_id=<?php echo $row['home_id']?>">
-                <div class="btn-div">
-                    <button class="edit-btn" name="viewpage">
-                        Page Preview
-                    </button>
+            <div class="address">
+                <div class="address_info">
+                    <h3>ADDRESS</h3>
+                    <p><?php echo $row['adrs'] ?></p>
                 </div>
 
-            </a>
-        </div>
+                <div class="address_info">
+                    <h3>PHONE</h3>
+                    <p>0<?php echo $row['contact'] ?></p>
+                </div>
 
-        <div class="profile-bottom">
+                <div class="address_info">
+                    <h3>EMAIL</h3>
+                    <p><?php echo $row['email'] ?></p>
+                </div>
 
-            <form action="./homerunphp/update.php" method="POST">
-                <p>Is your Home...</p>
+            </div>
 
-                <label for="available">
-                    <input type="radio" name="availability" id="available" value="1">
-                    Available
-                </label> or
-                <label for="occupied">
-                    <input type="radio" name="availability" id="occupied" value="0">
-                    Occupied
-                </label>
+            <div class="edit">
+                <a href="./listingdetails.php?clicked_id=<?php echo $row['home_id'] ?>">
+                    <div class="btn-div">
+                        <button class="edit-btn" name="viewpage">
+                            Page Preview
+                        </button>
+                    </div>
 
-                <br>
+                </a>
+            </div>
 
-                <button class="update" name="update">
-                    Update
-                </button>
+            <div class="profile-bottom">
 
-                <p class="desc">
-                    this will allow your home to either be removed temporarily (Occupied) or be placed back onto the platform (Available)
-                </p>
-        </div>
+                <form action="./homerunphp/update.php" method="POST">
+                    <p>Is your Home...</p>
+
+                    <label for="available">
+                        <input type="radio" name="availability" id="available" value="1">
+                        Available
+                    </label> or
+                    <label for="occupied">
+                        <input type="radio" name="availability" id="occupied" value="0">
+                        Occupied
+                    </label>
+
+                    <br>
+
+                    <button class="update" name="update">
+                        Update
+                    </button>
+
+                    <p class="desc">
+                        this will allow your home to either be removed temporarily (Occupied) or be placed back onto the platform (Available)
+                    </p>
+            </div>
         </div>
         </div>
         </form>

@@ -18,7 +18,7 @@ if (isset($_POST['update'])) {
         $update = mysqli_real_escape_string($conn, $update);
         // Additional validation if needed
 
-        $stmt = $conn->prepare("UPDATE homerunhouses SET available = ? WHERE email = ?");
+        $stmt = $conn->prepare("UPDATE homerunhouses SET available = ? WHERE home_id = ?");
         $stmt->bind_param("ss", $update, $user);
         $stmt->execute();
 
