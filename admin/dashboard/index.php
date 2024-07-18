@@ -1,9 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['sessionAdmin'])) {
-    header("Location:../index.php?PleaseLogin");
-    echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
-    exit();
+    redirect('../index.php?error=Please Login');
 } else {
     $user = $_SESSION['sessionAdmin'];
     require_once '../../homerunphp/advertisesdb.php';
@@ -14,9 +12,7 @@ if ($rs_result = mysqli_query($conn, $sql)) {
     $admin_id = $row['admin_id'];
 }
 if (empty($user)) {
-    echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
-    header("refresh:0.1; ../index.php?error=youhavetologinfirst");
-    exit();
+    redirect(' ../index.php?error=You Have To Login First');
 } else {
     $total_admin_houses_sql = "SELECT * FROM  homerunhouses WHERE admin_id = '$admin_id' ";
     if ($home_result = mysqli_query($conn, $total_admin_houses_sql)) {
@@ -27,9 +23,7 @@ if (empty($user)) {
             $not_verified_admin_houses = $total_admin_houses - $verified_admin_houses;
         }
     } else {
-        echo '<script type="text/javascript"> alert("SQL Error") </script>';
-        header("refresh:0.1; ../index.php?error=SQLError");
-        exit();
+        redirect(' ../index.php?error=Sql Error');
     }
 }
 ?>
@@ -54,57 +48,64 @@ if (empty($user)) {
         require '../components/admin_navbar.php'
         ?>
         <div class="left_col">
-            <div class="add_listing" onclick="OpenAddListingForm()">
-                <h1>
-                    Add Listing
-                </h1>
-                <h1 class="number">
-                    +
-                </h1>
-            </div>
-            <?php
-            if ($_SESSION['access'] == 1) {
-            ?>
-                <div class="add_listing" onclick="OpenAddAddAgent()">
+            <div class="button_container">
+                <div class="add_listing" onclick="OpenAddListingForm()">
                     <h1>
-                        Add Agent
+                        Add Listing
                     </h1>
                     <h1 class="number">
                         +
                     </h1>
                 </div>
-            <?php } ?>
-            <div class="listing_number">
-                <h1>
-                    Total Listings
-                </h1>
-                <h1 class="number">
-                    <?php echo $total_admin_houses ?>
-                </h1>
+                <?php
+                if ($_SESSION['access'] == 1) {
+                ?>
+                    <div class="add_listing" onclick="OpenAddAddAgent()">
+                        <h1>
+                            Add Agent
+                        </h1>
+                        <h1 class="number">
+                            +
+                        </h1>
+                    </div>
+                <?php } ?>
             </div>
             <div class="listing_number">
-                <h1>
-                    Verified
-                </h1>
-                <h1 class="number">
-                    <?php echo $verified_admin_houses ?>
-                </h1>
+                <a href="../admin_listings_dashboard/">
+                    <h1>
+                        Total Listings
+                    </h1>
+                    <h1 class="number">
+                        <?php echo $total_admin_houses ?>
+                    </h1>
+                </a>
             </div>
             <div class="listing_number">
-                <h1>
-                    Not Verified
-                </h1>
-                <h1 class="number">
-                    <?php echo $not_verified_admin_houses ?>
-                </h1>
+                <a href="../admin_listings_dashboard/">
+                    <h1>
+                        Verified
+                    </h1>
+                    <h1 class="number">
+                        <?php echo $verified_admin_houses ?>
+                    </h1>
+                </a>
             </div>
-
+            <div class="listing_number">
+                <a href="../admin_listings_dashboard/">
+                    <h1>
+                        Not Verified
+                    </h1>
+                    <h1 class="number">
+                        <?php echo $not_verified_admin_houses ?>
+                    </h1>
+                </a>
+            </div>
         </div>
         <div class="right_col">
             <div class="right_container">
-                <div class="profile_image">
+                <!-- <div class="profile_image">
                     <img src="../../images/background2.jpg" alt="">
-                </div>
+                </div> -->
                 <hr>
                 <div class="top_element">
                     <h1>
@@ -124,51 +125,51 @@ if (empty($user)) {
                 <hr>
                 <div class="bottom_element">
                     <div class="details">
-                        <h2>
+                        <h3>
                             Address
-                        </h2>
+                        </h3>
                         <h3>
                             <?php echo ucfirst($row['home_address']) ?>
 
                         </h3>
                     </div>
                     <div class="details">
-                        <h2>
+                        <h3>
                             Email
-                        </h2>
+                        </h3>
                         <h3>
                             <?php echo ucfirst($row['email']) ?>
 
                         </h3>
                     </div>
                     <div class="details">
-                        <h2>
+                        <h3>
                             Contact
-                        </h2>
+                        </h3>
                         <h3>
                             <?php echo ucfirst($row['contact']) ?>
 
                         </h3>
                     </div>
                     <div class="details">
-                        <h2>
+                        <h3>
                             Gender
-                        </h2>
+                        </h3>
                         <h3>
                             <?php echo ucfirst($row['sex']) ?>
 
                         </h3>
                     </div>
                     <div class="details">
-                        <h2>
+                        <h3>
                             Admin ID
-                        </h2>
+                        </h3>
                         <h3>
                             <?php echo ucfirst($row['admin_id']) ?>
 
                         </h3>
                     </div>
-                 
+
                 </div>
             </div>
         </div>

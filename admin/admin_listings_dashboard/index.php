@@ -1,9 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['sessionAdmin'])) {
-    header("Location:../index.php?PleaseLogin");
-    echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
-    exit();
+    redirect('../index.php?error=Please Login');
 } else {
     require_once '../../homerunphp/advertisesdb.php';
     $admin_id = $_SESSION['sessionAdmin'];
@@ -67,6 +65,7 @@ if (empty($_SESSION['sessionAdmin'])) {
     <div class="container">
         <?php
         include '../components/admin_navbar.php';
+        require '../../required/pageloader.php';
         ?>
         <div class="small_screen_overlay">
             <div class="overlay_center">

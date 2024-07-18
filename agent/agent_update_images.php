@@ -1,7 +1,7 @@
 <?php
 session_start();
 require '../homerunphp/advertisesdb.php';
-$sec = 0.1;
+require '../required/alerts.php';
 function compressImage($source, $destination, $quality)
 {
     // Get image info 
@@ -57,9 +57,7 @@ if (isset($_POST['update_images'])) {
 
     if (!mysqli_stmt_execute($stmt)) {
         $error = mysqli_stmt_error($stmt);
-        header("refresh:$sec; ./agent_profile.php?error=SQL ERROR");
-        print("Error: " . $error);
-        echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
+        redirect('./agent_profile.php?error=Error: '. $error);
     } else {
         $status = 'failed';
         $statusMsg = 'failed';
@@ -99,31 +97,27 @@ if (isset($_POST['update_images'])) {
             for ($num = 0; $num < $count; $num++) {
                 $imageUploadPath = $uploadPath . basename($_FILES["$name"]["name"][$num]);
                 require '../homerunphp/upload.php';
-                echo $num;
             }
         } else {
-            echo '<script type="text/javascript"> alert("Error While Uploading") </script>';
+            redirect('./agent_profile.php?error=Error While Uploading');
+
         }
     }
 
     mysqli_stmt_close($stmt);
 
     if ($status == 'error') {
-        header("refresh:$sec; ./agent_profile.php?error=Compression Error");
-        echo '<script type="text/javascript"> alert("' . $statusMsg . '")  </script>';
+        redirect('./agent_profile.php?error=Compression Error');
     } elseif ($status == 'success') {
-        header("refresh:$sec; ./agent_profile.php?error=Home Added Successfully");
-        echo '<script type="text/javascript"> alert("' . $statusMsg . '") </script>';
+        redirect('./agent_profile.php?error=Home Added Successfully');
     } elseif ($status == 'file_type_error') {
-        header("refresh:$sec; ./agent_profile.php?error=File Not Supported");
-        echo '<script type="text/javascript"> alert("' . $statusMsg . '") </script>';
+        redirect('./agent_profile.php?error=File Not Supported');
     } else {
-        header("refresh:$sec; ./agent_profile.php?error=Failed To Upload Images-FileNotSupported");
-        echo '<script type="text/javascript"> alert("' . $statusMsg . '") </script>';
+        redirect('./agent_profile.php?error=Failed To Upload Images-FileNotSupported');
     }
 }
 if (isset($_POST['verification_submit'])) {
-    $agent_id = $_SESSION['sessionagentId'];
+    $agent_id = $_SESSION['sessionagent'];
     $verification_image = $_FILES['identityImage'];
     $verification_image_name = mysqli_real_escape_string($conn, $_FILES['identityImage']['name']);
     $sql = "UPDATE agents SET verification_image = '$verification_image_name' WHERE agent_id='$agent_id'";
@@ -141,23 +135,21 @@ if (isset($_POST['verification_submit'])) {
                 // updates database
                 $stmt = mysqli_prepare($conn, $sql);
                 if ($stmt) {
-                    mysqli_stmt_execute($stmt);
-                    header("refresh:$sec;  ./agent_profile.php?error=Verification Image Uploaded");
-                    echo '<script type="text/javascript"> alert("Verification Image Upload") </script>';
+                    if(mysqli_stmt_execute($stmt)){
+                        redirect(' ./agent_profile.php?error=Verification Image Uploaded');
+                    }else{
+                        redirect(' ./agent_profile.php?error=Failed To Upload Verification Image');
+                    }
                 } else {
-                    header("refresh:$sec;  ./agent_profile.php?error=SQL ERROR Failed To Update Database");
-                    echo '<script type="text/javascript"> alert("SQL ERROR: Failed To Update Database") </script>';
+                    redirect(' ./agent_profile.php?error=SQL ERROR Failed To Update Database');
                 }
             } else {
-                header("refresh:$sec;  ./agent_profile.php?error=Error: Failed to upload Images");
-                echo '<script type="text/javascript"> alert("Error: Failed To Load Images") </script>';
+                redirect('./agent_profile.php?error=Error: Failed to upload Images');
             }
         } else {
-            header("refresh:$sec;  ./agent_profile.php?error=Failed To Make Your Directory");
-            echo '<script type="text/javascript"> alert("Failed To Make Your Directory") </script>';
+            redirect(' ./agent_profile.php?error=Failed To Make Your Directory');
         }
     } else {
-        header("refresh:$sec;  ./agent_profile.php?error=Your File Already Exists");
-        echo '<script type="text/javascript"> alert("Your File Already Exists") </script>';
+        redirect(' ./agent_profile.php?error=Your File Already Exists');
     }
 }

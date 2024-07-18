@@ -7,8 +7,7 @@
 
             <div id="tab">
                 <div>
-                    <label>Admin ID:</label><br>
-                    <input type="text" name="admin_id" value=<?php echo $row['admin_id'] ?> readonly>
+                    <label>Admin ID: <?php echo $row['admin_id'] ?></label><br>
                 </div>
                 <h2>
                     Personal Details

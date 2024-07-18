@@ -3,6 +3,7 @@
 session_start();
 require 'advertisesdb.php';
 include '../required/alerts.php';
+require '../../required/common_functions.php';
 
 if (isset($_POST['submit'])) {
     $user = $_SESSION['sessionowner'];
@@ -20,12 +21,12 @@ if (isset($_POST['submit'])) {
         $lastname = $_POST['lastname'];
         $phone = $_POST['phone'];
 
-        $rooms = filter_var($rooms, FILTER_SANITIZE_SPECIAL_CHARS);
-        $phone = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);
-        $firstname = filter_var($firstname, FILTER_SANITIZE_SPECIAL_CHARS);
-        $lastname = filter_var($lastname, FILTER_SANITIZE_SPECIAL_CHARS);
-        $price = filter_var($price, FILTER_SANITIZE_NUMBER_INT);
-        $address = filter_var($address, FILTER_SANITIZE_SPECIAL_CHARS);
+        $rooms = sanitize_string($rooms);
+        $phone = sanitize_integer($phone);
+        $firstname = sanitize_string($firstname);
+        $lastname = sanitize_string($lastname);
+        $price = sanitize_integer($price);
+        $address = sanitize_string($address);
 
 
         $sql = "UPDATE homerunhouses SET firstname = '$firstname', lastname ='$lastname' ,contact = '$phone', price = '$price', people_in_a_room = '$rooms',adrs ='$address' WHERE home_id = '$user'";
@@ -52,11 +53,11 @@ if (isset($_POST['submit'])) {
         $contact = $_POST['contact'];
         $uni = $_POST['university'];
 
-        $firstname = filter_var($firstname, FILTER_SANITIZE_SPECIAL_CHARS);
-        $lastname = filter_var($lastname, FILTER_SANITIZE_SPECIAL_CHARS);
-        $gender = filter_var($gender, FILTER_SANITIZE_SPECIAL_CHARS);
-        $contact = filter_var($contact, FILTER_SANITIZE_NUMBER_INT);
-        $uni = filter_var($uni, FILTER_SANITIZE_SPECIAL_CHARS);
+        $firstname = sanitize_string($firstname);
+        $lastname = sanitize_string($lastname);
+        $gender = sanitize_string($gender);
+        $contact = sanitize_integer($contact);
+        $uni = sanitize_string($uni);
 
         $sql = "UPDATE homerunuserdb SET firstname = '$firstname', lastname = '$lastname', dob = '$dob', sex = '$gender', contact = '$contact', university = '$uni' WHERE userid = '$user'";
 

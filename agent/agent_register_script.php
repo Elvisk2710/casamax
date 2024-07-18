@@ -3,6 +3,7 @@ $sec = "0.1";
 $mailStatus = "failed";
 //add database connection
 require '../homerunphp/homerunuserdb.php';
+require '../required/alerts.php';
 
 if (isset($_POST['submit'])) {
 
@@ -41,26 +42,20 @@ if (isset($_POST['submit'])) {
 
 
     if (empty($tagline) or !isset($agent_fee) or empty($firstname) or empty($lastname) or empty($password) or empty($confirmpass) or empty($email) or empty($gender) or empty($contact) or empty($id_num)) {
-        header("refresh:$sec; ./agent_register.php?error=Empty Fields&firstname=" . $firstname);
-        exit();
+        redirect('./agent_register.php?error=All Fields Are Required&firstname=' . $firstname);
     } else {
         if ($password !== $confirmpass) {
-            header("refresh:$sec; ./agent_register.php?error=Password Do No tMatch" . $firstname);
-            echo '<script type="text/javascript"> alert("Passwords Do Not Match") </script>';
-            exit();
+            redirect('./agent_register.php?error=Password Do No tMatch' . $firstname);
         } else {
             if (strlen($contact) > 12) {
-                header("refresh:$sec;  ./agent_register.php?error=Enter Valid Phone Number" . $firstname);
-                echo '<script type="text/javascript"> alert("Please Enter a Valid Phone Number") </script>';
-                exit();
+                redirect('./agent_register.php?error=Enter Valid Phone Number' . $firstname);
             } else {
                 $sql = "SELECT email FROM agents WHERE email = ?";
                 $stmt = mysqli_stmt_init($conn);
 
                 // preparing sql statement
                 if (!mysqli_stmt_prepare($stmt, $sql)) {
-                    header("refresh:$sec;  ./agent_register.php?error=SQL Error");
-                    exit();
+                    redirect('./agent_register.php?error=SQL Error');
                 } else {
                     mysqli_stmt_bind_param($stmt, "s", $email);
                     mysqli_stmt_execute($stmt);
@@ -68,9 +63,7 @@ if (isset($_POST['submit'])) {
                     $rowCount = mysqli_stmt_num_rows($stmt);
 
                     if ($rowCount > 0) {
-                        header("refresh:$sec; ./index.php?error=Email Already In Use");
-                        echo '<script type="text/javascript"> alert("OOPS! EMAIL ALREADY EXISTS, PLEASE LOGIN") </script>';
-                        exit();
+                        redirect('./index.php?error=Email Already In Use');
                     } else {
                         mysqli_stmt_close($stmt);
                         mysqli_close($conn);
@@ -78,9 +71,9 @@ if (isset($_POST['submit'])) {
                         require '../required/sendMail.php';
                         echo $mailStatus;
                         if ($mailStatus == "success") {
-                            header("refresh:$sec; ../required/code_register.php?agent=true");
+                            redirect(' ../required/code_register.php?error=Verification Email Sent Successfully&agent=true');
                         } else {
-                            header("location: ./agent_register.php?error=Failed To Send Email!");
+                            redirect(' ./agent_register.php?error=Failed To Send Email!');
                         }
                         exit();
                     }
@@ -94,7 +87,6 @@ if (isset($_POST['register_code'])) {
     // checking if the code is valid
     if ($code == $_COOKIE['code']) {
         require '../homerunphp/homerunuserdb.php';
-
 
         // preparing variables
         $tagline = $_COOKIE['tagline'];
@@ -110,16 +102,13 @@ if (isset($_POST['register_code'])) {
 
         $hashedpass = password_hash($password, PASSWORD_DEFAULT);
         $timestamp = time(); // Current timestamp
-        $randomString = bin2hex(random_bytes(8)); // Generate a random string
-        $rand_num = rand(10, 10000);
-        $truncated_text = substr($hashedpass, 0, 5);
+        $randomString = bin2hex(random_bytes(1)); // Generate a random string
 
-        $agent_id = $timestamp . '_' . $randomString . '_' . $rand_num . '_' . $truncated_text;
+        $agent_id = 'agent' . $timestamp . $randomString;
         $currentDate = date("Y-m-d");
 
         if (empty($tagline) or !isset($agent_fee) or empty($firstname) or empty($lastname) or empty($password) or empty($confirmpass) or empty($email) or empty($gender) or empty($contact) or empty($id_num)) {
-            header("refresh:$sec; ./agent_register.php?error=Empty Fields&firstname=" . $firstname);
-            exit();
+            redirect(' ./agent_register.php?error=Empty Fields&firstname=" . $firstname');
         } else {
             // preparing sql statement
             $sql = "INSERT INTO agents (firstname, lastname, passw, email, sex, contact, id_num,agent_id, agent_fee,agent_tagline,date_joined ) VALUES ('$firstname', '$lastname', '$hashedpass', '$email', '$gender', '$contact', '$id_num', '$agent_id', '$agent_fee', '$tagline','$currentDate');";
@@ -127,8 +116,7 @@ if (isset($_POST['register_code'])) {
             $result = mysqli_query($conn, $sql);
 
             if (!$result) {
-
-                echo '<script type="text/javascript"> alert("SORRY!! Failed to Register") </script>';
+                redirect(' ./agent_register.php?error=Sorry!! Failed To Register');
             } else {
                 setcookie("tagline", $tagline, time() + (900 * 1), "/");
                 setcookie("agent_fee", $agent_fee, time() + (900 * 1), "/");
@@ -140,14 +128,11 @@ if (isset($_POST['register_code'])) {
                 setcookie("contact", $contact, time() + (-900 * 1), "/");
                 setcookie("id_num", $id_num, time() + (-900 * 1), "/");
 
-                header("refresh:$sec; ./index.php?error=You Have Successfully Registered");
-                echo '<script type="text/javascript"> alert("YOU HAVE SUCCESSFULLY REGISTERED!") </script>';
+                redirect('  ./index.php?error=You Have Successfully Registered');
             }
             exit();
         }
     }
 } else {
-
-    header("Refresh:0.1, ../required/code_register.php");
-    echo '<script type="text/javascript"> alert("SORRY YOUR CODE DOES NOT MATCH!!") </script>';
+    redirect('  ../required/code_register.php?error=Sorry Code Does Not Match');
 }

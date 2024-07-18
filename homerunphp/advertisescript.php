@@ -189,7 +189,7 @@ if (isset($_POST['create_profile'])) {
                 } else {
                     $hashedpass = password_hash($password, PASSWORD_DEFAULT);
                     $timestamp = time(); // Current timestamp
-                    $randomString = bin2hex(random_bytes(2)); // Generate a random string
+                    $randomString = bin2hex(random_bytes(1)); // Generate a random string
                     $rand_num = rand(1, 100);
                     $trancated_text = substr($hashedpass, 0, 5);
 

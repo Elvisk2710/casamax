@@ -1,6 +1,7 @@
 <?php
 $sec = 0.1;
-include '../required/alerts.php';
+require '../required/alerts.php';
+require '../required/common_functions.php';
 
 if (isset($_POST['admin_create_profile'])) {
     $access_level_max = 3;
@@ -52,10 +53,9 @@ if (isset($_POST['admin_create_profile'])) {
         $hashedpass = password_hash($password, PASSWORD_DEFAULT);
         $timestamp = time(); // Current timestamp
         $randomString = bin2hex(random_bytes(4)); // Generate a random string
-        $rand_num = rand(10, 100);
 
         if ($access_level >= 1  && $access_level <= $access_level_max) {
-            $admin_id =  "admin" . $timestamp . $rand_num;
+            $admin_id =  "admin" . $timestamp . $randomString;
 
             $sql = "INSERT INTO admin_table (first_name,last_name,id_num,passw,access_level,home_address,dob,sex,contact,email,admin_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = mysqli_stmt_init($conn);

@@ -1,5 +1,15 @@
 myStatusContainer = document.querySelector(".status");
-
+// Add event listeners to detect user activity
+document.addEventListener("mousemove", () => {
+  lastActivityTime = Date.now();
+});
+document.addEventListener("keydown", () => {
+  lastActivityTime = Date.now();
+});
+document.addEventListener("scroll", () => {
+  lastActivityTime = Date.now();
+});
+ 
 setInterval(() => {
   const now = Date.now();
   if (now - lastActivityTime >= 10000) {
@@ -42,14 +52,3 @@ setInterval(() => {
   }
 }, 10000);
 
-// Add event listeners to detect user activity
-document.addEventListener("mousemove", () => {
-  lastActivityTime = Date.now();
-});
-document.addEventListener("keydown", () => {
-  lastActivityTime = Date.now();
-});
-document.addEventListener("scroll", () => {
-  lastActivityTime = Date.now();
-});
- 

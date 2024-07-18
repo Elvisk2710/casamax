@@ -376,11 +376,12 @@ hr {
     flex-wrap: wrap;
     word-wrap: break-word;
   }
-  .change_info_btn {
-    background-color: white;
-    color: rgb(252, 153, 82);
-    font-weight: 400;
+  .change_info_btn, .edit_info_button {
+    background-color: rgb(252, 153, 82);
+    color: rgb(8, 8, 12);
+    font-weight: 500;
     transform: translate(0, 50%);
+    width: 60%;
   }
   .container {
     grid-template-columns: 1fr 1fr;

@@ -49,9 +49,10 @@ setcookie("page_pass", "homerunuserdb", time() + (900 * 1), "/");
             </div>
             <div class="input-label">
                 <label for="upword">Password<span style="color: red; font-size:10px;">*</span></label>
-                <input title="Enter Your Password" type="password" id="pword" name="password" placeholder="Enter your Password" required>
-                <i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
-
+                <div class="password">
+                    <input title="Enter Your Password" type="password" id="pword" name="password" placeholder="Enter your Password" required>
+                    <i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
+                </div>
             </div>
             <div class="input-label">
                 <label for="upword">Confirm Password<span style="color: red; font-size:10px;">*</span></label>
@@ -88,19 +89,19 @@ setcookie("page_pass", "homerunuserdb", time() + (900 * 1), "/");
                 <input title="Enter Your Date Of Birth" type="date" id="dob" name="dob" placeholder="Enter Date of Birth" required>
 
             </div>
-            <div class="input-label">
-            <label for="gender">Gender<span style="color: red; font-size:10px;">*</span></label>
-            
-            <div class="radio">
-                <div class="gender_container">
-                    <label for="male" class="man">Male<span style="color: red; font-size:10px;">*</span></label>
-                    <input type="radio" id="male" value="M" name="gender">
+            <div class="input-label gender">
+                <label for="gender">Gender<span style="color: red; font-size:10px;">*</span></label>
+
+                <div class="radio">
+                    <div class="gender_container">
+                        <label for="male" class="man">Male<span style="color: red; font-size:10px;">*</span></label>
+                        <input type="radio" id="male" value="M" name="gender">
+                    </div>
+                    <div class="gender_container">
+                        <label for="female" class="woman">Female<span style="color: red; font-size:10px;">*</span></label>
+                        <input type="radio" id="female" value="F" name="gender">
+                    </div>
                 </div>
-                <div class="gender_container">
-                    <label for="female" class="woman">Female<span style="color: red; font-size:10px;">*</span></label>
-                    <input type="radio" id="female" value="F" name="gender">
-                </div>
-            </div>
             </div>
 
             <div class="input-label">
@@ -124,18 +125,7 @@ setcookie("page_pass", "homerunuserdb", time() + (900 * 1), "/");
                 <p class="reg">Already have an account? <a href="login.php">LogIn</a></p>
             </div>
         </form>
-        <script>
-            const togglePassword = document.querySelector('#togglePassword');
-            const password = document.querySelector('#pword');
-
-            togglePassword.addEventListener('click', function(e) {
-                // toggle the type attribute
-                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                password.setAttribute('type', type);
-                // toggle the eye slash icon
-                this.classList.toggle('fa-eye-slash');
-            });
-        </script>
+        <script src="./jsfiles/onclickscript.js"></script>
 
     </div>
 </body>

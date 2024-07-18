@@ -1,8 +1,7 @@
 <?php
 session_start();
-$sec = "0.1";
 setcookie("scriptPage", "homeownerloginscript.php", time() + (900 * 1), "/");
-include '../required/alerts.php';
+require '../required/alerts.php';
 
 if (isset($_POST['submit'])) {
     require 'homerunuserdb.php';
@@ -32,16 +31,14 @@ if (isset($_POST['submit'])) {
 
                 if ($passcheck == false) {
                     redirect("../homeownerlogin.php?error=Oops!! Wrong Password");
-
                     exit();
                 } elseif ($passcheck == true) {
                     $_SESSION['sessionowner'] = $row['home_id'];
-                    redirect("../profile.php??error=You Have Logged In Successfully");
-
+                    redirect("../profile.php?success=You Have Logged In Successfully");
                     exit();
                 }
             } else {
-                redirect("../profile.php??error=Oops!! User Not Found");
+                redirect("../homeownerlogin.php?error=Oops!! User Not Found");
                 exit();
             }
         }
@@ -49,14 +46,13 @@ if (isset($_POST['submit'])) {
 } elseif (isset($_POST['logout'])) {
     if (isset($_SESSION['sessionowner'])) {
         session_destroy();
-        redirect("../index.php??error=You Have Logged Out Successfully");
-
+        redirect("../index.php?success=You Have Logged Out Successfully");
         exit();
     } else {
-        redirect("../index.php??error=You Have Logged Out Successfully");
+        redirect("../index.php?success=You Have Logged Out Successfully");
         exit();
     }
 } else {
-    redirect("../index.php??error=Access Denied");
+    redirect("../index.php?error=Access Denied");
     exit();
 }

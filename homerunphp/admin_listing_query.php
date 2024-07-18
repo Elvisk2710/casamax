@@ -1,6 +1,5 @@
 <?php
 
-include '../required/alerts.php';
 while ($row = mysqli_fetch_array($result)) {
 ?>
     <tr>

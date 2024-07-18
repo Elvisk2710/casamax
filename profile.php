@@ -2,7 +2,9 @@
 session_start();
 require './required/ads_query.php';
 if (empty($_SESSION['sessionowner'])) {
-    redirect("./homeownerlogin.php?error=Please Login");
+    require './required/alerts.php';
+    // redirect("./homeownerlogin.php?error=Please Login");
+    echo 'entered';
 } else {
     $user = $_SESSION['sessionowner'];
     require_once 'homerunphp/advertisesdb.php';

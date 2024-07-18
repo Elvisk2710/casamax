@@ -41,6 +41,7 @@
             display: flex;
             height: 100%;
             flex-basis: 15%;
+            min-width: 200px;
             flex-direction: column;
             left: 0;
             justify-content: center;
@@ -57,6 +58,7 @@
             color: white;
             font-weight: 600;
             text-decoration: none;
+            font-size: 1.2rem;
         }
 
         .fas {

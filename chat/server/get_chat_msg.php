@@ -1,5 +1,6 @@
 <?php
 session_start();
+require '../../required/common_functions.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_SESSION['sessionstudent']) || isset($_SESSION['sessionowner'])) {
@@ -13,26 +14,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
+                $msg_time = formatTimestamp($row['timestamp']);
                 if ($row['outgoing_msg_id'] === $outgoing_id) { //if this is equal to the ougoing then he is the sender
-                    // if($row['is_read'] == 0){
-                    //     updateIsRead($row['msg_id']);
-                    // }
                     $output .= '
                     <div class="outgoing_message_container">
                         <div class="outgoing_message">
-                                ' . $row['msg'] . '
+                                ' . html_entity_decode($row['msg']) . '
+                                 <div class="msg_time">
+                            ' . $msg_time . '
                         </div>
+                        </div>
+                        
                     </div>
                     ';
                 } else { //he is the msg receiver
-                    if($row['is_read'] == 0){
+                    if ($row['is_read'] == 0) {
                         updateIsRead($row['msg_id']);
                     }
                     $output .= '
                     <div class="incoming_message_container">
                         <div class="incoming_message">
-                                ' . $row['msg'] . '
+                                ' . html_entity_decode($row['msg']) . '
+                                   <div class="msg_time">
+                            ' . $msg_time . '
                         </div>
+                        </div>
+                      
                     </div>
                     ';
                 }
@@ -43,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("location: ../screens/login.php");
     }
 }
-function updateIsRead($msg_id){
+function updateIsRead($msg_id)
+{
     include '../../homerunphp/advertisesdb.php';
     $sql = "UPDATE messages SET is_read = 1 WHERE msg_id = ?";
     $stmt = $conn->prepare($sql);

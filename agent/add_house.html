@@ -171,43 +171,43 @@
       color: rgb(8, 8, 12);
       border-bottom: solid 1px rgba(8, 8, 12, 0.452);
     }
-    .div_button{
-        display: flex;
-        flex-basis: row;
-        gap: 10px;
+    .div_button {
+      display: flex;
+      flex-basis: row;
+      gap: 10px;
     }
     button {
-        display: block;
-        margin: 5px auto;
-        width: 80%;
-        padding: 10px;
-        border: none;
-        border-radius: 10px;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        font-size: 15px;
-        text-align: center;
-        font-weight: 500;
-        font-family: "Arvo", serif;
-        transition: 0.3s all;
-      }
-      #add_home{
-        background-color: rgb(252, 153, 82) !important;
-        color: white !important;
-      }
-      #cancel{
-        color: rgb(252, 153, 82) !important;
-        background-color: rgb(8, 8, 12) !important;
-      }
-      .terms{
-        display: flex;
-        flex-direction: row;
-      }
-      .terms a{
-        text-decoration: underline;
-      }
-      #submit_form_btn{
-        display: none;
-      }
+      display: block;
+      margin: 5px auto;
+      width: 80%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      font-size: 15px;
+      text-align: center;
+      font-weight: 500;
+      font-family: "Arvo", serif;
+      transition: 0.3s all;
+    }
+    #add_home {
+      background-color: rgb(252, 153, 82) !important;
+      color: white !important;
+    }
+    #cancel {
+      color: rgb(252, 153, 82) !important;
+      background-color: rgb(8, 8, 12) !important;
+    }
+    .terms {
+      display: flex;
+      flex-direction: row;
+    }
+    .terms a {
+      text-decoration: underline;
+    }
+    #submit_form_btn {
+      display: none;
+    }
     /* --footer-- */
     /* for small screens */
     @media only screen and (max-width: 700px) {
@@ -307,11 +307,11 @@
         font-family: "Arvo", serif;
         transition: 0.3s all;
       }
-      #add_home{
+      #add_home {
         background-color: rgb(252, 153, 82) !important;
         color: white !important;
       }
-      #cancel{
+      #cancel {
         color: rgb(252, 153, 82) !important;
         background-color: rgb(8, 8, 12) !important;
       }
@@ -550,16 +550,25 @@
         <p>(best represented in landscape view)</p>
 
         <div class="imagepreview">
-
           <div>
-              <img title="Choose an Image" src="../images/addimage.png" id="image1" onclick="triggerClick()">
-              <input type="file" id="inputimage1" name="image[]" multiple accept="image/jpeg, image/png, image/heif, image/heif-sequence" onchange="displayImage(this)">
-              <br>
-              <h3 style="color: rgb(8, 8, 12);">
-                  Add Upto 8 Images
-              </h3>
+            <img
+              title="Choose an Image"
+              src="../images/addimage.png"
+              id="image1"
+              onclick="triggerClick()"
+            />
+            <input
+              type="file"
+              id="inputimage1"
+              name="image[]"
+              multiple
+              accept="image/jpeg, image/png, image/heif, image/heif-sequence"
+              onchange="displayImage(this)"
+            />
+            <br />
+            <h3 style="color: rgb(8, 8, 12)">Add Upto 8 Images</h3>
           </div>
-      </div>
+        </div>
       </div>
 
       <div>
@@ -574,55 +583,47 @@
             >I hereby accept all the terms and conditions</a
           >
           <span style="color: red; font-size: 10px">*</span>
-          </label
-        >
+        </label>
       </div>
       <div class="div_button">
         <button
-        type="button"
-        class="button"
-        name="add_home"
-        id="add_home"
-        onclick="submitForm()"
-      >
-        Add home
-      </button>
-      <button type="submit" id="submit_form_btn" hidden>
+          type="button"
+          class="button"
+          name="cancel"
+          id="cancel"
+          onclick="close_add()"
+        >
+          cancel
+        </button>
 
-      </button>
-      <button
-        type="button"
-        class="button"
-        name="cancel"
-        id="cancel"
-        onclick="close_add()"
-      >
-        cancel
-      </button>
+        <button
+          type="button"
+          class="button"
+         
+          id="add_home"
+          onclick="submitForm()"
+        >
+          Add home
+        </button>
+        <button type="submit" name="add_home" id="submit_form_btn" hidden></button>
       </div>
-    
     </div>
   </form>
   <script src="../jsfiles/onclickscript.js"></script>
   <script>
-
-    document.getElementById('agentImageUploadImage').onclick = function triggerClickAgent() {
-    document.getElementById('agentImageUpload').click();
-}
-
-    function submitForm(){
-        console.log('clicked')
-        if (document.getElementById("agentImageUpload").value === "") {
-            // adding classname invalid
-            document.getElementById("agentImageUpload").classList.add("invalid")
-            // and set the current valid status to false:
-            alert("Please Add Images")
-        }else{
-            document.getElementById("submit_form_btn").click();
-            document.getElementById('submit_form_btn').disabled = true;
-            document.getElementById('add_home').disabled = true;
-        }
+    function submitForm() {
+      console.log("clicked");
+      if (document.getElementById("inputimage1").value === "") {
+        e.preventDefault();
+        // adding classname invalid
+        document.getElementById("inputimage1").classList.add("invalid");
+        // and set the current valid status to false:
+        alert("Please Add Images");
+      } else {
+        document.getElementById("submit_form_btn").click();
+        document.getElementById("add_home").disabled = true;
+        document.getElementById("add_home").disabled = true;
+      }
     }
-      
   </script>
 </div>

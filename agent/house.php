@@ -4,17 +4,13 @@ session_start();
 require_once '../homerunphp/advertisesdb.php';
 $home_id = $_GET['home_id'];
 if (empty($_SESSION['sessionagent'])) {
-    header("Location:index.php?PleaseLogin");
-    echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
-    exit();
+    redirect('./index.php?error=Please Login First');
 } else {
     $sql = "SELECT * FROM  homerunhouses WHERE home_id = '$home_id' ";
     if ($rs_result = mysqli_query($conn, $sql)) {
         $home_row = mysqli_fetch_array($rs_result);
     } else {
-        header("Location:index.php?SQLERROR");
-        echo '<script type="text/javascript"> alert("SQL ERROR") </script>';
-        exit();
+        redirect('./index.php?error=Sql Error');
     }
 }
 
@@ -32,12 +28,6 @@ if (empty($_SESSION['sessionagent'])) {
     <meta http-equiv="pragma" content="no-cache">
     <meta name="theme-color" content="#08080C" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&family=Oswald:wght@600&family=Quicksand&family=Source+Sans+3:wght@200&display=swap" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&family=Oswald:wght@600&family=Quicksand&family=Source+Sans+3:wght@200&display=swap');
-    </style>
-
     <title>LIsting Info</title>
 </head>
 <style>

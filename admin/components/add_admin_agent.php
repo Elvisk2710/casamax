@@ -56,15 +56,15 @@
                         <label>DOB:</label><br>
                         <input type="date" name="dob" placeholder="Date Of Birth" required>
                     </div>
-                    <div>
+                    <div class="gender_container">
                         <label>Gender:</label><br>
                         <div class="gender">
                             <label for="male">Male</label>
-                            <input type="radio" name="gender" value="M" required>
+                            <input type="radio" class="radio_btn" id="male" name="gender" value="M" required>
                         </div>
                         <div class="gender">
-                            <label for="male">Female</label>
-                            <input type="radio" name="gender" value="F" required>
+                            <label for="female">Female</label>
+                            <input type="radio" class="radio_btn" id="female" name="gender" value="F" required>
                         </div>
                     </div>
                     <div class="add_admin_form_buttons">

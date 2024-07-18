@@ -1,12 +1,12 @@
-    <script>
+<?php
+    require_once 'alerts.php';
+    ?>
+<script>
         window.addEventListener("load", () => {
             document.querySelector(".container_loader").classList.add("container_loader--hidden");
             document.querySelector("body").classList.remove("scrollable");
         });
     </script>
-    <?php
-    require 'alerts.php';
-    ?>
     <div class="container_loader ">
         <div class="ring"></div>
         <div class="ring"></div>
@@ -175,6 +175,7 @@
         .floating_chat_icon a img {
             width: 40px;
             height: 40px;
+            margin: 0 !important;
         }
     </style>
     <script src="https://localhost/casamax/chat/scriptjs/user_status.js"></script>
