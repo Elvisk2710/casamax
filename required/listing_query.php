@@ -41,13 +41,8 @@ $fridge_query = '';
 $transport_query = '';
 $gender_query = '';
 $price_query = '';
-$kitchen_url = "";
-$wifi_url = "";
-$borehole_url = "";
-$transport_url = "";
-$price_url = "";
-$fridge_url = "";
-$gender_url = "";
+$filter_query = '';
+
 // reset filter
 
 if (isset($_GET["page"])) {
@@ -59,6 +54,7 @@ $start_from = ($page - 1) * 8;
 
 // query for search
 if (isset($_POST['filter'])) {
+    unset($_GET);
     if (isset($_POST['kitchen'])) {
         $kitchen_query = "and kitchen = '1'";
         $kitchen_url = "&kitchen=1";
@@ -99,6 +95,11 @@ if (isset($_POST['filter'])) {
     $filter_query = $kitchen_query . $wifi_query . $borehole_query . $fridge_query . $transport_query . $gender_query . $price_query;
 } else {
     $filter_query = '';
+}
+if(isset($_GET['price'])){
+    unset($_POST);
+    $pricesearch = $_GET['price'];
+    $filter_query .=  "and price <= '$pricesearch'";
 }
 $sql = "SELECT * FROM homerunhouses WHERE uni = '$university' AND available = '1' $filter_query ORDER BY id DESC LIMIT $start_from, $num_per_page";
 $sql_num = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' $filter_query";

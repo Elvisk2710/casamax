@@ -7,8 +7,6 @@ if (isset($_POST['pricesearch']) and isset($_POST['university'])) {
 
     $pricesearch = filter_var($pricesearch, FILTER_SANITIZE_NUMBER_INT);
 
-
-
     // this is for folder alocations.
     if ($unisearch == "University of Zimbabwe") {
         $unilocation = "uzlisting.php";
@@ -32,5 +30,5 @@ if (isset($_POST['pricesearch']) and isset($_POST['university'])) {
         exit();
     }
 
-    redirect("../unilistings/" . $unilocation . "?filter=search&price=" . $pricesearch);
+    redirect("../unilistings/" . $unilocation . "?price=" . $pricesearch);
 }
