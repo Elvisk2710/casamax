@@ -59,8 +59,6 @@ $start_from = ($page - 1) * 8;
 
 // query for search
 if (isset($_POST['filter'])) {
-    var_dump($_POST);
-
     if (isset($_POST['kitchen'])) {
         $kitchen_query = "and kitchen = '1'";
         $kitchen_url = "&kitchen=1";
