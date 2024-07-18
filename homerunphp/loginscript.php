@@ -3,6 +3,7 @@ session_start();
 $sec = "0.1";
 require 'homerunuserdb.php';
 include '../required/alerts.php';
+
 if (isset($_POST['submit'])) {
     if (isset($_GET['redirect'])) {
         $redirect = $_GET['redirect'];
@@ -63,7 +64,7 @@ if (isset($_POST['submit'])) {
                             $results = mysqli_fetch_array($sub_db_check);
                             $today = strtotime(date('y-m-d'));
                             if (strtotime($results['due_date']) < $today || $results['number_of_houses'] == 0 || $results['completed'] == 1) {
-                                redirect("../payment.php?eeror=Subscription Has Ended");
+                                redirect("../payment.php?error=Subscription Has Ended");
                             } else {
                                 // Redirect based on university
                                 $universityMapping = array(
@@ -94,7 +95,7 @@ if (isset($_POST['submit'])) {
                     exit();
                 }
             } else {
-                redirect(" ../login.php?error=Sorry, User Not Found");
+                redirect("../login.php?error=Sorry, User Not Found");
                 exit();
             }
         }
@@ -103,6 +104,7 @@ if (isset($_POST['submit'])) {
     if (isset($_SESSION['sessionstudent'])) {
         session_destroy();
     }
-    redirect(" ../index.php?error=Logged Out");
+    redirect("../index.php?error=Logged Out");
     exit();
 }
+?>

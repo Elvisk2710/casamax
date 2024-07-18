@@ -3,86 +3,84 @@ $sec = "0.1";
 // Add database connection
 require 'homerunuserdb.php';
 require '../required/alerts.php';
+require '../required/common_functions.php';
 
 if (isset($_POST['register_code'])) {
     $code = $_POST['code'];
 
+    // Sanitize code input
+    $code = sanitize_string($code);
+
     // Checking if the code is valid
     if ($code == $_COOKIE['code']) {
 
-        // Preparing variables
-        $email = $_COOKIE['email'];
-        $firstname = $_COOKIE['firstname'];
-        $lastname = $_COOKIE['lastname'];
+        // Sanitize and validate other inputs
+        $email = sanitize_email($_COOKIE['email']);
+        $firstname = sanitize_string($_COOKIE['firstname']);
+        $lastname = sanitize_string($_COOKIE['lastname']);
         $password = $_COOKIE['password'];
         $confirmpass = $_COOKIE['confirmpass'];
         $dob = $_COOKIE['dob'];
-        $gender = $_COOKIE['gender'];
-        $contact = $_COOKIE['contact'];
-        $uni = $_COOKIE['uni'];
+        $gender = sanitize_string($_COOKIE['gender']);
+        $contact = sanitize_integer($_COOKIE['contact']);
+        $uni = sanitize_string($_COOKIE['uni']);
 
-        $lastid = mysqli_insert_id($conn);
-
-        $randcode = rand(1, 99999);
-        switch ($uni) {
-            case "University of Zimbabwe":
-                $uni_code = "uz";
-                break;
-            case "Midlands State University":
-                $uni_code = "msu";
-                break;
-            case "Africa University":
-                $uni_code = "au";
-                break;
-            case "Bindura State University":
-                $uni_code = "bsu";
-                break;
-            case "Chinhoyi University of Science and Technology":
-                $uni_code = "cut";
-                break;
-            case "Great Zimbabwe University":
-                $uni_code = "gzu";
-                break;
-            case "Harare Institute of Technology":
-                $uni_code = "hit";
-                break;
-            case "National University of Science and Technology":
-                $uni_code = "nust";
-                break;
+        // Validate email format
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            redirect("../required/code_register.php?error=Invalid Email Format");
+            exit();
         }
 
-        if (empty($uni_code)) {
-            redirect("./required/code_register.php?Failed To Generate ID");
+        // Validate password and confirm password match
+        if ($password !== $confirmpass) {
+            redirect("../required/code_register.php?error=Passwords Do Not Match");
+            exit();
         }
 
-        $userid = $uni_code . "_" . $randcode . "_" . $lastid;
-
-        $sql = "INSERT INTO homerunuserdb (userid, firstname, lastname, passw, email, dob, sex, contact, university) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $sql);
-
-        if ($stmt) {
-            $hashedpass = password_hash($password, PASSWORD_DEFAULT);
-            mysqli_stmt_bind_param($stmt, "sssssssss", $userid, $firstname, $lastname, $hashedpass, $email, $dob, $gender, $contact, $uni);
-            if (mysqli_stmt_execute($stmt)) {
-                setcookie("firstname", "", time() - 900, "/");
-                setcookie("lastname", "", time() - 900, "/");
-                setcookie("password", "", time() - 900, "/");
-                setcookie("confirmpass", "", time() - 900, "/");
-                setcookie("email", "", time() - 900, "/");
-                setcookie("dob", "", time() - 900, "/");
-                setcookie("gender", "", time() - 900, "/");
-                setcookie("contact", "", time() - 900, "/");
-                setcookie("uni", "", time() - 900, "/");
-                mysqli_stmt_close($stmt);
-                mysqli_close($conn);
-                redirect("../login.php?error=You Have Successfully Registered");
-            } else {
-                redirect("./required/code_register.php?Failed To Generate ID");
-            }
+        // Generate university code based on selected university
+        $uni_code = generateUniCode($uni);
+        if ($uni_code == null) {
+            redirect("../required/code_register.php?error=Invalid University Selection");
+            exit();
         } else {
-            redirect("./required/code_register.php?Failed To Generate ID");
+
+            // Generate user ID
+            $randcode = rand(1, 99999);
+            $lastid = mysqli_insert_id($conn); // Ensure you have the last inserted ID if needed
+            $userid = $uni_code . $randcode . $lastid;
+
+            // Hash password
+            $hashedpass = password_hash($password, PASSWORD_DEFAULT);
+
+            // Prepare SQL statement
+            $sql = "INSERT INTO homerunuserdb (userid, firstname, lastname, passw, email, dob, sex, contact, university) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($conn, $sql);
+
+            if ($stmt) {
+                // Bind parameters and execute statement
+                mysqli_stmt_bind_param($stmt, "sssssssss", $userid, $firstname, $lastname, $hashedpass, $email, $dob, $gender, $contact, $uni);
+                if (mysqli_stmt_execute($stmt)) {
+                    // Clear cookies and close statement
+                    setcookie("firstname", "", time() - 900, "/");
+                    setcookie("lastname", "", time() - 900, "/");
+                    setcookie("password", "", time() - 900, "/");
+                    setcookie("confirmpass", "", time() - 900, "/");
+                    setcookie("email", "", time() - 900, "/");
+                    setcookie("dob", "", time() - 900, "/");
+                    setcookie("gender", "", time() - 900, "/");
+                    setcookie("contact", "", time() - 900, "/");
+                    setcookie("uni", "", time() - 900, "/");
+                    mysqli_stmt_close($stmt);
+                    mysqli_close($conn);
+                    redirect("../login.php?error=You Have Successfully Registered");
+                } else {
+                    redirect("../required/code_register.php?error=Failed To Register User");
+                }
+            } else {
+                redirect("../required/code_register.php?error=SQL Error");
+            }
         }
     } else {
-        redirect("../required/code_register.php?error=Sorry You Code Does Not Match");
+        redirect("../required/code_register.php?error=Invalid Verification Code");
     }
 }

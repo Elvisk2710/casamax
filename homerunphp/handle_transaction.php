@@ -1,5 +1,4 @@
 <?php
-
 require '../homerunphp/advertisesdb.php';
 session_start();
 ini_set('display_errors', 1);
@@ -8,26 +7,32 @@ error_reporting(E_ALL);
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
+require '../required/common_functions.php';
+
 // Assuming this is your resultUrl endpoint
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Retrieve the posted variables
-    $status = $_GET['status'];
-    $reference = $_GET['reference'];
-    $amount = $_GET['amount'];
-    $paynowReference = $_GET['paynowreference'];
-    $pollurl = $_GET['pollurl'];
+    // Sanitize and retrieve the posted variables
+    $status = sanitize_string($_GET['status'] ?? '');
+    $reference = sanitize_string($_GET['reference'] ?? '');
+    $amount = sanitize_integer($_GET['amount'] ?? 0);
+    $paynowReference = sanitize_string($_GET['paynowreference'] ?? '');
+    $pollurl = sanitize_string($_GET['pollurl'] ?? '');
 
     // Get the current date and time
     $date = date('Y-m-d H:i:s');
 
     // Process the payment result
-
     $insert_sub = "INSERT INTO transactions (status, reference, amount, paynowreference, date, pollurl) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_stmt_init($conn);
 
     // Update your system with the payment status, date, and other details
     if (!mysqli_stmt_prepare($stmt, $insert_sub)) {
         // Handle SQL error
+        $response = [
+            'status' => 'error',
+            'message' => 'SQL error occurred.',
+        ];
+        echo json_encode($response);
     } else {
         mysqli_stmt_bind_param($stmt, "ssisss", $status, $reference, $amount, $paynowReference, $date, $pollurl);
         // Send a response back to PayNow
@@ -48,7 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     }
 } else {
-    // Return a "Method Not Allowed" response for non-POST requests
+    // Return a "Method Not Allowed" response for non-GET requests
     http_response_code(405);
     echo 'Method Not Allowed';
 }
+?>

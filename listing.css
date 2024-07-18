@@ -188,22 +188,47 @@ h2 {
   font-family: "Oswald", sans-serif;
   font-size: 16px;
 }
+.checkmark{
+  color: rgb(252, 153, 82);
+  height: 28px;
+  width: 28px;
+  transform: translateY(35%);
+}
+.crossmark{
+  color: rgb(8, 8, 12);
+  height: 28px;
+  width: 28px;
+  transform: translateY(35%);
+}
 .amenities-list {
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
   border-bottom: 1px solid rgba(8, 8, 12, 0.6);
   border-top: 1px solid rgba(8, 8, 12, 0.6);
   width: 100%;
 }
-.amenities {
-  flex-basis: 15%;
-  color: rgb(252, 153, 82);
-  margin: 10px auto;
+.amenities-list div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  width: fit-content;
+  height: fit-content;
 }
-.amenities-list img {
+.amenities{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: rgb(8, 8, 12);
+  width: fit-content;
+}
+.amenities-list svg {
   width: 20px;
   height: 20px;
-  margin-left: 0;
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .footer {
   flex: 1;
@@ -313,15 +338,13 @@ hr {
   }
   .amenities {
     flex-basis: 15%;
-    color: rgb(252, 153, 82);
+    color: rgb(8, 8, 12);
     font-size: 12px;
     margin: 10px 5px;
   }
-  .amenities-list img {
+  .amenities-list svg {
     width: 15px;
     height: 15px;
-    margin-left: 0;
-    margin-top: 10px;
   }
   h3 {
     margin: 10px;

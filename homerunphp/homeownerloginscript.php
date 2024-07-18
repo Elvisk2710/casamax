@@ -56,3 +56,4 @@ if (isset($_POST['submit'])) {
     redirect("../index.php?error=Access Denied");
     exit();
 }
+?>

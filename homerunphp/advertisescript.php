@@ -2,39 +2,8 @@
 session_start();
 require 'advertisesdb.php';
 include '../required/alerts.php';
-/* 
- * Custom function to compress image size and 
- * upload to the server using PHP 
- */
-function compressImage($source, $destination, $quality)
-{
-    // Get image info 
-    $imgInfo = getimagesize($source);
-    $mime = $imgInfo['mime'];
+require '../required/common_functions.php';
 
-    // Create a new image from file 
-    switch ($mime) {
-        case 'image/jpeg':
-            $image = imagecreatefromjpeg($source);
-            break;
-        case 'image/png':
-            $image = imagecreatefrompng($source);
-            break;
-        case 'image/gif':
-            $image = imagecreatefromgif($source);
-            break;
-        default:
-            $image = imagecreatefromjpeg($source);
-    }
-
-    // Save image 
-    imagejpeg($image, $destination, $quality);
-
-    // Return compressed image 
-    return $destination;
-}
-
-$sec = "0.1";
 if (isset($_POST['create_profile'])) {
 
     $name = "image";
@@ -109,66 +78,32 @@ if (isset($_POST['create_profile'])) {
         }
     }
 
-    if (!empty($_FILES['identityImage']['name']) || !empty($_FILES['residencyImage']['name']) || $count = 0) {
+    if (!empty($_FILES['identityImage']['name']) || !empty($_FILES['residencyImage']['name']) || $count == 0) {
         // identity image
         $identityImages = $_FILES['identityImage'];
-        // residencial proof image
+        // residential proof image
         $residencyImages = $_FILES['residencyImage'];
 
         // declaring variables
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
-        $phone = $_POST['phone'];
-        $email = $_POST['email'];
-        $idnum = $_POST['idnum'];
-        $price = $_POST['price'];
-        $address = $_POST['address'];
-        $people = $_POST['people'];
-        $gender = $_POST['gender'];
-        $description = $_POST['description'];
-        $uni = $_POST['university'];
+        $firstname = sanitize_string($_POST['firstname']);
+        $lastname = sanitize_string($_POST['lastname']);
+        $phone = sanitize_integer($_POST['phone']);
+        $email = sanitize_email($_POST['email']);
+        $idnum = sanitize_string($_POST['idnum']);
+        $price = sanitize_integer($_POST['price']);
+        $address = sanitize_string($_POST['address']);
+        $people = sanitize_integer($_POST['people']);
+        $gender = sanitize_string($_POST['gender']);
+        $description = sanitize_string($_POST['description']);
+        $uni = sanitize_string($_POST['university']);
         $password = $_POST['password'];
         $confirmpass = $_POST['confirmpassword'];
 
-        $people = filter_var($people, FILTER_SANITIZE_NUMBER_INT);
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        $firstname = filter_var($firstname, FILTER_SANITIZE_SPECIAL_CHARS);
-        $lastname = filter_var($lastname, FILTER_SANITIZE_SPECIAL_CHARS);
-        $gender = filter_var($gender, FILTER_SANITIZE_SPECIAL_CHARS);
-        $price = filter_var($price, FILTER_SANITIZE_NUMBER_INT);
-        $description = filter_var($description, FILTER_SANITIZE_SPECIAL_CHARS);
-        $phone = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);
-        $address = filter_var($address, FILTER_SANITIZE_SPECIAL_CHARS);
-        $idnum = filter_var($idnum, FILTER_SANITIZE_SPECIAL_CHARS);
-
-        if (!empty($_POST['kitchen'])) {
-            $kitchen = 1;
-        } else {
-            $kitchen = 0;
-        }
-        if (!empty($_POST['fridge'])) {
-            $fridge = 1;
-        } else {
-            $fridge = 0;
-        }
-        if (!empty($_POST['wifi'])) {
-            $wifi = 1;
-        } else {
-            $wifi = 0;
-        }
-        if (!empty($_POST['borehole'])) {
-            $borehole = 1;
-        } else {
-            $borehole = 0;
-        }
-        if (!empty($_POST['transport'])) {
-            $transport = 1;
-        } else {
-            $transport = 0;
-        }
-
-        // making the directory for pictures and all the information
-
+        $kitchen = !empty($_POST['kitchen']) ? 1 : 0;
+        $fridge = !empty($_POST['fridge']) ? 1 : 0;
+        $wifi = !empty($_POST['wifi']) ? 1 : 0;
+        $borehole = !empty($_POST['borehole']) ? 1 : 0;
+        $transport = !empty($_POST['transport']) ? 1 : 0;
 
         if ($password !== $confirmpass) {
             redirect("../advertise/index.php?error=Passwords Do Not Match");
@@ -177,7 +112,7 @@ if (isset($_POST['create_profile'])) {
             $stmt = mysqli_stmt_init($conn);
 
             if (!mysqli_stmt_prepare($stmt, $sql)) {
-                redirect(" ../advertise/index.php?error=SQL Error");
+                redirect("../advertise/index.php?error=SQL Error");
             } else {
                 mysqli_stmt_bind_param($stmt, "s", $email);
                 mysqli_stmt_execute($stmt);
@@ -185,23 +120,22 @@ if (isset($_POST['create_profile'])) {
                 $rowCount = mysqli_stmt_num_rows($stmt);
 
                 if ($rowCount > 0) {
-                    redirect(" ../advertise/index.php?error=User Name Already Exists");
+                    redirect("../advertise/index.php?error=User Name Already Exists");
                 } else {
                     $hashedpass = password_hash($password, PASSWORD_DEFAULT);
                     $timestamp = time(); // Current timestamp
                     $randomString = bin2hex(random_bytes(1)); // Generate a random string
                     $rand_num = rand(1, 100);
-                    $trancated_text = substr($hashedpass, 0, 5);
+                    $truncated_text = substr($hashedpass, 0, 5);
 
                     $home_id = $timestamp . $randomString . $rand_num;
                     $home_id = preg_replace('/[^0-9]/', '', $home_id);
 
-
-                    $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,idnum,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,adrs,people_in_a_room,passw,id_image,res_image) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+                    $sql = "INSERT INTO homerunhouses (home_id, email, firstname, lastname, contact, idnum, price, rules, uni, image1, image2, image3, image4, image5, image6, image7, image8, gender, kitchen, fridge, wifi, borehole, transport, adrs, people_in_a_room, passw, id_image, res_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     if (!$stmt = mysqli_stmt_init($conn)) {
                         redirect("../advertise/index.php?error=Init Failure");
                     } else {
-                        // directory path to folder for verification imaages
+                        // directory path to folder for verification images
                         $directoryPath = '../verification_images/home_verification_images/' . $home_id . '/';
                         $identityFileDestination = $directoryPath . $identityImages['name'];
                         $residencyFileDestination = $directoryPath . $residencyImages['name'];
@@ -226,32 +160,7 @@ if (isset($_POST['create_profile'])) {
                                                 } else {
 
                                                     $status = 'failed';
-                                                    switch ($uni) {
-                                                        case "University of Zimbabwe":
-                                                            $uploadPath = '../housepictures/uzpictures/';
-                                                            break;
-                                                        case "Midlands State University":
-                                                            $uploadPath = '../housepictures/msupictures/';
-                                                            break;
-                                                        case "Africa Univeristy":
-                                                            $uploadPath = '../housepictures/aupictures/';
-                                                            break;
-                                                        case "Bindura State University":
-                                                            $uploadPath = '../housepictures/bsupictures/';
-                                                            break;
-                                                        case "Chinhoyi University of Science and Technology":
-                                                            $uploadPath = '../housepictures/cutpictures/';
-                                                            break;
-                                                        case "Great Zimbabwe University":
-                                                            $uploadPath = '../housepictures/gzpictures/';
-                                                            break;
-                                                        case "Harare Institute of Technology":
-                                                            $uploadPath = '../housepictures/hitpictures/';
-                                                            break;
-                                                        case "National University of Science and Technology":
-                                                            $uploadPath = '../housepictures/nustpictures/';
-                                                            break;
-                                                    }
+                                                    $uploadPath = getUniLocation($uni);
 
                                                     if (!empty($uploadPath)) {
                                                         for ($num = 0; $num < $count; $num++) {
@@ -285,5 +194,5 @@ if (isset($_POST['create_profile'])) {
         redirect("../advertise/index.php?error=Please Upload The Required Documents");
     }
 } else {
-    redirect("../ndex.php?error=Access Denied");
+    redirect("../index.php?error=Access Denied");
 }

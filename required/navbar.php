@@ -10,10 +10,12 @@
         <a href="../help.php">HELP</a>
         <a href="../chat/screens/">MY CHATS</a>
         <?php
-        if (!isset($_SESSION['sessionstudent'])) {
-            echo '<a href="../loginas.php" class="sign_in" name="loginbtn">LOGIN</a>';
-        } else {
+        if (isset($_SESSION['sessionstudent'])) {
             echo '<a href="../student_profile.php" class="sign_in" name="loginbtn">MY PROFILE</a>';
+        } elseif (isset($_SESSION['sessionowner'])) {
+            echo '<a href="../profile.php" class="sign_in" name="loginbtn">MY PROFILE</a>';
+        } else {
+            echo '<a href="../loginas.php" class="sign_in" name="loginbtn">LOGIN</a>';
         }
         ?>
     </div>

@@ -4,6 +4,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 include '../required/alerts.php';
+require '../required/common_functions.php';
 
 // Verify if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $home_id = $_POST['home_id'];
 
         // Sanitize user input
-        $home_id = filter_var($home_id, FILTER_SANITIZE_STRING);
+        $home_id = sanitize_string($home_id);
 
         // Validate input
         if (empty($home_id)) {

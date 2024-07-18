@@ -1,16 +1,15 @@
 <?php
 session_start();
 $sec = "0.1";
-include '../required/alerts.php';
+require '../required/alerts.php';
+require '../required/common_functions.php';
 
 if (isset($_POST['submit'])) {
 
     require 'homerunuserdb.php';
 
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $email = sanitize_email($_POST['email']);
+    $password = sanitize_string($_POST['password']);
 
     if (empty($email) || empty($password)) {
         redirect("../admin?error=All Fields Are Required");
@@ -36,7 +35,7 @@ if (isset($_POST['submit'])) {
                     redirect("../admin/dashboard?error=You Have Logged In Successfully");
                 } else {
                     // Incorrect password
-                    redirect("./admin?error=Wrong Password");
+                    redirect("../admin?error=Wrong Password");
                 }
             } else {
                 // User not found

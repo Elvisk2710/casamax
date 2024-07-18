@@ -1,70 +1,9 @@
 <?php
 session_start();
 require '../required/alerts.php';
+require '../required/common_functions.php';
 // Perform necessary security checks
 if (isset($_POST['profile_photos']) && !empty($_SESSION['sessionowner'])) {
-    // Custom function to sanitize and validate user input
-    function sanitizeInput($input)
-    {
-        // Implement your sanitization logic here
-        $input = trim($input);
-        $input = stripslashes($input);
-        $input = htmlspecialchars($input);
-        return $input;
-    }
-
-    // Function to generate a random and unique filename
-    function generateUniqueFilename($extension)
-    {
-        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $randomString = '';
-        $length = 10;
-
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, strlen($characters) - 1)];
-        }
-
-        return $randomString . '.' . $extension;
-    }
-
-    // Checks if a file is a valid image
-    function isValidImage($file)
-    {
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        $fileInfo = getimagesize($file['tmp_name']);
-        return in_array($fileInfo['mime'], $allowedTypes);
-    }
-
-    // Checks if a file size is within the limit
-    function isFileSizeWithinLimit($file)
-    {
-        $maxFileSize = 5 * 1024 * 1024; // 5MB
-        return $file['size'] <= $maxFileSize;
-    }
-
-    // Compresses and saves the image
-    function compressAndSaveImage($source, $destination, $quality)
-    {
-        $imgInfo = getimagesize($source);
-        $mime = $imgInfo['mime'];
-
-        switch ($mime) {
-            case 'image/jpeg':
-                $image = imagecreatefromjpeg($source);
-                break;
-            case 'image/png':
-                $image = imagecreatefrompng($source);
-                break;
-            case 'image/gif':
-                $image = imagecreatefromgif($source);
-                break;
-            default:
-                $image = imagecreatefromjpeg($source);
-        }
-
-        imagejpeg($image, $destination, $quality);
-        imagedestroy($image);
-    }
 
     // Database connection
     require 'advertisesdb.php';

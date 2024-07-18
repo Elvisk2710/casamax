@@ -2,40 +2,8 @@
 session_start();
 require 'advertisesdb.php';
 include '../required/alerts.php';
+require '../required/common_functions.php';
 
-/* 
- * Custom function to compress image size and 
- * upload to the server using PHP 
- */
-function compressImage($source, $destination, $quality)
-{
-    // Get image info 
-    $imgInfo = getimagesize($source);
-    $mime = $imgInfo['mime'];
-
-    // Create a new image from file 
-    switch ($mime) {
-        case 'image/jpeg':
-            $image = imagecreatefromjpeg($source);
-            break;
-        case 'image/png':
-            $image = imagecreatefrompng($source);
-            break;
-        case 'image/gif':
-            $image = imagecreatefromgif($source);
-            break;
-        default:
-            $image = imagecreatefromjpeg($source);
-    }
-
-    // Save image 
-    imagejpeg($image, $destination, $quality);
-
-    // Return compressed image 
-    return $destination;
-}
-
-$sec = "0.1";
 if (isset($_POST['create_profile'])) {
 
     $name = "image";
@@ -111,37 +79,37 @@ if (isset($_POST['create_profile'])) {
     }
 
     if (!empty($_FILES['identityImage']['name']) || !empty($_FILES['residencyImage']['name']) || !empty($_POST['admin_id'])) {
-        $admin_id = $_POST['admin_id'];
+        $admin_id = sanitize_string($_POST['admin_id']);
         // identity image
         $identityImages = $_FILES['identityImage'];
         // residencial proof image
         $residencyImages = $_FILES['residencyImage'];
 
         // declaring variables
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
-        $phone = $_POST['phone'];
-        $email = $_POST['email'];
-        $idnum = $_POST['idnum'];
-        $price = $_POST['price'];
-        $address = $_POST['address'];
-        $people = $_POST['people'];
-        $gender = $_POST['gender'];
-        $description = $_POST['description'];
-        $uni = $_POST['university'];
+        $firstname = sanitize_string($_POST['firstname']);
+        $lastname = sanitize_string($_POST['lastname']);
+        $phone = sanitize_integer($_POST['phone']);
+        $email = sanitize_email($_POST['email']);
+        $idnum = sanitize_string($_POST['idnum']);
+        $price = sanitize_integer($_POST['price']);
+        $address = sanitize_string($_POST['address']);
+        $people = sanitize_integer($_POST['people']);
+        $gender = sanitize_string($_POST['gender']);
+        $description = sanitize_string($_POST['description']);
+        $uni = sanitize_string($_POST['university']);
         $password = $_POST['password'];
         $confirmpass = $_POST['confirmpassword'];
 
-        $people = filter_var($people, FILTER_SANITIZE_NUMBER_INT);
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        $firstname = filter_var($firstname, FILTER_SANITIZE_SPECIAL_CHARS);
-        $lastname = filter_var($lastname, FILTER_SANITIZE_SPECIAL_CHARS);
-        $gender = filter_var($gender, FILTER_SANITIZE_SPECIAL_CHARS);
-        $price = filter_var($price, FILTER_SANITIZE_NUMBER_INT);
-        $description = filter_var($description, FILTER_SANITIZE_SPECIAL_CHARS);
-        $phone = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);
-        $address = filter_var($address, FILTER_SANITIZE_SPECIAL_CHARS);
-        $idnum = filter_var($idnum, FILTER_SANITIZE_SPECIAL_CHARS);
+        // Ensure all required fields are sanitized and validated
+        if (
+            $phone === false || $people === false || $email === false ||
+            $firstname === false || $lastname === false || $idnum === false ||
+            $price === false || $address === false || $description === false ||
+            $gender === false || $uni === false || $admin_id === false
+        ) {
+            redirect("../admin/dashboard/index.php?error=Invalid input data");
+            exit();
+        }
 
         if (!empty($_POST['kitchen'])) {
             $kitchen = 1;
@@ -171,7 +139,6 @@ if (isset($_POST['create_profile'])) {
 
         // making the directory for pictures and all the information
 
-
         if ($password !== $confirmpass) {
             redirect("../admin/dashboard/index.php?error=Passwords Do Not Match" . $firstname);
         } else {
@@ -194,16 +161,16 @@ if (isset($_POST['create_profile'])) {
                     $timestamp = time(); // Current timestamp
                     $randomString = bin2hex(random_bytes(2)); // Generate a random string
                     $rand_num = rand(1, 100);
-                    $trancated_text = substr($hashedpass, 0, 5);
+                    $truncated_text = substr($hashedpass, 0, 5);
 
                     $home_id = $timestamp . $randomString . $rand_num;
                     $home_id = preg_replace('/[^0-9]/', '', $home_id);
 
-                    $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,idnum,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,adrs,people_in_a_room,passw,admin_id,id_image,res_image) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
+                    $sql = "INSERT INTO homerunhouses (home_id,email,firstname,lastname,contact,idnum,price,rules,uni,image1,image2,image3,image4,image5,image6,image7,image8,gender,kitchen,fridge,wifi,borehole,transport,adrs,people_in_a_room,passw,admin_id,id_image,res_image) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     if (!$stmt = mysqli_stmt_init($conn)) {
                         redirect(" ../admin/dashboard/index.php?error=SQL Error Init Failed");
                     } else {
-                        // directory path to folder for verification imaages
+                        // directory path to folder for verification images
                         $directoryPath = '../verification_images/' . $home_id . '/';
                         $identityFileDestination = $directoryPath . $identityImages['name'];
                         $residencyFileDestination = $directoryPath . $residencyImages['name'];
@@ -228,7 +195,7 @@ if (isset($_POST['create_profile'])) {
                                                 if ($count <= 0) {
                                                     header("location:../admin/dashboard/index.php?error=Profile Created");
                                                     $_SESSION['sessionowner'] = $home_id;
-                                                    redirect(" ../admin/dashboard/index.php?error=Profile Created!! NO images have been uploaded. Please go toyour profile page and upload images");
+                                                    redirect(" ../admin/dashboard/index.php?error=Profile Created!! NO images have been uploaded. Please go to your profile page and upload images");
                                                 } else {
 
                                                     $status = 'failed';
@@ -242,7 +209,7 @@ if (isset($_POST['create_profile'])) {
                                                             $imageUploadPath = '../housepictures/msupictures/' . basename($_FILES["$name"]["name"][$num]);
                                                             require '../homerunphp/upload.php';
                                                         }
-                                                    } elseif ($uni === "Africa Univeristy") {
+                                                    } elseif ($uni === "Africa University") {
                                                         for ($num = 0; $num < $count; $num++) {
                                                             $imageUploadPath = '../housepictures/aupictures/' . basename($_FILES["$name"]["name"][$num]);
                                                             require '../homerunphp/upload.php';
@@ -265,7 +232,7 @@ if (isset($_POST['create_profile'])) {
                                                     } elseif ($uni === "Harare Institute of Technology") {
                                                         for ($num = 0; $num < $count; $num++) {
                                                             $imageUploadPath = '../housepictures/hitpictures/' . basename($_FILES["$name"]["name"][$num]);
-                                                            require '../homerunphp/upload.phpupload.php';
+                                                            require '../homerunphp/upload.php';
                                                         }
                                                     } elseif ($uni === "National University of Science and Technology") {
                                                         for ($num = 0; $num < $count; $num++) {
@@ -283,7 +250,7 @@ if (isset($_POST['create_profile'])) {
                                                     header("../admin/dashboard/index.php?error=Profile Created");
                                                 } else {
                                                     $_SESSION['sessionowner'] = $home_id;
-                                                    redirect(" ../admin/dashboard/index.php?error=Profile Created!! NO images have been uploaded. Please go toyour profile page and upload images");
+                                                    redirect(" ../admin/dashboard/index.php?error=Profile Created!! NO images have been uploaded. Please go to your profile page and upload images");
                                                 }
                                             }
                                         }
