@@ -96,10 +96,9 @@ if (isset($_POST['filter'])) {
         }
     }
 
-    $filter_query = $kitchen_query .$wifi_query .$borehole_query .$fridge_query .$transport_query .$gender_query .$price_query;
-
-}else{
-    $filter_query ='';
+    $filter_query = $kitchen_query . $wifi_query . $borehole_query . $fridge_query . $transport_query . $gender_query . $price_query;
+} else {
+    $filter_query = '';
 }
 $sql = "SELECT * FROM homerunhouses WHERE uni = '$university' AND available = '1' $filter_query ORDER BY id DESC LIMIT $start_from, $num_per_page";
 $sql_num = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' $filter_query";
@@ -247,24 +246,9 @@ while ($row = mysqli_fetch_array($result)) {
 
             echo "
             <br />
-            <p style='font-weight: 600;color: green; margin: 10px; cursor: pointer'> VERIFIED";
-
-            echo '  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16" onclick="openInfo()">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                </svg>
-            </p>';
-            echo "
-            <div class='info' id='info' style='cursor: pointer'>
-                <p>
-                    This account has been verified by CASAMAX 👍🏾
-                </p>
-                </button>
-            </div>
-
-                <h3>";
+            <p style='font-weight: 600;color: green; margin: 10px; cursor: pointer'> VERIFIED
+            </p>";
         }
-
 
         echo " <div class='house-price'>
         <p>" . $row['people_in_a_room'] . " In A Room</p>
