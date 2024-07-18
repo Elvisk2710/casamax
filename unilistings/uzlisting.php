@@ -17,8 +17,8 @@ $page_filter_name = "../unilistings/" . $page_name;
 
 // reseting a filter
 if (isset($_POST['filter_reset'])) {
-    header("Location:https://casamax.co.zw/unilistings/$page_name");
-    unset($_GET['fridge']);
+    header("Location: https://casamax.co.zw/unilistings/$page_name");
+    unset($_GET['fridge']); 
     unset($_GET['borehole']);
     unset($_GET['wifi']);
     unset($_GET['kitchen']);

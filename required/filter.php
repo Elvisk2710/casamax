@@ -4,7 +4,7 @@
                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
           </svg>
      </div>
-     <form action="<?php $page_filter_name ?>" method="get">
+     <form action="<?php $page_filter_name ?>" method="post">
 
           <h2>Apply Filters</h2>
 
@@ -12,35 +12,35 @@
                <h3>Amenities</h3>
 
                <div>
-                    <label for="wifi">Wifi :<input id="wifi" type="checkbox" name="wifi" value="1" <?php if (isset($_GET['wifi']) && $_GET['wifi'] = 1) {
+                    <label for="wifi">Wifi :<input id="wifi" type="checkbox" name="wifi" value="1" <?php if (isset($_POST['wifi']) && $_POST['wifi'] = 1) {
                                                                                                          echo "checked";
                                                                                                     } ?>> </label>
                </div>
                <br>
 
                <div>
-                    <label for="kitchen">Kitchen :<input id="kitchen" type="checkbox" name="kitchen" value="1" <?php if (isset($_GET['kitchen']) && $_GET['kitchen'] = 1) {
+                    <label for="kitchen">Kitchen :<input id="kitchen" type="checkbox" name="kitchen" value="1" <?php if (isset($_POST['kitchen']) && $_POST['kitchen'] = 1) {
                                                                                                                         echo "checked";
                                                                                                                    } ?>></label>
                </div>
                <br>
 
                <div>
-                    <label for="borehole">Borehole :<input id="borehole" type="checkbox" name="borehole" value="1" <?php if (isset($_GET['borehole']) && $_GET['borehole'] = 1) {
+                    <label for="borehole">Borehole :<input id="borehole" type="checkbox" name="borehole" value="1" <?php if (isset($_POST['borehole']) && $_POST['borehole'] = 1) {
                                                                                                                         echo "checked";
                                                                                                                    } ?>></label>
                </div>
                <br>
 
                <div>
-                    <label for="fridge"> Fridge :<input id="fridge" type="checkbox" name="fridge" value="1" <?php if (isset($_GET['fridge']) && $_GET['fridge'] = 1) {
+                    <label for="fridge"> Fridge :<input id="fridge" type="checkbox" name="fridge" value="1" <?php if (isset($_POST['fridge']) && $_POST['fridge'] = 1) {
                                                                                                                    echo "checked";
                                                                                                               } ?>></label>
                </div>
                <br>
 
                <div>
-                    <label for="Transport"> Transport :<input id="Transport" type="checkbox" name="transport" value="1" <?php if (isset($_GET['transport']) && $_GET['transport'] = 1) {
+                    <label for="Transport"> Transport :<input id="Transport" type="checkbox" name="transport" value="1" <?php if (isset($_POST['transport']) && $_POST['transport'] = 1) {
                                                                                                                              echo "checked";
                                                                                                                         } ?>></label>
                </div>
@@ -60,17 +60,13 @@
 
           <div class="price_filter">
                <?php
-               if (isset($_GET['price'])) {
-                    $price = $_GET['price'];
-               } else {
-                    $price = '';
-               }
+               $price = isset($_POST['price']) ? $_POST['price'] : '';
                ?>
                <label for="price">Budget $:</label>
                <input type="number" id="price" name="price" value="<?php echo $price ?>" placeholder="What's Your $Budget">
           </div>
           <div class="sidebar-link">
-               <button name="filter">Apply Filter</button>
+               <button name="filter" type="submit">Apply Filter</button>
                <br>
           </div>
      </form>

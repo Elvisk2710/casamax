@@ -1,6 +1,5 @@
 <?php
 
-
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
     $url = "https://";
 else
@@ -22,15 +21,15 @@ $url .= $_SERVER['REQUEST_URI'];
 </div>
 
 <script>
-       function openFilter() {
-          console.log("openFilter() called");
-          const sidebarElement = document.querySelector(".sidebar");
-          if (sidebarElement) {
-               sidebarElement.style.display = "block";
-          } else {
-               console.error("Element with class 'sidebar' not found.");
-          }
-     }
+    function openFilter() {
+        console.log("openFilter() called");
+        const sidebarElement = document.querySelector(".sidebar");
+        if (sidebarElement) {
+            sidebarElement.style.display = "block";
+        } else {
+            console.error("Element with class 'sidebar' not found.");
+        }
+    }
 </script>
 
 <?php
@@ -59,39 +58,36 @@ if (isset($_GET["page"])) {
 $start_from = ($page - 1) * 8;
 
 // query for search
-if (isset($_GET['price']) and ($_GET['filter'] == "search")) {
-    $pricesearch = $_GET['price'];
-    $sql_num = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' and price <= '$pricesearch'";
-    $sql = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' and price <='$pricesearch' ORDER BY id DESC LIMIT $start_from,$num_per_page";
-    $price_url = "&filter=search&price=$pricesearch";
-} else {
-    if (isset($_GET['kitchen'])) {
+if (isset($_POST['filter'])) {
+    var_dump($_POST);
+
+    if (isset($_POST['kitchen'])) {
         $kitchen_query = "and kitchen = '1'";
         $kitchen_url = "&kitchen=1";
     }
-    if (isset($_GET['wifi'])) {
+    if (isset($_POST['wifi'])) {
         $wifi_query = "and wifi = '1'";
         $wifi_url = "&wifi=1";
     }
-    if (isset($_GET['borehole'])) {
+    if (isset($_POST['borehole'])) {
         $borehole_query = "and borehole = '1'";
         $borehole_url = "&borehole=1";
     }
-    if (isset($_GET['fridge'])) {
+    if (isset($_POST['fridge'])) {
         $fridge_query = "and fridge = '1'";
         $fridge_url = "&fridge=1";
     }
-    if (isset($_GET['transport'])) {
+    if (isset($_POST['transport'])) {
         $transport_query = "and transport = '1'";
         $transport_url = "&transport=1";
     }
-    if (isset($_GET['price'])) {
-        $pricesearch = $_GET['price'];
+    if (isset($_POST['price'])) {
+        $pricesearch = $_POST['price'];
         $price_query = "and price <= '$pricesearch'";
-        $price_url = "&filter=search&price=$pricesearch";
+        $price_url = "&price=$pricesearch";
     }
-    if (isset($_GET['gender'])) {
-        $gender = $_GET['gender'];
+    if (isset($_POST['gender'])) {
+        $gender = $_POST['gender'];
         $gender_url = "&gender=" . $gender;
         if ($gender == 'girls') {
             $gender_query = "and gender = 'girls'";
@@ -102,10 +98,13 @@ if (isset($_GET['price']) and ($_GET['filter'] == "search")) {
         }
     }
 
-    $sql = "SELECT * FROM homerunhouses WHERE uni = '$university' AND available = '1' $kitchen_query $wifi_query $borehole_query $fridge_query $transport_query $gender_query $price_query ORDER BY id DESC LIMIT $start_from, $num_per_page";
-    $sql_num = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' $kitchen_query $wifi_query  $borehole_query $fridge_query $transport_query $gender_query $price_query";
+    $filter_query = $kitchen_query .$wifi_query .$borehole_query .$fridge_query .$transport_query .$gender_query .$price_query;
+
+}else{
+    $filter_query ='';
 }
-$filter_url = $kitchen_url . $wifi_url . $borehole_url . $transport_url . $fridge_url . $price_url . $gender_url;
+$sql = "SELECT * FROM homerunhouses WHERE uni = '$university' AND available = '1' $filter_query ORDER BY id DESC LIMIT $start_from, $num_per_page";
+$sql_num = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' $filter_query";
 $num_result = mysqli_query($conn, $sql_num);
 $total_records = mysqli_num_rows($num_result);
 $result = mysqli_query($conn, $sql);
