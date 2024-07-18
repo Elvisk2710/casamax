@@ -16,8 +16,9 @@ if (isset($_POST['submit'])) {
     $contact = sanitize_integer($_POST['contact']);
     $uni = $_POST['university'];
 
+
     if (empty($firstname) || empty($lastname) || empty($password) || empty($confirmpass) || empty($email) || empty($dob) || empty($gender) || empty($contact) || $uni === "none") {
-        redirect("../signup.php?error=emptyfields&firstname=" . urlencode($firstname));
+        redirect("../signup.php?error=Empty Field");
         exit();
     } elseif ($password !== $confirmpass) {
         redirect("../signup.php?error=Passwords Do Not Match&firstname=" . urlencode($firstname));

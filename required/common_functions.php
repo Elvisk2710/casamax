@@ -43,15 +43,8 @@ function sanitize_integer($input)
     // Remove any non-digit characters
     $sanitized = filter_var($input, FILTER_SANITIZE_NUMBER_INT);
 
-    // Validate the sanitized input
-    $validated = filter_var($sanitized, FILTER_VALIDATE_INT);
-
-    // Return the validated integer, or false if validation fails
-    if ($validated) {
-        return $sanitized;
-    } else {
-        return $validated;
-    }
+    // Return the sanitized input, even if it's not a valid integer
+    return $sanitized;
 }
 
 // Function to sanitize an email address
