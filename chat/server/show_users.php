@@ -5,18 +5,23 @@ session_start();
 // Connection to database
 require '../../homerunphp/advertisesdb.php';
 require '../../required/common_functions.php';
+
 // API endpoint for retrieving data
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $student = false;
     $chatData = [];
     $output = "";
 
+    // Get the search query from the request
+    $searchQuery = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
+
     // Get the user ID and determine the query based on session
     if (isset($_SESSION['sessionstudent'])) {
         $user_id = $_SESSION['sessionstudent'];
         $sql = "SELECT email, home_id, firstname, lastname, status
                 FROM homerunhouses
-                WHERE agent_id IS NULL OR agent_id = ''
+                WHERE (agent_id IS NULL OR agent_id = '') 
+                AND (firstname LIKE '%$searchQuery%' OR lastname LIKE '%$searchQuery%')
                 GROUP BY email, home_id;";
         $student = true;
     } elseif (isset($_SESSION['sessionowner'])) {
@@ -34,6 +39,7 @@ FROM homerunuserdb hu
 JOIN messages m ON (m.incoming_msg_id = hu.userid OR m.outgoing_msg_id = hu.userid)
 JOIN homerunhouses hh ON (m.incoming_msg_id = hh.home_id OR m.outgoing_msg_id = hh.home_id)
 WHERE hh.home_id = '$user_id'
+AND (hu.firstname LIKE '%$searchQuery%' OR hu.lastname LIKE '%$searchQuery%')
 GROUP BY hu.email, hu.userid, hh.home_id;";
     } else {
         echo "Please Login First";
@@ -50,7 +56,7 @@ GROUP BY hu.email, hu.userid, hh.home_id;";
 
     // Check for results
     if (mysqli_num_rows($result) == 0) {
-        echo $student ? "No Landlords Ready To Chat" : "No Students Ready To Chat";
+        echo $student ? "Sorry Couldn't Find Landlords Ready To Chat" : "Sorry Couldn't Find Students Ready To Chat";
     } else {
         while ($row = mysqli_fetch_assoc($result)) {
             $chat_id = $student ? $row['home_id'] : $row['userid'];

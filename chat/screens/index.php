@@ -90,11 +90,12 @@ if ($results = mysqli_query($conn, $sql)) {
         </div>
         <div class="search">
             <div class="search_bar">
-                <input type="text" placeholder="Search By Name">
+            <input type="text" id="searchInput" placeholder="Search by name or surname">
+
             </div>
-            <div class="search_icon">
+            <!-- <div class="search_icon">
                 <img src="../../images/searchicon.webp" alt="search icon">
-            </div>
+            </div> -->
         </div>
         <div class="chat_list_container">
             <div class="chat_list">
