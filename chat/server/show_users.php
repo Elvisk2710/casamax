@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $user_id = $_SESSION['sessionstudent'];
         $sql = "SELECT email, home_id, firstname, lastname, status
                 FROM homerunhouses
-                WHERE agent_id IS NULL 
+                WHERE agent_id IS NULL OR agent_id = ''
                 GROUP BY email, home_id;";
         $student = true;
     } elseif (isset($_SESSION['sessionowner'])) {

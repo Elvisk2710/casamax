@@ -22,6 +22,7 @@ setcookie("email", "", time() + (-900 * 1), "/");
 
 //  pop-up for install
 require './required/app_install.php';
+require './required/alerts.php';
 if (isset($_GET['error'])) {
     $error = $_GET['error'];
     echo "<script>alert('$error')</script>";

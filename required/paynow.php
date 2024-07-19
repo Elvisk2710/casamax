@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 require_once '../Paynow-PHP-SDK-master/autoloader.php';
 require '../homerunphp/advertisesdb.php';
 $paynow = new Paynow\Payments\Paynow(

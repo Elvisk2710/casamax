@@ -39,13 +39,16 @@ function redirect($redirect)
 ?>
 <style>
     .alert_container {
-        width: 100vw;
-        height: 100vh;
+        width: fit-content;
+        height: fit-content;
         display: flex;
-        position: absolute;
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: transparent;
         justify-content: center;
         z-index: 1000;
+        position: absolute;
+        top: 5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     @keyframes openAnimation {
