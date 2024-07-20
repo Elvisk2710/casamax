@@ -1,67 +1,64 @@
 <?php
 session_start();
 require './required/ads_query.php';
+require './homerunphp/advertisesdb.php';
 if (empty($_SESSION['sessionowner'])) {
     require './required/alerts.php';
-    // redirect("./homeownerlogin.php?error=Please Login");
+    redirect("./homeownerlogin.php?error=Please Login");
     echo 'entered';
 } else {
     $user = $_SESSION['sessionowner'];
-    require_once 'homerunphp/advertisesdb.php';
     $sql = "SELECT * FROM  homerunhouses WHERE home_id = '$user' ";
-}
+    if ($rs_result = mysqli_query($conn, $sql)) {
+        $row = mysqli_fetch_array($rs_result);
+        $home_id = $row['home_id'];
+        setcookie("update", $home_id, time() + (86400 * 1), "/");
 
-if ($rs_result = mysqli_query($conn, $sql)) {
-    $row = mysqli_fetch_array($rs_result);
-    $home_id = $row['home_id'];
-    setcookie("update", $home_id, time() + (86400 * 1), "/");
-}
+        if ($row['verified'] == 1) {
+            $verified = true;
+        } else {
+            $verified = false;
+        }
 
-if (empty($user)) {
-    redirect("./homeownerlogin.php?error=Please Login");
-} else {
+        if ($row['uni'] == "University of Zimbabwe") {
 
-    if ($row['verified'] == 1) {
-        $verified = true;
+            setcookie("uni_folder", "uzpictures", time() + (86400 * 1), "/");
+            $location = "housepictures/uzpictures/";
+        } elseif ($row['uni'] == "Midlands State University") {
+            setcookie("uni_folder", "msupictures", time() + (86400 * 1), "/");
+
+            $location = "housepictures/msupictures/";
+        } elseif ($row['uni'] == "Africa Univeristy") {
+            setcookie("uni_folder", "aupictures", time() + (86400 * 1), "/");
+
+            $location = "housepictures/aupictures/";
+        } elseif ($row['uni'] == "Bindura State University") {
+            setcookie("uni_folder", "bsupictures", time() + (86400 * 1), "/");
+
+            $location = "housepictures/bsupictures/";
+        } elseif ($row['uni'] == "Chinhoyi University of Science and Technology") {
+            setcookie("uni_folder", "cutpictures", time() + (86400 * 1), "/");
+
+            $location = "housepictures/cutpictures/";
+        } elseif ($row['uni'] == "Great Zimbabwe University") {
+            setcookie("uni_folder", "gzpictures", time() + (86400 * 1), "/");
+
+            $location = "housepictures/gzpictures/";
+        } elseif ($row['uni'] == "Harare Institute of Technology") {
+            setcookie("uni_folder", "hitpictures", time() + (86400 * 1), "/");
+
+            $location = "housepictures/hitpictures/";
+        } elseif ($row['uni'] == "National University of Science and Technology") {
+            setcookie("uni_folder", "nustpictures", time() + (86400 * 1), "/");
+            $location = "housepictures/hitpictures/";
+        } else {
+            redirect("./index.php?error=Failed To Get Uni In Profile");
+        }
     } else {
-        $verified = false;
-    }
-
-    if ($row['uni'] == "University of Zimbabwe") {
-
-        setcookie("uni_folder", "uzpictures", time() + (86400 * 1), "/");
-        $location = "housepictures/uzpictures/";
-    } elseif ($row['uni'] == "Midlands State University") {
-        setcookie("uni_folder", "msupictures", time() + (86400 * 1), "/");
-
-        $location = "housepictures/msupictures/";
-    } elseif ($row['uni'] == "Africa Univeristy") {
-        setcookie("uni_folder", "aupictures", time() + (86400 * 1), "/");
-
-        $location = "housepictures/aupictures/";
-    } elseif ($row['uni'] == "Bindura State University") {
-        setcookie("uni_folder", "bsupictures", time() + (86400 * 1), "/");
-
-        $location = "housepictures/bsupictures/";
-    } elseif ($row['uni'] == "Chinhoyi University of Science and Technology") {
-        setcookie("uni_folder", "cutpictures", time() + (86400 * 1), "/");
-
-        $location = "housepictures/cutpictures/";
-    } elseif ($row['uni'] == "Great Zimbabwe University") {
-        setcookie("uni_folder", "gzpictures", time() + (86400 * 1), "/");
-
-        $location = "housepictures/gzpictures/";
-    } elseif ($row['uni'] == "Harare Institute of Technology") {
-        setcookie("uni_folder", "hitpictures", time() + (86400 * 1), "/");
-
-        $location = "housepictures/hitpictures/";
-    } elseif ($row['uni'] == "National University of Science and Technology") {
-        setcookie("uni_folder", "nustpictures", time() + (86400 * 1), "/");
-        $location = "housepictures/hitpictures/";
-    } else {
-        redirect("./index.php?error=Failed To Get Uni In Profile");
+        redirect("./homeownerlogin.php?error=Sql Error Failed To Get Data");
     }
 }
+
 ?>
 
 <!DOCTYPE html>
