@@ -25,7 +25,7 @@
 <div class="container">
 
     <div>
-        <h1>Advertise As</h1>
+        <h1>Manage As</h1>
     </div>
           
        
