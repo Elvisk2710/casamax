@@ -1,181 +1,181 @@
 <?php
-    require_once 'alerts.php';
-    ?>
+require_once 'alerts.php';
+?>
 <script>
-        window.addEventListener("load", () => {
-            document.querySelector(".container_loader").classList.add("container_loader--hidden");
-            document.querySelector("body").classList.remove("scrollable");
-        });
-    </script>
-    <div class="container_loader ">
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <span class="loading">
-            <?php
-            if (!isset($pageloader)) {
-                echo " loading...";
-            } else {
-                echo $pageloader;
-            }
-            ?>
-        </span>
-    </div>
-    <?php
-    if (!isset($_GET['chat_id'])) {
-    ?>
-        <div class="floating_chat_icon" title="chats">
+    window.addEventListener("load", () => {
+        document.querySelector(".container_loader").classList.add("container_loader--hidden");
+        document.querySelector("body").classList.remove("scrollable");
+    });
+</script>
+<div class="container_loader ">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <span class="loading">
+        <?php
+        if (!isset($pageloader)) {
+            echo " loading...";
+        } else {
+            echo $pageloader;
+        }
+        ?>
+    </span>
+</div>
+<?php
+if ((!isset($_GET['chat_id'])) || (!isset($_SESSION['sessionAdmin']) || (!empty($_SESSION['sessionAdmin'])))) {
+?>
+    <div class="floating_chat_icon" title="chats">
         <a href="https://localhost/casamax/chat/screens/">
-                <img src="https://localhost/casamax/images/new-message.png" alt="">
-            </a>
-        </div>
-    <?php
+            <img src="https://localhost/casamax/images/new-message.png" alt="">
+        </a>
+    </div>
+<?php
+}
+?>
+<style>
+    .container_loader {
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        display: flex;
+        background-size: cover;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(255, 255, 255);
+        transition: opacity 1s, visibility 1s;
+        z-index: 99999;
+        overflow: hidden;
     }
-    ?>
-    <style>
-        .container_loader {
-            width: 100%;
-            height: 100vh;
-            position: fixed;
-            display: flex;
-            background-size: cover;
-            justify-content: center;
-            align-items: center;
-            background-color: rgb(255, 255, 255);
-            transition: opacity 1s, visibility 1s;
-            z-index: 99999;
-            overflow: hidden;
-        }
 
-        .container_loader--hidden {
-            opacity: 0;
-            visibility: hidden;
-            display: none;
-        }
+    .container_loader--hidden {
+        opacity: 0;
+        visibility: hidden;
+        display: none;
+    }
 
-        .ring {
-            width: 200px;
-            height: 200px;
-            border: 0px solid rgb(8, 8, 12);
-            border-radius: 50%;
-            position: absolute;
-        }
+    .ring {
+        width: 200px;
+        height: 200px;
+        border: 0px solid rgb(8, 8, 12);
+        border-radius: 50%;
+        position: absolute;
+    }
 
-        .ring:nth-child(1) {
-            border-bottom-width: 8px;
-            border-color: rgb(252, 153, 82);
-            animation: rotate1 2.5s linear infinite;
-        }
+    .ring:nth-child(1) {
+        border-bottom-width: 8px;
+        border-color: rgb(252, 153, 82);
+        animation: rotate1 2.5s linear infinite;
+    }
 
-        .ring:nth-child(2) {
-            border-right-width: 8px;
-            border-color: rgb(8, 8, 12);
-            animation: rotate2 2s linear infinite;
-        }
+    .ring:nth-child(2) {
+        border-right-width: 8px;
+        border-color: rgb(8, 8, 12);
+        animation: rotate2 2s linear infinite;
+    }
 
-        .loading {
+    .loading {
+        color: rgb(8, 8, 12);
+        font-size: 18px;
+        font-family: 'Hind', sans-serif;
+        animation: pulse 4s ease infinite;
+    }
+
+    @keyframes pulse {
+        100% {
+            opacity: 0%;
             color: rgb(8, 8, 12);
-            font-size: 18px;
-            font-family: 'Hind', sans-serif;
-            animation: pulse 4s ease infinite;
         }
 
-        @keyframes pulse {
-            100% {
-                opacity: 0%;
-                color: rgb(8, 8, 12);
-            }
+        75% {
+            color: rgb(8, 8, 12);
+            opacity: 100%;
+        }
 
-            75% {
-                color: rgb(8, 8, 12);
-                opacity: 100%;
-            }
+        50% {
+            color: rgb(8, 8, 12);
+            opacity: 0%;
+        }
 
-            50% {
-                color: rgb(8, 8, 12);
-                opacity: 0%;
-            }
+        25% {
+            color: rgb(252, 153, 82);
+            opacity: 100%;
+        }
 
-            25% {
-                color: rgb(252, 153, 82);
-                opacity: 100%;
-            }
+        0% {
+            color: rgb(252, 153, 82);
+            opacity: 0%;
+        }
 
-            0% {
-                color: rgb(252, 153, 82);
-                opacity: 0%;
-            }
+    }
+
+    @keyframes rotate1 {
+        0% {
+            transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
 
         }
 
-        @keyframes rotate1 {
-            0% {
-                transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+        100% {
+            transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
 
-            }
+        }
+    }
 
-            100% {
-                transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
-
-            }
+    @keyframes rotate2 {
+        0% {
+            transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
         }
 
-        @keyframes rotate2 {
-            0% {
-                transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
-            }
+        100% {
+            transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
 
-            100% {
-                transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
-
-            }
         }
+    }
 
-        /* floating chat icon */
-        .floating_chat_icon {
-            background-color: rgb(8, 8, 12);
-            width: 60px;
-            height: 60px;
-            position: fixed;
-            bottom: 10vh;
-            right: 5vw;
-            z-index: 1000;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
+    /* floating chat icon */
+    .floating_chat_icon {
+        background-color: rgb(8, 8, 12);
+        width: 60px;
+        height: 60px;
+        position: fixed;
+        bottom: 10vh;
+        right: 5vw;
+        z-index: 1000;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
 
-        .floating_chat_icon:active {
-            transform: scale(0.95);
-            box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
-            /* Lowering the shadow */
-            transition: 0.3s all;
-        }
+    .floating_chat_icon:active {
+        transform: scale(0.95);
+        box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+        /* Lowering the shadow */
+        transition: 0.3s all;
+    }
 
-        .floating_chat_icon a:active {
-            transform: scale(0.95);
-            box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
-            /* Lowering the shadow */
-            transition: 0.3s all;
-        }
+    .floating_chat_icon a:active {
+        transform: scale(0.95);
+        box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+        /* Lowering the shadow */
+        transition: 0.3s all;
+    }
 
-        .floating_chat_icon a img:active {
-            transform: scale(0.95);
-            box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
-            /* Lowering the shadow */
-            transition: 0.3s all;
-        }
+    .floating_chat_icon a img:active {
+        transform: scale(0.95);
+        box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+        /* Lowering the shadow */
+        transition: 0.3s all;
+    }
 
-        .floating_chat_icon a {
-            width: 40px;
-            height: 40px;
-        }
+    .floating_chat_icon a {
+        width: 40px;
+        height: 40px;
+    }
 
-        .floating_chat_icon a img {
-            width: 40px;
-            height: 40px;
-            margin: 0 !important;
-        }
-    </style>
-    <script src="https://localhost/casamax/chat/scriptjs/user_status.js"></script>
+    .floating_chat_icon a img {
+        width: 40px;
+        height: 40px;
+        margin: 0 !important;
+    }
+</style>
+<script src="https://localhost/casamax/chat/scriptjs/user_status.js"></script>

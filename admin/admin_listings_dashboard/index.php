@@ -1,11 +1,18 @@
 <?php
 session_start();
 if (empty($_SESSION['sessionAdmin'])) {
+    require '../../required/alerts.php';
     redirect('../index.php?error=Please Login');
 } else {
     require_once '../../homerunphp/advertisesdb.php';
     $admin_id = $_SESSION['sessionAdmin'];
-    $table_name = '';
+    if (isset($_POST['admin_view_house_search'])) {
+        $_SESSION['table'] = 'house';
+    } elseif (isset($_POST['admin_view_agents_search'])) {
+        $_SESSION['table'] = 'agent';
+    }else{
+        $_SESSION['table'] = 'all';
+    }
     // gets details of the admin
     $sql = "SELECT * FROM  admin_table WHERE admin_id = '$admin_id' ";
     if ($rs_result = mysqli_query($conn, $sql)) {
@@ -15,19 +22,17 @@ if (empty($_SESSION['sessionAdmin'])) {
         // handles the search values
         if (isset($_POST['admin_search']) && $_POST['admin_search_value'] != null) {
             $search_value = $_POST['admin_search_value'];
-            $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id' AND lastname = '$search_value'";
+            $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id' AND lastname LIKE '$search_value' AND firstname LIKE '$search_value'";
         } elseif (isset($_POST['admin_clear_search'])) {
             // checks if the session for verifying all houses is true and set then turns it to false
-            if (isset($_SESSION['verify_all']) && $_SESSION['verify_all']) {
-                $_SESSION['verify_all'] = false;
-            }
+            $_SESSION['table'] = 'all';
             // resets the search value
-            $_POST['admin_search_value'] != null;
+            $_POST['admin_search_value'] = null;
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id'";
-        } elseif (isset($_POST['admin_view_house_search']) || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
+        } elseif ($_SESSION['table'] == 'house' || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
             $table_name = 'House';
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id' AND verified != '1'";
-        } elseif (isset($_POST['admin_view_agents_search']) || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
+        } elseif ($_SESSION['table'] == 'agent' || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
             $table_name = 'Agents';
             $sql_home = "SELECT * FROM agents WHERE verified != '1' OR verification_image != NULL";
         } else {
@@ -61,7 +66,7 @@ if (empty($_SESSION['sessionAdmin'])) {
     <script src="../../jsfiles/onclickscript.js"></script>
 </head>
 
-<body>
+<body onunload="">
     <div class="container">
         <?php
         include '../components/admin_navbar.php';

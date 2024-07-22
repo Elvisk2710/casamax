@@ -38,10 +38,11 @@ if (empty($user)) {
     <title>Admin Dashboard</title>
 </head>
 
-<body>
+<body onunload="">
     <?php
-    include '../components/admin_advertise_form.php';
+    require '../components/admin_advertise_form.php';
     require '../components/add_admin_agent.php';
+    require '../../required/pageloader.php';
     ?>
     <div class="container">
         <?php

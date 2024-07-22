@@ -25,8 +25,8 @@ if (!empty($_GET['clicked_id']) && isset($_GET['clicked_id'])) {
             $uni_folder = 'bsupictures';
         } elseif ($row['uni'] == 'Chinhoyi University of Science and Technology') {
             $uni_folder = 'cutpictures';
-        } elseif ($row['uni'] == 'gzpictures') {
-            $uni_folder = 'Great Zimbabwe University';
+        } elseif ($row['uni'] == 'Great Zimbabwe University') {
+            $uni_folder = 'gzpictures';
         } elseif ($row['uni'] == 'Harare Institute of Technology') {
             $uni_folder = 'hitpictures';
         } elseif ($row['uni'] == 'Midlands State University') {

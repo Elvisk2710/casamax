@@ -37,6 +37,3 @@ if (!empty($_FILES["$name"]["name"][$num])) {
     $status = 'empty_images';
     $statusMsg = 'No images were uploaded.';
 }
-
-// Output status and status message
-echo $status . ': ' . $statusMsg;
