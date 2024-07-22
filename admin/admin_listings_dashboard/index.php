@@ -10,7 +10,7 @@ if (empty($_SESSION['sessionAdmin'])) {
         $_SESSION['table'] = 'house';
     } elseif (isset($_POST['admin_view_agents_search'])) {
         $_SESSION['table'] = 'agent';
-    }else{
+    } else {
         $_SESSION['table'] = 'all';
     }
     // gets details of the admin
@@ -31,10 +31,10 @@ if (empty($_SESSION['sessionAdmin'])) {
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id'";
         } elseif ($_SESSION['table'] == 'house' || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
             $table_name = 'House';
-            $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id' AND verified != '1'";
+            $sql_home = "SELECT * FROM homerunhouses WHERE verified != '1' AND (agent_id IS NULL OR agent_id = '') AND (id_image IS NOT NULL AND id_image != '') AND (res_image IS NOT NULL AND res_image != '');";
         } elseif ($_SESSION['table'] == 'agent' || (isset($_SESSION['verify_all']) && $_SESSION['verify_all'] == true)) {
             $table_name = 'Agents';
-            $sql_home = "SELECT * FROM agents WHERE verified != '1' OR verification_image != NULL";
+            $sql_home = "SELECT * FROM agents WHERE verified != '1' OR verification_image IS NOT NULL;";
         } else {
             // gets data of the houses
             $sql_home = "SELECT * FROM homerunhouses WHERE admin_id = '$admin_id'";

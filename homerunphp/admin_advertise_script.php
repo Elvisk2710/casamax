@@ -151,7 +151,7 @@ if (isset($_POST['create_profile']) && isset($_SESSION['sessionAdmin'])) {
                     redirect("../admin/dashboard/index.php?error=SQL Error");
                     exit();
                 } else {
-                    mysqli_stmt_bind_param($stmt, "s", $email);
+                    mysqli_stmt_bind_param($stmt, "s", $email);$sql_home = "SELECT * FROM agents WHERE verified != '1' OR verification_image IS NOT NULL";
                     mysqli_stmt_execute($stmt);
                     mysqli_stmt_store_result($stmt);
                     $rowCount = mysqli_stmt_num_rows($stmt);
@@ -176,7 +176,7 @@ if (isset($_POST['create_profile']) && isset($_SESSION['sessionAdmin'])) {
                             exit();
                         } else {
                             // directory path to folder for verification images
-                            $directoryPath = '../verification_images/home_verification_images' . $home_id . '/';
+                            $directoryPath = '../verification_images/home_verification_images/' . $home_id . '/';
                             $identityFileDestination = $directoryPath . $identityImages['name'];
                             $residencyFileDestination = $directoryPath . $residencyImages['name'];
 
