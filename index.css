@@ -75,8 +75,7 @@ button:active {
   transition: 0.3s all;
 }
 header {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.3)),
-    url(images/cleanwhite.webp);
+background-color: rgb(8, 8, 12);
   text-align: center;
   padding-bottom: 10px;
   background-size: cover;
