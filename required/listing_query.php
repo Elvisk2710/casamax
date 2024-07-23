@@ -42,6 +42,9 @@ $transport_query = '';
 $gender_query = '';
 $price_query = '';
 $filter_query = '';
+$checkmark = '../images/checkmark.png';
+$crossmark = '../images/crossmark.png';
+
 
 // reset filter
 
@@ -96,7 +99,7 @@ if (isset($_POST['filter'])) {
 } else {
     $filter_query = '';
 }
-if(isset($_GET['price'])){
+if (isset($_GET['price'])) {
     unset($_POST);
     $pricesearch = $_GET['price'];
     $filter_query .=  "and price <= '$pricesearch'";
@@ -154,90 +157,83 @@ while ($row = mysqli_fetch_array($result)) {
                 <h3 style = 'color: rgb(252, 153, 82);'>Amenities</h3>";
         if ($row['kitchen'] == "1") {
             $kitchen_link = "%0Akitchen";
-            $kitchenimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                                    </svg>';
+            $kitchenimg = $checkmark;
         } else {
             $kitchen_link = "";
-            $kitchenimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                    </svg>';
+            $kitchenimg = $crossmark;
         }
         if ($row['fridge'] == "1") {
             $fridge_link = "%0Afridge";
-            $fridgeimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                                    <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                                    <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                                </svg>';
+            $fridgeimg = $checkmark;
         } else {
             $fridge_link = "";
-            $fridgeimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                </svg>';
+            $fridgeimg = $crossmark;
         }
         if ($row['wifi'] == "1") {
             $wifi_link = "%0Awifi";
-            $wifiimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                    </svg>';
+            $wifiimg = $checkmark;
         } else {
             $wifi_link = "";
-            $wifiimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                </svg>';
+            $wifiimg = $crossmark;
         }
         if ($row['borehole'] == "1") {
             $borehole_link = "%0Aborehole";
-            $boreholeimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                    <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                    <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                </svg>';
+            $boreholeimg = $checkmark;
         } else {
             $borehole_link = "";
-            $boreholeimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                    </svg>';
+            $boreholeimg = $crossmark;
         }
         if ($row['transport'] == "1") {
             $transport_link = "%0Atransport";
-            $transport = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                    <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                    <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                </svg>';
+            $transportimg = $checkmark;
         } else {
             $transport_link = "";
-            $transport = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                </svg>';
+            $transportimg = $crossmark;
         }
         $replaced_string = str_replace("/", "%2F", $home_url);
 
         $house_link = "whatsapp://send?text=Check%20out%20this%20boarding%20house%20listed%20on%20casamax.co.zw%0A%0A" . $row['gender'] . "%20boarding%20house%20%0A%0A*with*" . $kitchen_link . $fridge_link . $wifi_link . $borehole_link . $transport_link . "%0A%0A*Price%20" . $row['price'] . "USD*%0A*Listed By:%20" . $agent_tagline . "*%0A%0A*use%20the%20link%20below%20to%C2%A0check%C2%A0it%C2%A0out.*%0A%0A" . $replaced_string;
 
-
-        echo "<p>
-                 Kitchen  $kitchenimg
-            <br> 
-
-                Fridge $fridgeimg
-            <br>
-
-                Wifi $wifiimg
-            <br>  
-            
-                Borehole $boreholeimg
-            <br>
-            
-                Transport $transport
-            <br>
-            
-            </p>
-            <br>
-            ";
 ?>
-        <br>
+        <div class="element_container">
+        <div class="amenities_div_container">
+            <div class="amenities_div">
+                <p>
+                    Kitchen
+                </p>
+                <img src="<?php echo $kitchenimg ?>" alt="">
+            </div>
+            <div class="amenities_div">
+                <p>
+                    Fridge
+                </p>
+                <img src="<?php echo $fridgeimg ?>" alt="">
+            </div>
+            <div class="amenities_div">
+                <p>
+                    Wifi
+                </p>
+                <img src="<?php echo $wifiimg ?>" alt="">
+            </div>
+            <div class="amenities_div">
+                <p>
+                    Borehole
+                </p>
+                <img src="<?php echo $boreholeimg ?>" alt="">
+            </div>
+            <div class="amenities_div">
+                <p>
+                    Transport
+                </p>
+                <img src="<?php echo $transportimg ?>" alt="">
+            </div>
+        </div>
+        <div class="chat_btn_container">
+            <a href="../chat/screens/chat_dm.php?chat_id=<?php echo $row['home_id']?>&student=1">
+            <button class="chat_btn" style="background-color: rgb(255,255,255); color:rgb(8,8,12);">Go To Chat</button>
+            </a>
+        </div>
+        </div>
         <a href="<?php echo $house_link ?>" class="house_link" title="click to share">
             <img src="../images/share_icon.png" alt="click to share" title="click to share"> Share link
         </a>

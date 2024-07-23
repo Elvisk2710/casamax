@@ -169,6 +169,7 @@ if (isset($_POST['create_profile'])) {
                                                             echo $num;
                                                         }
                                                         $_SESSION['sessionowner'] = $home_id;
+                                                        sendAdvertiseVerificationEmail($email, $firstname, "Casamax Upload Success");
                                                         redirect("../profile.php?error=Images Uploaded successfully");
                                                     } else {
                                                         redirect("../advertise/index.php?error=NO images have been uploaded. Please Try Again");

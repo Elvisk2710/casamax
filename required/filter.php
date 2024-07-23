@@ -72,7 +72,6 @@
      </form>
      <form action="<?php $page_filter_name ?>" method="post">
           <div class="sidebar-link">
-
                <button name="filter_reset" style="background-color: rgb(8,8,12); color:rgb(252,153,82);">Reset Filter</button>
                <br>
           </div>

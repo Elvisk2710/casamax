@@ -2,7 +2,8 @@
 session_start();;
 
 require_once 'homerunphp/advertisesdb.php';
-
+$checkmark = './images/checkmark.png';
+$crossmark = './images/crossmark.png';
 if (!empty($_GET['clicked_id']) && isset($_GET['clicked_id'])) {
     $user  = $_GET['clicked_id'];
 
@@ -69,10 +70,6 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
 <body onunload="" class="scrollable">
     <?php
     require 'required/pageloader.php';
-    if (isset($_GET['error'])) {
-        $error = $_GET['error'];
-        echo "<script>alert($error)</script>";
-    }
     ?>
 
 
@@ -105,7 +102,13 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
                         Call Agent!
                     </button>
                 </form>
-
+                <?php if ((isset($agent_id)) && $agent == true) { ?>
+                    <a href="./agent_profile.php?agent_id=<?php echo $agent_id ?>">
+                        <button class='about_agent' id='about_agent' name="about_agent" type="submit">
+                            About Agent!
+                        </button>
+                    </a>
+                <?php } ?>
 
         </div>
 
@@ -259,63 +262,38 @@ if (!empty($row["image1"]) and !empty($row["image2"]) and !empty($row["image3"])
 
 if ($row['kitchen'] == "1") {
     $kitchen_link = "%0Akitchen";
-    $kitchenimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                                    </svg>';
+    $kitchenimg = $checkmark;
 } else {
     $kitchen_link = "";
-    $kitchenimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                    </svg>';
+    $kitchenimg = $crossmark;
 }
 if ($row['fridge'] == "1") {
     $fridge_link = "%0Afridge";
-    $fridgeimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                                    <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                                    <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                                </svg>';
+    $fridgeimg = $checkmark;
 } else {
     $fridge_link = "";
-    $fridgeimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                </svg>';
+    $fridgeimg = $crossmark;
 }
 if ($row['wifi'] == "1") {
     $wifi_link = "%0Awifi";
-    $wifiimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                    </svg>';
+    $wifiimg = $checkmark;
 } else {
     $wifi_link = "";
-    $wifiimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                </svg>';
+    $wifiimg = $crossmark;
 }
 if ($row['borehole'] == "1") {
     $borehole_link = "%0Aborehole";
-    $boreholeimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                    <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                    <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                </svg>';
+    $boreholeimg = $checkmark;
 } else {
     $borehole_link = "";
-    $boreholeimg = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                    </svg>';
+    $boreholeimg = $crossmark;
 }
 if ($row['transport'] == "1") {
     $transport_link = "%0Atransport";
-    $transport = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="checkmark" viewBox="0 0 16 16">
-                    <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
-                    <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
-                </svg>';
+    $transportimg = $checkmark;
 } else {
     $transport_link = "";
-    $transport = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                </svg>';
+    $transportimg = $crossmark;
 }
 ?>
 
@@ -325,29 +303,40 @@ if ($row['transport'] == "1") {
 <div class='amenities-list'>
     <div class="amenities">
         <h4>Kitchen</h4>
-        <div><?php echo $kitchenimg ?></div>
+        <div>
+            <img src="<?php echo $kitchenimg ?>" alt="">
+        </div>
     </div>
 
     <div class="amenities">
         <h4>Fridge</h4>
-        <div><?php echo $fridgeimg ?></div>
+        <div>
+            <img src="<?php echo $kitchenimg ?>" alt="">
+        </div>
     </div>
 
     <div class="amenities">
         <h4>Wifi</h4>
-        <div><?php echo $wifiimg ?></div>
+        <div>
+            <img src="<?php echo $kitchenimg ?>" alt="">
+        </div>
     </div>
 
     <div class="amenities">
         <h4>Borehole</h4>
-        <div><?php echo $boreholeimg ?></div>
+        <div>
+            <img src="<?php echo $kitchenimg ?>" alt="">
+        </div>
     </div>
 
     <div class="amenities">
         <h4>Transport</h4>
-        <div><?php echo $transport ?></div>
+        <div>
+            <img src="<?php echo $kitchenimg ?>" alt="">
+        </div>
     </div>
 </div>
+
 <h2>
     Additional Info:
 </h2>

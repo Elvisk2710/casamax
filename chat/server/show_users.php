@@ -123,7 +123,7 @@ GROUP BY hu.email, hu.userid, hh.home_id;";
                                 </div>
                             </div>
                         </div>
-                        <div class="online_status">' . $div . htmlspecialchars($status) .'<br>'. $msg_date.' </div>
+                        <div class="online_status">' . $div .'<br>'. $msg_date.' </div>
                     </div>
                     </div>
                   </a>'

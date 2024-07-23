@@ -1,5 +1,5 @@
 <?php
-
+require './alerts.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -12,96 +12,66 @@ try {
     setcookie("code", $rand, time() + (900 * 1), "/");
     $_SESSION['code'] = $rand;
 
-    $message = '<!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
-        </head>
-        <body>
-        <div class= "container">
-        <header>
-            <h1>THANK YOU FOR USING CASAMAX</h1>
-        </header>
-        
-        <h2>HEY ' . $firstname . '!!<h2><br>
-        <h3>Your CasaMax Code is:</h3><br>
-            <h1>' . $rand . '</h1>
+    $message =
+        '<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Using Casamax.co.zw</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: rgb(8, 8, 12);
+            line-height: 1.6;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: rgb(252, 153, 82);
+        }
+        .verification-code {
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px;
+            background-color: rgb(252, 153, 82);
+            color: white;
+            border-radius: 4px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: rgb(8, 8, 12);
+        }
+        .footer a {
+            color: rgb(8, 8, 12);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h2>Thank You for Using Casamax.co.zw</h2>
+        <p>Dear' . ucfirst(htmlspecialchars($firstname)) . ',</p>
+        <p>Thank you for choosing Casamax.co.zw. Your satisfaction is important to us.</p>
+        <p>Below is your verification code:</p>
+        <div class="verification-code">' . $rand . '</div>
+        <p>If you have any questions or need further assistance, please feel free to contact us.</p>
+        <div class="footer">
+            <p>This email is sent from Casamax.co.zw. For more information, please review our <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>.</p>
         </div>
-        </body>
-        
-        <style>
-            *{
-                margin: 0;
-                padding: 0; 
-                box-sizing: border-box;
-                -webkit-tap-highlight-color: transparent;
-            }
-    
-            .container{
-                margin: 0px 10% auto;
-                text-align: justify;
-                padding: 8%;
-            }
-    
-            body{
-                background-color: white;
-                align-items: center;
-                background-color: rgb(8, 8, 12);
-    
-            }
-            header{
-                background-color: rgb(252, 153, 82);
-                text-align: center;
-                padding-bottom: 10px;
-                background-size: cover;
-                border-radius: 10px;
-            }
-            img{
-                width: 5vw;
-                min-width: 40px;
-                height: 5vw;
-                min-height: 40px;
-                margin-top: 10px;
-   
-            }
-    
-            h1{
-                
-                font-size: 15vh;
-                color: rgb(252, 153, 82);
-                font-family: "Playfair Display", serif;    
-                text-align: center;
-                margin-bottom: 1.4vw;
-                line-height: 4vw;
-                font-weight: 600;
-            }
-            h3{
-                text-align: center;
-                margin: 2rem;
-                font-weight: 600;
-                font-family: "Lato", sans-serif;
-                font-size: 14px;    
-                color: rgb(252, 153, 82);
-            
-            }
-            h2{
-                text-transform: uppercase;
-                color:   rgb(252, 153, 82);
-                text-align: center;
-                margin: 4rem;
-                font-weight: 600;
-                font-family: "Josefin Slab", serif; 
-                font-size: 30px;    
-            
-            }
-    
-        </style>
-    
-        </body>
-        </html>
+    </div>
+</body>
+</html>
     ';
 
     $mail = new PHPMailer(true);
@@ -120,8 +90,8 @@ try {
     // Validate and sanitize email address
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
     if (!$email) {
-        header("location: ./agent_register.php?error=Invalid email address!");
-        exit('Invalid email address');
+        redirect(' ./agent_register.php?error=Invalid email address!');
+        exit();
     }
 
     $mail->addAddress($email);
@@ -138,5 +108,6 @@ try {
         echo '<script>alert("Email sent successfully")</script>';
     }
 } catch (Exception $e) {
-    echo 'SMTP connection failed: ' . $e->getMessage();
+    redirect(' ./agent_register.php?error=SMTP connection failed: ' . $e->getMessage());
+    exit();
 }

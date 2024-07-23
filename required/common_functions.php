@@ -1,4 +1,8 @@
 <?php
+    // send email function
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    
 // Function to format timestamp for display
 function formatTimestamp($timestamp)
 {
@@ -245,7 +249,7 @@ function checkStudentSubscription($conn, $home_id, $user_id)
     // Check if query was successful
     if ($result) {
         $total_records = mysqli_num_rows($result);
-        
+
         // If subscription record exists
         if ($total_records > 0) {
             $row = mysqli_fetch_array($result);
@@ -257,7 +261,7 @@ function checkStudentSubscription($conn, $home_id, $user_id)
             // Create DateTime objects for the compare date and today's date
             $compareDateTime = new DateTime($expiry_date);
             $currentDateTime = new DateTime();
-            
+
             // Compare the dates
             if ($expiry_date > $currentDateTime) {
                 $expired = false;
@@ -266,7 +270,7 @@ function checkStudentSubscription($conn, $home_id, $user_id)
             } else {
                 $expired = false;
             }
-            
+
             // Check subscription status
             if ($houses_left > 0 && ($completed == 0) && ($expired == false)) {
                 $houses_left_update = $houses_left - 1;
@@ -274,7 +278,7 @@ function checkStudentSubscription($conn, $home_id, $user_id)
                 // Prepare and bind parameters for the update query
                 $stmt_update = mysqli_prepare($conn, "UPDATE subscribers SET number_of_houses_left = ? WHERE user_id = ?");
                 mysqli_stmt_bind_param($stmt_update, "is", $houses_left_update, $user_id);
-                
+
                 // Execute update query
                 if (mysqli_stmt_execute($stmt_update)) {
                     redirect("../chat/screens/chat_dm.php?chat_id=" . $home_id . "&student=1");
@@ -284,7 +288,7 @@ function checkStudentSubscription($conn, $home_id, $user_id)
             } else {
                 // Handle case when user has no houses left or subscription expired
                 $sql_complete = "UPDATE subscribers SET completed ='1'";
-                
+
                 // Execute completion query
                 if (mysqli_query($conn, $sql_complete)) {
                     redirectToPaymentPage("No Houses Left");
@@ -322,4 +326,226 @@ function redirectToPaymentPage($errorMessage)
     // Implement your logic to redirect to payment page with error message
     redirect("../payment.php?error=$errorMessage");
 }
-?>
+
+
+
+function sendAdminVerificationEmail($email, $firstname, $subject, $admin_id)
+{
+
+    require '../phpMailer/PHPMailer-master/src/Exception.php';
+    require '../phpMailer/PHPMailer-master/src/PHPMailer.php';
+    require '../phpMailer/PHPMailer-master/src/SMTP.php';
+    $mailStatus = '';
+    try {
+        $message = '
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Thank You for Using Casamax.co.zw</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #ffffff;
+                    color: rgb(8, 8, 12);
+                    line-height: 1.6;
+                }
+                .email-container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    background-color: #ffffff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }
+                h2 {
+                    color: rgb(252, 153, 82);
+                }
+                .verification-code {
+                    margin-top: 20px;
+                    font-size: 18px;
+                    padding: 10px;
+                    background-color: rgb(252, 153, 82);
+                    color: white;
+                    border-radius: 4px;
+                }
+                .footer {
+                    margin-top: 20px;
+                    font-size: 12px;
+                    color: rgb(8, 8, 12);
+                }
+                .footer a {
+                    color: rgb(8, 8, 12);
+                    text-decoration: underline;
+                }
+            </style>
+            </head>
+            <body>
+                <div class="email-container">
+                    <h2>Thank You for Using Casamax.co.zw</h2>
+                    <p>Dear ' . ucfirst(htmlspecialchars($firstname)) . ',</p>
+                    <p>Thank you for choosing Casamax.co.zw. Your satisfaction is important to us.</p>
+                    <p>Your home has been added to our platform successfully by Admin Id: ' . $admin_id . '. If you had not consented to us having your home please contact:</p>
+                    <div class="verification-code"> whatsApp: +263 78 698 9144</div>
+                    <p>Or</p>
+                    <div class="verification-code"> email: info@casamax.co.zw</div>
+                    <p>If you have any questions or need further assistance, please feel free to contact us.</p>
+                    <div class="footer">
+                        <p>This email is sent from Casamax.co.zw. For more information, please review our <a href="https://casamax.co.zw/privacy_policy.html">Privacy Policy</a> and <a href="https://casamax.co.zw/disclaimer.html">Disclaimer</a>.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        ';
+
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+
+        $mail->SMTPAuth = true;
+        $mail->Username = 'casamaxzim@gmail.com';
+        $mail->Password = 'znvsyhhgoivwzyds';
+
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom('casamaxzim@gmail.com', 'Casamax Investments');
+
+        // Validate and sanitize email address
+        $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+        if (!$email) {
+            $mailStatus = 'failed';
+            return $mailStatus;
+        } else {
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $message;
+
+            if (!$mail->send()) {
+                $mailStatus = "failed";
+                return $mailStatus;
+                echo 'Email sending failed: ' . $mail->ErrorInfo;
+                echo '<script>alert("Email sending failed: ' . $mail->ErrorInfo . '")</script>';
+            } else {
+                $mailStatus = "success";
+                return $mailStatus;
+                echo '<script>alert("Email sent successfully")</script>';
+            }
+        }
+    } catch (Exception $e) {
+        redirect(' ./agent_register.php?error=SMTP connection failed: ' . $e->getMessage());
+        exit();
+    }
+}
+
+function sendAdvertiseVerificationEmail($email, $firstname, $subject)
+{
+
+    require '../phpMailer/PHPMailer-master/src/Exception.php';
+    require '../phpMailer/PHPMailer-master/src/PHPMailer.php';
+    require '../phpMailer/PHPMailer-master/src/SMTP.php';
+    $mailStatus = '';
+    $message = '
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Thank You for Using Casamax.co.zw</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #ffffff;
+                    color: rgb(8, 8, 12);
+                    line-height: 1.6;
+                }
+                .email-container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    background-color: #ffffff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }
+                h2 {
+                    color: rgb(252, 153, 82);
+                }
+                .verification-code {
+                    margin-top: 20px;
+                    font-size: 18px;
+                    padding: 10px;
+                    background-color: rgb(252, 153, 82);
+                    color: white;
+                    border-radius: 4px;
+                }
+                .footer {
+                    margin-top: 20px;
+                    font-size: 12px;
+                    color: rgb(8, 8, 12);
+                }
+                .footer a {
+                    color: rgb(8, 8, 12);
+                    text-decoration: underline;
+                }
+            </style>
+            </head>
+            <body>
+                <div class="email-container">
+                    <h2>Thank You for Using Casamax.co.zw</h2>
+                    <p>Dear ' . ucfirst(htmlspecialchars($firstname)) . ',</p>
+                    <p>Thank you for choosing Casamax.co.zw. Your satisfaction is important to us.</p>
+                    <p>Your home has been added to our platform successfullu. If you had not consented to us having your home please contact:</p>
+                    <div class="verification-code"> whatsApp: +263 78 698 9144</div>
+                    <p>Or</p>
+                    <div class="verification-code"> email: info@casamax.co.zw</div>
+                    <p>If you have any questions or need further assistance, please feel free to contact us.</p>
+                    <div class="footer">
+                        <p>This email is sent from Casamax.co.zw. For more information, please review our <a href="https://casamax.co.zw/privacy_policy.html">Privacy Policy</a> and <a href="https://casamax.co.zw/disclaimer.html">Disclaimer</a>.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        ';
+    try {
+
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+
+        $mail->SMTPAuth = true;
+        $mail->Username = 'casamaxzim@gmail.com';
+        $mail->Password = 'znvsyhhgoivwzyds';
+
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom('casamaxzim@gmail.com', 'Casamax Investments');
+        $mail->addAddress($email);
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+
+        // Validate and sanitize email address
+        $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+        if (!$email) {
+            $mailStatus = 'failed';
+            return $mailStatus;
+        } else {
+            if (!$mail->send()) {
+                $mailStatus = "failed";
+                return $mailStatus;
+                echo 'Email sending failed: ' . $mail->ErrorInfo;
+                echo '<script>alert("Email sending failed: ' . $mail->ErrorInfo . '")</script>';
+            } else {
+                $mailStatus = "success";
+                return $mailStatus;
+                echo '<script>alert("Email sent successfully")</script>';
+            }
+        }
+    } catch (Exception $e) {
+        redirect(' ./agent_register.php?error=SMTP connection failed: ' . $e->getMessage());
+        exit();
+    }
+}

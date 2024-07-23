@@ -21,7 +21,7 @@ require_once 'alerts.php';
     </span>
 </div>
 <?php
-if ((!isset($_GET['chat_id'])) || (!isset($_SESSION['sessionAdmin']) || (!empty($_SESSION['sessionAdmin'])))) {
+if ((!isset($_GET['chat_id'])) && (!isset($_SESSION['sessionAdmin']) && (!empty($_SESSION['sessionAdmin'])))) {
 ?>
     <div class="floating_chat_icon" title="chats">
         <a href="https://localhost/casamax/chat/screens/">
@@ -168,13 +168,14 @@ if ((!isset($_GET['chat_id'])) || (!isset($_SESSION['sessionAdmin']) || (!empty(
     }
 
     .floating_chat_icon a {
-        width: 40px;
-        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .floating_chat_icon a img {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         margin: 0 !important;
     }
 </style>

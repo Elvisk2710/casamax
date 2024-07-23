@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </div>
             <div class="header_info">
                 <div class="name">
+                    <a href="../../home_profile.php?home_id=<?php echo $chat_id?>">
                     <div class="name_value">
                         <h2>
                             <?php echo $name ?>
@@ -79,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             <?php echo $lastname ?>
                         </h2>
                     </div>
+                    </a>
                 </div>
                 <div class="status">
                     <p>
@@ -91,9 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 if ($student == 1) {
                 ?>
                     <a href='https://localhost/casamax/listingdetails.php?clicked_id=<?php echo $chat_id ?>'>
-                        <button class="logout_btn">
-                            View Home
-                        </button>
+                           <img class="home_img" src="../../images/home.png" alt="view home">
                     </a>
                 <?php
                 }

@@ -151,7 +151,8 @@ if (isset($_POST['create_profile']) && isset($_SESSION['sessionAdmin'])) {
                     redirect("../admin/dashboard/index.php?error=SQL Error");
                     exit();
                 } else {
-                    mysqli_stmt_bind_param($stmt, "s", $email);$sql_home = "SELECT * FROM agents WHERE verified != '1' OR verification_image IS NOT NULL";
+                    mysqli_stmt_bind_param($stmt, "s", $email);
+                    $sql_home = "SELECT * FROM agents WHERE verified != '1' OR verification_image IS NOT NULL";
                     mysqli_stmt_execute($stmt);
                     mysqli_stmt_store_result($stmt);
                     $rowCount = mysqli_stmt_num_rows($stmt);
@@ -253,6 +254,7 @@ if (isset($_POST['create_profile']) && isset($_SESSION['sessionAdmin'])) {
                                                             redirect("  ../admin/dashboard/index.php?error=$statusMsg");
                                                             exit();
                                                         } else {
+                                                            sendAdminVerificationEmail($email, $firstname, "Home Upload Success", $admin_id);
                                                             redirect("../admin/dashboard/index.php?error=Profile Created");
                                                             exit();
                                                         }
