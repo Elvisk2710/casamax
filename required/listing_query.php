@@ -196,43 +196,45 @@ while ($row = mysqli_fetch_array($result)) {
 
 ?>
         <div class="element_container">
-        <div class="amenities_div_container">
-            <div class="amenities_div">
-                <p>
-                    Kitchen
-                </p>
-                <img src="<?php echo $kitchenimg ?>" alt="">
+            <div class="amenities_div_container">
+                <div class="amenities_div">
+                    <p>
+                        Kitchen
+                    </p>
+                    <img src="<?php echo $kitchenimg ?>" alt="">
+                </div>
+                <div class="amenities_div">
+                    <p>
+                        Fridge
+                    </p>
+                    <img src="<?php echo $fridgeimg ?>" alt="">
+                </div>
+                <div class="amenities_div">
+                    <p>
+                        Wifi
+                    </p>
+                    <img src="<?php echo $wifiimg ?>" alt="">
+                </div>
+                <div class="amenities_div">
+                    <p>
+                        Borehole
+                    </p>
+                    <img src="<?php echo $boreholeimg ?>" alt="">
+                </div>
+                <div class="amenities_div">
+                    <p>
+                        Transport
+                    </p>
+                    <img src="<?php echo $transportimg ?>" alt="">
+                </div>
             </div>
-            <div class="amenities_div">
-                <p>
-                    Fridge
-                </p>
-                <img src="<?php echo $fridgeimg ?>" alt="">
-            </div>
-            <div class="amenities_div">
-                <p>
-                    Wifi
-                </p>
-                <img src="<?php echo $wifiimg ?>" alt="">
-            </div>
-            <div class="amenities_div">
-                <p>
-                    Borehole
-                </p>
-                <img src="<?php echo $boreholeimg ?>" alt="">
-            </div>
-            <div class="amenities_div">
-                <p>
-                    Transport
-                </p>
-                <img src="<?php echo $transportimg ?>" alt="">
-            </div>
-        </div>
-        <div class="chat_btn_container">
-            <a href="../chat/screens/chat_dm.php?chat_id=<?php echo $row['home_id']?>&student=1">
-            <button class="chat_btn" style="background-color: rgb(255,255,255); color:rgb(8,8,12);">Go To Chat</button>
-            </a>
-        </div>
+            <?php if (empty($row['agent_id'])) { ?>
+                <div class="chat_btn_container">
+                    <a href="../chat/screens/chat_dm.php?chat_id=<?php echo $row['home_id'] ?>&student=1">
+                        <button class="chat_btn" style="background-color: rgb(255,255,255); color:rgb(8,8,12);">Go To Chat</button>
+                    </a>
+                </div>
+            <?php } ?>
         </div>
         <a href="<?php echo $house_link ?>" class="house_link" title="click to share">
             <img src="../images/share_icon.png" alt="click to share" title="click to share"> Share link

@@ -11,6 +11,7 @@ if (isset($_SESSION['sessionstudent'])) {
     $sender_id = $_SESSION['sessionowner'];
     $student = false;
 } else {
+    require '../../required/alerts.php';
     redirect('./index.php');
 }
 // API endpoint for retrieving data
