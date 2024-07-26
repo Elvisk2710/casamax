@@ -30,5 +30,5 @@ if (isset($_POST['pricesearch']) and isset($_POST['university'])) {
         exit();
     }
 
-    redirect("../unilistings/" . $unilocation . "?price=" . $pricesearch);
+    redirect("../unilistings/" . $unilocation . "?price=" . $pricesearch . '&filter=');
 }

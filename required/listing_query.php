@@ -1,15 +1,12 @@
 <?php
-
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
     $url = "https://";
 else
     $url = "http://";
 // Append the host(domain name, ip) to the URL.   
 $url .= $_SERVER['HTTP_HOST'];
-
 // Append the requested resource location to the URL   
 $url .= $_SERVER['REQUEST_URI'];
-
 ?>
 <div class="filter_div">
     <button class="filter_button" onclick="openFilter()">
@@ -35,16 +32,22 @@ $url .= $_SERVER['REQUEST_URI'];
 <?php
 $num_per_page = 8;
 $kitchen_query = '';
+$kitchen_url = '';
 $wifi_query = '';
+$wifi_url = '';
 $borehole_query = '';
+$borehole_url = '';
 $fridge_query = '';
+$fridge_url = '';
 $transport_query = '';
+$transport_url = '';
 $gender_query = '';
+$gender_url = '';
 $price_query = '';
+$price_url = '';
 $filter_query = '';
 $checkmark = '../images/checkmark.png';
 $crossmark = '../images/crossmark.png';
-
 
 // reset filter
 
@@ -56,54 +59,52 @@ if (isset($_GET["page"])) {
 $start_from = ($page - 1) * 8;
 
 // query for search
-if (isset($_POST['filter'])) {
-    unset($_GET);
-    if (isset($_POST['kitchen'])) {
-        $kitchen_query = "and kitchen = '1'";
+if (isset($_GET['filter'])) {
+    if (isset($_GET['kitchen'])) {
+        $kitchen_query = " and kitchen = '1'";
         $kitchen_url = "&kitchen=1";
     }
-    if (isset($_POST['wifi'])) {
-        $wifi_query = "and wifi = '1'";
+    if (isset($_GET['wifi'])) {
+        $wifi_query = " and wifi = '1'";
         $wifi_url = "&wifi=1";
     }
-    if (isset($_POST['borehole'])) {
-        $borehole_query = "and borehole = '1'";
+    if (isset($_GET['borehole'])) {
+        $borehole_query = " and borehole = '1'";
         $borehole_url = "&borehole=1";
     }
-    if (isset($_POST['fridge'])) {
-        $fridge_query = "and fridge = '1'";
+    if (isset($_GET['fridge'])) {
+        $fridge_query = " and fridge = '1'";
         $fridge_url = "&fridge=1";
     }
-    if (isset($_POST['transport'])) {
-        $transport_query = "and transport = '1'";
+    if (isset($_GET['transport'])) {
+        $transport_query = " and transport = '1'";
         $transport_url = "&transport=1";
     }
-    if (isset($_POST['price'])) {
-        $pricesearch = $_POST['price'];
-        $price_query = "and price <= '$pricesearch'";
+    if (isset($_GET['price']) && $_GET['price'] != '') {
+        unset($_POST);
+        $pricesearch = $_GET['price'];
+        $price_query = " and price <= '$pricesearch'";
         $price_url = "&price=$pricesearch";
     }
-    if (isset($_POST['gender'])) {
-        $gender = $_POST['gender'];
+    if (isset($_GET['gender'])) {
+        $gender = $_GET['gender'];
         $gender_url = "&gender=" . $gender;
         if ($gender == 'girls') {
-            $gender_query = "and gender = 'girls'";
+            $gender_query = " and gender = 'girls'";
         } elseif ($gender == 'boys') {
-            $gender_query = "and gender = 'boys'";
+            $gender_query = " and gender = 'boys'";
         } elseif ($gender == 'mixed') {
             $gender_query = "and gender = 'mixed'";
         }
     }
 
-    $filter_query = $kitchen_query . $wifi_query . $borehole_query . $fridge_query . $transport_query . $gender_query . $price_query;
+    $filter_query = $kitchen_query . ' ' . $wifi_query . ' ' . $borehole_query . ' ' . $fridge_query . ' ' . $transport_query . ' ' . $gender_query  . ' ' . $price_query;
+    $filter_url = $kitchen_url . $wifi_url . $borehole_url . $fridge_url . $transport_url . $gender_url . $price_url.'&filter=';
 } else {
     $filter_query = '';
+    $filter_url = '';
 }
-if (isset($_GET['price'])) {
-    unset($_POST);
-    $pricesearch = $_GET['price'];
-    $filter_query .=  "and price <= '$pricesearch'";
-}
+
 $sql = "SELECT * FROM homerunhouses WHERE uni = '$university' AND available = '1' $filter_query ORDER BY id DESC LIMIT $start_from, $num_per_page";
 $sql_num = "SELECT * FROM  homerunhouses WHERE uni = '$university' and available = '1' $filter_query";
 $num_result = mysqli_query($conn, $sql_num);
