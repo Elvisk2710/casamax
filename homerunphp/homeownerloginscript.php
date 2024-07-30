@@ -2,6 +2,7 @@
 session_start();
 setcookie("scriptPage", "homeownerloginscript.php", time() + (900 * 1), "/");
 require '../required/alerts.php';
+require '../required/common_functions.php';
 
 if (isset($_POST['submit'])) {
     require 'homerunuserdb.php';
@@ -15,32 +16,15 @@ if (isset($_POST['submit'])) {
         redirect("../homeownerlogin.php?error=All Fields Are Required");
         exit();
     } else {
-        $sql = "SELECT * FROM homerunhouses WHERE email = ?";
-        $stmt = mysqli_stmt_init($conn);
-
-        if (!mysqli_stmt_prepare($stmt, $sql)) {
-            redirect("../homeownerlogin.php?error=Sorry SQL Error");
+        $responseJson = loginUserLandlord($email, $password);
+        $response = json_decode($responseJson, true);
+        if ($response['status'] == 'success') {
+            echo 'Login successful! User ID: ' . $response['user_id'];
+            $_SESSION['sessionowner'] = $response['user_id'];
+            redirect("../profile.php?success=You Have Logged In Successfully");
             exit();
         } else {
-            mysqli_stmt_bind_param($stmt, "s", $email);
-            mysqli_stmt_execute($stmt);
-            $results = mysqli_stmt_get_result($stmt);
-
-            if ($row = mysqli_fetch_assoc($results)) {
-                $passcheck = password_verify($password, $row['passw']);
-
-                if ($passcheck == false) {
-                    redirect("../homeownerlogin.php?error=Oops!! Wrong Password");
-                    exit();
-                } elseif ($passcheck == true) {
-                    $_SESSION['sessionowner'] = $row['home_id'];
-                    redirect("../profile.php?success=You Have Logged In Successfully");
-                    exit();
-                }
-            } else {
-                redirect("../homeownerlogin.php?error=Oops!! User Not Found");
-                exit();
-            }
+            redirect('../homeownerlogin.php?error=' . $response['message']);
         }
     }
 } elseif (isset($_POST['logout'])) {
@@ -56,4 +40,12 @@ if (isset($_POST['submit'])) {
     redirect("../index.php?error=Access Denied");
     exit();
 }
-?>
+
+// handling http requests
+if ($_SERVER['REQUEST'] === 'GET') {
+    $email = sanitize_email($request_body['email']) ?? null;
+    $password = $request_body['password'] ?? null;
+    $responseJson = loginUserLandlord($email, $password);
+    echo json_encode($response);
+    exit();
+}

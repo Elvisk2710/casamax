@@ -1,8 +1,8 @@
 <?php
-    // send email function
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
-    
+// send email function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 // Function to format timestamp for display
 function formatTimestamp($timestamp)
 {
@@ -231,81 +231,6 @@ function generateUniCode($uni)
     return $uni_code;
 }
 
-// Function to check student subscription status
-function checkStudentSubscription($conn, $home_id, $user_id)
-{
-    // Update the SQL query to use prepared statements
-    $sql = 'SELECT subscribers.due_date, subscribers.number_of_houses_left, homerunuserdb.userid, homerunuserdb.email, subscribers.completed
-            FROM homerunuserdb
-            JOIN subscribers ON homerunuserdb.userid = subscribers.user_id
-            WHERE homerunuserdb.userid = ?';
-
-    // Prepare and bind parameters for the query
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "s", $user_id);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-
-    // Check if query was successful
-    if ($result) {
-        $total_records = mysqli_num_rows($result);
-
-        // If subscription record exists
-        if ($total_records > 0) {
-            $row = mysqli_fetch_array($result);
-            $houses_left = $row['number_of_houses_left'];
-            $user_id = $row['userid'];
-            $completed = $row['completed'];
-            $expiry_date = $row['due_date'];
-
-            // Create DateTime objects for the compare date and today's date
-            $compareDateTime = new DateTime($expiry_date);
-            $currentDateTime = new DateTime();
-
-            // Compare the dates
-            if ($expiry_date > $currentDateTime) {
-                $expired = false;
-            } elseif ($compareDateTime < $currentDateTime) {
-                $expired = true;
-            } else {
-                $expired = false;
-            }
-
-            // Check subscription status
-            if ($houses_left > 0 && ($completed == 0) && ($expired == false)) {
-                $houses_left_update = $houses_left - 1;
-
-                // Prepare and bind parameters for the update query
-                $stmt_update = mysqli_prepare($conn, "UPDATE subscribers SET number_of_houses_left = ? WHERE user_id = ?");
-                mysqli_stmt_bind_param($stmt_update, "is", $houses_left_update, $user_id);
-
-                // Execute update query
-                if (mysqli_stmt_execute($stmt_update)) {
-                    redirect("../chat/screens/chat_dm.php?chat_id=" . $home_id . "&student=1");
-                } else {
-                    redirect("../listingdetails.php?clicked_id=" . $home_id . "&error=Failed To Reach Chat Page");
-                }
-            } else {
-                // Handle case when user has no houses left or subscription expired
-                $sql_complete = "UPDATE subscribers SET completed ='1'";
-
-                // Execute completion query
-                if (mysqli_query($conn, $sql_complete)) {
-                    redirectToPaymentPage("No Houses Left");
-                } else {
-                    redirectToListingDetails($home_id, "Failed To Execute Query");
-                }
-            }
-        } else {
-            // Handle case when no subscription records are found
-            redirectToListingDetails($home_id, 'No records found');
-        }
-    } else {
-        // Handle case when query execution fails
-        redirectToListingDetails($home_id, 'Failed To Execute Query');
-    }
-}
-
 // Function to log error messages
 function logError($errorMessage)
 {
@@ -326,9 +251,7 @@ function redirectToPaymentPage($errorMessage)
     // Implement your logic to redirect to payment page with error message
     redirect("../payment.php?error=$errorMessage");
 }
-
-
-
+// send admin verification email
 function sendAdminVerificationEmail($email, $firstname, $subject, $admin_id)
 {
 
@@ -439,7 +362,7 @@ function sendAdminVerificationEmail($email, $firstname, $subject, $admin_id)
         exit();
     }
 }
-
+// send advertisement verification email
 function sendAdvertiseVerificationEmail($email, $firstname, $subject)
 {
 
@@ -547,5 +470,167 @@ function sendAdvertiseVerificationEmail($email, $firstname, $subject)
     } catch (Exception $e) {
         redirect(' ./agent_register.php?error=SMTP connection failed: ' . $e->getMessage());
         exit();
+    }
+}
+// logging in student
+function loginUserStudent($email, $password)
+{
+    // Database credentials
+    try {
+        require '../homerunphp/advertisesdb.php';
+    } catch (Exception $e) {
+        return json_encode(array('status' => 'error', 'message' => 'Database file include failed: ' . $e->getMessage()));
+    }
+
+    // Check if connection was successful
+    if ($conn->connect_error) {
+        return json_encode(array('status' => 'error', 'message' => 'Database connection failed: ' . $conn->connect_error));
+    }
+
+    $sql = "SELECT userid, passw, university FROM homerunuserdb WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if ($stmt === false) {
+        return json_encode(array('status' => 'error', 'message' => 'Failed to prepare SQL statement: ' . mysqli_error($conn)));
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $email);
+
+    if (!mysqli_stmt_execute($stmt)) {
+        return json_encode(array('status' => 'error', 'message' => 'Failed to execute SQL statement: ' . mysqli_stmt_error($stmt)));
+    }
+
+    mysqli_stmt_bind_result($stmt, $id, $hashed_password, $university);
+
+    if (mysqli_stmt_fetch($stmt)) {
+        if (password_verify($password, $hashed_password)) {
+            mysqli_stmt_close($stmt);
+            mysqli_close($conn);
+            return json_encode(array('status' => 'success', 'user_id' => $id, 'university' => $university));
+        } else {
+            mysqli_stmt_close($stmt);
+            mysqli_close($conn);
+            return json_encode(array('status' => 'error', 'message' => 'Invalid password'));
+        }
+    } else {
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return json_encode(array('status' => 'error', 'message' => 'No user found with the given email'));
+    }
+}
+// checkign student subscription
+function checkStudentSubscription($user_id)
+{
+    // Database connection
+    require '../homerunphp/advertisesdb.php';
+
+    // Check if connection was successful
+    if ($conn->connect_error) {
+        echo json_encode(array('status' => 'error', 'message' => 'Database connection failed: ' . $conn->connect_error));
+        return;
+    }
+
+    // SQL query to check subscription
+    $sub_check = "SELECT * FROM subscribers WHERE user_id = ?";
+    $stmt = mysqli_stmt_init($conn);
+
+    // Prepare the SQL statement
+    if (!mysqli_stmt_prepare($stmt, $sub_check)) {
+        echo json_encode(array('status' => 'error', 'message' => 'Failed to prepare SQL statement: ' . mysqli_error($conn)));
+        mysqli_close($conn);
+        return;
+    }
+
+    // Bind parameters and execute statement
+    mysqli_stmt_bind_param($stmt, "s", $user_id);
+
+    if (!mysqli_stmt_execute($stmt)) {
+        echo json_encode(array('status' => 'error', 'message' => 'Failed to execute SQL statement: ' . mysqli_stmt_error($stmt)));
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return;
+    }
+
+    // Get the result
+    $sub_db_check = mysqli_stmt_get_result($stmt);
+
+    if ($sub_db_check === false) {
+        echo json_encode(array('status' => 'error', 'message' => 'Failed to retrieve result set: ' . mysqli_stmt_error($stmt)));
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return;
+    }
+
+    $rowCount = mysqli_num_rows($sub_db_check);
+
+    // Check if the user is not subscribed
+    if ($rowCount <= 0) {
+        setcookie("cookiestudent", $user_id, time() + (86400 * 1), "/");
+        setcookie("emailstudent", $email, time() + (86400 * 1), "/");
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        header("Location: ../payment.php?error=Please Subscribe");
+        exit();
+    } else {
+        $results = mysqli_fetch_array($sub_db_check);
+        $today = strtotime(date('Y-m-d'));
+
+        if (strtotime($results['due_date']) < $today || $results['number_of_houses'] == 0 || $results['completed'] == 1) {
+            mysqli_stmt_close($stmt);
+            mysqli_close($conn);
+            header("Location: ../payment.php?error=Subscription Has Ended");
+            exit();
+        } else {
+            echo json_encode(array('status' => 'success', 'message' => 'Failed to retrieve result set: ' . mysqli_stmt_error($stmt)));
+        }
+        // Close the statement and connection
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+    }
+}
+// loggin in landlord
+function loginUserLandlord($email, $password)
+{
+    // Database credentials
+    try {
+        require '../homerunphp/advertisesdb.php';
+    } catch (Exception $e) {
+        return json_encode(array('status' => 'error', 'message' => 'Database file include failed: ' . $e->getMessage()));
+    }
+
+    // Check if connection was successful
+    if ($conn->connect_error) {
+        return json_encode(array('status' => 'error', 'message' => 'Database connection failed: ' . $conn->connect_error));
+    }
+
+    $sql = "SELECT home_id, passw FROM homerunhouses WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if ($stmt === false) {
+        return json_encode(array('status' => 'error', 'message' => 'Failed to prepare SQL statement: ' . mysqli_error($conn)));
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $email);
+
+    if (!mysqli_stmt_execute($stmt)) {
+        return json_encode(array('status' => 'error', 'message' => 'Failed to execute SQL statement: ' . mysqli_stmt_error($stmt)));
+    }
+
+    mysqli_stmt_bind_result($stmt, $id, $hashed_password,);
+
+    if (mysqli_stmt_fetch($stmt)) {
+        if (password_verify($password, $hashed_password)) {
+            mysqli_stmt_close($stmt);
+            mysqli_close($conn);
+            return json_encode(array('status' => 'success', 'user_id' => $id));
+        } else {
+            mysqli_stmt_close($stmt);
+            mysqli_close($conn);
+            return json_encode(array('status' => 'error', 'message' => 'Invalid password'));
+        }
+    } else {
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return json_encode(array('status' => 'error', 'message' => 'No user found with the given email'));
     }
 }
