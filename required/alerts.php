@@ -137,17 +137,14 @@ function redirect($redirect)
     limit = 4;
     setInterval(() => {
         if (count > limit) {
-            document.querySelector("body").classList.remove("scrollable");
             document.querySelector(".alert_container").classList.add("close");
         } else {
             count++
         }
     }, 500)
-    document.querySelector("body").classList.add("scrollable");
 
     function removeAlert() {
         console.log("clicked")
-        document.querySelector("body").classList.remove("scrollable");
         document.querySelector(".alert_container").classList.add("close");
     }
 </script>

@@ -19,6 +19,7 @@ if (empty($_SESSION['sessionagent'])) {
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
     <link rel="icon" href="../images/logowhite.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,6 +30,9 @@ if (empty($_SESSION['sessionagent'])) {
     <meta name="theme-color" content="#08080C" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <title>LIsting Info</title>
+    <script>
+        var tourCookie = 'agentProfileHouseTour';
+    </script>
 </head>
 <style>
     * {
@@ -577,7 +581,7 @@ if (empty($_SESSION['sessionagent'])) {
                 }
                 ?>
             </div>
-            <div class="left_col">
+            <div class="left_col" data-intro='View your listing details.' data-step='1' data-position='top'>
                 <div>
                     <div class="info">
                         <div class="home_label">
@@ -717,7 +721,7 @@ if (empty($_SESSION['sessionagent'])) {
                             </label>
                         </div>
 
-                        <div class="available">
+                        <div class="available" data-intro='Change if your listing is full or available.' data-step='4' data-position='top'>
                             <label for="yes" default style="margin: 0;">YES</label>
                             <input type="radio" name="available" value="1" id="yes" required>
                             <label for="no" style="margin: 0;">NO</label>
@@ -734,7 +738,7 @@ if (empty($_SESSION['sessionagent'])) {
                         <input name="spot" type="number" id="spot" placeholder="# of spots available" required>
                     </div>
                     <div class="delete">
-                        <button name="Update" style="background-color: white;">
+                        <button data-intro='Update your listing details.' data-step='2' data-position='top' name="Update" style="background-color: white;">
                             Update listing
                         </button>
                     </div>
@@ -742,7 +746,7 @@ if (empty($_SESSION['sessionagent'])) {
 
                 </form>
                 <div>
-                    <button name="delete" style="background-color: rgba(255, 0, 0, 0.664); color: rgb(8,8,12); margin-top: 10px;" onclick="deletefn()">
+                    <button data-intro='Delete listing.' data-step='3' data-position='top' name="delete" style="background-color: rgba(255, 0, 0, 0.664); color: rgb(8,8,12); margin-top: 10px;" onclick="deletefn()">
                         Delete listing
                     </button>
                 </div>

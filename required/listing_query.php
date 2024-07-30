@@ -9,7 +9,7 @@ $url .= $_SERVER['HTTP_HOST'];
 $url .= $_SERVER['REQUEST_URI'];
 ?>
 <div class="filter_div">
-    <button class="filter_button" onclick="openFilter()">
+    <button class="filter_button" data-intro="Filter through your results." data-step="1" data-position="left" onclick="openFilter()">
         <img src="../images/filter.png" alt="open filter">
         <h3>
             Filters
@@ -99,7 +99,7 @@ if (isset($_GET['filter'])) {
     }
 
     $filter_query = $kitchen_query . ' ' . $wifi_query . ' ' . $borehole_query . ' ' . $fridge_query . ' ' . $transport_query . ' ' . $gender_query  . ' ' . $price_query;
-    $filter_url = $kitchen_url . $wifi_url . $borehole_url . $fridge_url . $transport_url . $gender_url . $price_url.'&filter=';
+    $filter_url = $kitchen_url . $wifi_url . $borehole_url . $fridge_url . $transport_url . $gender_url . $price_url . '&filter=';
 } else {
     $filter_query = '';
     $filter_url = '';
@@ -130,10 +130,10 @@ while ($row = mysqli_fetch_array($result)) {
         $currentPageUrl = 'https%3A%2F%2F' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
         $home_url = $currentPageUrl . "%23div" . $row['home_id'];
 
-        echo "<div class='house' id=div" . $row['home_id'] . ">";
+        echo "<div class='house' data-intro='View each home and its amenities.' data-step='2' data-position='top' id=div" . $row['home_id'] . ">";
         echo "<div class='house-img'>";
         if (empty($row['image1'])) {
-            echo "<a href='../listingdetails.php?clicked_id=" . $row['home_id'] . "' onclick='GetName(this.id)' id = '" . $row['home_id'] . "'><img src='../images/no_image.png'> <p>click to view</p></a>";
+            echo "<a href='../listingdetails.php?clicked_id=" . $row['home_id'] . "' onclick='GetName(this.id)' id = '" . $row['home_id'] . "'><img data-intro='Click to view more photos and see more info.' data-step='3' src='../images/no_image.png'> <p>click to view</p></a>";
             if ($agent == true) {
                 $agent_tagline = ucfirst($row_agent['agent_tagline']) . "%20Agents";
                 echo '<h3 style = "opacity:0.5;">' . ucfirst($row_agent['agent_tagline']) . ' Agents </h3><br> <h3> $' . $row_agent['agent_fee'] . ' Agent Fee</h3>';
@@ -142,7 +142,7 @@ while ($row = mysqli_fetch_array($result)) {
                 $agent_tagline = "Landlord%20No%20Agent%20Fee";
             }
         } else {
-            echo "<a href='../listingdetails.php?clicked_id=" . $row['home_id'] . "' onclick='GetName(this.id)' id = '" . $row['home_id'] . "'><img src='../housepictures/$folder/" . $row['image1'] . "'><p>click to view</p></a>";
+            echo "<a href='../listingdetails.php?clicked_id=" . $row['home_id'] . "' onclick='GetName(this.id)' id = '" . $row['home_id'] . "'><img data-intro='Click to view more photos and see more info.' data-step='3' src='../housepictures/$folder/" . $row['image1'] . "'><p>click to view</p></a>";
             if ($agent == true) {
                 $agent_tagline = ucfirst($row_agent['agent_tagline']) . "%20Agents";
                 echo '<h3 style = "opacity:0.5;">' . ucfirst($row_agent['agent_tagline']) . ' agents </h3> <br> $' . $row_agent['agent_fee'] . ' Agent Fee';
@@ -232,13 +232,13 @@ while ($row = mysqli_fetch_array($result)) {
             <?php if (empty($row['agent_id'])) { ?>
                 <div class="chat_btn_container">
                     <a href="../chat/screens/chat_dm.php?chat_id=<?php echo $row['home_id'] ?>&student=1">
-                        <button class="chat_btn" style="background-color: rgb(255,255,255); color:rgb(8,8,12);">Go To Chat</button>
+                        <button data-intro='Chat to landlord.' data-step='5' data-position="top" class="chat_btn" style="background-color: rgb(255,255,255); color:rgb(8,8,12);">Go To Chat</button>
                     </a>
                 </div>
             <?php } ?>
         </div>
         <a href="<?php echo $house_link ?>" class="house_link" title="click to share">
-            <img src="../images/share_icon.png" alt="click to share" title="click to share"> Share link
+            <img data-intro='Like the listing? Share it with your friends.' data-step='4' src="../images/share_icon.png" alt="click to share" title="click to share"> Share link
         </a>
 <?php
         // checking if it si verified

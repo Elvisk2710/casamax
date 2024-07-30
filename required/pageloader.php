@@ -2,11 +2,49 @@
 require_once 'alerts.php';
 ?>
 <script>
+    function setCookie(name, value, days) {
+        const d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + d.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    // Function to get a cookie
+    function getCookie(name) {
+        const cname = name + "=";
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(cname) === 0) {
+                return c.substring(cname.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function startTour() {
+
+        const tourSeen = getCookie(tourCookie);
+        if (!tourSeen) {
+            setCookie(tourCookie, "true", 365);
+            const intro = introJs();
+            introJs().start();
+            introjs - disableInteraction;
+        }
+    }
+
     window.addEventListener("load", () => {
         document.querySelector(".container_loader").classList.add("container_loader--hidden");
         document.querySelector("body").classList.remove("scrollable");
+        startTour();
     });
 </script>
+<!-- Include Intro.js JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
 <div class="container_loader ">
     <div class="ring"></div>
     <div class="ring"></div>
@@ -21,11 +59,11 @@ require_once 'alerts.php';
     </span>
 </div>
 <?php
-if (!isset($_GET['chat_id']) && (!isset($_SESSION['sessionAdmin']))) {
+if ((!isset($_GET['chat_id']) && (!isset($_SESSION['sessionAdmin'])) && (!isset($_SESSION['sessionagent']))) || ((isset($_SESSION['sessionowner']))) || (isset($_SESSION['sessionstudent']))) {
 ?>
     <div class="floating_chat_icon" title="chats">
-        <a href="https://localhost/casamax/chat/screens/">
-            <img src="https://localhost/casamax/images/new-message.png" alt="">
+        <a href="https://casamax.co.zw/chat/screens/">
+            <img src="https://casamax.co.zw/images/new-message.png" alt="">
         </a>
     </div>
 <?php

@@ -19,6 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (isset($_SESSION['sessionowner'])) {
         $user_id = $_SESSION['sessionowner'];
         $sql = "UPDATE homerunhouses SET status = '$status' WHERE home_id = '$user_id'";
+    }else{
+        exit();
     }
 
     $result = mysqli_query($conn, $sql);

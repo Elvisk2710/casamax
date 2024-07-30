@@ -25,6 +25,7 @@ if (empty($_SESSION['sessionagent'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
     <link rel="icon" href="../images/logowhite.png">
     <meta name="google-site-verification" content="3DpOPyMzbY1JYLNtsHzbAZ_z6o249iU0lE5DYE_mLJA" />
     <meta charset="UTF-8">
@@ -39,6 +40,10 @@ if (empty($_SESSION['sessionagent'])) {
     <link rel="apple-touch-icon" href="iconsicons/192x192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <script>
+        var tourCookie = 'agentProfileTour';
+    </script>
 <body onunload="" class="scrollable">
     <?php
     require_once '../required/pageloader.php';
@@ -55,7 +60,7 @@ if (empty($_SESSION['sessionagent'])) {
             </div>
         </div>
 
-        <div class="header_container">
+        <div class="header_container" data-intro='View your details.' data-step='1' data-position='top'>
 
             <br>
             <div class="details">
@@ -108,7 +113,7 @@ if (empty($_SESSION['sessionagent'])) {
 
         </div>
 
-        <div class="change_info">
+        <div class="change_info" data-intro='Alter your details.' data-step='2' data-position='bottom'>
             <button class="change_info_btn" onclick="open_agent_change_info()">
                 Change My Info
             </button>
@@ -191,7 +196,7 @@ if (empty($_SESSION['sessionagent'])) {
             My Listings...
         </h1>
     </div>
-    <div class="container">
+    <div class="container" data-intro='View all your listings.' data-step='3' data-position='top'>
         <?php
 
         while ($home_row = mysqli_fetch_array($home_result)) {
@@ -215,14 +220,14 @@ if (empty($_SESSION['sessionagent'])) {
             } elseif ($uni === "National University of Science and Technology") {
                 $folder = "nustpictures";
             }
-            echo '<a href="house.php?home_id=' . $home_row['home_id'] . '&folder=' . $folder . '" target="" class="listings">
+            echo '<a href="house.php?home_id=' . $home_row['home_id'] . '&folder=' . $folder . '" target="" class="listings" data-intro="View listings details." data-step="5" data-position="top">
             <img src="../housepictures/' . $folder . '/' . $home_row['image1'] . '" id =' . $home_row['home_id'] . 'alt="tap to add images" title="tap to manage" >
         </a>';
         }
         $total_records = mysqli_num_rows($home_result);
         if ($total_records < 100) {
             echo '<div class="listings" onclick="AddHouse()">
-                    <img src="../images/add.png" alt="" class="add" title="tap to add listing" style="box-shadow: 0 0 0 0";>
+                    <img data-intro="Click to add listings." data-step="4" data-position="top" src="../images/add.png" alt="" class="add" title="tap to add listing" style="box-shadow: 0 0 0 0";>
                 </div>';
         }
         ?>

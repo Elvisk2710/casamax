@@ -64,7 +64,9 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
     <link rel="stylesheet" href="listing.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+<script>
+    var tourCookie = 'listinDetailsTour';
+</script>
 </head>
 
 <body onunload="" class="scrollable">
@@ -93,7 +95,7 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
                 // agent contact
                 $agent_contact = $row_agent['contact'];
             ?>
-                <form action="./homerunphp/verify_student_redirect.php?home_id=<?php echo $user ?>&agent_id=<?php echo $agent_id ?>&route=agent" method="post" class="button_form">
+                <form data-intro='Get in touch with Agent.' data-step='1' data-position='bottom' action="./homerunphp/verify_student_redirect.php?home_id=<?php echo $user ?>&agent_id=<?php echo $agent_id ?>&route=agent" method="post" class="button_form">
                     <button class='contact-host' id='whatsapp' name="check_sub_whatsapp_agent" type="submit"><img src='images/whatsapp.png' alt=''>
                         WhatsApp Agent!
                     </button>
@@ -119,7 +121,7 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
                 if (!isset($_SESSION['sessionowner'])) {
         ?>
             <!-- landlord contact -->
-            <form action="./homerunphp/verify_student_redirect.php?home_id=<?php echo $user ?>&route=landlord&student=1" method="post">
+            <form data-intro='Get in touch with Landlord.' data-step='1' data-position='bottom' action="./homerunphp/verify_student_redirect.php?home_id=<?php echo $user ?>&route=landlord&student=1" method="post">
                 <button class='chatBtn' id='chatBtn' name="check_sub_chat_landlord" type="submit">
                     Chat With Me
                 </button>
@@ -134,7 +136,7 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
                 }
             }
 ?>
-<div class='map'>
+<div class='map' data-intro='View Location or address in Google Maps.' data-step='2' data-position='bottom'>
     <a href="http://maps.google.com/?q=<?php echo $row['home_location'] . " Zimbabwe" ?>" style='text-decoration: none; animation: text 2s ease infinite; color: rgb(252,153,82);' target='blank'>View in Maps!</a>
 </div>
 
@@ -178,8 +180,7 @@ if (empty($row['image1']) and empty($row['image2']) and empty($row['image3']) an
 } else {
 
 
-    echo '
-    <div class="gallery">';
+    echo "<div class='gallery' data-intro='View house images.' data-step='3' data-position='bottom'>";
     if (!empty($row["image1"])) {
         echo '
            

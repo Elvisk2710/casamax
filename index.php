@@ -76,6 +76,8 @@ if (isset($_GET['error'])) {
             navigator.serviceWorker.register('sw.js')
         }
     </script>
+    <!-- Include Intro.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
     <meta name="google-site-verification" content="3DpOPyMzbY1JYLNtsHzbAZ_z6o249iU0lE5DYE_mLJA" />
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -93,16 +95,17 @@ if (isset($_GET['error'])) {
 </head>
 
 <body onunload="">
-<script src="index.js"></script>
-
+    <script src="index.js"></script>
+    <!-- Include Intro.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
     <div class="container">
 
-        <header>
+        <header data-intro="Welcome to CasaMax! Let us guide you through our main features." data-step="1">
             <a href="index.php">
-                <img src="images/logowhite.png" alt="logo" class="logo">
+                <img src="images/logowhite.png" alt="logo" class="logo" data-intro="This is our logo. Click it to return to the homepage." data-step="2" data-position="bottom">
             </a>
 
-            <nav id="navBar">
+            <nav id="navBar" data-intro="Here is the navigation bar. You can find various sections of our site here." data-step="3" data-position="bottom">
                 <h3 class="smltxt">CasaMax</h3>
                 <img src="images/menu.webp" alt="menu" onclick="togglebtn()" class="fas">
                 <br>
@@ -162,13 +165,13 @@ if (isset($_GET['error'])) {
             <p class="srch-p">
                 Find Your Next Home
             </p>
-            <div class="search-bar">
+            <div class="search-bar" data-intro="Use this search bar to find your next home by selecting a university and setting a budget." data-step="4" data-position="bottom">
                 <form method="POST" action="homerunphp/searchaction.php">
 
                     <div class="search-form">
                         <div class="left-col">
 
-                            <select name="university" id="dropdown">
+                            <select name="university" id="dropdown" data-intro="Select your university from this dropdown menu." data-step="5" data-position="right">
 
                                 <option value="none">Choose a University</option>
                                 <option value="University of Zimbabwe">University of Zimbabwe</option>
@@ -180,25 +183,16 @@ if (isset($_GET['error'])) {
                                 <option value="Harare Institute of Technology">Harare Institute of Technology</option>
                                 <option value="National University of Science and Technology">National University of Science and Technology</option>
 
-
                             </select>
-
                         </div>
-
                         <div class="right-col">
-                            <input type="number" name="pricesearch" min="0" placeholder="Max amount per Month in USD$?" required title="Enter an amount in USD">
-
+                            <input type="number" name="pricesearch" min="0" placeholder="Max amount per Month in USD$?" required title="Enter an amount in USD" data-intro="Enter the maximum amount you are willing to pay per month here." data-step="6" data-position="right">
                         </div>
-
                     </div>
-
                     <div class="search-btn">
-
-                        <button name=" ">
+                        <button name=" " data-intro="Click this button to start your search." data-step="7" data-position="bottom">
                             <img src="images/searchicon.webp" alt="search">
-
                         </button>
-
                     </div>
                 </form>
             </div>
@@ -213,7 +207,7 @@ if (isset($_GET['error'])) {
                 </p>
             </h2>
             <hr>
-            <div class="browse">
+            <div class="browse" data-intro="Choose your university to browse through all available listings." data-step="8" data-position="top">
 
                 <a href="./unilistings/uzlisting.php">
                     <div>
@@ -341,15 +335,56 @@ if (isset($_GET['error'])) {
     <?php
     if (!isset($_GET['chat_id'])) {
     ?>
-        <div class="floating_chat_icon" title="chats">
-            <a href="https://localhost/casamax/chat/screens/">
-                <img src="https://localhost/casamax/images/new-message.png" alt="">
+        <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">
+            <a href="./chat/screens/">
+                <img src="./images/new-message.png" alt="">
             </a>
         </div>
     <?php
     }
     ?>
     <script src="./jsfiles/onclickscript.js"></script>
+    <script>
+        // Function to set a cookie
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        // Function to get a cookie
+        function getCookie(name) {
+            const cname = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(cname) === 0) {
+                    return c.substring(cname.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function startTour() {
+            const tourSeen = getCookie("tourSeen");
+
+            if (!tourSeen) {
+                setCookie("tourSeen", "true", 365);
+                const intro = introJs();
+                introJs().start();
+                introjs - disableInteraction;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            startTour();
+        });
+    </script>
     <script src="app.js"></script>
     <script src="./chat/scriptjs/user_status.js"></script>
 </body>

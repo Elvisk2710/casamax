@@ -1,6 +1,28 @@
+<?php
+// reseting a filter
+if (isset($_POST['filter_reset'])) {
+     header("Location: https://casamax.co.zw/unilistings/$page_name");
+     unset($_GET['fridge']);
+     unset($_GET['borehole']);
+     unset($_GET['wifi']);
+     unset($_GET['kitchen']);
+     unset($_GET['transport']);
+     unset($_GET['price']);
+     unset($_GET['filter']);
+     $transport_query = '';
+     $kitchen_query = '';
+     $wifi_query = '';
+     $borehole_query = '';
+     $fridge_query = '';
+     $gender_query = '';
+     $price_query = '';
+     $price_url = "";
+     $filter_url = "";
+}
+?>
 <div class="sidebar">
      <div class="close_icon" onclick="closeFilter()">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
+          <svg xmlns="https://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
           </svg>
      </div>

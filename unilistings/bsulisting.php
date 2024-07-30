@@ -26,7 +26,9 @@ $page_filter_name = "../unilistings/" . $page_name;
     <link rel="icon" href="../images/logowhite.png">
     <link rel="stylesheet" href="../index.css">
     <title>CasaMax BSU-ListingPage</title>
-
+    <script>
+        var tourCookie = "listingsTour";
+    </script>
 </head>
 
 <body onunload="" class="scrollable">

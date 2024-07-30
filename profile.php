@@ -72,6 +72,9 @@ if (empty($_SESSION['sessionowner'])) {
     <link rel="icon" href="images/logowhite.png">
     <link rel="stylesheet" href="profile.css">
     <title>My Profile</title>
+    <script>
+        var tourCookie = 'landlordProfileTour';
+    </script>
 </head>
 
 <body onunload="" class="scrollable">
@@ -129,7 +132,7 @@ if (empty($_SESSION['sessionowner'])) {
             </div>
         <?php } ?>
 
-        <div class="container">
+        <div class="container"  data-intro='View Your Details.' data-step='1' data-position='bottom'>
             <div class="house-info">
                 <h2>YOUR HOUSE INFO</h2>
             </div>
@@ -168,7 +171,7 @@ if (empty($_SESSION['sessionowner'])) {
 
             <div class="edit">
                 <a href="./listingdetails.php?clicked_id=<?php echo $row['home_id'] ?>">
-                    <div class="btn-div">
+                    <div class="btn-div"  data-intro='View the preview of your listing and see how students see it.' data-step='2' data-position='bottom'>
                         <button class="edit-btn" name="viewpage">
                             Page Preview
                         </button>
@@ -177,7 +180,7 @@ if (empty($_SESSION['sessionowner'])) {
                 </a>
             </div>
 
-            <div class="profile-bottom">
+            <div class="profile-bottom"  data-intro='Change the visibility of your house.' data-step='3' data-position='top'>
 
                 <form action="./homerunphp/update.php" method="POST">
                     <p>Is your Home...</p>

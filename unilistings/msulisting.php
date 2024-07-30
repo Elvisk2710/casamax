@@ -13,6 +13,7 @@ require_once '../homerunphp/select_query.php';
 setcookie("uni_folder", $folder, time() + (86400 * 1), "/");
 $page_filter_name = "../unilistings/" . $page_name;
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +26,9 @@ $page_filter_name = "../unilistings/" . $page_name;
     <link rel="icon" href="../images/logowhite.png">
     <link rel="stylesheet" href="../index.css">
     <title>CasaMax MSU-ListingPage</title>
-
+    <script>
+        var tourCookie = "listingsTour";
+    </script>
 </head>
 
 <body onunload="" class="scrollable">

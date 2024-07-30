@@ -3,7 +3,7 @@
 session_start();
 require 'advertisesdb.php';
 include '../required/alerts.php';
-require '../../required/common_functions.php';
+require '../required/common_functions.php';
 
 if (isset($_POST['submit'])) {
     $user = $_SESSION['sessionowner'];

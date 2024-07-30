@@ -15,26 +15,6 @@ require_once '../homerunphp/select_query.php';
 setcookie("uni_folder", $folder, time() + (86400 * 1), "/");
 $page_filter_name = "../unilistings/" . $page_name;
 
-// reseting a filter
-if (isset($_POST['filter_reset'])) {
-    header("Location: https://casamax.co.zw/unilistings/$page_name");
-    unset($_GET['fridge']); 
-    unset($_GET['borehole']);
-    unset($_GET['wifi']);
-    unset($_GET['kitchen']);
-    unset($_GET['transport']);
-    unset($_GET['price']);
-    unset($_GET['filter']);
-    $transport_query = '';
-    $kitchen_query = '';
-    $wifi_query = '';
-    $borehole_query = '';
-    $fridge_query = '';
-    $gender_query = '';
-    $price_query = '';
-    $price_url = "";
-    $filter_url = "";
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,6 +27,9 @@ if (isset($_POST['filter_reset'])) {
     <link rel="icon" href="../images/logowhite.png">
     <link rel="stylesheet" href="../index.css">
     <title>CasaMax UZ ListingPage</title>
+    <script>
+        var tourCookie = "listingsTour";
+    </script>
 </head>
 
 <body onunload="" class="scrollable">
