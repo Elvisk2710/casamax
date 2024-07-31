@@ -42,10 +42,16 @@ if (isset($_POST['submit'])) {
 }
 
 // handling http requests
-if ($_SERVER['REQUEST'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    
     $email = sanitize_email($request_body['email']) ?? null;
     $password = $request_body['password'] ?? null;
-    $responseJson = loginUserLandlord($email, $password);
-    echo json_encode($response);
-    exit();
+    if($email != null && $password !=null){
+        $responseJson = loginUserLandlord($email, $password);
+        echo $responseJson;
+        exit();
+    }else{
+        return;
+    }
+   
 }

@@ -1,11 +1,34 @@
 <?php
+// Allow from any origin
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one you
+    // want to allow, and if so:
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');    // cache for 1 day
+}
+
+// Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        // may also be using PUT, PATCH, HEAD etc
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+    exit(0);
+}
+
+
 session_start();
-$sec = "0.1";
-require 'homerunuserdb.php';
 require '../required/common_functions.php';
-include '../required/alerts.php';
 
 if (isset($_POST['submit'])) {
+    $sec = "0.1";
+    require 'homerunuserdb.php';
+    include '../required/alerts.php';
+
     if (isset($_GET['redirect'])) {
         $redirect = $_GET['redirect'];
     }
@@ -57,13 +80,21 @@ if (isset($_POST['submit'])) {
     }
     redirect("../index.php?error=Logged Out");
     exit();
-}
-
-// handling http requests
-if ($_SERVER['REQUEST'] === 'GET') {
-    $email = sanitize_email($request_body['email']) ?? null;
-    $password = $request_body['password'] ?? null;
-    $responseJson = loginUserStudent($email, $password);
-    echo json_encode($response);
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['email'])) {
+        $email = sanitize_email($_GET['email']) ?? null;
+        $password = $_GET['password'] ?? null;
+        if ($email != null && $password != null) {
+            $responseJson = loginUserStudent($email, $password);
+            echo $responseJson;
+            exit();
+        } else {
+            return;
+        }
+    } else {
+        echo "no body";
+    }
+} else {
+    redirect("../index.php?error=Access Denied");
     exit();
 }
