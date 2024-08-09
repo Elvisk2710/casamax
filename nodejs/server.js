@@ -43,7 +43,6 @@ io.on("connection", (socket) => {
   });
   // update is read
   socket.on('updateIsRead', async (data) => {
-    console.log("Is Read is Being updated", data);
     try {
       await axios.post(
         `${phpApiUrl}update_is_read.php?mobile_api=true&responseType=json`,
@@ -58,7 +57,6 @@ io.on("connection", (socket) => {
   });
   // Handle join event
   socket.on("join", async (data) => {
-    console.log(`User joined: ${data.user}`);
     try {
       // checking is the user is a student
       if (data.type == "student") {
@@ -82,7 +80,6 @@ io.on("connection", (socket) => {
 
   // Handle join event
   socket.on("joinRoom", async (data) => {
-    console.log(`Client joined room: ${data.roomId}`);
     socket.join(data.roomId);
     try {
       const response = await axios.get(
@@ -102,14 +99,12 @@ io.on("connection", (socket) => {
 
   // Listen for messages from clients and relay them to the PHP backend
   socket.on("sendMessage", async (data) => {
-    console.log(data);
     try {
       await axios.post(`${phpApiUrl}insert_chat.php?mobile_api=true`, data, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
       // Emit message to all clients after successfully sending to PHP backend
       const { roomId, message } = data;
-      console.log(`Message from ${socket.id} to ${roomId}:`, message);
       io.to(roomId).emit("message", { sender: socket.id, message });
     } catch (error) {
       console.error("Error sending message:", error);
@@ -152,7 +147,6 @@ function startPollingChat(socket, userId, receiver, roomId) {
 function startPolling(socket, userId, type) {
   setInterval(async () => {
     try {
-      console.log(type);
       let response; // Declare the response variable here
       if (type == "student") {
         // Fetch the latest chat list from the server
