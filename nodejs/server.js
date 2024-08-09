@@ -17,7 +17,7 @@ let lastMessageId = null;
 const POLLING_INTERVAL = 1000; // 7 seconds
 
 // Replace with your PHP API URL
-const phpApiUrl = "http://192.168.1.14:81/casamax/chat/server/";
+const phpApiUrl = "http://casamax.co.zw/chat/server/";
 
 // Configure CORS
 app.use(
