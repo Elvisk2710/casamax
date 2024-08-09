@@ -37,8 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $home_id = $row['userid'];
             }
             $status = $row['status'];
-            $output .= "
-                    
+            $output .= "      
             ";
         }
     }
@@ -70,17 +69,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </div>
             <div class="header_info">
                 <div class="name">
-                    <a href="../../home_profile.php?home_id=<?php echo $chat_id?>">
-                    <div class="name_value">
-                        <h2>
-                            <?php echo $name ?>
-                        </h2>
-                    </div>
-                    <div class="name_value">
-                        <h2>
-                            <?php echo $lastname ?>
-                        </h2>
-                    </div>
+                    <a href="../../home_profile.php?home_id=<?php echo $chat_id ?>">
+                        <div class="name_value">
+                            <h2>
+                                <?php echo $name ?>
+                            </h2>
+                        </div>
+                        <div class="name_value">
+                            <h2>
+                                <?php echo $lastname ?>
+                            </h2>
+                        </div>
                     </a>
                 </div>
                 <div class="status">
@@ -93,8 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <?php
                 if ($student == 1) {
                 ?>
-                    <a href='https://localhost/casamax/listingdetails.php?clicked_id=<?php echo $chat_id ?>'>
-                           <img class="home_img" src="../../images/home.png" alt="view home">
+                    <a href='../../listingdetails.php?clicked_id=<?php echo $chat_id ?>'>
+                        <img class="home_img" src="../../images/home.png" alt="view home">
                     </a>
                 <?php
                 }
@@ -105,21 +104,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         </div>
         <form class="text_area" autocomplete="off">
-            <input type="text" name="outgoing_id" value="<?php echo $sender_id ?>" hidden>
-            <input type="text" name="incoming_id" value="<?php echo $chat_id ?>" hidden>
+            <input type="text" name="outgoing_id" class="outgoing_id" value="<?php echo $sender_id ?>" hidden>
+            <input type="text" name="incoming_id" class="incoming_id" value="<?php echo $chat_id ?>" hidden>
 
             <div class="input_msg">
                 <input name="message" class="input_field" placeholder="Type your message here">
             </div>
-            <div class="input_icon" >
+            <div class="input_icon">
                 <button>
-                   <img src="../../images/sendIcon.png" alt="">
+                    <img src="../../images/sendIcon.png" alt="">
                 </button>
             </div>
         </form>
     </div>
 </body>
 <script src="../scriptjs/chats.js"></script>
-<script src="../scriptjs/user_status.js"></script>
+<!-- <script src="../scriptjs/user_status.js"></script> -->
 
 </html>

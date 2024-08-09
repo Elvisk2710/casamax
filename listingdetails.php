@@ -4,6 +4,7 @@ session_start();;
 require_once 'homerunphp/advertisesdb.php';
 $checkmark = './images/checkmark.png';
 $crossmark = './images/crossmark.png';
+require './required/common_functions.php';
 if (!empty($_GET['clicked_id']) && isset($_GET['clicked_id'])) {
     $user  = $_GET['clicked_id'];
 
@@ -37,17 +38,14 @@ if (!empty($_GET['clicked_id']) && isset($_GET['clicked_id'])) {
         } elseif ($row['uni'] == 'University of Zimbabwe') {
             $uni_folder = 'uzpictures';
         }
+    } else {
+        header('Location: ./index.php?error=' . urlencode("Clicked Id Is Not Valid"));
     }
 } else {
-    header('Location: ./index.php?error=' . urlencode("Clicked Id Not Set"));
+    header('Location: ./index.php?error=' . urlencode("Clicked Id Is Not Set"));
 }
 
-$currentURL = "http";
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-    $currentURL .= "s";
-}
-$currentURL .= "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
+$currentURL = getCurrentUrl();
 setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
 ?>
 <!DOCTYPE html>
@@ -64,9 +62,9 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
     <link rel="stylesheet" href="listing.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script>
-    var tourCookie = 'listinDetailsTour';
-</script>
+    <script>
+        var tourCookie = 'listinDetailsTour';
+    </script>
 </head>
 
 <body onunload="" class="scrollable">

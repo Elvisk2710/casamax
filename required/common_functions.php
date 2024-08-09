@@ -29,6 +29,15 @@ function formatTimestamp($timestamp)
     }
 }
 
+function getCurrentUrl() {
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+    $host = $_SERVER['HTTP_HOST'];
+    $requestUri = $_SERVER['REQUEST_URI'];
+    
+    $fulllUrl = $protocol . $host . $requestUri;
+
+    return $fulllUrl;
+}
 // Function to sanitize a string
 function sanitize_string($message)
 {
@@ -487,7 +496,7 @@ function loginUserStudent($email, $password)
         return json_encode(array('status' => 'error', 'message' => 'Database connection failed: ' . $conn->connect_error));
     }
 
-    $sql = "SELECT userid, passw, university FROM homerunuserdb WHERE email = ?";
+    $sql = "SELECT firstname, lastname, userid, passw, university FROM homerunuserdb WHERE email = ?";
     $stmt = mysqli_prepare($conn, $sql);
 
     if ($stmt === false) {
@@ -500,13 +509,13 @@ function loginUserStudent($email, $password)
         return json_encode(array('status' => 'error', 'message' => 'Failed to execute SQL statement: ' . mysqli_stmt_error($stmt)));
     }
 
-    mysqli_stmt_bind_result($stmt, $id, $hashed_password, $university);
+    mysqli_stmt_bind_result($stmt, $firstname, $lastname, $id, $hashed_password, $university);
 
     if (mysqli_stmt_fetch($stmt)) {
         if (password_verify($password, $hashed_password)) {
             mysqli_stmt_close($stmt);
             mysqli_close($conn);
-            return json_encode(array('status' => 'success', 'user_id' => $id, 'university' => $university));
+            return json_encode(array('status' => 'success', 'user_id' => $id, 'university' => $university, 'message' => "Logged In Successfully", 'firstname' => $firstname, 'lastname' => $lastname));
         } else {
             mysqli_stmt_close($stmt);
             mysqli_close($conn);
@@ -603,7 +612,7 @@ function loginUserLandlord($email, $password)
         return json_encode(array('status' => 'error', 'message' => 'Database connection failed: ' . $conn->connect_error));
     }
 
-    $sql = "SELECT home_id, passw FROM homerunhouses WHERE email = ?";
+    $sql = "SELECT firstname, lastname, home_id, passw FROM homerunhouses WHERE email = ?";
     $stmt = mysqli_prepare($conn, $sql);
 
     if ($stmt === false) {
@@ -616,13 +625,13 @@ function loginUserLandlord($email, $password)
         return json_encode(array('status' => 'error', 'message' => 'Failed to execute SQL statement: ' . mysqli_stmt_error($stmt)));
     }
 
-    mysqli_stmt_bind_result($stmt, $id, $hashed_password,);
+    mysqli_stmt_bind_result($stmt, $firstname, $lastname, $id, $hashed_password,);
 
     if (mysqli_stmt_fetch($stmt)) {
         if (password_verify($password, $hashed_password)) {
             mysqli_stmt_close($stmt);
             mysqli_close($conn);
-            return json_encode(array('status' => 'success', 'user_id' => $id));
+            return json_encode(array('status' => 'success', 'user_id' => $id,  'message' => 'Logged In Successfully', 'firstname' => $firstname, 'lastname' => $lastname));
         } else {
             mysqli_stmt_close($stmt);
             mysqli_close($conn);
@@ -632,5 +641,51 @@ function loginUserLandlord($email, $password)
         mysqli_stmt_close($stmt);
         mysqli_close($conn);
         return json_encode(array('status' => 'error', 'message' => 'No user found with the given email'));
+    }
+}
+
+// message class object
+class ChatMessage
+{
+    public $id;
+    public $sender;
+    public $recipient;
+    public $message;
+    public $timestamp;
+    public $firstname;
+    public $lastname;
+    public $lastMsgId;
+    public $isRead;
+
+
+    public function __construct($id, $sender, $recipient, $message, $timestamp, $firstname, $lastname, $lastMsgId, $isRead)
+    {
+        $this->id = $id;
+        $this->sender = $sender;
+        $this->recipient = $recipient;
+        $this->message = $message;
+        $this->timestamp = formatTimestamp($timestamp);
+        $this->firstname = $firstname;
+        $this->lastname = $lastname;
+        $this->lastMsgId = $lastMsgId;
+        $this->isRead = $isRead;
+
+    }
+}
+class ChatBubbleMessage
+{
+    public $id;
+    public $sender;
+    public $recipient;
+    public $message;
+    public $timestamp;
+
+    public function __construct($id, $sender, $recipient, $message, $timestamp)
+    {
+        $this->id = $id;
+        $this->sender = $sender;
+        $this->recipient = $recipient;
+        $this->message = $message;
+        $this->timestamp = formatTimestamp($timestamp);
     }
 }

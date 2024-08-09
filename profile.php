@@ -1,64 +1,67 @@
 <?php
+// Start the session at the very beginning
 session_start();
-require './required/ads_query.php';
+
 require './homerunphp/advertisesdb.php';
+
+// Check if the session variable is set
 if (empty($_SESSION['sessionowner'])) {
     require './required/alerts.php';
+    echo "Session is not set"; // Debugging: Check if this message appears
     redirect("./homeownerlogin.php?error=Please Login");
-    echo 'entered';
 } else {
     $user = $_SESSION['sessionowner'];
     $sql = "SELECT * FROM  homerunhouses WHERE home_id = '$user' ";
+
     if ($rs_result = mysqli_query($conn, $sql)) {
         $row = mysqli_fetch_array($rs_result);
         $home_id = $row['home_id'];
+        $verified = $row['verified'];
         setcookie("update", $home_id, time() + (86400 * 1), "/");
 
-        if ($row['verified'] == 1) {
-            $verified = true;
-        } else {
-            $verified = false;
-        }
+        $verified = $row['verified'] == 1;
 
-        if ($row['uni'] == "University of Zimbabwe") {
-
-            setcookie("uni_folder", "uzpictures", time() + (86400 * 1), "/");
-            $location = "housepictures/uzpictures/";
-        } elseif ($row['uni'] == "Midlands State University") {
-            setcookie("uni_folder", "msupictures", time() + (86400 * 1), "/");
-
-            $location = "housepictures/msupictures/";
-        } elseif ($row['uni'] == "Africa Univeristy") {
-            setcookie("uni_folder", "aupictures", time() + (86400 * 1), "/");
-
-            $location = "housepictures/aupictures/";
-        } elseif ($row['uni'] == "Bindura State University") {
-            setcookie("uni_folder", "bsupictures", time() + (86400 * 1), "/");
-
-            $location = "housepictures/bsupictures/";
-        } elseif ($row['uni'] == "Chinhoyi University of Science and Technology") {
-            setcookie("uni_folder", "cutpictures", time() + (86400 * 1), "/");
-
-            $location = "housepictures/cutpictures/";
-        } elseif ($row['uni'] == "Great Zimbabwe University") {
-            setcookie("uni_folder", "gzpictures", time() + (86400 * 1), "/");
-
-            $location = "housepictures/gzpictures/";
-        } elseif ($row['uni'] == "Harare Institute of Technology") {
-            setcookie("uni_folder", "hitpictures", time() + (86400 * 1), "/");
-
-            $location = "housepictures/hitpictures/";
-        } elseif ($row['uni'] == "National University of Science and Technology") {
-            setcookie("uni_folder", "nustpictures", time() + (86400 * 1), "/");
-            $location = "housepictures/hitpictures/";
-        } else {
-            redirect("./index.php?error=Failed To Get Uni In Profile");
+        switch ($row['uni']) {
+            case "University of Zimbabwe":
+                setcookie("uni_folder", "uzpictures", time() + (86400 * 1), "/");
+                $location = "housepictures/uzpictures/";
+                break;
+            case "Midlands State University":
+                setcookie("uni_folder", "msupictures", time() + (86400 * 1), "/");
+                $location = "housepictures/msupictures/";
+                break;
+            case "Africa University":
+                setcookie("uni_folder", "aupictures", time() + (86400 * 1), "/");
+                $location = "housepictures/aupictures/";
+                break;
+            case "Bindura State University":
+                setcookie("uni_folder", "bsupictures", time() + (86400 * 1), "/");
+                $location = "housepictures/bsupictures/";
+                break;
+            case "Chinhoyi University of Science and Technology":
+                setcookie("uni_folder", "cutpictures", time() + (86400 * 1), "/");
+                $location = "housepictures/cutpictures/";
+                break;
+            case "Great Zimbabwe University":
+                setcookie("uni_folder", "gzpictures", time() + (86400 * 1), "/");
+                $location = "housepictures/gzpictures/";
+                break;
+            case "Harare Institute of Technology":
+                setcookie("uni_folder", "hitpictures", time() + (86400 * 1), "/");
+                $location = "housepictures/hitpictures/";
+                break;
+            case "National University of Science and Technology":
+                setcookie("uni_folder", "nustpictures", time() + (86400 * 1), "/");
+                $location = "housepictures/nustpictures/";
+                break;
+            default:
+                redirect("./index.php?error=Failed To Get Uni In Profile");
+                break;
         }
     } else {
         redirect("./homeownerlogin.php?error=Sql Error Failed To Get Data");
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +135,7 @@ if (empty($_SESSION['sessionowner'])) {
             </div>
         <?php } ?>
 
-        <div class="container"  data-intro='View Your Details.' data-step='1' data-position='bottom'>
+        <div class="container" data-intro='View Your Details.' data-step='1' data-position='bottom'>
             <div class="house-info">
                 <h2>YOUR HOUSE INFO</h2>
             </div>
@@ -171,7 +174,7 @@ if (empty($_SESSION['sessionowner'])) {
 
             <div class="edit">
                 <a href="./listingdetails.php?clicked_id=<?php echo $row['home_id'] ?>">
-                    <div class="btn-div"  data-intro='View the preview of your listing and see how students see it.' data-step='2' data-position='bottom'>
+                    <div class="btn-div" data-intro='View the preview of your listing and see how students see it.' data-step='2' data-position='bottom'>
                         <button class="edit-btn" name="viewpage">
                             Page Preview
                         </button>
@@ -180,7 +183,7 @@ if (empty($_SESSION['sessionowner'])) {
                 </a>
             </div>
 
-            <div class="profile-bottom"  data-intro='Change the visibility of your house.' data-step='3' data-position='top'>
+            <div class="profile-bottom" data-intro='Change the visibility of your house.' data-step='3' data-position='top'>
 
                 <form action="./homerunphp/update.php" method="POST">
                     <p>Is your Home...</p>

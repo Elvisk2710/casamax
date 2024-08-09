@@ -1,9 +1,9 @@
 <?php
 session_start();
 require './required/ads_query.php';
+require './required/common_functions.php';
 if (empty($_SESSION['sessionstudent'])) {
-    header("Location:login.php?PleaseLogin");
-    echo '<script type="text/javascript"> alert("You Have To Login First") </script>';
+    redirect('./login.php?error=You Have To Login First');
     exit();
 } else {
     $user = $_SESSION['sessionstudent'];

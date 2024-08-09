@@ -2,6 +2,7 @@
 session_start();
 // connection to databse
 require '../../homerunphp/advertisesdb.php';
+require '../../required/common_functions.php';
 $student = false;
 $_GET['chat_id']=true;
 if (isset($_SESSION['sessionstudent'])) {
@@ -12,7 +13,7 @@ if (isset($_SESSION['sessionstudent'])) {
     $student = false;
 } else {
     header("location: ../../loginas.php?redirect=chat");
-    exit("<>");
+    exit();
 }
 // API endpoint for retrieving data
 if ($student == false) {
@@ -57,12 +58,12 @@ if ($results = mysqli_query($conn, $sql)) {
             </div>
             <div class="header_info">
                 <div class="name">
-                    <div class="name_value">
+                    <div class="name_value" style="color: white;">
                         <h2>
                             <?php echo $name ?>
                         </h2>
                     </div>
-                    <div class="name_value">
+                    <div class="name_value" style="color: white;">
                         <h2>
                             <?php echo $lastname ?>
                         </h2>

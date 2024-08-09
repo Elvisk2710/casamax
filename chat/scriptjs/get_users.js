@@ -5,7 +5,7 @@ const searchInput = document.querySelector("#searchInput");
 // Function to fetch chat data
 function fetchChatData(query = '') {
   let xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://localhost/casamax/chat/server/show_users.php?search=" + encodeURIComponent(query), true);
+  xhr.open("GET", "https://localhost/casamax/chat/server/show_users.php?responseType=html&search=" + encodeURIComponent(query), true);
   xhr.onload = () => {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {

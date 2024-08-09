@@ -1,0 +1,232 @@
+const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
+const axios = require("axios");
+const cors = require("cors"); // Import the cors package
+const { log } = require("console");
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+const chatLists = {}; // An empty object to store chat lists for each user
+// chat details polling
+const CHAT_POLLING_INTERVAL = 1000; // 5 seconds
+let lastMessageId = null;
+// chat list polling
+const POLLING_INTERVAL = 1000; // 7 seconds
+
+// Replace with your PHP API URL
+const phpApiUrl = "http://192.168.1.14:81/casamax/chat/server/";
+
+// Configure CORS
+app.use(
+  cors({
+    origin: "*", // Allow all origins; you can specify specific origins if needed
+    methods: ["GET", "POST"], // Allow specific methods
+    allowedHeaders: ["Content-Type"], // Allow specific headers
+  })
+);
+
+// Define a simple route to test connectivity
+app.get("/", (req, res) => {
+  res.send("Socket.IO server is running");
+});
+
+// Handle connection
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("ping", () => {
+    console.log("Ping received from client");
+    socket.emit("pong");
+  });
+  // update is read
+  socket.on('updateIsRead', async (data) => {
+    console.log("Is Read is Being updated", data);
+    try {
+      await axios.post(
+        `${phpApiUrl}update_is_read.php?mobile_api=true&responseType=json`,
+        data,
+        {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        }
+      );
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  });
+  // Handle join event
+  socket.on("join", async (data) => {
+    console.log(`User joined: ${data.user}`);
+    try {
+      // checking is the user is a student
+      if (data.type == "student") {
+        const response = await axios.get(
+          `${phpApiUrl}show_users.php?student=${data.user}&responseType=json`
+        );
+        socket.emit("newChatList", response.data);
+        startPolling(socket, data.user, data.type);
+      } else if (data.type == "landlord") {
+        // checking is the user is a landlord
+        const response = await axios.get(
+          `${phpApiUrl}show_users.php?landlord=${data.user}&responseType=json`
+        );
+        socket.emit("newChatList", response.data);
+        startPolling(socket, data.user, data.type);
+      }
+    } catch (error) {
+      console.error("Error fetching data from PHP:", error);
+    }
+  });
+
+  // Handle join event
+  socket.on("joinRoom", async (data) => {
+    console.log(`Client joined room: ${data.roomId}`);
+    socket.join(data.roomId);
+    try {
+      const response = await axios.get(
+        `${phpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${data.user}&incoming_id=${data.receiver}`
+      );
+      io.to(data.roomId).emit("newChatMessage", response.data);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+    startPollingChat(socket, data.user, data.receiver, data.roomId);
+  });
+
+  // Handle disconnection
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+
+  // Listen for messages from clients and relay them to the PHP backend
+  socket.on("sendMessage", async (data) => {
+    console.log(data);
+    try {
+      await axios.post(`${phpApiUrl}insert_chat.php?mobile_api=true`, data, {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      });
+      // Emit message to all clients after successfully sending to PHP backend
+      const { roomId, message } = data;
+      console.log(`Message from ${socket.id} to ${roomId}:`, message);
+      io.to(roomId).emit("message", { sender: socket.id, message });
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  });
+
+  // error handling
+  socket.on("error", (error) => {
+    console.log("Error: ", error);
+  });
+});
+// Function to start polling for new messages
+function startPollingChat(socket, userId, receiver, roomId) {
+  setInterval(async () => {
+    try {
+      const response = await axios.get(
+        `${phpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${userId}&incoming_id=${receiver}`
+      );
+      // handle empty messages
+      const messages = Array.isArray(response.data.chats)
+        ? response.data.chats
+        : [];
+      if (messages.length > 0) {
+        const latestMessage = messages[messages.length - 1];
+        const latestMessageId = latestMessage.id;
+        // if the last message is the same as the latest message
+        if (latestMessageId > lastMessageId) {
+          lastMessageId = latestMessageId;
+          io.to(roomId).emit("message", response.data);
+          startPolling(socket, userId);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  }, CHAT_POLLING_INTERVAL);
+}
+
+// Function to start polling for new chats
+function startPolling(socket, userId, type) {
+  setInterval(async () => {
+    try {
+      console.log(type);
+      let response; // Declare the response variable here
+      if (type == "student") {
+        // Fetch the latest chat list from the server
+        response = await axios.get(
+          `${phpApiUrl}show_users.php?student=${userId}&responseType=json`
+        );
+      } else if (type == "landlord") {
+        // Fetch the latest chat list from the server
+        response = await axios.get(
+          `${phpApiUrl}show_users.php?landlord=${userId}&responseType=json`
+        );
+      }
+      if (response && response.data) {
+        // Extract the chats array from the response data
+        const newChatList = response.data.chats || [];
+        if (!Array.isArray(newChatList)) {
+          console.error(
+            "Expected 'chats' to be an array but got:",
+            newChatList
+          );
+          return;
+        }
+
+        // Retrieve the previously stored chat list
+        const previousChatList = chatLists[userId]?.list || [];
+
+        // Ensure both lists are arrays before processing
+        if (!Array.isArray(previousChatList)) {
+          console.error(
+            "Previous chat list is not an array:",
+            previousChatList
+          );
+          chatLists[userId] = { list: newChatList };
+          return;
+        }
+
+        // Create arrays of message IDs and isRead properties from the previous and new chat lists
+        const previousMsgs = previousChatList.map(chat => ({
+          lastMsgId: chat.lastMsgId || "",
+          isRead: typeof chat.isRead !== 'undefined' ? chat.isRead : false
+        }));
+        const newMsgs = newChatList.map(chat => ({
+          lastMsgId: chat.lastMsgId || "",
+          isRead: typeof chat.isRead !== 'undefined' ? chat.isRead : false
+        }));
+
+        // Determine if there are new messages or read status changes
+        const hasUpdates = newMsgs.some((newMsg, index) => {
+          const previousMsg = previousMsgs[index] || {};
+          return (
+            newMsg.lastMsgId !== previousMsg.lastMsgId ||
+            newMsg.isRead !== previousMsg.isRead
+          );
+        });
+
+        if (hasUpdates) {
+          // If there are new messages or read status changes, update the stored chat list and emit updates
+          chatLists[userId] = {
+            list: newChatList,
+            lastMsgId:
+              newChatList.length > 0
+                ? newChatList[newChatList.length - 1].lastMsgId
+                : "",
+          };
+          socket.emit("updateChatList", response.data);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching chat list:", error);
+    }
+  }, POLLING_INTERVAL);
+}
+
+
+server.listen(5000, () => {
+  console.log("Server listening on port 5000");
+});

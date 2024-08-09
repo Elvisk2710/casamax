@@ -1,34 +1,35 @@
-
-
 const form = document.querySelector(".text_area");
 inputField = form.querySelector(".input_field");
 sendBtn = form.querySelector("button");
 chatBox = document.querySelector(".chat_container");
+const outgoing_id = document.querySelector(".outgoing_id").value;
+const incoming_id = document.querySelector(".incoming_id").value;
+
 
 form.onsubmit = (e) => {
   e.preventDefault();
 };
 sendBtn.onclick = () => {
-  if(inputField.value !="" && inputField.value != null){
-  let xhr = new XMLHttpRequest();
-  xhr.open(
-    "POST",
-    "https://localhost/casamax/chat/server/insert_chat.php",
-    true
-  );
-  xhr.onload = () => {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-      if (xhr.status === 200) {
-        inputField.value = ""; //resets the value of the input
-        scrollToBottom();
-        let data = xhr.response;
-        console.log(data);
+  if (inputField.value != "" && inputField.value != null) {
+    let xhr = new XMLHttpRequest();
+    xhr.open(
+      "POST",
+      "https://localhost/casamax/chat/server/insert_chat.php",
+      true
+    );
+    xhr.onload = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          inputField.value = ""; //resets the value of the input
+          scrollToBottom();
+          let data = xhr.response;
+          console.log(data);
+        }
       }
-    }
-  };
-  let formData = new FormData(form);
-  xhr.send(formData);
-}
+    };
+    let formData = new FormData(form);
+    xhr.send(formData);
+  }
 };
 
 // deteching touch for mobile to stop scrolling
@@ -50,8 +51,8 @@ chatBox.addEventListener("mouseenter", () => {
 setInterval(() => {
   let xhr = new XMLHttpRequest();
   xhr.open(
-    "POST",
-    "https://localhost/casamax/chat/server/get_chat_msg.php",
+    "GET",
+    `https://localhost/casamax/chat/server/get_chat_msg.php?outgoing_id=${outgoing_id}&incoming_id=${incoming_id}`,
     true
   );
   xhr.onload = () => {
@@ -70,14 +71,14 @@ setInterval(() => {
 
   let formData = new FormData(form);
   xhr.send(formData);
-}, 500);
+}, 1200);
 
 function scrollToBottom() {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 // update the  is_read attribute
 function updateRead(element) {
-  const msgId = element.getAttribute('data-msg-id');
+  const msgId = element.getAttribute("data-msg-id");
   console.log(msgId);
   let xhr = new XMLHttpRequest();
   xhr.open(
@@ -95,4 +96,5 @@ function updateRead(element) {
     }
   };
 
-  xhr.send(JSON.stringify({ "msg_id": msgId }));}
+  xhr.send(JSON.stringify({ msg_id: msgId }));
+}

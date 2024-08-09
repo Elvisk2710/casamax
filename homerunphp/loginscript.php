@@ -20,9 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-
 session_start();
 require '../required/common_functions.php';
+require '../vendor/autoload.php'; // Ensure JWT library is loaded
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+const JWT_SECRET = 'your_secret_key_here'; // Use a secure and long secret key
+
 
 if (isset($_POST['submit'])) {
     $sec = "0.1";
@@ -49,7 +55,6 @@ if (isset($_POST['submit'])) {
             session_destroy();
             session_start();
             $_SESSION['sessionstudent'] =  $response['user_id'];
-            echo $userid;
             // Redirect based on university
             $universityMapping = array(
                 "University of Zimbabwe" => "../unilistings/uzlisting.php",
@@ -86,15 +91,37 @@ if (isset($_POST['submit'])) {
         $password = $_GET['password'] ?? null;
         if ($email != null && $password != null) {
             $responseJson = loginUserStudent($email, $password);
-            echo $responseJson;
-            exit();
+            $responseData = json_decode($responseJson, true);
+
+            if ($responseData['status'] == 'success') {
+                // Create JWT token
+                $payload = [
+                    'iss' => "https://casamax.co.zw", // Issuer
+                    'aud' => "https://casamax.co.zw", // Audience
+                    'iat' => time(), // Issued at
+                    'exp' => time() + (60 * 60  * 24 * 30 ), // Expiration time (30 days)
+                    'user_id' => $responseData['user_id'],
+                    'university' => $responseData['university'],
+                    'message' => $responseData['message'],
+                    'status' => $responseData['status'],
+                    'type' => 'student',
+                    'firstname' => $responseData['firstname'],
+                    'lastname' => $responseData['lastname'],
+
+                ];
+                $jwt = JWT::encode($payload, JWT_SECRET, 'HS256');
+                echo json_encode(['status' => 'success', 'token' => $jwt]);
+                exit();
+            } else {
+                echo json_encode(['status' => 'error', 'message' => $responseData['message']]);
+            }
         } else {
-            return;
+            echo json_encode(['status' => 'error', 'message' => 'Empty Fields']);
         }
     } else {
-        echo "no body";
+        echo json_encode(['status' => 'error', 'message' => 'no-body']);
     }
 } else {
-    redirect("../index.php?error=Access Denied");
-    exit();
+    echo json_encode(['status' => 'error', 'message' => 'Access Denied']);
 }
+

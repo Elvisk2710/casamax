@@ -1,23 +1,42 @@
 <?php
 session_start();
 require '../../required/common_functions.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_SESSION['sessionstudent']) || isset($_SESSION['sessionowner'])) {
-        include '../../homerunphp/advertisesdb.php';
-        $outgoing_id = mysqli_real_escape_string($conn, $_POST['outgoing_id']);
-        $outgoing_id = sanitize_string($outgoing_id);
+    if (isset($_SESSION['sessionstudent']) || isset($_SESSION['sessionowner']) || $_GET['mobile_api']) {
+        require '../../homerunphp/advertisesdb.php';
 
-        $incoming_id = mysqli_real_escape_string($conn, $_POST['incoming_id']);
-        $incoming_id = sanitize_string($incoming_id);
+        // Get the response type from the request
+        $responseType = isset($_GET['responseType']) ? $_GET['responseType'] : 'html';
 
-        $message = mysqli_real_escape_string($conn, $_POST['message']);
-        $message = sanitize_string($message);
+        $outgoing_id = sanitize_string($_POST['outgoing_id']);
+        $incoming_id = sanitize_string($_POST['incoming_id']);
+        $message = sanitize_string(mysqli_real_escape_string($conn, $_POST['message']));
 
-        $is_read = 0; // Set the is_read column to 0 (unread)
+        $is_read = 0;
         $current_timestamp = time();
         $mysql_timestamp = date('Y-m-d H:i:s', $current_timestamp);
-        $sql = mysqli_query($conn, "INSERT INTO messages (incoming_msg_id, outgoing_msg_id, msg, timestamp, is_read) VALUES ('{$incoming_id}', '{$outgoing_id}', '{$message}', '{$mysql_timestamp}', '{$is_read}')");
+
+        if ($outgoing_id != null || $outgoing_id != '' || $incoming_id != null || $incoming_id != '') {
+            $sql = "INSERT INTO messages (incoming_msg_id, outgoing_msg_id, msg, timestamp, is_read) 
+                VALUES ('{$incoming_id}', '{$outgoing_id}', '{$message}', '{$mysql_timestamp}', '{$is_read}')";
+
+            if (mysqli_query($conn, $sql)) {
+                echo json_encode(['status' => 'success']);
+            } else {
+                echo json_encode(['status' => 'error', 'error' => mysqli_error($conn)]);
+            }
+        }
     }
 } else {
-    header("location: ../screens/login.php");
+    if ($responseType === 'json') {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'message' => 'error',
+            'error' => $message,
+        ]);
+    } else {
+        header("location: ../screens/index.php");
+    }
+    exit();
 }
