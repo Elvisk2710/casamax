@@ -1,5 +1,5 @@
 <?php
-require './alerts.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -90,7 +90,7 @@ try {
     // Validate and sanitize email address
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
     if (!$email) {
-        redirect(' ./agent_register.php?error=Invalid email address!');
+        redirect(' ../agent/agent_register.php?error=Invalid email address!');
         exit();
     }
 
@@ -108,6 +108,6 @@ try {
         echo '<script>alert("Email sent successfully")</script>';
     }
 } catch (Exception $e) {
-    redirect(' ./agent_register.php?error=SMTP connection failed: ' . $e->getMessage());
+    redirect(' ../agent/agent_register.php?error=SMTP connection failed: ' . $e->getMessage());
     exit();
 }

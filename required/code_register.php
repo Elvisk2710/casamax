@@ -13,7 +13,9 @@
 <meta http-equiv="expires" content="Sun, 01 Jan 2014 00:00:00 GMT">
 <meta http-equiv="pragma" content="no-cache">
 
-
+<?php
+    require './alerts.php';
+?>
 </head
 
 <body onunload="" class="scrollable">

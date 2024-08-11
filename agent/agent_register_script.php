@@ -81,8 +81,7 @@ if (isset($_POST['submit'])) {
             }
         }
     }
-}
-if (isset($_POST['register_code'])) {
+}elseif (isset($_POST['register_code'])) {
     $code = $_POST['code'];
     // checking if the code is valid
     if ($code == $_COOKIE['code']) {
@@ -132,7 +131,9 @@ if (isset($_POST['register_code'])) {
             }
             exit();
         }
+    }else{
+        redirect('  ../required/code_register.php?agent=true&error= Wrong Verification Code');
     }
 } else {
-    redirect('  ../required/code_register.php?error=Sorry Code Does Not Match');
+    redirect('  ../required/code_register.php?agent=true&error=Could Not Generate Code');
 }
