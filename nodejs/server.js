@@ -103,9 +103,15 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", async (data) => {
     console.log(`message sent: ${data}`);
     try {
-      const response = await axios.post(`${phpApiUrl}insert_chat.php?responseType=json&mobile_api=true`, data, {
+      const formData = new URLSearchParams();
+      formData.append('outgoing_id', data.outgoing_id);
+      formData.append('incoming_id', data.incoming_id);
+      formData.append('message', data.message);
+  
+      const response = await axios.post(`${phpApiUrl}insert_chat.php?responseType=json&mobile_api=true`, formData, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
+  
       // Check if the API call was successful (status code 200-299)
       if (response.status >= 200 && response.status < 300) {
         console.log(response);
