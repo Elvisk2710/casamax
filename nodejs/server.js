@@ -102,6 +102,7 @@ io.on("connection", (socket) => {
 
   // Listen for messages from clients and relay them to the PHP backend
   socket.on("sendMessage", async (data) => {
+    console.log('message sent');
     try {
       await axios.post(`${phpApiUrl}insert_chat.php?mobile_api=true`, data, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
