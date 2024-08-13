@@ -82,6 +82,7 @@ io.on("connection", (socket) => {
 
   // Handle join event
   socket.on("joinRoom", async (data) => {
+    console.log(`user joined room: ${data.roomId}`);
     socket.join(data.roomId);
     try {
       const response = await axios.get(
