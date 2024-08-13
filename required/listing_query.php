@@ -128,7 +128,7 @@ while ($row = mysqli_fetch_array($result)) {
 
     if ($row['available'] == 1) {
         $currentPageUrl = 'https%3A%2F%2F' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
-        $home_url = $currentPageUrl . "%23div" . $row['home_id'];
+        $home_url = "https://casamax.co.zw/listingdetails.php?clicked_id=" . $row['home_id'];
 
         echo "<div class='house' data-intro='View each home and its amenities.' data-step='2' data-position='top' id=div" . $row['home_id'] . ">";
         echo "<div class='house-img'>";

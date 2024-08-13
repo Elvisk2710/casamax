@@ -17,7 +17,8 @@ let lastMessageId = null;
 const POLLING_INTERVAL = 1000; // 7 seconds
 
 // Replace with your PHP API URL
-const phpApiUrl = "http://casamax.co.zw/chat/server/";
+// const phpApiUrl = "http://casamax.co.zw/chat/server/";
+const phpApiUrl = "http://192.168.1.14:81/casamax/chat/server/";
 
 // Configure CORS
 app.use(
@@ -42,7 +43,7 @@ io.on("connection", (socket) => {
     socket.emit("pong");
   });
   // update is read
-  socket.on('updateIsRead', async (data) => {
+  socket.on("updateIsRead", async (data) => {
     try {
       await axios.post(
         `${phpApiUrl}update_is_read.php?mobile_api=true&responseType=json`,
@@ -51,6 +52,7 @@ io.on("connection", (socket) => {
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
         }
       );
+      startPolling(socket, data.user, data.type);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -80,16 +82,19 @@ io.on("connection", (socket) => {
 
   // Handle join event
   socket.on("joinRoom", async (data) => {
+    console.log(`user joined room: ${data.roomId}`);
+    console.log(`receiver: ${data.receiver}`);
     socket.join(data.roomId);
     try {
       const response = await axios.get(
         `${phpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${data.user}&incoming_id=${data.receiver}`
       );
+      console.log(response.data);
       io.to(data.roomId).emit("newChatMessage", response.data);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
-    startPollingChat(socket, data.user, data.receiver, data.roomId);
+    startPollingChat(socket, data.user, data.receiver, data.roomId, data.type);
   });
 
   // Handle disconnection
@@ -117,7 +122,7 @@ io.on("connection", (socket) => {
   });
 });
 // Function to start polling for new messages
-function startPollingChat(socket, userId, receiver, roomId) {
+function startPollingChat(socket, userId, receiver, roomId, type) {
   setInterval(async () => {
     try {
       const response = await axios.get(
@@ -134,7 +139,7 @@ function startPollingChat(socket, userId, receiver, roomId) {
         if (latestMessageId > lastMessageId) {
           lastMessageId = latestMessageId;
           io.to(roomId).emit("message", response.data);
-          startPolling(socket, userId);
+          startPolling(socket, userId, type);
         }
       }
     } catch (error) {
@@ -145,20 +150,24 @@ function startPollingChat(socket, userId, receiver, roomId) {
 
 // Function to start polling for new chats
 function startPolling(socket, userId, type) {
+  console.log(`This is the User: ${userId} `);
+  console.log(`This is the type: ${type} `);
+  userType = type;
   setInterval(async () => {
     try {
       let response; // Declare the response variable here
-      if (type == "student") {
+      if (userType == "student") {
         // Fetch the latest chat list from the server
         response = await axios.get(
           `${phpApiUrl}show_users.php?student=${userId}&responseType=json`
         );
-      } else if (type == "landlord") {
+      } else if (userType == "landlord") {
         // Fetch the latest chat list from the server
         response = await axios.get(
           `${phpApiUrl}show_users.php?landlord=${userId}&responseType=json`
         );
       }
+
       if (response && response.data) {
         // Extract the chats array from the response data
         const newChatList = response.data.chats || [];
@@ -184,13 +193,13 @@ function startPolling(socket, userId, type) {
         }
 
         // Create arrays of message IDs and isRead properties from the previous and new chat lists
-        const previousMsgs = previousChatList.map(chat => ({
+        const previousMsgs = previousChatList.map((chat) => ({
           lastMsgId: chat.lastMsgId || "",
-          isRead: typeof chat.isRead !== 'undefined' ? chat.isRead : false
+          isRead: typeof chat.isRead !== "undefined" ? chat.isRead : false,
         }));
-        const newMsgs = newChatList.map(chat => ({
+        const newMsgs = newChatList.map((chat) => ({
           lastMsgId: chat.lastMsgId || "",
-          isRead: typeof chat.isRead !== 'undefined' ? chat.isRead : false
+          isRead: typeof chat.isRead !== "undefined" ? chat.isRead : false,
         }));
 
         // Determine if there are new messages or read status changes
@@ -211,6 +220,7 @@ function startPolling(socket, userId, type) {
                 ? newChatList[newChatList.length - 1].lastMsgId
                 : "",
           };
+          console.log(response.data);
           socket.emit("updateChatList", response.data);
         }
       }
@@ -219,7 +229,6 @@ function startPolling(socket, userId, type) {
     }
   }, POLLING_INTERVAL);
 }
-
 
 server.listen(5000, () => {
   console.log("Server listening on port 5000");

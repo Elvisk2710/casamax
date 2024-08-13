@@ -1,6 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['sessionAdmin'])) {
+    require '../../required/alerts.php';
     redirect('../index.php?error=Please Login');
 } else {
     $user = $_SESSION['sessionAdmin'];
