@@ -100,21 +100,27 @@ io.on("connection", (socket) => {
     console.log("Client disconnected");
   });
 
-  // Listen for messages from clients and relay them to the PHP backend
   socket.on("sendMessage", async (data) => {
     console.log(`message sent: ${data}`);
     try {
-      await axios.post(`${phpApiUrl}insert_chat.php?mobile_api=true`, data, {
+      const response = await axios.post(`${phpApiUrl}insert_chat.php?mobile_api=true`, data, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
-      // Emit message to all clients after successfully sending to PHP backend
-      const { roomId, message } = data;
-      io.to(roomId).emit("message", { sender: socket.id, message });
+      // Check if the API call was successful (status code 200-299)
+      if (response.status >= 200 && response.status < 300) {
+        console.log(response);
+        // Emit message to all clients after successfully sending to PHP backend
+        const { roomId, message } = data;
+        io.to(roomId).emit("message", { sender: socket.id, message });
+        console.log("Message sent successfully to the PHP backend and clients");
+      } else {
+        console.error("API call was not successful:", response.status, response.statusText);
+      }
     } catch (error) {
       console.error("Error sending message:", error);
     }
   });
-
+  
   // error handling
   socket.on("error", (error) => {
     console.log("Error: ", error);
