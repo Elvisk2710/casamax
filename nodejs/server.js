@@ -101,7 +101,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", async (data) => {
-    console.log(`message sent: ${data}`);
     try {
       const formData = new URLSearchParams();
       formData.append('outgoing_id', data.outgoing_id);
@@ -114,7 +113,6 @@ io.on("connection", (socket) => {
   
       // Check if the API call was successful (status code 200-299)
       if (response.status >= 200 && response.status < 300) {
-        console.log(response);
         // Emit message to all clients after successfully sending to PHP backend
         const { roomId, message } = data;
         io.to(roomId).emit("message", { sender: socket.id, message });
