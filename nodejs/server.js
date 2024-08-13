@@ -17,8 +17,8 @@ let lastMessageId = null;
 const POLLING_INTERVAL = 1000; // 7 seconds
 
 // Replace with your PHP API URL
-const phpApiUrl = "http://casamax.co.zw/chat/server/";
-// const phpApiUrl = "http://192.168.1.14:81/casamax/chat/server/";
+// const phpApiUrl = "http://casamax.co.zw/chat/server/";
+const phpApiUrl = "http://192.168.1.14:81/casamax/chat/server/";
 
 // Configure CORS
 app.use(
@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", async (data) => {
     console.log(`message sent: ${data}`);
     try {
-      const response = await axios.post(`${phpApiUrl}insert_chat.php?mobile_api=true`, data, {
+      const response = await axios.post(`${phpApiUrl}insert_chat.php?mobile_api=true&responseType=json`, data, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
       // Check if the API call was successful (status code 200-299)
