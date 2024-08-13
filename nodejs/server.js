@@ -82,14 +82,11 @@ io.on("connection", (socket) => {
 
   // Handle join event
   socket.on("joinRoom", async (data) => {
-    console.log(`user joined room: ${data.roomId}`);
-    console.log(`receiver: ${data.receiver}`);
     socket.join(data.roomId);
     try {
       const response = await axios.get(
         `${phpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${data.user}&incoming_id=${data.receiver}`
       );
-      console.log(response.data);
       io.to(data.roomId).emit("newChatMessage", response.data);
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -150,8 +147,6 @@ function startPollingChat(socket, userId, receiver, roomId, type) {
 
 // Function to start polling for new chats
 function startPolling(socket, userId, type) {
-  console.log(`This is the User: ${userId} `);
-  console.log(`This is the type: ${type} `);
   userType = type;
   setInterval(async () => {
     try {
@@ -220,7 +215,6 @@ function startPolling(socket, userId, type) {
                 ? newChatList[newChatList.length - 1].lastMsgId
                 : "",
           };
-          console.log(response.data);
           socket.emit("updateChatList", response.data);
         }
       }
