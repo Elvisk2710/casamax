@@ -8,9 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_SESSION['sessionstudent']) || isset($_SESSION['sessionowner']) || $_GET['mobile_api'] == true) {
         require '../../homerunphp/advertisesdb.php';
-        echo $_SESSION['sessionowner'];
-        echo $_SESSION['sessionstudent'];
-        echo $_GET['mobile_api'];
 
         $outgoing_id = sanitize_string($_POST['outgoing_id']);
         $incoming_id = sanitize_string($_POST['incoming_id']);
