@@ -2,12 +2,15 @@
 session_start();
 require '../../required/common_functions.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_SESSION['sessionstudent']) || isset($_SESSION['sessionowner']) || $_GET['mobile_api']) {
-        require '../../homerunphp/advertisesdb.php';
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Get the response type from the request
+    $responseType = isset($_GET['responseType']) ? $_GET['responseType'] : 'html';
 
-        // Get the response type from the request
-        $responseType = isset($_GET['responseType']) ? $_GET['responseType'] : 'html';
+    if (isset($_SESSION['sessionstudent']) || isset($_SESSION['sessionowner']) || $_GET['mobile_api'] == true) {
+        require '../../homerunphp/advertisesdb.php';
+        echo $_SESSION['sessionowner'];
+        echo $_SESSION['sessionstudent'];
+        echo $_GET['mobile_api'];
 
         $outgoing_id = sanitize_string($_POST['outgoing_id']);
         $incoming_id = sanitize_string($_POST['incoming_id']);
@@ -26,17 +29,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 echo json_encode(['status' => 'error', 'error' => mysqli_error($conn)]);
             }
+        }else{
+            if ($responseType === 'json') {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'message' => 'error',
+                    'error' => 'Invalid Inputs',
+                ]);
+            } else {
+                header("location: ../screens/index.php?error=Invalid Inputs");
+            }
+            exit();
         }
+    } else {
+        if ($responseType === 'json') {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'message' => 'error',
+                'error' => $message,
+            ]);
+        } else {
+            header("location: ../screens/index.php");
+        }
+        exit();
     }
 } else {
-    if ($responseType === 'json') {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'message' => 'error',
-            'error' => $message,
-        ]);
-    } else {
-        header("location: ../screens/index.php");
-    }
-    exit();
+    echo json_encode([
+        'message' => 'error',
+        'error' => 'Not a valid request',
+    ]);
 }
