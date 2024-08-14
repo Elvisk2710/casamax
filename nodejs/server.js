@@ -179,10 +179,6 @@ function startPolling(socket, userId, type) {
           return;
         }
 
-        // Debugging statements
-        console.log("Current chatLists:", chatLists);
-        console.log("userId:", userId);
-
         // Initialize or retrieve previous chat list
         const previousChatList = (chatLists[userId] && Array.isArray(chatLists[userId].list))
           ? chatLists[userId].list
