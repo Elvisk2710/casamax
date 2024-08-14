@@ -2,78 +2,47 @@ const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
 const axios = require("axios");
-const cors = require("cors");
-const rateLimit = require("express-rate-limit");
-const { createLogger, transports, format } = require("winston");
-require("dotenv").config(); // To load environment variables from .env file
+const cors = require("cors"); // Import the cors package
+const { log } = require("console");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-// Logger setup using Winston
-const logger = createLogger({
-  level: "info",
-  format: format.combine(
-    format.timestamp(),
-    format.json()
-  ),
-  transports: [
-    new transports.Console(),
-    new transports.File({ filename: "combined.log" })
-  ]
-});
+const chatLists = {}; // An empty object to store chat lists for each user
+// chat details polling
+const CHAT_POLLING_INTERVAL = 3500; // 1 seconds
+let lastMessageId = null;
+// chat list polling
+const POLLING_INTERVAL = 3500; // 1 seconds
 
-// Configurations
-const CHAT_POLLING_INTERVAL = 3500; // 3.5 seconds
-const POLLING_INTERVAL = 3500; // 3.5 seconds
-
-// Retrieve environment variables
-const phpApiUrl = process.env.PHP_API_URL || "https://casamax.co.zw/chat/server/";
+// Replace with your PHP API URL
+const phpApiUrl = "https://casamax.co.zw/chat/server/";
+// const phpApiUrl = "http://192.168.1.14:81/casamax/chat/server/";
 
 // Configure CORS
 app.use(
   cors({
-    origin: "*", // Consider restricting origins in production
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
+    origin: "*", // Allow all origins; you can specify specific origins if needed
+    methods: ["GET", "POST"], // Allow specific methods
+    allowedHeaders: ["Content-Type"], // Allow specific headers
   })
 );
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: "Too many requests from this IP, please try again later."
-});
-
-app.use(limiter);
-
-// Body parser middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Define a simple route to test connectivity
 app.get("/", (req, res) => {
   res.send("Socket.IO server is running");
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  logger.error("Unhandled error: ", err);
-  res.status(500).send("Internal Server Error");
-});
-
 // Handle connection
 io.on("connection", (socket) => {
-  logger.info("New client connected");
+  console.log("New client connected");
 
   socket.on("ping", () => {
-    logger.info("Ping received from client");
+    console.log("Ping received from client");
     socket.emit("pong");
   });
-
-  // Update is read
+  // update is read
   socket.on("updateIsRead", async (data) => {
     try {
       await axios.post(
@@ -85,75 +54,82 @@ io.on("connection", (socket) => {
       );
       startPolling(socket, data.user, data.type);
     } catch (error) {
-      logger.error("Error sending message:", error);
+      console.error("Error sending message:", error);
+    }
+  });
+  // Handle join event
+  socket.on("join", async (data) => {
+    try {
+      // checking is the user is a student
+      if (data.type == "student") {
+        const response = await axios.get(
+          `${phpApiUrl}show_users.php?student=${data.user}&responseType=json`
+        );
+        socket.emit("newChatList", response.data);
+        startPolling(socket, data.user, data.type);
+      } else if (data.type == "landlord") {
+        // checking is the user is a landlord
+        const response = await axios.get(
+          `${phpApiUrl}show_users.php?landlord=${data.user}&responseType=json`
+        );
+        socket.emit("newChatList", response.data);
+        startPolling(socket, data.user, data.type);
+      }
+    } catch (error) {
+      console.error("Error fetching data from PHP:", error);
     }
   });
 
   // Handle join event
-  socket.on("join", async (data) => {
-    try {
-      const endpoint = data.type === "student"
-        ? `${phpApiUrl}show_users.php?student=${data.user}&responseType=json`
-        : `${phpApiUrl}show_users.php?landlord=${data.user}&responseType=json`;
-
-      const response = await axios.get(endpoint);
-      socket.emit("newChatList", response.data);
-      startPolling(socket, data.user, data.type);
-    } catch (error) {
-      logger.error("Error fetching data from PHP:", error);
-    }
-  });
-
-  // Handle join room event
   socket.on("joinRoom", async (data) => {
-    logger.info(`User joined room: ${data.roomId}`);
+    console.log(`user joined room: ${data.roomId}`);
     socket.join(data.roomId);
     try {
       const response = await axios.get(
         `${phpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${data.user}&incoming_id=${data.receiver}`
       );
       io.to(data.roomId).emit("newChatMessage", response.data);
-      startPollingChat(socket, data.user, data.receiver, data.roomId, data.type);
     } catch (error) {
-      logger.error("Error fetching messages:", error);
+      console.error("Error fetching messages:", error);
     }
+    startPollingChat(socket, data.user, data.receiver, data.roomId, data.type);
   });
 
   // Handle disconnection
   socket.on("disconnect", () => {
-    logger.info("Client disconnected");
+    console.log("Client disconnected");
   });
 
-  // Handle send message
   socket.on("sendMessage", async (data) => {
     try {
       const formData = new URLSearchParams();
       formData.append('outgoing_id', data.outgoing_id);
       formData.append('incoming_id', data.incoming_id);
       formData.append('message', data.message);
-
+  
       const response = await axios.post(`${phpApiUrl}insert_chat.php?responseType=json&mobile_api=true`, formData, {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
-
+  
+      // Check if the API call was successful (status code 200-299)
       if (response.status >= 200 && response.status < 300) {
+        // Emit message to all clients after successfully sending to PHP backend
         const { roomId, message } = data;
         io.to(roomId).emit("message", { sender: socket.id, message });
-        logger.info("Message sent successfully to the PHP backend and clients");
+        console.log("Message sent successfully to the PHP backend and clients");
       } else {
-        logger.error("API call was not successful:", response.status, response.statusText);
+        console.error("API call was not successful:", response.status, response.statusText);
       }
     } catch (error) {
-      logger.error("Error sending message:", error);
+      console.error("Error sending message:", error);
     }
   });
-
-  // Error handling for socket errors
+  
+  // error handling
   socket.on("error", (error) => {
-    logger.error("Socket error: ", error);
+    console.log("Error: ", error);
   });
 });
-
 // Function to start polling for new messages
 function startPollingChat(socket, userId, receiver, roomId, type) {
   setInterval(async () => {
@@ -161,10 +137,14 @@ function startPollingChat(socket, userId, receiver, roomId, type) {
       const response = await axios.get(
         `${phpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${userId}&incoming_id=${receiver}`
       );
-      const messages = Array.isArray(response.data.chats) ? response.data.chats : [];
+      // handle empty messages
+      const messages = Array.isArray(response.data.chats)
+        ? response.data.chats
+        : [];
       if (messages.length > 0) {
         const latestMessage = messages[messages.length - 1];
         const latestMessageId = latestMessage.id;
+        // if the last message is the same as the latest message
         if (latestMessageId > lastMessageId) {
           lastMessageId = latestMessageId;
           io.to(roomId).emit("message", response.data);
@@ -172,33 +152,45 @@ function startPollingChat(socket, userId, receiver, roomId, type) {
         }
       }
     } catch (error) {
-      logger.error("Error fetching messages:", error);
+      console.error("Error fetching messages:", error);
     }
   }, CHAT_POLLING_INTERVAL);
 }
 
 // Function to start polling for new chats
 function startPolling(socket, userId, type) {
-  const userType = type;
   setInterval(async () => {
     try {
-      const endpoint = userType === "student"
-        ? `${phpApiUrl}show_users.php?student=${userId}&responseType=json`
-        : `${phpApiUrl}show_users.php?landlord=${userId}&responseType=json`;
-
-      const response = await axios.get(endpoint);
+      let response;
+      if (type === "student") {
+        response = await axios.get(
+          `${phpApiUrl}show_users.php?student=${userId}&responseType=json`
+        );
+      } else if (type === "landlord") {
+        response = await axios.get(
+          `${phpApiUrl}show_users.php?landlord=${userId}&responseType=json`
+        );
+      }
 
       if (response && response.data) {
         const newChatList = response.data.chats || [];
         if (!Array.isArray(newChatList)) {
-          logger.error("Expected 'chats' to be an array but got:", newChatList);
+          console.error("Expected 'chats' to be an array but got:", newChatList);
           return;
         }
 
-        const previousChatList = chatLists[userId]?.list || [];
+        // Debugging statements
+        console.log("Current chatLists:", chatLists);
+        console.log("userId:", userId);
 
+        // Initialize or retrieve previous chat list
+        const previousChatList = (chatLists[userId] && Array.isArray(chatLists[userId].list))
+          ? chatLists[userId].list
+          : [];
+
+        // Ensure previousChatList is an array
         if (!Array.isArray(previousChatList)) {
-          logger.error("Previous chat list is not an array:", previousChatList);
+          console.error("Previous chat list is not an array:", previousChatList);
           chatLists[userId] = { list: newChatList };
           return;
         }
@@ -229,11 +221,13 @@ function startPolling(socket, userId, type) {
         }
       }
     } catch (error) {
-      logger.error("Error fetching chat list:", error);
+      console.error("Error fetching chat list:", error);
     }
   }, POLLING_INTERVAL);
 }
 
-server.listen(process.env.PORT || 5000, () => {
-  logger.info("Server listening on port 5000");
+
+
+server.listen(5000, () => {
+  console.log("Server listening on port 5000");
 });
