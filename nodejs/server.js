@@ -15,7 +15,6 @@ const CHAT_POLLING_INTERVAL = 3500; // 1 seconds
 let lastMessageId = null;
 // chat list polling
 const POLLING_INTERVAL = 3500; // 1 seconds
-
 // Replace with your PHP API URL
 const phpApiUrl = "https://casamax.co.zw/chat/server/";
 // const phpApiUrl = "http://192.168.1.14:81/casamax/chat/server/";
