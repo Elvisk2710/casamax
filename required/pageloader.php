@@ -1,5 +1,5 @@
 <?php
-require_once 'alerts.php';
+require 'alerts.php';
 ?>
 <script>
     function setCookie(name, value, days) {

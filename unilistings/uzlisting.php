@@ -46,7 +46,7 @@ $page_filter_name = "../unilistings/" . $page_name;
     ?>
 
 
-    <div class="container">
+    <div class="container"> 
 
         <div class="list-container">
 
@@ -64,7 +64,7 @@ $page_filter_name = "../unilistings/" . $page_name;
 
             <!-- includes the filters of the page -->
             <?php
-            require_once '../required/filter.php';
+            require '../required/filter.php';
             ?>
         </div>
 

@@ -1,7 +1,6 @@
 <?php
 // reseting a filter
 if (isset($_POST['filter_reset'])) {
-     header("Location: https://casamax.co.zw/unilistings/$page_name");
      unset($_GET['fridge']);
      unset($_GET['borehole']);
      unset($_GET['wifi']);
@@ -18,6 +17,7 @@ if (isset($_POST['filter_reset'])) {
      $price_query = '';
      $price_url = "";
      $filter_url = "";
+     redirect("https://casamax.co.zw/unilistings/$page_name");
 }
 ?>
 <div class="sidebar">
@@ -99,7 +99,6 @@ if (isset($_POST['filter_reset'])) {
           </div>
      </form>
 </div>
-
 <script>
      function closeFilter() {
           console.log("closeFilter() called");
