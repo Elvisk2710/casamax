@@ -4,7 +4,7 @@
         position: absolute;
         top: 0;
         width: 100vw;
-        display: hidden;
+        display: none;
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -109,6 +109,7 @@
         width: 100%;
         margin-top: 10px;
         position: absolute;
+        bottom: 2vh;
     }
 
     .close button {
@@ -128,7 +129,7 @@
 
     .gallery-icons {
         position: absolute;
-        bottom: 20vh;
+        bottom: 10vh;
         display: flex;
         gap: 10px;
     }
@@ -154,7 +155,7 @@
 
     @media only screen and (max-width: 700px) {
         .gallery_container {
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
         }
