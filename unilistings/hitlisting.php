@@ -37,42 +37,33 @@ $page_filter_name = "../unilistings/" . $page_name;
     <div class="head">
         <a href="../index.php"> <img src="../images/logoblack.png" alt="" class="logo"></a>
     </div>
-
     <!-- includes the navbar -->
     <?php
     require_once '../required/navbar.php';
     ?>
-
-
     <div class="container">
 
         <div class="list-container">
-
             <div class="left-col">
                 <h2>Recommended For HIT</h2>
                 <!-- includes the query for looping the houses -->
-
                 <?php
                 // google ads
                 require_once '../required/listing_query.php';
                 ?>
-
             </div>
-
-
-            <!-- includes the filters of the page -->
-            <?php
-            require_once '../required/filter.php';
-            ?>
+            <div class="right-col">
+                <!-- includes the filters of the page -->
+                <?php
+                require '../required/filter.php';
+                ?>
+            </div>
         </div>
-
-        <div class="rightcol">
-            <?php
-            require_once '../required/listing-pagination.php';
-            ?>
-        </div>
-
     </div>
+
+    <?php
+        require_once '../required/listing-pagination.php';
+        ?>
     <?php
     require_once '../required/footer.php';
     ?>

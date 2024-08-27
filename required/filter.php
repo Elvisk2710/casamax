@@ -26,9 +26,9 @@ if (isset($_POST['filter_reset'])) {
                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
           </svg>
      </div>
-     <form action="<?php $page_filter_name ?>" method="GET">
+     <form class="filter-form" action="<?php $page_filter_name ?>" method="GET">
 
-          <h2>Apply Filters</h2>
+          <h2>Filters</h2>
 
           <div class="filter" id="filter">
                <h3>Amenities</h3>
@@ -79,13 +79,13 @@ if (isset($_POST['filter_reset'])) {
                <br>
 
           </div>
+          <h3>Budget $</h3>
 
           <div class="price_filter">
                <?php
                $price = isset($_GET['price']) ? $_GET['price'] : '';
                ?>
-               <label for="price">Budget $:</label>
-               <input type="number" id="price" name="price" value="<?php echo $price ?>" placeholder="What's Your $Budget">
+               <input type="number" id="price" name="price" value="<?php echo $price ?>" placeholder="What's Your Budget?">
           </div>
           <div class="sidebar-link">
                <button name="filter" type="submit">Apply Filter</button>

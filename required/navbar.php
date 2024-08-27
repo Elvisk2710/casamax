@@ -4,7 +4,6 @@
 
     <img src="../images/menu.png" alt="menu" onclick="togglebtn()" class="fas">
     <br>
-    <div class="navbar_link">
         <a href="../index.php" class="home">HOME</a>
         <a href="../advertise_as/index.php">ADVERTISE</a>
         <a href="../help.php">HELP</a>
@@ -18,5 +17,4 @@
             echo '<a href="../loginas.php" class="sign_in" name="loginbtn">LOGIN</a>';
         }
         ?>
-    </div>
-</nav>
+</nav> 
