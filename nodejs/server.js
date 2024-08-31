@@ -5,9 +5,15 @@ const axios = require("axios");
 const cors = require("cors"); // Import the cors package
 const { log } = require("console");
 
+// Import the Twilio service
+const { sendWhatsAppMessage, handleIncomingMessage } = require('./twilioService');
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+
+// Middleware to parse incoming Twilio webhook data
+app.use(express.urlencoded({ extended: true }));
 
 const chatLists = {}; // An empty object to store chat lists for each user
 // chat details polling
