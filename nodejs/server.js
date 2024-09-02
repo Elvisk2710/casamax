@@ -4,7 +4,7 @@ const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
-const intents = require('./intents'); // Import the intents file
+const intents = require("./intents"); // Import the intents file
 
 // Initialize Express
 const app = express();
@@ -31,7 +31,6 @@ const greetingKeywords = [
   "ndeip",
   "zvirisei",
   "sei",
-
 ];
 
 // Define goodbye keywords
@@ -94,78 +93,72 @@ app.post("/whatsapp", (req, res) => {
     conversation.stage = "initial"; // Reset to initial stage if needed
   }
   // Check if the message is a goodbye
-  if (
-    goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))
-  ) {
+  if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
     conversation.stage = "goodbye"; // Set stage to completed or end the conversation
-  } 
+  }
 
-    switch (conversation.stage) {
-      case "initial":
-        responseMessage =
-          "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n(1)University of Zimbabwe\n(2)Midlands State University\n(3)Africa University\n(4)Bindura university of Science and Education\n(5)Chinhoyi University of Science and Technology\n(6)Great Zimbabwe University\n(7)Harare Institute of Technology\n(8)National University of Science and Technology";
-        conversation.stage = "university";
-        break;
+  switch (conversation.stage) {
+    case "initial":
+      responseMessage =
+        "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n(1)University of Zimbabwe\n(2)Midlands State University\n(3)Africa University\n(4)Bindura university of Science and Education\n(5)Chinhoyi University of Science and Technology\n(6)Great Zimbabwe University\n(7)Harare Institute of Technology\n(8)National University of Science and Technology";
+      conversation.stage = "university";
+      break;
 
-      case "university":
-        let matchedUniversity = null;
+    case "university":
+      let matchedUniversity = null;
 
-        // Check for number-based selection
-        if (intents[incomingMessage]) {
-          matchedUniversity = intents[incomingMessage];
-        } else {
-          // Check for nickname or full name
-          for (let key in intents) {
-            const intent = intents[key];
-            if (
-              intent.name.toLowerCase() === incomingMessage ||
-              intent.nicknames.some(
-                (nickname) => nickname.toLowerCase() === incomingMessage
-              )
-            ) {
-              matchedUniversity = intent;
-              break;
-            }
+      // Check for number-based selection
+      if (intents[incomingMessage]) {
+        matchedUniversity = intents[incomingMessage];
+      } else {
+        // Check for nickname or full name
+        for (let key in intents) {
+          const intent = intents[key];
+          if (
+            intent.name.toLowerCase() === incomingMessage ||
+            intent.nicknames.some(
+              (nickname) => nickname.toLowerCase() === incomingMessage
+            )
+          ) {
+            matchedUniversity = intent;
+            break;
           }
         }
+      }
 
-        if (matchedUniversity) {
-          conversation.data.university = matchedUniversity.name;
-          responseMessage = matchedUniversity.response;
-          conversation.stage = "budget"; // Move to the next stage
-        } else {
-          responseMessage =
-            "Invalid selection. Please choose a valid university number or name.";
-        }
-        break;
-
-      case "budget":
-        conversation.data.university = incomingMessage;
-        responseMessage = "What is your budget range?";
-        conversation.stage = "gender";
-        break;
-
-      case "gender":
-        conversation.data.budget = incomingMessage;
-        responseMessage = "What is your gender?";
-        conversation.stage = "goodbye";
-        break;
-
-      // case "completed":
-      //   responseMessage =
-      //     "Your request has been completed. Is there anything else I can help you with?";
-      //   break;
-
-      case "goodbye":
+      if (matchedUniversity) {
+        conversation.data.university = matchedUniversity.name;
         responseMessage =
-          "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
-        break;
-
-      default:
+          "Oh Great!! " +
+          matchedUniversity.name +
+          ". What is your budget range?";
+        conversation.stage = "gender"; //move to the next stage
+      } else {
         responseMessage =
-          "I’m not sure how to help with that. Could you please provide more details?";
-    }
-  
+          "Invalid selection. Please choose a valid university number or name.";
+      }
+      break;
+
+    case "gender":
+      conversation.data.budget = incomingMessage;
+      responseMessage = "What is your gender?";
+      conversation.stage = "goodbye";
+      break;
+
+    // case "completed":
+    //   responseMessage =
+    //     "Your request has been completed. Is there anything else I can help you with?";
+    //   break;
+
+    case "goodbye":
+      responseMessage =
+        "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
+      break;
+
+    default:
+      responseMessage =
+        "I’m not sure how to help with that. Could you please provide more details?";
+  }
 
   // Store the incoming and outgoing messages in the conversation object
   conversationData[fromNumber].data.messages =
