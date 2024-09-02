@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
-const { MessagingResponse } = require('twilio').twiml;
+const { MessagingResponse } = require("twilio").twiml;
 
 // Initialize Express
 const app = express();
@@ -12,7 +12,50 @@ const io = socketIo(server);
 
 // Object to store conversation data
 const conversationData = {};
-const phpApiUrl = 'https://casamax.co.zw/chat/server/'
+// Define greeting keywords
+const greetingKeywords = [
+  "hello",
+  "hi",
+  "hey",
+  "greetings",
+  "good morning",
+  "good afternoon",
+  "good evening",
+  "what's up",
+  "howdy",
+  "yo",
+  "hiya",
+  "hallo",
+  "wadi",
+  "ndeip",
+  "zvirisei",
+  "sei",
+
+];
+
+// Define goodbye keywords
+const goodbyeKeywords = [
+  "bye",
+  "goodbye",
+  "see you",
+  "later",
+  "farewell",
+  "take care",
+  "have a nice day",
+  "catch you later",
+  "see ya",
+  "so long",
+  "adieu",
+  "cheerio",
+  "no",
+  "thank you",
+  "thanks",
+  "cool",
+  "fine",
+  "great",
+];
+
+const phpApiUrl = "https://casamax.co.zw/chat/server/";
 
 // Body Parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,7 +71,7 @@ app.use(
 
 // Route for handling Twilio WhatsApp messages
 app.post("/whatsapp", (req, res) => {
-  console.log('received');
+  console.log("received");
   const incomingMessage = req.body.Body.trim().toLowerCase(); // Normalize input
   const fromNumber = req.body.From;
 
@@ -45,62 +88,81 @@ app.post("/whatsapp", (req, res) => {
   const conversation = conversationData[fromNumber];
   let responseMessage = "";
 
-  switch (conversation.stage) {
-    case "initial":
-      responseMessage =
-        "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n(1)University of Zimbabwe\n(2)Midlands State University\n(3)Africa University\n(4)Bindura university of Science and Education\n(5)Chinhoyi University of Science and Technology\n(6)Great Zimbabwe University\n(7)Harare Institute of Technology\n(8)National University of Science and Technology";
-      conversation.stage = "university";
-      break;
+  // Check if the message is a greeting
+  if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+    conversation.stage = "initial"; // Reset to initial stage if needed
+  }
+  // Check if the message is a goodbye
+  else if (
+    goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))
+  ) {
+    conversation.stage = "goodbye"; // Set stage to completed or end the conversation
+  } else {
+    switch (conversation.stage) {
+      case "initial":
+        responseMessage =
+          "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n(1)University of Zimbabwe\n(2)Midlands State University\n(3)Africa University\n(4)Bindura university of Science and Education\n(5)Chinhoyi University of Science and Technology\n(6)Great Zimbabwe University\n(7)Harare Institute of Technology\n(8)National University of Science and Technology";
+        conversation.stage = "university";
+        break;
 
-    case "university":
-      let matchedUniversity = null;
+      case "university":
+        let matchedUniversity = null;
 
-      // Check for number-based selection
-      if (intents[incomingMessage]) {
-        matchedUniversity = intents[incomingMessage];
-      } else {
-        // Check for nickname or full name
-        for (let key in intents) {
-          const intent = intents[key];
-          if (
-            intent.name.toLowerCase() === incomingMessage ||
-            intent.nicknames.toLowerCase().some(nickname => nickname.toLowerCase() === incomingMessage)
-          ) {
-            matchedUniversity = intent;
-            break;
+        // Check for number-based selection
+        if (intents[incomingMessage]) {
+          matchedUniversity = intents[incomingMessage];
+        } else {
+          // Check for nickname or full name
+          for (let key in intents) {
+            const intent = intents[key];
+            if (
+              intent.name.toLowerCase() === incomingMessage ||
+              intent.nicknames.some(
+                (nickname) => nickname.toLowerCase() === incomingMessage
+              )
+            ) {
+              matchedUniversity = intent;
+              break;
+            }
           }
         }
-      }
 
-      if (matchedUniversity) {
-        conversation.data.university = matchedUniversity.name;
-        responseMessage = matchedUniversity.response;
-        conversation.stage = "budget"; // Move to the next stage
-      } else {
-        responseMessage = "Invalid selection. Please choose a valid university number or name.";
-      }
-      break;
+        if (matchedUniversity) {
+          conversation.data.university = matchedUniversity.name;
+          responseMessage = matchedUniversity.response;
+          conversation.stage = "budget"; // Move to the next stage
+        } else {
+          responseMessage =
+            "Invalid selection. Please choose a valid university number or name.";
+        }
+        break;
 
-    case "budget":
-      conversation.data.university = incomingMessage;
-      responseMessage = "What is your budget range?";
-      conversation.stage = "gender";
-      break;
+      case "budget":
+        conversation.data.university = incomingMessage;
+        responseMessage = "What is your budget range?";
+        conversation.stage = "gender";
+        break;
 
-    case "gender":
-      conversation.data.budget = incomingMessage;
-      responseMessage = "What is your gender?";
-      conversation.stage = "completed";
-      break;
+      case "gender":
+        conversation.data.budget = incomingMessage;
+        responseMessage = "What is your gender?";
+        conversation.stage = "goodbye";
+        break;
 
-    case "completed":
-      responseMessage =
-        "Your request has been completed. Is there anything else I can help you with?";
-      break;
+      // case "completed":
+      //   responseMessage =
+      //     "Your request has been completed. Is there anything else I can help you with?";
+      //   break;
 
-    default:
-      responseMessage =
-        "I’m not sure how to help with that. Could you please provide more details?";
+      case "goodbye":
+        responseMessage =
+          "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
+        break;
+
+      default:
+        responseMessage =
+          "I’m not sure how to help with that. Could you please provide more details?";
+    }
   }
 
   // Store the incoming and outgoing messages in the conversation object
