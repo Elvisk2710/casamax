@@ -5,10 +5,10 @@ const { MessagingResponse, validateRequest } = require('twilio');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Hard-coded Twilio credentials (for demonstration purposes)
-// const TWILIO_AUTH_TOKEN = aa379643cb23f785c3fdbabe4a2775b1;
-// const TWILIO_ACCOUNT_SID = ACc7621dcd3d33b6d756b448a7e17820bb;
+const accountSid = process.env.TWILIO_ACCOUNT_SID; // Use environment variable
+const authToken = process.env.TWILIO_AUTH_TOKEN;   // Use environment variable
 
+const client = require('twilio')(accountSid, authToken);
 // Object to store the conversation data
 const conversationData = {};
 
