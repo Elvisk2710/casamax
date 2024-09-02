@@ -12,6 +12,7 @@ const io = socketIo(server);
 
 // Object to store conversation data
 const conversationData = {};
+const phpApiUrl = 'https://casamax.co.zw/chat/server/'
 
 // Body Parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
