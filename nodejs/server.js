@@ -12,8 +12,8 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 // Environment Variables
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
+const accountSid = 'ACc7621dcd3d33b6d756b448a7e17820bb';
+const authToken = 'aa379643cb23f785c3fdbabe4a2775b1';
 
 if (!accountSid || !authToken) {
   console.error("Twilio credentials are not set.");
