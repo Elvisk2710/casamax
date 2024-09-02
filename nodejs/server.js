@@ -49,7 +49,7 @@ app.post("/whatsapp", (req, res) => {
     case "initial":
       responseMessage =
         "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n(1)University of Zimbabwe\n(2)Midlands State University\n(3)Africa University\n(4)Bindura university of Science and Education\n(5)Chinhoyi University of Science and Technology\n(6)Great Zimbabwe University\n(7)Harare Institute of Technology\n(8)National University of Science and Technology";
-      conversation.stage = "university";
+      conversation.stage = "budget";
       break;
 
     case "budget":
@@ -64,7 +64,7 @@ app.post("/whatsapp", (req, res) => {
       conversation.stage = "completed";
       break;
 
-    case "university":
+    case "completed":
       conversation.data.gender = incomingMessage;
       responseMessage = `Thank you for providing the details. Here’s a summary:
             \nUniversity: ${conversation.data.university}
