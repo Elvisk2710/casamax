@@ -93,11 +93,12 @@ app.post("/whatsapp", (req, res) => {
     conversation.stage = "initial"; // Reset to initial stage if needed
   }
   // Check if the message is a goodbye
-  else if (
+  if (
     goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))
   ) {
     conversation.stage = "goodbye"; // Set stage to completed or end the conversation
-  } else {
+  } 
+
     switch (conversation.stage) {
       case "initial":
         responseMessage =
@@ -163,7 +164,7 @@ app.post("/whatsapp", (req, res) => {
         responseMessage =
           "I’m not sure how to help with that. Could you please provide more details?";
     }
-  }
+  
 
   // Store the incoming and outgoing messages in the conversation object
   conversationData[fromNumber].data.messages =
