@@ -1,53 +1,45 @@
-// intents.js
-
 const intents = {
-    greeting: {
-        keywords: ['hi', 'hello', 'hey', 'greetings'],
-        response: 'Hello! How can I assist you today?'
+    "1": {
+      name: "University of Zimbabwe",
+      nicknames: ["UZ", "University of Zimbabwe"],
+      response: "You have selected the University of Zimbabwe. We will now find suitable boarding houses for you."
     },
-    name: {
-        keywords: ['name'],
-        response: 'What is your name?'
+    "2": {
+      name: "Midlands State University",
+      nicknames: ["MSU","Midlands State University"],
+      response: "You have selected Midlands State University. We will now find suitable boarding houses for you."
     },
-    farewell: {
-        keywords: ['bye', 'goodbye', 'see you'],
-        response: 'Goodbye! Have a great day!'
+    "3": {
+      name: "Africa University",
+      nicknames: ["AU"],
+      response: "You have selected Africa University. We will now find suitable boarding houses for you."
     },
-    university: {
-        keywords: ['university', 'college', 'school'],
-        response: 'Which university or college are you interested in?'
+    "4": {
+      name: "Bindura University of Science and Education",
+      nicknames: ["BUSE"],
+      response: "You have selected Bindura University of Science and Education. We will now find suitable boarding houses for you."
     },
-    price: {
-        keywords: ['price', 'cost', 'fee'],
-        response: 'What is your budget range for the university?'
+    "5": {
+      name: "Chinhoyi University of Science and Technology",
+      nicknames: ["CUT"],
+      response: "You have selected Chinhoyi University of Science and Technology. We will now find suitable boarding houses for you."
     },
-    gender: {
-        keywords: ['gender', 'male', 'female', 'non-binary'],
-        response: 'Please specify your gender.'
+    "6": {
+      name: "Great Zimbabwe University",
+      nicknames: ["GZU"],
+      response: "You have selected Great Zimbabwe University. We will now find suitable boarding houses for you."
     },
-    default: {
-        keywords: [],
-        response: 'I’m not sure how to help with that. Could you please provide more details?'
+    "7": {
+      name: "Harare Institute of Technology",
+      nicknames: ["HIT"],
+      response: "You have selected Harare Institute of Technology. We will now find suitable boarding houses for you."
+    },
+    "8": {
+      name: "National University of Science and Technology",
+      nicknames: ["NUST"],
+      response: "You have selected the National University of Science and Technology. We will now find suitable boarding houses for you."
     }
-};
-
-// Function to determine the intent based on the message
-function getIntent(message) {
-    message = message.toLowerCase();
-    for (const [key, value] of Object.entries(intents)) {
-        if (value.keywords.some(keyword => message.includes(keyword))) {
-            return key;
-        }
-    }
-    return 'default';
-}
-
-// Function to get the response based on the intent
-function getResponse(intent) {
-    return intents[intent] ? intents[intent].response : intents['default'].response;
-}
-
-module.exports = {
-    getIntent,
-    getResponse
-};
+  };
+  
+  module.exports = intents;
+  

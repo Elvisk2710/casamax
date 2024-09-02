@@ -29,7 +29,7 @@ app.use(
 // Route for handling Twilio WhatsApp messages
 app.post("/whatsapp", (req, res) => {
   console.log('received');
-  const incomingMessage = req.body.Body;
+  const incomingMessage = req.body.Body.trim().toLowerCase(); // Normalize input
   const fromNumber = req.body.From;
 
   console.log(`Received message from ${fromNumber}: ${incomingMessage}`);
@@ -53,24 +53,43 @@ app.post("/whatsapp", (req, res) => {
       break;
 
     case "university":
-      conversation.data.university = incomingMessage;
-      responseMessage = "What is your budget range?";
-      conversation.stage = "budget";
+      let matchedUniversity = null;
+
+      // Check for number-based selection
+      if (intents[incomingMessage]) {
+        matchedUniversity = intents[incomingMessage];
+      } else {
+        // Check for nickname or full name
+        for (let key in intents) {
+          const intent = intents[key];
+          if (
+            intent.name.toLowerCase() === incomingMessage ||
+            intent.nicknames.toLowerCase().some(nickname => nickname.toLowerCase() === incomingMessage)
+          ) {
+            matchedUniversity = intent;
+            break;
+          }
+        }
+      }
+
+      if (matchedUniversity) {
+        conversation.data.university = matchedUniversity.name;
+        responseMessage = matchedUniversity.response;
+        conversation.stage = "budget"; // Move to the next stage
+      } else {
+        responseMessage = "Invalid selection. Please choose a valid university number or name.";
+      }
       break;
 
     case "budget":
-      conversation.data.budget = incomingMessage;
-      responseMessage = "What is your gender?";
+      conversation.data.university = incomingMessage;
+      responseMessage = "What is your budget range?";
       conversation.stage = "gender";
       break;
 
     case "gender":
-      conversation.data.gender = incomingMessage;
-      responseMessage = `Thank you for providing the details. Here’s a summary:
-            \nUniversity: ${conversation.data.university}
-            \nBudget: ${conversation.data.budget}
-            \nGender: ${conversation.data.gender}
-            \nWe are finding the best boarding-houses for you`;
+      conversation.data.budget = incomingMessage;
+      responseMessage = "What is your gender?";
       conversation.stage = "completed";
       break;
 
