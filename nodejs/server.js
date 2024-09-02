@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
+import './intents';
 const { MessagingResponse } = require("twilio").twiml;
 
 // Initialize Express
