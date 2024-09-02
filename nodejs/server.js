@@ -27,6 +27,7 @@ app.use(
 
 // Route for handling Twilio WhatsApp messages
 app.post("/whatsapp", (req, res) => {
+  console.log('received');
   const incomingMessage = req.body.Body;
   const fromNumber = req.body.From;
 
