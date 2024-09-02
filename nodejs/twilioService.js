@@ -6,8 +6,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Hard-coded Twilio credentials (for demonstration purposes)
-const TWILIO_AUTH_TOKEN = TWILIO_AUTH_TOKEN;
-const TWILIO_ACCOUNT_SID = TWILIO_ACCOUNT_SID;
+const TWILIO_AUTH_TOKEN = aa379643cb23f785c3fdbabe4a2775b1;
+const TWILIO_ACCOUNT_SID = ACc7621dcd3d33b6d756b448a7e17820bb;
 
 // Object to store the conversation data
 const conversationData = {};
