@@ -17,12 +17,13 @@ app.use((req, res, next) => {
     const twilioSignature = req.headers['x-twilio-signature'];
     const url = req.protocol + '://' + req.get('host') + req.originalUrl;
 
-    if (validateRequest(TWILIO_AUTH_TOKEN, twilioSignature, url, req.body)) {
+    if (validateRequest(authToken, twilioSignature, url, req.body)) {
         next();
     } else {
         res.status(403).send('Forbidden');
     }
 });
+
 
 // Route to handle incoming messages
 app.post('/whatsapp', (req, res) => {
