@@ -14,10 +14,20 @@ const io = socketIo(server);
 // Environment Variables
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const phpApiUrl = "https://casamax.co.zw/chat/server/";
 
-// Twilio Client
-const client = require("twilio")(accountSid, authToken);
+if (!accountSid || !authToken) {
+  console.error("Twilio credentials are not set.");
+  process.exit(1);
+}
+
+try {
+  const client = require("twilio")(accountSid, authToken);
+  console.log("Twilio client initialized successfully");
+} catch (error) {
+  console.error("Error initializing Twilio client:", error.message);
+}
+
+const phpApiUrl = "https://casamax.co.zw/chat/server/";
 
 // Object to store conversation data
 const conversationData = {};
