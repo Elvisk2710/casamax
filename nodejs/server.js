@@ -3,46 +3,15 @@ const bodyParser = require("body-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
-const axios = require("axios");
-const { MessagingResponse, validateRequest } = require("twilio");
+const { MessagingResponse } = require("twilio");
 
 // Initialize Express
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-// Environment Variables
-const accountSid = 'ACc7621dcd3d33b6d756b448a7e17820bb';
-const authToken = 'aa379643cb23f785c3fdbabe4a2775b1';
-
-if (!accountSid || !authToken) {
-  console.error("Twilio credentials are not set.");
-  process.exit(1);
-}
-
-try {
-  const client = require("twilio")(accountSid, authToken);
-  console.log("Twilio client initialized successfully");
-} catch (error) {
-  console.error("Error initializing Twilio client:", error.message);
-}
-
-const phpApiUrl = "https://casamax.co.zw/chat/server/";
-
 // Object to store conversation data
 const conversationData = {};
-
-// Middleware for Twilio validation
-app.use((req, res, next) => {
-  const twilioSignature = req.headers["x-twilio-signature"];
-  const url = req.protocol + "://" + req.get("host") + req.originalUrl;
-
-  if (validateRequest(authToken, twilioSignature, url, req.body)) {
-    next();
-  } else {
-    res.status(403).send("Forbidden");
-  }
-});
 
 // Body Parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -60,6 +29,8 @@ app.use(
 app.post("/whatsapp", (req, res) => {
   const incomingMessage = req.body.Body;
   const fromNumber = req.body.From;
+
+  console.log(`Received message from ${fromNumber}: ${incomingMessage}`);
 
   // Initialize conversation data for the sender if not already done
   if (!conversationData[fromNumber]) {
@@ -317,48 +288,26 @@ function startPolling(socket, userId, type) {
           isRead: typeof chat.isRead !== "undefined" ? chat.isRead : false,
         }));
 
-        const hasUpdates = newMsgs.some((newMsg, index) => {
-          const previousMsg = previousMsgs[index] || {};
-          return (
-            newMsg.lastMsgId !== previousMsg.lastMsgId ||
-            newMsg.isRead !== previousMsg.isRead
+        const changesDetected =
+          previousMsgs.length !== newMsgs.length ||
+          previousMsgs.some(
+            (prevMsg, index) =>
+              prevMsg.lastMsgId !== newMsgs[index].lastMsgId ||
+              prevMsg.isRead !== newMsgs[index].isRead
           );
-        });
 
-        if (hasUpdates) {
-          chatLists[userId] = {
-            list: newChatList,
-            lastMsgId:
-              newChatList.length > 0
-                ? newChatList[newChatList.length - 1].lastMsgId
-                : "",
-          };
-          socket.emit("updateChatList", response.data);
+        if (changesDetected) {
+          chatLists[userId] = { list: newChatList };
+          socket.emit("newChatList", response.data);
+          console.log("Emitted new chat list to the client");
         }
       }
     } catch (error) {
-      console.error("Error fetching chat list:", error);
+      console.error("Error fetching data from PHP:", error);
     }
-  }, POLLING_INTERVAL);
+  }, CHAT_POLLING_INTERVAL);
 }
 
-// Timeout wrapper function
-function withTimeout(promise, timeout = 5000) {
-  let timer;
-  const timeoutPromise = new Promise(
-    (_, reject) =>
-      (timer = setTimeout(
-        () => reject(new Error("Request timed out")),
-        timeout
-      ))
-  );
-  return Promise.race([promise, timeoutPromise]).finally(() =>
-    clearTimeout(timer)
-  );
-}
-
-// Start the server
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Listen on port 3000
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
