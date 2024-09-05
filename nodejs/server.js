@@ -159,13 +159,17 @@ app.post("/whatsapp", async (req, res) => {
       const messagesArray = generateMessages(response);
       // Create a new MessagingResponse instance
       const twiml = new MessagingResponse();
-      messagesArray.join("\n\n");
+
       // Add each message to the TwiML response
-      twiml.message(messagesArray);
+      messagesArray.forEach(message => {
+          twiml.message(message); // Add each message individually
+      });
+      
       // Send the TwiML response back to Twilio once, after all messages are added
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
-
+      
+      // Set the conversation stage
       conversation.stage = "goodbye";
 
     case "goodbye":
