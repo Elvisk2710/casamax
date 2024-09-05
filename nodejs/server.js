@@ -129,159 +129,176 @@ app.use(
 
 // Route for handling Twilio WhatsApp messages
 app.post("/whatsapp", async (req, res) => {
-  const incomingMessage = req.body.Body.trim().toLowerCase(); // Normalize input
-  const fromNumber = req.body.From;
+  try {
+    const incomingMessage = req.body.Body.trim().toLowerCase(); // Normalize input
+    const fromNumber = req.body.From;
 
-  console.log(`Received message from ${fromNumber}: ${incomingMessage}`);
+    console.log(`Received message from ${fromNumber}: ${incomingMessage}`);
 
-  // Initialize conversation data for the sender if not already done
-  if (!conversationData[fromNumber]) {
-    conversationData[fromNumber] = {
-      stage: "initial",
-      data: {},
-    };
-  }
+    // Initialize conversation data for the sender if not already done
+    if (!conversationData[fromNumber]) {
+      conversationData[fromNumber] = {
+        stage: "initial",
+        data: {},
+      };
+    }
 
-  const conversation = conversationData[fromNumber];
-  let responseMessage = "";
+    const conversation = conversationData[fromNumber];
+    let responseMessage = "";
 
-  // Check if the message is a greeting
-  if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
-    conversation.stage = "initial"; // Reset to initial stage if needed
-  }
-  // Check if the message is a goodbye
-  if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
-    conversation.stage = "goodbye"; // Set stage to completed or end the conversation
-  }
+    // Check if the message is a greeting
+    if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+      conversation.stage = "initial"; // Reset to initial stage if needed
+    }
+    // Check if the message is a goodbye
+    if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+      conversation.stage = "goodbye"; // Set stage to completed or end the conversation
+    }
 
-  switch (conversation.stage) {
-    case "initial":
-      responseMessage =
-        "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n1. University of Zimbabwe\n2. Midlands State University\n3. Africa University\n4. Bindura university of Science and Education\n5. Chinhoyi University of Science and Technology\n6. Great Zimbabwe University\n7. Harare Institute of Technology\n8. National University of Science and Technology";
-      conversation.stage = "university";
-      break;
+    switch (conversation.stage) {
+      case "initial":
+        responseMessage =
+          "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n1. University of Zimbabwe\n2. Midlands State University\n3. Africa University\n4. Bindura university of Science and Education\n5. Chinhoyi University of Science and Technology\n6. Great Zimbabwe University\n7. Harare Institute of Technology\n8. National University of Science and Technology";
+        conversation.stage = "university";
+        break;
 
-    case "university":
-      let matchedUniversity = null;
+      case "university":
+        let matchedUniversity = null;
 
-      // Check for number-based selection
-      if (intents[incomingMessage]) {
-        matchedUniversity = intents[incomingMessage];
-      } else if (!isNaN(incomingMessage) && intents[incomingMessage]) {
-        matchedUniversity = intents[incomingMessage];
-      } else {
-        // Check for nickname or full name
-        for (let key in intents) {
-          const intent = intents[key];
-          if (
-            intent.name.toLowerCase() === incomingMessage ||
-            intent.nicknames.some(
-              (nickname) => nickname.toLowerCase() === incomingMessage
-            )
-          ) {
-            matchedUniversity = intent;
-            break;
+        // Check for number-based selection
+        if (intents[incomingMessage]) {
+          matchedUniversity = intents[incomingMessage];
+        } else if (!isNaN(incomingMessage) && intents[incomingMessage]) {
+          matchedUniversity = intents[incomingMessage];
+        } else {
+          // Check for nickname or full name
+          for (let key in intents) {
+            const intent = intents[key];
+            if (
+              intent.name.toLowerCase() === incomingMessage ||
+              intent.nicknames.some(
+                (nickname) => nickname.toLowerCase() === incomingMessage
+              )
+            ) {
+              matchedUniversity = intent;
+              break;
+            }
           }
         }
-      }
 
-      if (matchedUniversity) {
-        conversation.data.university = matchedUniversity.name;
+        if (matchedUniversity) {
+          conversation.data.university = matchedUniversity.name;
+          responseMessage =
+            "Oh Great!! " +
+            matchedUniversity.name +
+            ". What is your budget? (e.g. 160)";
+          conversation.stage = "budget"; // Move to the next stage
+        } else {
+          responseMessage =
+            "Invalid selection. Please choose a valid university number or name from the list.";
+        }
+        break;
+
+      case "budget":
+        const budget = parseFloat(incomingMessage);
+        if (!isNaN(budget) && budget > 0) {
+          conversation.data.budget = budget;
+          responseMessage = "What is your gender? \n1. Male \n2. Female";
+          conversation.stage = "gender";
+        } else {
+          responseMessage = "Please enter a valid budget (e.g. 180).";
+        }
+        break;
+
+      case "gender":
+        if (maleKeywords.some((keyword) => incomingMessage.includes(keyword) || incomingMessage == 1)) {
+          conversation.data.gender = "boys";
+          conversation.stage = "sendHouses";
+        } else if (
+          femaleKeywords.some((keyword) => incomingMessage.includes(keyword) || incomingMessage == 2)
+        ) {
+          conversation.data.gender = "girls";
+          conversation.stage = "sendHouses";
+        } else {
+          responseMessage =
+            "Invalid selection. Please choose 1 for Male or 2 for Female.";
+        }
+        break;
+
+      case "sendHouses":
+        conversation.data.gender = incomingMessage;
+        responseMessage = "";
+        const uni = conversation.data.university;
+        const price = conversation.data.budget;
+        const gender = conversation.data.gender;
+        console.log("uni" + uni);
+        console.log("price" + price);
+        console.log("gender" + gender);
+
+        try {
+          const response = await makeBDApiCall(uni, price, gender);
+          const messagesArray = generateMessages(response);
+          // Combine messages into a single string
+          const combinedMessage = messagesArray.join("\n\n");
+          console.log("combined messages" + combinedMessage);
+
+          // Create a new MessagingResponse instance
+          const twiml = new MessagingResponse();
+
+          // Add the combined message to the TwiML response
+          twiml.message(combinedMessage);
+
+          // Send the TwiML response back to Twilio
+          res.writeHead(200, { "Content-Type": "text/xml" });
+          res.end(twiml.toString());
+
+          // Set the conversation stage
+          conversation.stage = "goodbye";
+        } catch (error) {
+          console.error("Error fetching house data:", error);
+          responseMessage = "Sorry, there was an error fetching the house details. Please try again later.";
+          const twiml = new MessagingResponse();
+          twiml.message(responseMessage);
+          res.writeHead(500, { "Content-Type": "text/xml" });
+          res.end(twiml.toString());
+        }
+        break;
+
+      case "goodbye":
         responseMessage =
-          "Oh Great!! " +
-          matchedUniversity.name +
-          ". What is your budget? (e.g. 160)";
-        conversation.stage = "budget"; // Move to the next stage
-      } else {
-        responseMessage =
-          "Invalid selection. Please choose a valid university number or name from the list.";
-      }
-      break;
+          "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
+        break;
 
-    case "budget":
-      const budget = parseFloat(incomingMessage);
-      if (!isNaN(budget) && budget > 0) {
-        conversation.data.budget = budget;
-        responseMessage = "What is your gender? \n1. Male \n2. Female";
-        conversation.stage = "gender";
-      } else {
-        responseMessage = "Please enter a valid budget (e.g. 180).";
-      }
-      break;
+      default:
+        responseMessage = "I’m not sure how to help with that.";
+        break;
+    }
 
-    case "gender":
-      if (maleKeywords.some((keyword) => incomingMessage.includes(keyword) || incomingMessage == 1)) {
-        conversation.data.gender = "boys";
-        conversation.stage = "sendHouses";
-      } else if (
-        femaleKeywords.some((keyword) => incomingMessage.includes(keyword) || incomingMessage == 2)
-      ) {
-        conversation.data.gender = "girls";
-        conversation.stage = "sendHouses";
-      } else {
-        responseMessage =
-          "Invalid selection. Please choose 1 for Male or 2 for Female.";
-      }
-      break;
+    // Store the incoming and outgoing messages in the conversation object
+    conversationData[fromNumber].data.messages =
+      conversationData[fromNumber].data.messages || [];
+    conversationData[fromNumber].data.messages.push({
+      direction: "incoming",
+      message: incomingMessage,
+    });
+    conversationData[fromNumber].data.messages.push({
+      direction: "outgoing",
+      message: responseMessage,
+    });
 
-    case "sendHouses":
-      conversation.data.gender = incomingMessage;
-      responseMessage = "";
-      const uni = conversation.data.university;
-      const price = conversation.data.budget;
-      const gender = conversation.data.gender;
-      const response = await makeBDApiCall(uni, price, gender);
-      const messagesArray = generateMessages(response);
-      // Combine messages into a single string
-      const combinedMessage = messagesArray.join("\n\n");
-      // const finalMessage = combinedMessage + 'For more houses and images visit: https://casamax.co.zw/'
-      console.log("combined messages" + combinedMessage);
-
-      // Create a new MessagingResponse instance
+    // Generate TwiML response
+    if (responseMessage) {
       const twiml = new MessagingResponse();
-
-      // Add the combined message to the TwiML response
-      twiml.message(combinedMessage);
-
-      // Send the TwiML response back to Twilio
+      twiml.message(responseMessage);
+      // Send the TwiML response
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
-
-      // Set the conversation stage
-      conversation.stage = "goodbye";
-      break;
-
-    case "goodbye":
-      responseMessage =
-        "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
-      break;
-
-    default:
-      responseMessage = "I’m not sure how to help with that.";
-      const defaultTwiml = new MessagingResponse();
-      defaultTwiml.message(responseMessage);
-      res.writeHead(200, { "Content-Type": "text/xml" });
-      res.end(defaultTwiml.toString());
-  }
-
-  // Store the incoming and outgoing messages in the conversation object
-  conversationData[fromNumber].data.messages =
-    conversationData[fromNumber].data.messages || [];
-  conversationData[fromNumber].data.messages.push({
-    direction: "incoming",
-    message: incomingMessage,
-  });
-  conversationData[fromNumber].data.messages.push({
-    direction: "outgoing",
-    message: responseMessage,
-  });
-
-  // Generate TwiML response
-  if (responseMessage) {
+    }
+  } catch (error) {
+    console.error("Error processing WhatsApp message:", error);
     const twiml = new MessagingResponse();
-    twiml.message(responseMessage);
-    // Send the TwiML response
-    res.writeHead(200, { "Content-Type": "text/xml" });
+    twiml.message("Sorry, there was an error processing your request. Please try again later.");
+    res.writeHead(500, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
   }
 });
