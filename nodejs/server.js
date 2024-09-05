@@ -151,24 +151,25 @@ app.post("/whatsapp", async (req, res) => {
 
     case "sendHouses":
       conversation.data.gender = incomingMessage;
-
+      responseMessage = "";
       const uni = conversation.data.university;
       const price = conversation.data.budget;
       const gender = conversation.data.gender;
       const response = await makeBDApiCall(uni, price, gender);
       const messagesArray = generateMessages(response);
+      // Combine messages into a single string
+      const combinedMessage = messagesArray.join("\n\n");
+
       // Create a new MessagingResponse instance
       const twiml = new MessagingResponse();
 
-      // Add each message to the TwiML response
-      messagesArray.forEach(message => {
-          twiml.message(message); // Add each message individually
-      });
-      
-      // Send the TwiML response back to Twilio once, after all messages are added
+      // Add the combined message to the TwiML response
+      twiml.message(combinedMessage);
+
+      // Send the TwiML response back to Twilio
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
-      
+
       // Set the conversation stage
       conversation.stage = "goodbye";
 
@@ -198,11 +199,13 @@ app.post("/whatsapp", async (req, res) => {
 
   // Generate TwiML response
   const twiml = new MessagingResponse();
-  twiml.message(responseMessage);
 
-  // Send the TwiML response
-  res.writeHead(200, { "Content-Type": "text/xml" });
-  res.end(twiml.toString());
+  if (responseMessage != "" || responseMessage != null) {
+    twiml.message(responseMessage);
+    // Send the TwiML response
+    res.writeHead(200, { "Content-Type": "text/xml" });
+    res.end(twiml.toString());
+  }
 });
 
 // Socket.IO Configuration
