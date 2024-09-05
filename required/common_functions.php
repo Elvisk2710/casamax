@@ -29,11 +29,12 @@ function formatTimestamp($timestamp)
     }
 }
 
-function getCurrentUrl() {
+function getCurrentUrl()
+{
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
     $host = $_SERVER['HTTP_HOST'];
     $requestUri = $_SERVER['REQUEST_URI'];
-    
+
     $fulllUrl = $protocol . $host . $requestUri;
 
     return $fulllUrl;
@@ -669,7 +670,6 @@ class ChatMessage
         $this->lastname = $lastname;
         $this->lastMsgId = $lastMsgId;
         $this->isRead = $isRead;
-
     }
 }
 class ChatBubbleMessage
@@ -687,5 +687,53 @@ class ChatBubbleMessage
         $this->recipient = $recipient;
         $this->message = $message;
         $this->timestamp = formatTimestamp($timestamp);
+    }
+}
+// whatsapp response
+class WhatsAppResponse
+{
+    public $id;
+    public $home_id;
+    public $contact;
+    public $price;
+    public $firstname;
+    public $lastname;
+    public $kitchen;
+    public $fridge;
+    public $wifi;
+    public $borehole;
+    public $transport;
+    public $adrs;
+    public $people_in_a_room;
+
+    public function __construct(
+        int $id,
+        string $home_id,
+        string $contact,
+        float $price,
+        string $firstname,
+        string $lastname,
+        string $adrs,
+        int $people_in_a_room,
+        ?bool $kitchen = null,
+        ?bool $fridge = null,
+        ?bool $wifi = null,
+        ?bool $borehole = null,
+        ?bool $transport = null,
+
+    ) {
+        $this->id = $id;
+        $this->home_id = $home_id;
+        $this->contact = $contact;
+        $this->price = $price;
+        $this->firstname = $firstname;
+        $this->lastname = $lastname;
+        $this->kitchen = $kitchen;
+        $this->fridge = $fridge;
+        $this->wifi = $wifi;
+        $this->borehole = $borehole;
+        $this->transport = $transport;
+        $this->adrs = $adrs;
+        $this->people_in_a_room = $people_in_a_room;
     }
 }

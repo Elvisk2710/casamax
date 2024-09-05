@@ -5,6 +5,7 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
+const {makeBDApiCall, generateWhatsAppLink} = require("./nodeFunctions"); // Import the intents file
 
 // Initialize Express
 const app = express();
@@ -141,19 +142,25 @@ app.post("/whatsapp", (req, res) => {
 
     case "gender":
       conversation.data.budget = incomingMessage;
-      responseMessage = "What is your gender?";
-      conversation.stage = "goodbye";
+      responseMessage = "What is your gender? \n1. Male \nFemale";
+      conversation.stage = "sendHouses";
       break;
 
-    // case "completed":
-    //   responseMessage =
-    //     "Your request has been completed. Is there anything else I can help you with?";
-    //   break;
+    case "sendHouses":
+      conversation.data.gender = incomingMessage;
+
+        const uni = conversation.data.university;
+        const price =  conversation.data.budget;
+        const gender = conversation.data.gender;
+        response = makeBDApiCall(uni,price,gender);
+        console.log(response);
 
     case "goodbye":
       responseMessage =
         "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
       break;
+
+
 
     default:
       responseMessage =
