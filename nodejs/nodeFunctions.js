@@ -1,92 +1,94 @@
 const axios = require("axios");
 
+// Function to generate a WhatsApp link
 function generateWhatsAppLink(phoneNumber) {
   const message =
     "Hello found your boarding house on casamax.co.zw. Is your house still available?";
-
-  // Encode the message to make it URL safe
   const encodedMessage = encodeURIComponent(message);
-
-  // Construct the WhatsApp URL
-  const whatsappLink = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-
-  return whatsappLink;
+  return `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
 }
 
-// get houses from the database
+// Function to get houses from the database
 async function makeBDApiCall(uni, price, gender) {
-  // Base URL of your API
   const apiUrl = `https://casamax.co.zw/homerunphp/whatsapp_reply.php?university=${uni}&price=${price}&gender=${gender}`;
 
   try {
-    // Make a GET request with query parameters
     const response = await axios.get(apiUrl);
-    // Handle the response
     return response.data; // Return the data or handle as needed
   } catch (error) {
-    // Handle error
     console.error("Error making API call:", error);
     throw error;
   }
 }
 
-// generate link to website
+// Function to generate a link to the website
 function generateWebLink(home_id) {
-  link = `https://casamax.co.zw/listingdetails.php?clicked_id=${home_id}`;
-  return link;
+  return `https://casamax.co.zw/listingdetails.php?clicked_id=${home_id}`;
 }
-// Function to generate message for each house object
-let x;
+
+// Function to generate messages for each house object
 function generateMessages(houses) {
-    for(x == 0; x ++ ; x = houses.length-1){
-        return houses[x].map((house) => {
-            const {
-              home_id,
-              price,
-              firstname,
-              lastname,
-              kitchen,
-              fridge,
-              wifi,
-              borehole,
-              transport,
-              contact,
-              adrs,
-            } = house;
-            // link to casamax.co.zw
-            webLink = generateWebLink(home_id);
-            // Generate a list of amenities
-            const amenities = [
-              kitchen && "Kitchen",
-              fridge && "Fridge",
-              wifi && "WiFi",
-              borehole && "Borehole",
-              transport && "Transport",
-            ]
-              .filter(Boolean)
-              .join(" \n");
-        
-            // Generate the message
-            const message =
-              `Here is a house that we have found that suits your needs\n\n` +
-              `${firstname} ${lastname}'s house\n` +
-              `Amenities available:\n` +
-              `${amenities}\n\n` +
-              `Price: *\$${price}*\n` +
-              `It is located at ${adrs} \n` +
-              `You can get in touch with the landlord or agent using this link: ${generateWhatsAppLink(
-                contact
-              )}\n\n` +
-              `View the house images and full details using the link below on casamax.co.zw:\n` +
-              `${webLink}`;
-        
-            return message;
-          });
+    // Check if houses is an array
+    if (!Array.isArray(houses)) {
+      throw new Error('Expected houses to be an array.');
     }
+  
+    // Create an array to store the generated messages
+    const messagesArray = [];
+  
+    // Loop through each house object and generate the message
+    houses.forEach((house) => {
+      const {
+        home_id,
+        price,
+        firstname,
+        lastname,
+        kitchen,
+        fridge,
+        wifi,
+        borehole,
+        transport,
+        contact,
+        adrs,
+      } = house;
+  
+      // Generate the link to the house on casamax.co.zw
+      const webLink = generateWebLink(home_id);
+  
+      // Create a string of available amenities
+      const amenities = [
+        kitchen && "Kitchen",
+        fridge && "Fridge",
+        wifi && "WiFi",
+        borehole && "Borehole",
+        transport && "Transport",
+      ]
+        .filter(Boolean)
+        .join("\n");
+  
+      // Generate the message
+      const message =
+        `Here is a house that we have found that suits your needs\n\n` +
+        `${firstname} ${lastname}'s house\n` +
+        `Amenities available:\n` +
+        `${amenities}\n\n` +
+        `Price: *$${price}*\n` +
+        `It is located at ${adrs}\n` +
+        `You can get in touch with the landlord or agent using this link: ${generateWhatsAppLink(
+          contact
+        )}\n\n` +
+        `View the house images and full details using the link below on casamax.co.zw:\n` +
+        `${webLink}`;
+  
+      // Add the generated message to the messagesArray
+      messagesArray.push(message);
+    });
+    // Return the array of generated messages
+    return messagesArray;
+  }
+  
 
-}
-
-// Export the functions
+// Export the functions if needed
 module.exports = {
   makeBDApiCall,
   generateWhatsAppLink,
