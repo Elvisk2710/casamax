@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $price = isset($_GET['price']) ? (int)$_GET['price'] : 0;
 
     // SQL query to fetch data with bound parameters
-    $sql = 'SELECT * FROM homerunhouses WHERE uni = ? AND (gender = ? OR gender = "mixed") AND price <= ? AND agent_id IS NULL ORDER BY date_joined ASC LIMIT 10';
-
+    $sql = 'SELECT * FROM homerunhouses WHERE uni = ? AND (gender = ? OR gender = "mixed") AND price <= ? AND contact != 0 ORDER BY price DESC LIMIT 10';
+    
     $stmt = mysqli_stmt_init($conn);
 
     // Prepare the statement

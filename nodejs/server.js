@@ -37,6 +37,50 @@ const greetingKeywords = [
   "zvirisei",
   "sei",
 ];
+// male keywords
+const maleKeywords = [
+  "male",
+  "man",
+  "m",
+  "he",
+  "him",
+  "gentleman",
+  "boy",
+  "guy",
+  "gents",
+  "dude",
+  "fella",
+  "bloke",
+  "chap",
+  "sir",
+  "bro",
+  "fellow",
+  "mister",
+  "male gender",
+  "male sex",
+];
+// female kewords
+const femaleKeywords = [
+  "female",
+  "woman",
+  "f",
+  "she",
+  "her",
+  "lady",
+  "girl",
+  "gals",
+  "gal",
+  "dame",
+  "miss",
+  "madam",
+  "female gender",
+  "female sex",
+  "womanhood",
+  "queen",
+  "lady friend",
+  "chick",
+  "female person",
+];
 
 // Define goodbye keywords
 const goodbyeKeywords = [
@@ -157,14 +201,17 @@ app.post("/whatsapp", async (req, res) => {
       break;
 
     case "gender":
-      if (incomingMessage === "1" || incomingMessage === "male") {
-        conversation.data.gender = "Male";
+      if (maleKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+        conversation.data.gender = "boys";
         conversation.stage = "sendHouses";
-      } else if (incomingMessage === "2" || incomingMessage === "female") {
-        conversation.data.gender = "Female";
+      } else if (
+        femaleKeywords.some((keyword) => incomingMessage.includes(keyword))
+      ) {
+        conversation.data.gender = "girls";
         conversation.stage = "sendHouses";
       } else {
-        responseMessage = "Invalid selection. Please choose 1 for Male or 2 for Female.";
+        responseMessage =
+          "Invalid selection. Please choose 1 for Male or 2 for Female.";
       }
       break;
 
@@ -229,7 +276,6 @@ app.post("/whatsapp", async (req, res) => {
     res.end(twiml.toString());
   }
 });
-
 
 // Socket.IO Configuration
 io.on("connection", (socket) => {
