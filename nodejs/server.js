@@ -5,7 +5,7 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
-const {makeBDApiCall, generateWhatsAppLink} = require("./nodeFunctions"); // Import the intents file
+const {makeBDApiCall, generateWhatsAppLink,generateMessages} = require("./nodeFunctions"); // Import the intents file
 
 // Initialize Express
 const app = express();
@@ -142,7 +142,7 @@ app.post("/whatsapp", (req, res) => {
 
     case "gender":
       conversation.data.budget = incomingMessage;
-      responseMessage = "What is your gender? \n1. Male \nFemale";
+      responseMessage = "What is your gender? \n1. Male \n2. Female";
       conversation.stage = "sendHouses";
       break;
 
@@ -153,7 +153,8 @@ app.post("/whatsapp", (req, res) => {
         const price =  conversation.data.budget;
         const gender = conversation.data.gender;
         response = makeBDApiCall(uni,price,gender);
-        console.log(response);
+        messages = generateMessages(response);
+        console.log(messages);
 
     case "goodbye":
       responseMessage =
