@@ -201,11 +201,11 @@ app.post("/whatsapp", async (req, res) => {
       break;
 
     case "gender":
-      if (maleKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+      if (maleKeywords.some((keyword) => incomingMessage.includes(keyword) || incomingMessage == 1)) {
         conversation.data.gender = "boys";
         conversation.stage = "sendHouses";
       } else if (
-        femaleKeywords.some((keyword) => incomingMessage.includes(keyword))
+        femaleKeywords.some((keyword) => incomingMessage.includes(keyword) || incomingMessage == 2)
       ) {
         conversation.data.gender = "girls";
         conversation.stage = "sendHouses";
