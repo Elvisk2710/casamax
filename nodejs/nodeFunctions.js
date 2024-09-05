@@ -57,27 +57,28 @@ function generateMessages(houses) {
   
       // Create a string of available amenities
       const amenities = [
-        kitchen && "Kitchen",
-        fridge && "Fridge",
-        wifi && "WiFi",
-        borehole && "Borehole",
-        transport && "Transport",
+        kitchen && "- Kitchen",
+        fridge && "- Fridge",
+        wifi && "- WiFi",
+        borehole && "- Borehole",
+        transport && "- Transport",
       ]
         .filter(Boolean)
         .join("\n");
   
+  
       // Generate the message
       const message =
-        `Here is a house that we have found that suits your needs\n\n` +
-        `${firstname} ${lastname}'s house\n` +
-        `Amenities available:\n` +
+        `Here is a Boarding-House that we have found for you\n\n` +
+        `*${firstname} ${lastname}'s house*\n\n` +
+        `*Amenities available:*\n` +
         `${amenities}\n\n` +
         `Price: *$${price}*\n` +
-        `It is located in ${adrs}\n` +
+        `It is located in ${adrs}\n\n` +
         `You can get in touch with the landlord or agent using this link: ${generateWhatsAppLink(
           contact
         )}\n\n` +
-        `View the house images and full details using the link below on casamax.co.zw:\n` +
+        `View the house images and full details using the link below on our website:\n` +
         `${webLink}`;
   
       // Add the generated message to the messagesArray

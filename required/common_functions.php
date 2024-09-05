@@ -698,13 +698,14 @@ class WhatsAppResponse
     public $price;
     public $firstname;
     public $lastname;
+    public $adrs;
+    public $people_in_a_room;
     public $kitchen;
     public $fridge;
     public $wifi;
     public $borehole;
     public $transport;
-    public $adrs;
-    public $people_in_a_room;
+ 
 
     public function __construct(
         int $id,
@@ -728,12 +729,13 @@ class WhatsAppResponse
         $this->price = $price;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
+        $this->adrs = $adrs;
+        $this->people_in_a_room = $people_in_a_room;
         $this->kitchen = $kitchen;
         $this->fridge = $fridge;
         $this->wifi = $wifi;
         $this->borehole = $borehole;
         $this->transport = $transport;
-        $this->adrs = $adrs;
-        $this->people_in_a_room = $people_in_a_room;
+
     }
 }

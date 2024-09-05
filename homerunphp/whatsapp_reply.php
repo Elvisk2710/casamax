@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $price = isset($_GET['price']) ? (int)$_GET['price'] : 0;
 
     // SQL query to fetch data with bound parameters
-    $sql = 'SELECT * FROM homerunhouses WHERE uni = ? AND (gender = ? OR gender = "mixed") AND price <= ? ORDER BY date_joined ASC LIMIT 10';
+    $sql = 'SELECT * FROM homerunhouses WHERE uni = ? AND (gender = ? OR gender = "mixed") AND price <= ? AND agent_id IS NULL ORDER BY date_joined ASC LIMIT 10';
 
     $stmt = mysqli_stmt_init($conn);
 
@@ -37,16 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         $row['home_id'],
                         $row['contact'],
                         $row['price'],
-                        $row['date_joined'], // Assuming 'date_joined' corresponds to 'timestamp'
                         $row['firstname'],
                         $row['lastname'],
+                        $row['adrs'],
+                        $row['people_in_a_room'],
                         $row['kitchen'],
                         $row['fridge'],
                         $row['wifi'],
                         $row['borehole'],
                         $row['transport'],
-                        $row['adrs'],
-                        $row['people_in_a_room']
                     );
                     // Add the object to the responses array
                     $responses[] = $response;

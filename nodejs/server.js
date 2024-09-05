@@ -157,18 +157,14 @@ app.post("/whatsapp", async (req, res) => {
       const gender = conversation.data.gender;
       const response = await makeBDApiCall(uni, price, gender);
       const messagesArray = generateMessages(response);
-      console.log(messagesArray);
-
       // Create a new MessagingResponse instance
       const twiml = new MessagingResponse();
-
+      messagesArray.join("\n\n");
       // Add each message to the TwiML response
-      messagesArray.forEach((message) => {
-        twiml.message(message);
-        // Send the TwiML response back to Twilio once, after all messages are added
-        res.writeHead(200, { "Content-Type": "text/xml" });
-        res.end(twiml.toString());
-      });
+      twiml.message(messagesArray);
+      // Send the TwiML response back to Twilio once, after all messages are added
+      res.writeHead(200, { "Content-Type": "text/xml" });
+      res.end(twiml.toString());
 
       conversation.stage = "goodbye";
 
