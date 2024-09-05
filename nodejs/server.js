@@ -87,7 +87,7 @@ const femaleKeywords = [
   "chick",
   "musikana",
   "chisikana",
-  "bhebhi",
+  "chick",
   "female person",
 ];
 
@@ -233,22 +233,19 @@ app.post("/whatsapp", async (req, res) => {
       const response = await makeBDApiCall(uni, price, gender);
       const messagesArray = generateMessages(response);
       // Combine messages into a single string
-      console.log(1);
       const combinedMessage = messagesArray.join("\n\n");
-      const finalMessage = combinedMessage + 'For more houses and images visit: https://casamax.co.zw/'
-      console.log("combined messages" + finalMessage);
-      console.log(2);
+      // const finalMessage = combinedMessage + 'For more houses and images visit: https://casamax.co.zw/'
+      console.log("combined messages" + combinedMessage);
 
       // Create a new MessagingResponse instance
       const twiml = new MessagingResponse();
 
       // Add the combined message to the TwiML response
-      twiml.message(finalMessage);
+      twiml.message(combinedMessage);
 
       // Send the TwiML response back to Twilio
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
-      console.log(3);
 
       // Set the conversation stage
       conversation.stage = "goodbye";
