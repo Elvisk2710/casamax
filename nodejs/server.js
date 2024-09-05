@@ -72,7 +72,6 @@ app.use(
 
 // Route for handling Twilio WhatsApp messages
 app.post("/whatsapp", (req, res) => {
-  console.log("received");
   const incomingMessage = req.body.Body.trim().toLowerCase(); // Normalize input
   const fromNumber = req.body.From;
 
@@ -155,6 +154,7 @@ app.post("/whatsapp", (req, res) => {
         response = makeBDApiCall(uni,price,gender);
         messages = generateMessages(response);
         console.log(messages);
+        conversation.stage = "goodbye";
 
     case "goodbye":
       responseMessage =

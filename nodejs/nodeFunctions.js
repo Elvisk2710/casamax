@@ -37,6 +37,7 @@ function generateWebLink(home_id) {
   return link;
 }
 // Function to generate message for each house object
+let x;
 function generateMessages(houses) {
     for(x == 0; x ++ ; x = houses.length-1){
         return houses[x].map((house) => {
