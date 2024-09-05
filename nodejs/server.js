@@ -178,6 +178,8 @@ app.post("/whatsapp", async (req, res) => {
       const messagesArray = generateMessages(response);
       // Combine messages into a single string
       const combinedMessage = messagesArray.join("\n\n");
+      console.log("messages" + messagesArray);
+      console.log("combined messages" + combinedMessage);
 
       // Create a new MessagingResponse instance
       const twiml = new MessagingResponse();
