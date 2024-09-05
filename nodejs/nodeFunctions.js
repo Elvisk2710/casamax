@@ -22,7 +22,6 @@ async function makeBDApiCall(uni, price, gender) {
     // Make a GET request with query parameters
     const response = await axios.get(apiUrl);
     // Handle the response
-    console.log("Response Data:", response.data);
     return response.data; // Return the data or handle as needed
   } catch (error) {
     // Handle error
