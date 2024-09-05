@@ -5,7 +5,11 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
-const {makeBDApiCall, generateWhatsAppLink,generateMessages} = require("./nodeFunctions"); // Import the intents file
+const {
+  makeBDApiCall,
+  generateWhatsAppLink,
+  generateMessages,
+} = require("./nodeFunctions"); // Import the intents file
 
 // Initialize Express
 const app = express();
@@ -148,24 +152,36 @@ app.post("/whatsapp", async (req, res) => {
     case "sendHouses":
       conversation.data.gender = incomingMessage;
 
-        const uni = conversation.data.university;
-        const price =  conversation.data.budget;
-        const gender = conversation.data.gender;
-        const response = await makeBDApiCall(uni, price, gender); 
-        const messagesArray = generateMessages(response);
-        console.log(messagesArray);
-        conversation.stage = "goodbye";
+      const uni = conversation.data.university;
+      const price = conversation.data.budget;
+      const gender = conversation.data.gender;
+      const response = await makeBDApiCall(uni, price, gender);
+      const messagesArray = generateMessages(response);
+      console.log(messagesArray);
+
+      // Create a new MessagingResponse instance
+      const twiml = new MessagingResponse();
+
+      // Add each message to the TwiML response
+      messagesArray.forEach((message) => {
+        twiml.message(message);
+        // Send the TwiML response back to Twilio once, after all messages are added
+        res.writeHead(200, { "Content-Type": "text/xml" });
+        res.end(twiml.toString());
+      });
+
+      conversation.stage = "goodbye";
 
     case "goodbye":
       responseMessage =
         "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
       break;
 
-
-
     default:
-      responseMessage =
-        "I’m not sure how to help with that. Could you please provide more details?";
+      responseMessage = "I’m not sure how to help with that.";
+      res.writeHead(200, { "Content-Type": "text/xml" });
+      twiml.message(responseMessage);
+      res.end(twiml.toString());
   }
 
   // Store the incoming and outgoing messages in the conversation object

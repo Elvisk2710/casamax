@@ -73,7 +73,7 @@ function generateMessages(houses) {
         `Amenities available:\n` +
         `${amenities}\n\n` +
         `Price: *$${price}*\n` +
-        `It is located at ${adrs}\n` +
+        `It is located in ${adrs}\n` +
         `You can get in touch with the landlord or agent using this link: ${generateWhatsAppLink(
           contact
         )}\n\n` +
