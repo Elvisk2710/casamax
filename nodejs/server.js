@@ -104,7 +104,7 @@ app.post("/whatsapp", async (req, res) => {
   switch (conversation.stage) {
     case "initial":
       responseMessage =
-        "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n(1)University of Zimbabwe\n(2)Midlands State University\n(3)Africa University\n(4)Bindura university of Science and Education\n(5)Chinhoyi University of Science and Technology\n(6)Great Zimbabwe University\n(7)Harare Institute of Technology\n(8)National University of Science and Technology";
+        "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n1. University of Zimbabwe\n2. Midlands State University\n3. Africa University\n4. Bindura university of Science and Education\n5. Chinhoyi University of Science and Technology\n6. Great Zimbabwe University\n7. Harare Institute of Technology\n8. National University of Science and Technology";
       conversation.stage = "university";
       break;
 
@@ -113,6 +113,8 @@ app.post("/whatsapp", async (req, res) => {
 
       // Check for number-based selection
       if (intents[incomingMessage]) {
+        matchedUniversity = intents[incomingMessage];
+      } else if (!isNaN(incomingMessage) && intents[incomingMessage]) {
         matchedUniversity = intents[incomingMessage];
       } else {
         // Check for nickname or full name
@@ -135,18 +137,35 @@ app.post("/whatsapp", async (req, res) => {
         responseMessage =
           "Oh Great!! " +
           matchedUniversity.name +
-          ". What is your budget range?";
-        conversation.stage = "gender"; //move to the next stage
+          ". What is your budget? (e.g. 160)";
+        conversation.stage = "budget"; // Move to the next stage
       } else {
         responseMessage =
-          "Invalid selection. Please choose a valid university number or name.";
+          "Invalid selection. Please choose a valid university number or name from the list.";
+      }
+      break;
+
+    case "budget":
+      const budget = parseFloat(incomingMessage);
+      if (!isNaN(budget) && budget > 0) {
+        conversation.data.budget = budget;
+        responseMessage = "What is your gender? \n1. Male \n2. Female";
+        conversation.stage = "gender";
+      } else {
+        responseMessage = "Please enter a valid budget (e.g. 100 - 500).";
       }
       break;
 
     case "gender":
-      conversation.data.budget = incomingMessage;
-      responseMessage = "What is your gender? \n1. Male \n2. Female";
-      conversation.stage = "sendHouses";
+      if (incomingMessage === "1" || incomingMessage === "male") {
+        conversation.data.gender = "Male";
+        conversation.stage = "sendHouses";
+      } else if (incomingMessage === "2" || incomingMessage === "female") {
+        conversation.data.gender = "Female";
+        conversation.stage = "sendHouses";
+      } else {
+        responseMessage = "Invalid selection. Please choose 1 for Male or 2 for Female.";
+      }
       break;
 
     case "sendHouses":
@@ -172,6 +191,7 @@ app.post("/whatsapp", async (req, res) => {
 
       // Set the conversation stage
       conversation.stage = "goodbye";
+      break;
 
     case "goodbye":
       responseMessage =
@@ -180,9 +200,10 @@ app.post("/whatsapp", async (req, res) => {
 
     default:
       responseMessage = "I’m not sure how to help with that.";
+      const defaultTwiml = new MessagingResponse();
+      defaultTwiml.message(responseMessage);
       res.writeHead(200, { "Content-Type": "text/xml" });
-      twiml.message(responseMessage);
-      res.end(twiml.toString());
+      res.end(defaultTwiml.toString());
   }
 
   // Store the incoming and outgoing messages in the conversation object
@@ -198,15 +219,15 @@ app.post("/whatsapp", async (req, res) => {
   });
 
   // Generate TwiML response
-  const twiml = new MessagingResponse();
-
-  if (responseMessage != "" || responseMessage != null) {
+  if (responseMessage) {
+    const twiml = new MessagingResponse();
     twiml.message(responseMessage);
     // Send the TwiML response
     res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
   }
 });
+
 
 // Socket.IO Configuration
 io.on("connection", (socket) => {
