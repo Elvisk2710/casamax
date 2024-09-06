@@ -236,27 +236,29 @@ app.post("/whatsapp", async (req, res) => {
 
         break;
 
-        conversation.data.gender = incomingMessage;
-        responseMessage = ""; // Reset message
-
-        const uni = conversation.data.university;
-        const price = conversation.data.budget;
-        const gender = conversation.data.gender;
-
-        console.log("uni" + uni);
-        console.log("price" + price);
-        console.log("gender" + gender);
-
-        // Fetch the houses from your API
-        const messagesArray = await makeBDApiCall(uni, price, gender);
-
-        // Combine the response messages
-        responseMessage = messagesArray.join("\n\n"); // No need to redeclare
-        console.log("this is the response" + responseMessage);
-
-        // Set the conversation stage to 'goodbye'
-        conversation.stage = "goodbye";
-        break;
+        case "sendHouses":
+          conversation.data.gender = incomingMessage;
+          responseMessage = ""; // Reset message
+        
+          const uni = conversation.data.university;
+          const price = conversation.data.budget;
+          const gender = conversation.data.gender;
+        
+          console.log("uni" + uni);
+          console.log("price" + price);
+          console.log("gender" + gender);
+        
+          // Fetch the houses from your API
+          const messagesArray = await makeBDApiCall(uni, price, gender);
+        
+          // Combine the response messages
+          responseMessage = messagesArray.join("\n\n"); // No need to redeclare
+          console.log('this is the response' + responseMessage);
+        
+          // Set the conversation stage to 'goodbye'
+          conversation.stage = "goodbye";
+          break;
+        
 
       case "goodbye":
         responseMessage =
