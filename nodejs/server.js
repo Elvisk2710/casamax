@@ -144,7 +144,6 @@ app.post("/whatsapp", async (req, res) => {
     }
 
     const conversation = conversationData[fromNumber];
-    let responseMessage = "";
 
     // Check if the message is a greeting
     if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
@@ -208,16 +207,24 @@ app.post("/whatsapp", async (req, res) => {
         } else {
           responseMessage = "Please enter a valid budget (e.g. 180).";
         }
-        console.log('this is the response' + responseMessage);
+        console.log("this is the response" + responseMessage);
 
         break;
 
       case "gender":
-        if (maleKeywords.some((keyword) => incomingMessage.includes(keyword) || incomingMessage == 1)) {
+        if (
+          maleKeywords.some(
+            (keyword) =>
+              incomingMessage.includes(keyword) || incomingMessage == 1
+          )
+        ) {
           conversation.data.gender = "boys";
           conversation.stage = "sendHouses";
         } else if (
-          femaleKeywords.some((keyword) => incomingMessage.includes(keyword) || incomingMessage == 2)
+          femaleKeywords.some(
+            (keyword) =>
+              incomingMessage.includes(keyword) || incomingMessage == 2
+          )
         ) {
           conversation.data.gender = "girls";
           conversation.stage = "sendHouses";
@@ -225,27 +232,30 @@ app.post("/whatsapp", async (req, res) => {
           responseMessage =
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
         }
-        console.log('this is the response' + responseMessage);
+        console.log("this is the response" + responseMessage);
 
         break;
 
-      case "sendHouses":
         conversation.data.gender = incomingMessage;
-        responseMessage = "";
+        responseMessage = ""; // Reset message
+
         const uni = conversation.data.university;
         const price = conversation.data.budget;
         const gender = conversation.data.gender;
+
         console.log("uni" + uni);
         console.log("price" + price);
         console.log("gender" + gender);
 
-          const messagesArray = await makeBDApiCall(uni, price, gender);
-          // Combine messages into a single string
-          const responseMessage = messagesArray.join("\n\n");
-          console.log('this is the response' + responseMessage);
-          // Set the conversation stage
-          conversation.stage = "goodbye";
-     
+        // Fetch the houses from your API
+        const messagesArray = await makeBDApiCall(uni, price, gender);
+
+        // Combine the response messages
+        responseMessage = messagesArray.join("\n\n"); // No need to redeclare
+        console.log("this is the response" + responseMessage);
+
+        // Set the conversation stage to 'goodbye'
+        conversation.stage = "goodbye";
         break;
 
       case "goodbye":
@@ -271,17 +281,18 @@ app.post("/whatsapp", async (req, res) => {
     });
 
     // Generate TwiML response
-    // if (responseMessage) {
-      const twiml = new MessagingResponse();
-      twiml.message(responseMessage);
-      // Send the TwiML response
-      res.writeHead(200, { "Content-Type": "text/xml" });
-      res.end(twiml.toString());
-    // }
+    const twiml = new MessagingResponse();
+    twiml.message(responseMessage);
+
+    // Send the TwiML response
+    res.writeHead(200, { "Content-Type": "text/xml" });
+    res.end(twiml.toString());
   } catch (error) {
     console.error("Error processing WhatsApp message:", error);
     const twiml = new MessagingResponse();
-    twiml.message("Sorry, there was an error processing your request. Please try again later.");
+    twiml.message(
+      "Sorry, there was an error processing your request. Please try again later."
+    );
     res.writeHead(500, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
   }
