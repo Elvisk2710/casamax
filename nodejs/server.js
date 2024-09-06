@@ -235,11 +235,10 @@ app.post("/whatsapp", async (req, res) => {
         console.log("price" + price);
         console.log("gender" + gender);
 
-          const response = await makeBDApiCall(uni, price, gender);
-          const messagesArray = generateMessages(response);
+          const messagesArray = await makeBDApiCall(uni, price, gender);
           // Combine messages into a single string
           const responseMessage = messagesArray.join("\n\n");
-      
+        
           // Set the conversation stage
           conversation.stage = "goodbye";
      
@@ -270,6 +269,7 @@ app.post("/whatsapp", async (req, res) => {
     // Generate TwiML response
     // if (responseMessage) {
       const twiml = new MessagingResponse();
+      console.log('this is the response' + responseMessage);
       twiml.message(responseMessage);
       // Send the TwiML response
       res.writeHead(200, { "Content-Type": "text/xml" });

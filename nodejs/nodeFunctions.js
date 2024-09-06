@@ -14,7 +14,8 @@ async function makeBDApiCall(uni, price, gender) {
 
   try {
     const response = await axios.get(apiUrl);
-    return response.data; // Return the data or handle as needed
+    message = generateMessages(response.data);
+    return message; // Return the data or handle as needed
   } catch (error) {
     console.error("Error making API call:", error);
     throw error;
