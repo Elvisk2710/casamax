@@ -287,13 +287,13 @@ app.post("/whatsapp", async (req, res) => {
     });
 
     // Generate TwiML response
-    if (responseMessage) {
+    // if (responseMessage) {
       const twiml = new MessagingResponse();
       twiml.message(responseMessage);
       // Send the TwiML response
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
-    }
+    // }
   } catch (error) {
     console.error("Error processing WhatsApp message:", error);
     const twiml = new MessagingResponse();
