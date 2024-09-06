@@ -235,33 +235,14 @@ app.post("/whatsapp", async (req, res) => {
         console.log("price" + price);
         console.log("gender" + gender);
 
-        try {
           const response = await makeBDApiCall(uni, price, gender);
           const messagesArray = generateMessages(response);
           // Combine messages into a single string
-          const combinedMessage = messagesArray.join("\n\n");
-          console.log("combined messages" + combinedMessage);
-
-          // Create a new MessagingResponse instance
-          const twiml = new MessagingResponse();
-
-          // Add the combined message to the TwiML response
-          twiml.message(combinedMessage);
-
-          // Send the TwiML response back to Twilio
-          res.writeHead(200, { "Content-Type": "text/xml" });
-          res.end(twiml.toString());
-
+          const responseMessage = messagesArray.join("\n\n");
+      
           // Set the conversation stage
           conversation.stage = "goodbye";
-        } catch (error) {
-          console.error("Error fetching house data:", error);
-          responseMessage = "Sorry, there was an error fetching the house details. Please try again later.";
-          const twiml = new MessagingResponse();
-          twiml.message(responseMessage);
-          res.writeHead(500, { "Content-Type": "text/xml" });
-          res.end(twiml.toString());
-        }
+     
         break;
 
       case "goodbye":
