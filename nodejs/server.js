@@ -208,6 +208,8 @@ app.post("/whatsapp", async (req, res) => {
         } else {
           responseMessage = "Please enter a valid budget (e.g. 180).";
         }
+        console.log('this is the response' + responseMessage);
+
         break;
 
       case "gender":
@@ -223,6 +225,8 @@ app.post("/whatsapp", async (req, res) => {
           responseMessage =
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
         }
+        console.log('this is the response' + responseMessage);
+
         break;
 
       case "sendHouses":
@@ -238,7 +242,7 @@ app.post("/whatsapp", async (req, res) => {
           const messagesArray = await makeBDApiCall(uni, price, gender);
           // Combine messages into a single string
           const responseMessage = messagesArray.join("\n\n");
-        
+          console.log('this is the response' + responseMessage);
           // Set the conversation stage
           conversation.stage = "goodbye";
      
@@ -269,7 +273,6 @@ app.post("/whatsapp", async (req, res) => {
     // Generate TwiML response
     // if (responseMessage) {
       const twiml = new MessagingResponse();
-      console.log('this is the response' + responseMessage);
       twiml.message(responseMessage);
       // Send the TwiML response
       res.writeHead(200, { "Content-Type": "text/xml" });
