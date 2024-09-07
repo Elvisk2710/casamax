@@ -218,7 +218,7 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "boys";
-          conversation.stage = "sendHouses"; // Move to the next stage
+          getHouses();
         } else if (
           femaleKeywords.some(
             (keyword) =>
@@ -226,27 +226,11 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "girls";
-          conversation.stage = "sendHouses"; // Move to the next stage
+          getHouses();
         } else {
           responseMessage =
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
         }
-        break;
-
-      case "sendHouses":
-        const uni = conversation.data.university;
-        const price = conversation.data.budget;
-        const gender = conversation.data.gender;
-
-        // Fetch the houses from your API
-        const response = await makeBDApiCall(uni, price, gender);
-        messagesArray = generateMessages(response);
-        // Combine the response messages
-        responseMessage = messagesArray.join("\n\n"); // Combine messages
-        console.log("this is the response", responseMessage);
-
-        // Set the conversation stage to 'goodbye'
-        conversation.stage = "goodbye";
         break;
 
       case "goodbye":
@@ -259,6 +243,21 @@ app.post("/whatsapp", async (req, res) => {
         break;
     }
 
+    async function getHouses() {
+      const uni = conversation.data.university;
+      const price = conversation.data.budget;
+      const gender = conversation.data.gender;
+
+      // Fetch the houses from your API
+      const response = await makeBDApiCall(uni, price, gender);
+      messagesArray = generateMessages(response);
+      // Combine the response messages
+      responseMessage = messagesArray.join("\n\n"); // Combine messages
+      console.log("this is the response", responseMessage);
+
+      // Set the conversation stage to 'goodbye'
+      conversation.stage = "goodbye";
+    }
     // Store the incoming and outgoing messages in the conversation object
     conversation.data.messages = conversation.data.messages || [];
     conversation.data.messages.push({
