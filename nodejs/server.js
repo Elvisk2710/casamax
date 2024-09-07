@@ -231,9 +231,11 @@ app.post("/whatsapp", async (req, res) => {
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
         }
         console.log(conversation.stage);
+        responseMessage = '';
         break;
 
       case "sendHouses":
+        console.log('sendHouses');
         const uni = conversation.data.university;
         const price = conversation.data.budget;
         const gender = conversation.data.gender;
