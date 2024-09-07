@@ -5,6 +5,7 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
+const twilio = require('twilio');
 const client = new twilio('ACc7621dcd3d33b6d756b448a7e17820bb', '696e108a6a6ef1b5df5909031a64d9d0');
 
 const {
