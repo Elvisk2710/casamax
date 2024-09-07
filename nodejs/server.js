@@ -207,8 +207,6 @@ app.post("/whatsapp", async (req, res) => {
         } else {
           responseMessage = "Please enter a valid budget (e.g. 180).";
         }
-        console.log("this is the response" + responseMessage);
-
         break;
 
       case "gender":
@@ -219,7 +217,7 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "boys";
-          conversation.stage = "sendHouses";
+          conversation.stage = "sendHouses"; // Move to the next stage
         } else if (
           femaleKeywords.some(
             (keyword) =>
@@ -227,38 +225,32 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "girls";
-          conversation.stage = "sendHouses";
+          conversation.stage = "sendHouses"; // Move to the next stage
         } else {
           responseMessage =
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
         }
-        console.log("this is the response" + responseMessage);
-
         break;
 
-        case "sendHouses":
-          conversation.data.gender = incomingMessage;
-          responseMessage = ""; // Reset message
+      case "sendHouses":
+        const uni = conversation.data.university;
+        const price = conversation.data.budget;
+        const gender = conversation.data.gender;
         
-          const uni = conversation.data.university;
-          const price = conversation.data.budget;
-          const gender = conversation.data.gender;
+        console.log("uni", uni);
+        console.log("price", price);
+        console.log("gender", gender);
         
-          console.log("uni" + uni);
-          console.log("price" + price);
-          console.log("gender" + gender);
+        // Fetch the houses from your API
+        const messagesArray = await makeBDApiCall(uni, price, gender);
         
-          // Fetch the houses from your API
-          const messagesArray = await makeBDApiCall(uni, price, gender);
+        // Combine the response messages
+        responseMessage = messagesArray.join("\n\n"); // Combine messages
+        console.log('this is the response', responseMessage);
         
-          // Combine the response messages
-          responseMessage = messagesArray.join("\n\n"); // No need to redeclare
-          console.log('this is the response' + responseMessage);
-        
-          // Set the conversation stage to 'goodbye'
-          conversation.stage = "goodbye";
-          break;
-        
+        // Set the conversation stage to 'goodbye'
+        conversation.stage = "goodbye";
+        break;
 
       case "goodbye":
         responseMessage =
@@ -271,13 +263,12 @@ app.post("/whatsapp", async (req, res) => {
     }
 
     // Store the incoming and outgoing messages in the conversation object
-    conversationData[fromNumber].data.messages =
-      conversationData[fromNumber].data.messages || [];
-    conversationData[fromNumber].data.messages.push({
+    conversation.data.messages = conversation.data.messages || [];
+    conversation.data.messages.push({
       direction: "incoming",
       message: incomingMessage,
     });
-    conversationData[fromNumber].data.messages.push({
+    conversation.data.messages.push({
       direction: "outgoing",
       message: responseMessage,
     });
