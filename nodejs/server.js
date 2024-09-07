@@ -244,18 +244,23 @@ app.post("/whatsapp", async (req, res) => {
     }
 
     async function getHouses() {
-      console.log('get houses function');
+      console.log("get houses function");
       const uni = conversation.data.university;
       const price = conversation.data.budget;
       const gender = conversation.data.gender;
 
       // Fetch the houses from your API
       const response = await makeBDApiCall(uni, price, gender);
-      messagesArray = generateMessages(response);
+      whatsAppMessage = generateMessages(response);
       // Combine the response messages
-      responseMessage = messagesArray.join("\n\n"); // Combine messages
-      console.log("this is the response", responseMessage);
+      console.log("this is the response", whatsAppMessage);
+      // Generate TwiML response
+      const twiml = new MessagingResponse();
+      twiml.message(whatsAppMessage);
 
+      // Send the TwiML response
+      res.writeHead(200, { "Content-Type": "text/xml" });
+      res.end(twiml.toString());
       // Set the conversation stage to 'goodbye'
       conversation.stage = "goodbye";
     }
