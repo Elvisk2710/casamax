@@ -242,22 +242,27 @@ app.post("/whatsapp", async (req, res) => {
         responseMessage = "I’m not sure how to help with that.";
         break;
     }
-
+// function t send list of houses
     async function getHouses() {
-      console.log("get houses function");
+      console.log('get houses function');
       const uni = conversation.data.university;
       const price = conversation.data.budget;
       const gender = conversation.data.gender;
-
+    
       // Fetch the houses from your API
       const response = await makeBDApiCall(uni, price, gender);
-      responseMessage = generateMessages(response);
-      // Combine the response messages
-      console.log("this is the response", responseMessage);
-
+      const messagesArray = generateMessages(response);
+      
+      // Send each message in the messagesArray individually
+      for (const message of messagesArray) {
+        // Send each message to the user
+        await sendWhatsAppMessage(fromNumber, message);
+      }
+    
       // Set the conversation stage to 'goodbye'
       conversation.stage = "goodbye";
     }
+    
     // Store the incoming and outgoing messages in the conversation object
     conversation.data.messages = conversation.data.messages || [];
     conversation.data.messages.push({
