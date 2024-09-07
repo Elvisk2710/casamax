@@ -230,6 +230,7 @@ app.post("/whatsapp", async (req, res) => {
           responseMessage =
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
         }
+        console.log(conversation.stage);
         break;
 
       case "sendHouses":
