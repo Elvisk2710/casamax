@@ -251,16 +251,10 @@ app.post("/whatsapp", async (req, res) => {
 
       // Fetch the houses from your API
       const response = await makeBDApiCall(uni, price, gender);
-      whatsAppMessage = generateMessages(response);
+      responseMessage = generateMessages(response);
       // Combine the response messages
-      console.log("this is the response", whatsAppMessage);
-      // Generate TwiML response
-      const twiml = new MessagingResponse();
-      twiml.message(whatsAppMessage);
+      console.log("this is the response", responseMessage);
 
-      // Send the TwiML response
-      res.writeHead(200, { "Content-Type": "text/xml" });
-      res.end(twiml.toString());
       // Set the conversation stage to 'goodbye'
       conversation.stage = "goodbye";
     }
