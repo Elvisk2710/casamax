@@ -153,7 +153,8 @@ app.post("/whatsapp", async (req, res) => {
     if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
       conversation.stage = "goodbye"; // Set stage to completed or end the conversation
     }
-
+    console.log(conversation.stage);
+    let responseMessage;
     switch (conversation.stage) {
       case "initial":
         responseMessage =
@@ -230,27 +231,20 @@ app.post("/whatsapp", async (req, res) => {
           responseMessage =
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
         }
-        console.log(conversation.stage);
-        responseMessage = '';
         break;
 
       case "sendHouses":
-        console.log('sendHouses');
         const uni = conversation.data.university;
         const price = conversation.data.budget;
         const gender = conversation.data.gender;
-        
-        console.log("uni", uni);
-        console.log("price", price);
-        console.log("gender", gender);
-        
+
         // Fetch the houses from your API
-        const messagesArray = await makeBDApiCall(uni, price, gender);
-        
+        const response = await makeBDApiCall(uni, price, gender);
+        messagesArray = generateMessages(response);
         // Combine the response messages
         responseMessage = messagesArray.join("\n\n"); // Combine messages
-        console.log('this is the response', responseMessage);
-        
+        console.log("this is the response", responseMessage);
+
         // Set the conversation stage to 'goodbye'
         conversation.stage = "goodbye";
         break;

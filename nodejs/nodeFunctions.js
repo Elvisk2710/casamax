@@ -10,12 +10,15 @@ function generateWhatsAppLink(phoneNumber) {
 
 // Function to get houses from the database
 async function makeBDApiCall(uni, price, gender) {
+  console.log("uni", uni);
+  console.log("price", price);
+  console.log("gender", gender);
+
   const apiUrl = `https://casamax.co.zw/homerunphp/whatsapp_reply.php?university=${uni}&price=${price}&gender=${gender}`;
 
   try {
     const response = await axios.get(apiUrl);
-    message = generateMessages(response.data);
-    return message; // Return the data or handle as needed
+    return response;
   } catch (error) {
     console.error("Error making API call:", error);
     throw error;
@@ -86,6 +89,7 @@ function generateMessages(houses) {
       messagesArray.push(message);
     });
     // Return the array of generated messages
+    console.log(messagesArray);
     return messagesArray;
   }
   
