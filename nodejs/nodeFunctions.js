@@ -36,7 +36,7 @@ function generateMessages(houses) {
     }
   
     // Create an array to store the generated messages
-    const houseMessage = 'Here are some *Boarding-Houses* we found for you \n';
+    var houseMessage = 'Here are some *Boarding-Houses* we found for you \n';
   
     // Loop through each house object and generate the message
     houses.forEach((house) => {
