@@ -10,15 +10,13 @@ function generateWhatsAppLink(phoneNumber) {
 
 // Function to get houses from the database
 async function makeBDApiCall(uni, price, gender) {
-  console.log("uni", uni);
-  console.log("price", price);
-  console.log("gender", gender);
 
   const apiUrl = `https://casamax.co.zw/homerunphp/whatsapp_reply.php?university=${uni}&price=${price}&gender=${gender}`;
 
   try {
     const response = await axios.get(apiUrl);
-    return response;
+    houses = ensureArray(response.data);
+    return houses;
   } catch (error) {
     console.error("Error making API call:", error);
     throw error;
@@ -93,6 +91,20 @@ function generateMessages(houses) {
     return messagesArray;
   }
   
+
+  // ensuring the response.body is an array 
+  function ensureArray(responseBody) {
+    if (Array.isArray(responseBody)) {
+        // If responseBody is already an array, return it as is
+        return responseBody;
+    } else if (typeof responseBody === 'object' && responseBody !== null) {
+        // If responseBody is an object, wrap it in an array
+        return [responseBody];
+    } else {
+        // If responseBody is neither an array nor an object, handle the error
+        throw new Error('Expected responseBody to be an array or an object.');
+    }
+}
 
 // Export the functions if needed
 module.exports = {

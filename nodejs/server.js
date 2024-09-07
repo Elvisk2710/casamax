@@ -244,12 +244,14 @@ app.post("/whatsapp", async (req, res) => {
     }
 
     async function getHouses() {
+      console.log('get houses function');
       const uni = conversation.data.university;
       const price = conversation.data.budget;
       const gender = conversation.data.gender;
 
       // Fetch the houses from your API
       const response = await makeBDApiCall(uni, price, gender);
+      console.log(response);
       messagesArray = generateMessages(response);
       // Combine the response messages
       responseMessage = messagesArray.join("\n\n"); // Combine messages
