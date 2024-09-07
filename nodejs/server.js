@@ -5,6 +5,8 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
+const client = new twilio('ACc7621dcd3d33b6d756b448a7e17820bb', '696e108a6a6ef1b5df5909031a64d9d0');
+
 const {
   makeBDApiCall,
   generateWhatsAppLink,
@@ -261,6 +263,19 @@ app.post("/whatsapp", async (req, res) => {
     
       // Set the conversation stage to 'goodbye'
       conversation.stage = "goodbye";
+    }
+
+    async function sendWhatsAppMessage(to, message) {
+      try {
+        await client.messages.create({
+          from: 'whatsapp:+16827309603', // Your Twilio WhatsApp number
+          to: to, // The user's WhatsApp number
+          body: message
+        });
+        console.log(`Message sent to ${to}: ${message}`);
+      } catch (error) {
+        console.error('Error sending WhatsApp message:', error);
+      }
     }
     
     // Store the incoming and outgoing messages in the conversation object
