@@ -224,12 +224,7 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "boys";
-          responseMessage =
-            "Please wait whilst we fetch *Boarding Houses* for you \n *Summary*\n" +
-            `University: ${conversation.data.university}\n` +
-            `Budget: ${ conversation.data.budget}\n` +
-            `Gender: ${conversation.data.gender}`;
-          await sendHouses(conversation, res);
+          responseMessage = await sendHouses(conversation, res);
           conversation.stage = "goodbye"; // Set stage after fetching houses
         } else if (
           femaleKeywords.some(
@@ -300,12 +295,14 @@ async function sendHouses(conversation, res) {
 
       if (messagesArray && messagesArray.length > 0) {
         // Send the first message
-        const twiml = new MessagingResponse();
-        twiml.message(messagesArray[0]);
+        // const twiml = new MessagingResponse();
+        // twiml.message(messagesArray[0]);
 
-        // Send the TwiML response for the house details
-        res.writeHead(200, { "Content-Type": "text/xml" });
-        res.end(twiml.toString());
+        // // Send the TwiML response for the house details
+        // res.writeHead(200, { "Content-Type": "text/xml" });
+        // res.end(twiml.toString());
+        responseMessage = messagesArray[0];
+        return responseMessage;
       } else {
         res.writeHead(200, { "Content-Type": "text/xml" });
         res.end(
