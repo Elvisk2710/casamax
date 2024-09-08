@@ -226,11 +226,11 @@ app.post("/whatsapp", async (req, res) => {
           conversation.data.gender = "boys";
           responseMessage =
             "Please wait whilst we fetch *Boarding Houses* for you \n *Summary*\n" +
-            `University: ${conversation.data.uni}\n` +
-            `Budget: ${conversation.data.price}\n` +
+            `University: ${conversation.data.university}\n` +
+            `Budget: ${ conversation.data.budget}\n` +
             `Gender: ${conversation.data.gender}`;
-          sendHouses();
-          conversation.stage = "sendHouses";
+          await sendHouses(conversation, res);
+          conversation.stage = "goodbye"; // Set stage after fetching houses
         } else if (
           femaleKeywords.some(
             (keyword) =>
@@ -240,7 +240,8 @@ app.post("/whatsapp", async (req, res) => {
           conversation.data.gender = "girls";
           responseMessage =
             "Please wait whilst we fetch *Boarding Houses* for you";
-          conversation.stage = "sendHouses";
+          await sendHouses(conversation, res);
+          conversation.stage = "goodbye";
         } else {
           responseMessage =
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
@@ -257,50 +258,6 @@ app.post("/whatsapp", async (req, res) => {
         break;
     }
 
-    async function sendHouses() {
-      try {
-        console.log("get houses function");
-        const uni = conversation.data.university;
-        const price = conversation.data.budget;
-        const gender = conversation.data.gender;
-
-        // Fetch the houses from your API
-        const response = await makeBDApiCall(uni, price, gender);
-
-        // Ensure that response is valid before proceeding
-        if (response && response.length > 0) {
-          const messagesArray = generateMessages(response);
-
-          // Check if messagesArray has any elements
-          if (messagesArray && messagesArray.length > 0) {
-            // Set the responseMessage to the first message in the array
-            responseMessage = messagesArray[0];
-            console.log(responseMessage);
-            // Generate TwiML response
-            const twiml = new MessagingResponse();
-            twiml.message(responseMessage);
-
-            // Send the TwiML response
-            res.writeHead(200, { "Content-Type": "text/xml" });
-            res.end(twiml.toString());
-          } else {
-            responseMessage =
-              "Sorry we could not find any houses for you at the moment";
-            console.log("No messages generated from response");
-          }
-        } else {
-          console.log("No valid houses found from API");
-        }
-
-        // Set the conversation stage to 'goodbye'
-        conversation.stage = "goodbye";
-      } catch (error) {
-        console.error("An error occurred:", error);
-        // Optionally, set a fallback responseMessage
-        responseMessage =
-          "Sorry, an error occurred while processing your request.";
-      }
-    }
     // Store the incoming and outgoing messages in the conversation object
     conversation.data.messages = conversation.data.messages || [];
     conversation.data.messages.push({
@@ -318,8 +275,6 @@ app.post("/whatsapp", async (req, res) => {
 
     // Send the TwiML response
     res.writeHead(200, { "Content-Type": "text/xml" });
-    res.end(twiml.toString()); // Send the TwiML response
-    res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
   } catch (error) {
     console.error("Error processing WhatsApp message:", error);
@@ -331,6 +286,47 @@ app.post("/whatsapp", async (req, res) => {
     res.end(twiml.toString());
   }
 });
+// function to send houses to the client
+async function sendHouses(conversation, res) {
+  try {
+    console.log("Fetching houses");
+    const { university, budget, gender } = conversation.data;
+
+    // Fetch the houses from your API
+    const response = await makeBDApiCall(university, budget, gender);
+
+    if (response && response.length > 0) {
+      const messagesArray = generateMessages(response);
+
+      if (messagesArray && messagesArray.length > 0) {
+        // Send the first message
+        const twiml = new MessagingResponse();
+        twiml.message(messagesArray[0]);
+
+        // Send the TwiML response for the house details
+        res.writeHead(200, { "Content-Type": "text/xml" });
+        res.end(twiml.toString());
+      } else {
+        res.writeHead(200, { "Content-Type": "text/xml" });
+        res.end(
+          new MessagingResponse().message("No houses found at the moment.").toString()
+        );
+      }
+    } else {
+      res.writeHead(200, { "Content-Type": "text/xml" });
+      res.end(
+        new MessagingResponse().message("No houses found matching your criteria.").toString()
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching houses:", error);
+    res.writeHead(500, { "Content-Type": "text/xml" });
+    res.end(
+      new MessagingResponse().message("Error fetching houses, please try again.").toString()
+    );
+  }
+}
+
 
 // Socket.IO Configuration
 io.on("connection", (socket) => {
