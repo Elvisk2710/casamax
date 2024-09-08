@@ -87,7 +87,6 @@ function generateMessages(houses) {
       messagesArray.push(message);
     });
     // Return the array of generated messages
-    console.log(messagesArray);
     return messagesArray;
   }
   
