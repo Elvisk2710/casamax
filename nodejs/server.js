@@ -224,10 +224,11 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "boys";
-          responseMessage = "Please wait whilst we fetch *Boarding Houses* for you \n *Summary*"+
-          `University: ${conversation.data.uni}\n`+
-          `Budget: ${conversation.data.price}\n`+
-          `Gender: ${conversation.data.gender}`;
+          responseMessage =
+            "Please wait whilst we fetch *Boarding Houses* for you \n *Summary*\n" +
+            `University: ${conversation.data.uni}\n` +
+            `Budget: ${conversation.data.price}\n` +
+            `Gender: ${conversation.data.gender}`;
           sendHouses();
           conversation.stage = "sendHouses";
         } else if (
@@ -237,7 +238,8 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "girls";
-          responseMessage = "Please wait whilst we fetch *Boarding Houses* for you";
+          responseMessage =
+            "Please wait whilst we fetch *Boarding Houses* for you";
           conversation.stage = "sendHouses";
         } else {
           responseMessage =
@@ -255,7 +257,7 @@ app.post("/whatsapp", async (req, res) => {
         break;
     }
 
-    async function sendHouses(){
+    async function sendHouses() {
       try {
         console.log("get houses function");
         const uni = conversation.data.university;
@@ -274,6 +276,9 @@ app.post("/whatsapp", async (req, res) => {
             // Set the responseMessage to the first message in the array
             responseMessage = messagesArray[0];
             console.log(responseMessage);
+            // Generate TwiML response
+            const twiml = new MessagingResponse();
+            twiml.message(responseMessage);
           } else {
             responseMessage =
               "Sorry we could not find any houses for you at the moment";
