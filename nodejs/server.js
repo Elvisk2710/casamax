@@ -289,9 +289,9 @@ async function sendHouses(conversation, res) {
 
     // Fetch the houses from your API
     const response = await makeBDApiCall(university, budget, gender);
-    console.log("response" + response);
+    console.log("response", JSON.stringify(response)); // Log the response as a stringified JSON
     if (response && response.length > 0) {
-      const messagesArray = generateMessages(response);
+      const messagesArray = await generateMessages(response);
       console.log("messageArray" + messagesArray);
       if (messagesArray && messagesArray.length > 0) {
         responseMessage = messagesArray[0];
