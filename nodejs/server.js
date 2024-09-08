@@ -289,41 +289,24 @@ async function sendHouses(conversation, res) {
 
     // Fetch the houses from your API
     const response = await makeBDApiCall(university, budget, gender);
-
+    console.log("response" + response);
     if (response && response.length > 0) {
       const messagesArray = generateMessages(response);
-
+      console.log("messageArray" + messagesArray);
       if (messagesArray && messagesArray.length > 0) {
-        // Send the first message
-        // const twiml = new MessagingResponse();
-        // twiml.message(messagesArray[0]);
-
-        // // Send the TwiML response for the house details
-        // res.writeHead(200, { "Content-Type": "text/xml" });
-        // res.end(twiml.toString());
         responseMessage = messagesArray[0];
         return responseMessage;
       } else {
-        res.writeHead(200, { "Content-Type": "text/xml" });
-        res.end(
-          new MessagingResponse().message("No houses found at the moment.").toString()
-        );
+        responseMessage = "Sorry! No houses found at the moment";
       }
     } else {
-      res.writeHead(200, { "Content-Type": "text/xml" });
-      res.end(
-        new MessagingResponse().message("No houses found matching your criteria.").toString()
-      );
+      responseMessage =
+        "Sorry! No houses found at the moment matching your criteria";
     }
   } catch (error) {
-    console.error("Error fetching houses:", error);
-    res.writeHead(500, { "Content-Type": "text/xml" });
-    res.end(
-      new MessagingResponse().message("Error fetching houses, please try again.").toString()
-    );
+    responseMessage = "Sorry! Fetching Error Please try again later";
   }
 }
-
 
 // Socket.IO Configuration
 io.on("connection", (socket) => {
