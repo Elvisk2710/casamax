@@ -240,18 +240,42 @@ app.post("/whatsapp", async (req, res) => {
         break;
 
       case "sendHouses":
-        console.log("get houses function");
-        const uni = conversation.data.university;
-        const price = conversation.data.budget;
-        const gender = conversation.data.gender;
-        // Fetch the houses from your API
-        const response = await makeBDApiCall(uni, price, gender);
-        const messagesArray = generateMessages(response);
-        // set response
-        responseMessage = messagesArray[0];
-        console.log(responseMessage);
-        // Set the conversation stage to 'goodbye'
-        conversation.stage = "goodbye";
+        try {
+          console.log("get houses function");
+          const uni = conversation.data.university;
+          const price = conversation.data.budget;
+          const gender = conversation.data.gender;
+
+          // Fetch the houses from your API
+          const response = await makeBDApiCall(uni, price, gender);
+
+          // Ensure that response is valid before proceeding
+          if (response && response.length > 0) {
+            const messagesArray = generateMessages(response);
+
+            // Check if messagesArray has any elements
+            if (messagesArray && messagesArray.length > 0) {
+              // Set the responseMessage to the first message in the array
+              responseMessage = messagesArray[0];
+              console.log(responseMessage);
+            } else {
+              responseMessage =
+                "Sorry we could not find any houses for you at the moment";
+              console.log("No messages generated from response");
+            }
+          } else {
+            console.log("No valid houses found from API");
+          }
+
+          // Set the conversation stage to 'goodbye'
+          conversation.stage = "goodbye";
+        } catch (error) {
+          console.error("An error occurred:", error);
+          // Optionally, set a fallback responseMessage
+          responseMessage =
+            "Sorry, an error occurred while processing your request.";
+        }
+        break;
 
       case "goodbye":
         responseMessage =
