@@ -5,8 +5,11 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
-const twilio = require('twilio');
-const client = new twilio('ACc7621dcd3d33b6d756b448a7e17820bb', '696e108a6a6ef1b5df5909031a64d9d0');
+const twilio = require("twilio");
+const client = new twilio(
+  "ACc7621dcd3d33b6d756b448a7e17820bb",
+  "696e108a6a6ef1b5df5909031a64d9d0"
+);
 
 const {
   makeBDApiCall,
@@ -221,7 +224,7 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "boys";
-          getHouses();
+          conversation.stage = "sendHouses";
         } else if (
           femaleKeywords.some(
             (keyword) =>
@@ -229,12 +232,26 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "girls";
-          getHouses();
+          conversation.stage = "sendHouses";
         } else {
           responseMessage =
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
         }
         break;
+
+      case "sendHouses":
+        console.log("get houses function");
+        const uni = conversation.data.university;
+        const price = conversation.data.budget;
+        const gender = conversation.data.gender;
+        // Fetch the houses from your API
+        const response = await makeBDApiCall(uni, price, gender);
+        const messagesArray = generateMessages(response);
+        // set response
+        responseMessage = messagesArray[0];
+        console.log(responseMessage);
+        // Set the conversation stage to 'goodbye'
+        conversation.stage = "goodbye";
 
       case "goodbye":
         responseMessage =
@@ -245,40 +262,7 @@ app.post("/whatsapp", async (req, res) => {
         responseMessage = "I’m not sure how to help with that.";
         break;
     }
-// function t send list of houses
-    async function getHouses() {
-      console.log('get houses function');
-      const uni = conversation.data.university;
-      const price = conversation.data.budget;
-      const gender = conversation.data.gender;
-    
-      // Fetch the houses from your API
-      const response = await makeBDApiCall(uni, price, gender);
-      const messagesArray = generateMessages(response);
-      
-      // Send each message in the messagesArray individually
-      for (const message of messagesArray) {
-        // Send each message to the user
-        await sendWhatsAppMessage(fromNumber, message);
-      }
-    
-      // Set the conversation stage to 'goodbye'
-      conversation.stage = "goodbye";
-    }
 
-    async function sendWhatsAppMessage(to, message) {
-      try {
-        await client.messages.create({
-          from: 'whatsapp:+16827309603', // Your Twilio WhatsApp number
-          to: to, // The user's WhatsApp number
-          body: message
-        });
-        console.log(`Message sent to ${to}: ${message}`);
-      } catch (error) {
-        console.error('Error sending WhatsApp message:', error);
-      }
-    }
-    
     // Store the incoming and outgoing messages in the conversation object
     conversation.data.messages = conversation.data.messages || [];
     conversation.data.messages.push({
