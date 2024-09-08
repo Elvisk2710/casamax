@@ -224,6 +224,11 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "boys";
+          responseMessage = "Please wait whilst we fetch *Boarding Houses* for you \n *Summary*"+
+          `University: ${conversation.data.uni}\n`+
+          `Budget: ${conversation.data.price}\n`+
+          `Gender: ${conversation.data.gender}`;
+          sendHouses();
           conversation.stage = "sendHouses";
         } else if (
           femaleKeywords.some(
@@ -232,48 +237,11 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "girls";
+          responseMessage = "Please wait whilst we fetch *Boarding Houses* for you";
           conversation.stage = "sendHouses";
         } else {
           responseMessage =
             "Invalid selection. Please choose 1 for Male or 2 for Female.";
-        }
-        break;
-
-      case "sendHouses":
-        try {
-          console.log("get houses function");
-          const uni = conversation.data.university;
-          const price = conversation.data.budget;
-          const gender = conversation.data.gender;
-
-          // Fetch the houses from your API
-          const response = await makeBDApiCall(uni, price, gender);
-
-          // Ensure that response is valid before proceeding
-          if (response && response.length > 0) {
-            const messagesArray = generateMessages(response);
-
-            // Check if messagesArray has any elements
-            if (messagesArray && messagesArray.length > 0) {
-              // Set the responseMessage to the first message in the array
-              responseMessage = messagesArray.join("\n\n");
-              console.log(responseMessage);
-            } else {
-              responseMessage =
-                "Sorry we could not find any houses for you at the moment";
-              console.log("No messages generated from response");
-            }
-          } else {
-            console.log("No valid houses found from API");
-          }
-
-          // Set the conversation stage to 'goodbye'
-          conversation.stage = "goodbye";
-        } catch (error) {
-          console.error("An error occurred:", error);
-          // Optionally, set a fallback responseMessage
-          responseMessage =
-            "Sorry, an error occurred while processing your request.";
         }
         break;
 
@@ -287,6 +255,43 @@ app.post("/whatsapp", async (req, res) => {
         break;
     }
 
+    async function sendHouses(){
+      try {
+        console.log("get houses function");
+        const uni = conversation.data.university;
+        const price = conversation.data.budget;
+        const gender = conversation.data.gender;
+
+        // Fetch the houses from your API
+        const response = await makeBDApiCall(uni, price, gender);
+
+        // Ensure that response is valid before proceeding
+        if (response && response.length > 0) {
+          const messagesArray = generateMessages(response);
+
+          // Check if messagesArray has any elements
+          if (messagesArray && messagesArray.length > 0) {
+            // Set the responseMessage to the first message in the array
+            responseMessage = messagesArray[0];
+            console.log(responseMessage);
+          } else {
+            responseMessage =
+              "Sorry we could not find any houses for you at the moment";
+            console.log("No messages generated from response");
+          }
+        } else {
+          console.log("No valid houses found from API");
+        }
+
+        // Set the conversation stage to 'goodbye'
+        conversation.stage = "goodbye";
+      } catch (error) {
+        console.error("An error occurred:", error);
+        // Optionally, set a fallback responseMessage
+        responseMessage =
+          "Sorry, an error occurred while processing your request.";
+      }
+    }
     // Store the incoming and outgoing messages in the conversation object
     conversation.data.messages = conversation.data.messages || [];
     conversation.data.messages.push({
