@@ -256,7 +256,7 @@ app.post("/whatsapp", async (req, res) => {
             // Check if messagesArray has any elements
             if (messagesArray && messagesArray.length > 0) {
               // Set the responseMessage to the first message in the array
-              responseMessage = messagesArray[0];
+              responseMessage = messagesArray.join("\n\n");
               console.log(responseMessage);
             } else {
               responseMessage =
