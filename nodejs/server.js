@@ -279,6 +279,10 @@ app.post("/whatsapp", async (req, res) => {
             // Generate TwiML response
             const twiml = new MessagingResponse();
             twiml.message(responseMessage);
+
+            // Send the TwiML response
+            res.writeHead(200, { "Content-Type": "text/xml" });
+            res.end(twiml.toString());
           } else {
             responseMessage =
               "Sorry we could not find any houses for you at the moment";
@@ -313,6 +317,8 @@ app.post("/whatsapp", async (req, res) => {
     twiml.message(responseMessage);
 
     // Send the TwiML response
+    res.writeHead(200, { "Content-Type": "text/xml" });
+    res.end(twiml.toString()); // Send the TwiML response
     res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
   } catch (error) {
