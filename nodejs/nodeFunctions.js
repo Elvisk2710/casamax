@@ -1,12 +1,12 @@
 const axios = require("axios");
 
 // Function to generate a WhatsApp link
-function generateWhatsAppLink(phoneNumber) {
+async function generateWhatsAppLink(phoneNumber) {
   const message =
     "Hello found your boarding house on casamax.co.zw. Is your house still available?";
   const encodedMessage = encodeURIComponent(message);
   longUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-  shortUrl = minifyWithTinyURL(longUrl);
+  shortUrl = await minifyWithTinyURL(longUrl);
   return shortUrl;
 }
 
@@ -25,9 +25,9 @@ async function makeBDApiCall(uni, price, gender) {
 }
 
 // Function to generate a link to the website
-function generateWebLink(home_id) {
+async function generateWebLink(home_id) {
   longUrl = `https://casamax.co.zw/listingdetails.php?clicked_id=${home_id}`;
-  shortUrl = minifyWithTinyURL(longUrl);
+  shortUrl = await minifyWithTinyURL(longUrl);
 
   return shortUrl;
 }
@@ -38,12 +38,11 @@ function generateMessages(houses) {
   if (!Array.isArray(houses)) {
     throw new Error("Expected houses to be an array.");
   }
-
   // Create an array to store the generated messages
   const messagesArray = [];
 
   // Loop through each house object and generate the message
-  houses.forEach((house) => {
+  houses.forEach(async (house) => {
     const {
       home_id,
       price,
@@ -59,7 +58,7 @@ function generateMessages(houses) {
     } = house;
 
     // Generate the link to the house on casamax.co.zw
-    const webLink = generateWebLink(home_id);
+    const webLink = await generateWebLink(home_id);
 
     // Create a string of available amenities
     const amenities = [
@@ -72,6 +71,8 @@ function generateMessages(houses) {
       .filter(Boolean)
       .join("\n");
 
+    const whatsAppLink = await generateWhatsAppLink(contact);
+
     // Generate the message
     const message =
       `Here is a Boarding-House that we have found for you\n\n` +
@@ -80,9 +81,7 @@ function generateMessages(houses) {
       `${amenities}\n\n` +
       `Price: *$${price}*\n` +
       `It is located in ${adrs}\n\n` +
-      `You can get in touch with the landlord or agent using this link: ${generateWhatsAppLink(
-        contact
-      )}\n\n` +
+      `You can get in touch with the landlord or agent using this link: ${whatsAppLink}\n\n` +
       `View the house images and full details using the link below on our website:\n` +
       `${webLink}`;
 
