@@ -25,9 +25,9 @@ async function makeBDApiCall(uni, price, gender) {
 }
 
 // Function to generate a link to the website
-async function generateWebLink(home_id) {
+function generateWebLink(home_id) {
   const longUrl = `https://casamax.co.zw/listingdetails.php?clicked_id=${home_id}`;
-  const shortUrl = await shortenWithIsGd(longUrl);
+  // const shortUrl = await shortenWithIsGd(longUrl);
   return shortUrl;
 }
 
@@ -56,11 +56,12 @@ async function generateMessages(houses) {
       } = house;
 
       // Generate the link to the house on casamax.co.zw
-      const [webLink, whatsAppLink] = await Promise.all([
-        generateWebLink(home_id),
-        generateWhatsAppLink(contact),
-      ]);
-
+      // const [webLink, whatsAppLink] = await Promise.all([
+      //   generateWebLink(home_id),
+      //   generateWhatsAppLink(contact),
+      // ]);
+      // generate web link
+      webLink = generateWebLink(home_id);
       // Create a string of available amenities
       const amenities = [
         kitchen && "- Kitchen",
@@ -77,7 +78,7 @@ async function generateMessages(houses) {
         `*${ucfirst(firstname)} ${ucfirst(lastname)}'s house*\n` +
         `Price: *$${price}*\n` +
         `It is located at ${adrs}\n` +
-        `WhatsApp Link: ${whatsAppLink}\n` +
+        `Contact: ${contact}\n` +
         `Casamax.co.zw link: ${webLink}`;
 
       return message;
