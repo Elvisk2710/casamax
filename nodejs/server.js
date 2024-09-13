@@ -294,7 +294,8 @@ async function sendHouses(conversation, res) {
       const messagesArray = await generateMessages(response);
       console.log("messageArray" + messagesArray);
       if (messagesArray && messagesArray.length > 0) {
-        responseMessage = messagesArray[0];
+        // join the messages into one message
+        responseMessage = messagesArray.join('\n');
         return responseMessage;
       } else {
         responseMessage = "Sorry! No houses found at the moment";
