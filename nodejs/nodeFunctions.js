@@ -6,7 +6,7 @@ async function generateWhatsAppLink(phoneNumber) {
     "Hello found your boarding house on casamax.co.zw. Is your house still available?";
   const encodedMessage = encodeURIComponent(message);
   const longUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-  const shortUrl = await minifyWithTinyURL(longUrl);
+  const shortUrl = await shortenWithIsGd(longUrl);
   return shortUrl;
 }
 
@@ -27,7 +27,7 @@ async function makeBDApiCall(uni, price, gender) {
 // Function to generate a link to the website
 async function generateWebLink(home_id) {
   const longUrl = `https://casamax.co.zw/listingdetails.php?clicked_id=${home_id}`;
-  const shortUrl = await minifyWithTinyURL(longUrl);
+  const shortUrl = await shortenWithIsGd(longUrl);
   return shortUrl;
 }
 
@@ -98,19 +98,17 @@ function ensureArray(responseBody) {
     throw new Error("Expected responseBody to be an array or an object.");
   }
 }
-
-// Function to minify URL using TinyURL
-async function minifyWithTinyURL(longUrl) {
+// shortening url
+async function shortenWithIsGd(longUrl) {
   try {
-    const response = await axios.get(
-      `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`
-    );
-    return response.data; // Returns the shortened URL
+    const response = await axios.get(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(longUrl)}`);
+    return response.data;
   } catch (error) {
     console.error("Error shortening URL:", error);
     return null;
   }
 }
+
 
 // Export the functions if needed
 module.exports = {
