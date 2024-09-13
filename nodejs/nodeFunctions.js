@@ -6,7 +6,7 @@ async function generateWhatsAppLink(phoneNumber) {
     "Hello found your boarding house on casamax.co.zw. Is your house still available?";
   const encodedMessage = encodeURIComponent(message);
   const longUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-  const shortUrl = await shortenWithIsGd(longUrl);
+  const shortUrl = await minifyWithTinyURL(longUrl);
   return shortUrl;
 }
 
@@ -25,9 +25,9 @@ async function makeBDApiCall(uni, price, gender) {
 }
 
 // Function to generate a link to the website
-function generateWebLink(home_id) {
+async function generateWebLink(home_id) {
   const longUrl = `https://casamax.co.zw/listingdetails.php?clicked_id=${home_id}`;
-  // const shortUrl = await shortenWithIsGd(longUrl);
+  const shortUrl = await minifyWithTinyURL(longUrl);
   return shortUrl;
 }
 
@@ -56,12 +56,11 @@ async function generateMessages(houses) {
       } = house;
 
       // Generate the link to the house on casamax.co.zw
-      // const [webLink, whatsAppLink] = await Promise.all([
-      //   generateWebLink(home_id),
-      //   generateWhatsAppLink(contact),
-      // ]);
-      // generate web link
-      webLink = generateWebLink(home_id);
+      const [webLink, whatsAppLink] = await Promise.all([
+        generateWebLink(home_id),
+        generateWhatsAppLink(contact),
+      ]);
+
       // Create a string of available amenities
       const amenities = [
         kitchen && "- Kitchen",
@@ -75,11 +74,15 @@ async function generateMessages(houses) {
 
       // Generate the message
       const message =
-        `*${ucfirst(firstname)} ${ucfirst(lastname)}'s house*\n` +
+        `Here is a Boarding-House that we have found for you\n\n` +
+        `*${firstname} ${lastname}'s house*\n\n` +
+        `*Amenities available:*\n` +
+        `${amenities}\n\n` +
         `Price: *$${price}*\n` +
-        `It is located at ${adrs}\n` +
-        `Contact: ${contact}\n` +
-        `Casamax.co.zw link: ${webLink}`;
+        `It is located in ${adrs}\n\n` +
+        `You can get in touch with the landlord or agent using this link: ${whatsAppLink}\n\n` +
+        `View the house images and full details using the link below on our website:\n` +
+        `${webLink}`;
 
       return message;
     })
@@ -99,17 +102,19 @@ function ensureArray(responseBody) {
     throw new Error("Expected responseBody to be an array or an object.");
   }
 }
-// shortening url
-async function shortenWithIsGd(longUrl) {
+
+// Function to minify URL using TinyURL
+async function minifyWithTinyURL(longUrl) {
   try {
-    const response = await axios.get(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(longUrl)}`);
-    return response.data;
+    const response = await axios.get(
+      `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`
+    );
+    return response.data; // Returns the shortened URL
   } catch (error) {
     console.error("Error shortening URL:", error);
     return null;
   }
 }
-
 
 // Export the functions if needed
 module.exports = {
