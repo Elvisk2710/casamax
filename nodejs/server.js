@@ -293,7 +293,7 @@ async function sendHouses(conversation, res) {
     if (response && response.length > 0) {
       const messagesArray = await generateMessages(response);
       if (messagesArray && messagesArray.length > 0) {
-        responseMessage = messagesArray.join('\nn');
+        responseMessage = messagesArray.join('\n\n');
         console.log("messageArray" + responseMessage);
 
         return responseMessage;
