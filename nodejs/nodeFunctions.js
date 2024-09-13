@@ -74,15 +74,11 @@ async function generateMessages(houses) {
 
       // Generate the message
       const message =
-        `Here is a Boarding-House that we have found for you\n\n` +
-        `*${firstname} ${lastname}'s house*\n\n` +
-        `*Amenities available:*\n` +
-        `${amenities}\n\n` +
+        `*${firstname} ${lastname}'s house*\n` +
         `Price: *$${price}*\n` +
-        `It is located in ${adrs}\n\n` +
-        `You can get in touch with the landlord or agent using this link: ${whatsAppLink}\n\n` +
-        `View the house images and full details using the link below on our website:\n` +
-        `${webLink}`;
+        `It is located at ${adrs}\n` +
+        `WhatsApp link: ${whatsAppLink}\n` +
+        `Casamax Link:${webLink}`;
 
       return message;
     })
