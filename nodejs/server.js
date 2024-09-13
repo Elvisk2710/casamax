@@ -292,9 +292,10 @@ async function sendHouses(conversation, res) {
     console.log("response", JSON.stringify(response)); // Log the response as a stringified JSON
     if (response && response.length > 0) {
       const messagesArray = await generateMessages(response);
-      console.log("messageArray" + messagesArray);
       if (messagesArray && messagesArray.length > 0) {
-        responseMessage = messagesArray[0];
+        responseMessage = messagesArray.join('\nn');
+        console.log("messageArray" + responseMessage);
+
         return responseMessage;
       } else {
         responseMessage = "Sorry! No houses found at the moment";

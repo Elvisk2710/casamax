@@ -76,8 +76,8 @@ async function generateMessages(houses) {
       const message =
         `*${firstname} ${lastname}'s house*\n` +
         `Price: *$${price}*\n` +
-        `It is located at ${adrs}\n` +
-        `WhatsApp link: ${whatsAppLink}\n` +
+        `Located at ${adrs}\n` +
+        `WhatsApp link:${whatsAppLink}\n` +
         `Casamax Link:${webLink}`;
 
       return message;
