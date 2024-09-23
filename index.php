@@ -77,6 +77,7 @@ if (isset($_GET['error'])) {
         }
     </script>
     <!-- Include Intro.js CSS -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
     <meta name="google-site-verification" content="3DpOPyMzbY1JYLNtsHzbAZ_z6o249iU0lE5DYE_mLJA" />
     <meta charset="UTF-8">
@@ -97,31 +98,33 @@ if (isset($_GET['error'])) {
     <script src="index.js"></script>
     <!-- Include Intro.js JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <nav id="navBar" data-intro="Here is the navigation bar. You can find various sections of our site here." data-step="3" data-position="bottom">
+        <div class="left-nav">
+            <a href="index.php">
+                <img src="images/logoorange.png" alt="logo" class="logo" data-intro="This is our logo. Click it to return to the homepage." data-step="2" data-position="bottom">
+            </a>
+            <h3 class="smltxt">CasaMax</h3>
+            <img src="images/menu.webp" alt="menu" onclick="togglebtn()" class="fas">
+            <br>
+            <a href="./index.php" class="home">Home</a>
+            <a href="./manage/index.php">Manage Rental</a>
+            <a href="advertise_as/index.php">Advertise</a>
+            <a href="help.php">Help</a>
+            <a href="./chat/screens/">My Chats</a>
+        </div>
+        <div class="right-nav">
+            <?php
+            if (!isset($_SESSION['sessionstudent'])) {
+                echo '<a href="./loginas.php" class="sign_in" name="loginbtn">Login</a>';
+            } else {
+                echo '<a href="./student_profile.php" class="sign_in" name="loginbtn">My Profile</a>';
+            }
+            ?>
+        </div>
+    </nav>
     <div class="container">
 
         <header data-intro="Welcome to CasaMax! Let us guide you through our main features." data-step="1">
-            <a href="index.php">
-                <img src="images/logowhite.png" alt="logo" class="logo" data-intro="This is our logo. Click it to return to the homepage." data-step="2" data-position="bottom">
-            </a>
-
-            <nav id="navBar" data-intro="Here is the navigation bar. You can find various sections of our site here." data-step="3" data-position="bottom">
-                <h3 class="smltxt">CasaMax</h3>
-                <img src="images/menu.webp" alt="menu" onclick="togglebtn()" class="fas">
-                <br>
-                <a href="./index.php" class="home">HOME</a>
-                <a href="./manage/index.php">MANAGE RENTAL</a>
-                <a href="advertise_as/index.php">ADVERTISE</a>
-                <a href="help.php">HELP</a>
-                <a href="./chat/screens/">MY CHATS</a>
-                <?php
-                if (!isset($_SESSION['sessionstudent'])) {
-                    echo '<a href="./loginas.php" class="sign_in" name="loginbtn">LOGIN</a>';
-                } else {
-                    echo '<a href="./student_profile.php" class="sign_in" name="loginbtn">MY PROFILE</a>';
-                }
-                ?>
-            </nav>
-
             <!-- popup for cookie consent -->
             <div class="consent hide">
                 <button class="cookie_btn">
@@ -134,8 +137,6 @@ if (isset($_GET['error'])) {
                 <p>
                     We use cookies and other technologies to help personalize content and provide for a better experience. Without cookies some functionalities will not function properly!!
                 </p>
-
-
 
                 <script>
                     window.onload = function() {
@@ -154,58 +155,119 @@ if (isset($_GET['error'])) {
                     }
                 </script>
             </div>
-
             <!-- main content -->
-            <h1>
-                CasaMax
-            </h1>
-            <a href="#cta" style="color:white; text-decoration: none;  animation: text 2s ease infinite;">Click to know about us!</a>
+            <div class="left-header">
+                <h1>
+                    The Perfect Home for Your Study Life
+                </h1>
+                <a href="#cta" style="color:rgb(241,241,241,0.6); text-decoration: none;  animation: text 2s ease infinite;">Click to know about us!</a>
+                <p class="srch-p">
+                    Find Your Next Home
+                </p>
+                <div class="search-bar" data-intro="Use this search bar to find your next home by selecting a university and setting a budget." data-step="4" data-position="bottom">
+                    <form method="POST" action="homerunphp/searchaction.php">
 
-            <p class="srch-p">
-                Find Your Next Home
-            </p>
-            <div class="search-bar" data-intro="Use this search bar to find your next home by selecting a university and setting a budget." data-step="4" data-position="bottom">
-                <form method="POST" action="homerunphp/searchaction.php">
+                        <div class="search-form">
+                            <div class="left-col">
 
-                    <div class="search-form">
-                        <div class="left-col">
+                                <select name="university" id="dropdown" data-intro="Select your university from this dropdown menu." data-step="5" data-position="right">
 
-                            <select name="university" id="dropdown" data-intro="Select your university from this dropdown menu." data-step="5" data-position="right">
+                                    <option value="none">Choose a University</option>
+                                    <option value="University of Zimbabwe">University of Zimbabwe</option>
+                                    <option value="Midlands State University">Midlands State University</option>
+                                    <option value="Africa Univeristy">Africa Univeristy</option>
+                                    <option value="Bindura State University">Bindura State University</option>
+                                    <option value="Chinhoyi University of Science and Technology">Chinhoyi University of Science and Technology</option>
+                                    <option value="Great Zimbabwe University">Great Zimbabwe University</option>
+                                    <option value="Harare Institute of Technology">Harare Institute of Technology</option>
+                                    <option value="National University of Science and Technology">National University of Science and Technology</option>
 
-                                <option value="none">Choose a University</option>
-                                <option value="University of Zimbabwe">University of Zimbabwe</option>
-                                <option value="Midlands State University">Midlands State University</option>
-                                <option value="Africa Univeristy">Africa Univeristy</option>
-                                <option value="Bindura State University">Bindura State University</option>
-                                <option value="Chinhoyi University of Science and Technology">Chinhoyi University of Science and Technology</option>
-                                <option value="Great Zimbabwe University">Great Zimbabwe University</option>
-                                <option value="Harare Institute of Technology">Harare Institute of Technology</option>
-                                <option value="National University of Science and Technology">National University of Science and Technology</option>
-
-                            </select>
+                                </select>
+                            </div>
+                            <div class="right-col">
+                                <input type="number" name="pricesearch" min="0" placeholder="Monthly Budget in USD$?" required title="Enter an amount in USD" data-intro="Enter the maximum amount you are willing to pay per month here." data-step="6" data-position="right">
+                            </div>
                         </div>
-                        <div class="right-col">
-                            <input type="number" name="pricesearch" min="0" placeholder="Max amount per Month in USD$?" required title="Enter an amount in USD" data-intro="Enter the maximum amount you are willing to pay per month here." data-step="6" data-position="right">
+                        <div class="search-btn">
+                            <button name=" " data-intro="Click this button to start your search." data-step="7" data-position="bottom">
+                                <img src="images/searchicon.png" alt="search">
+                            </button>
                         </div>
-                    </div>
-                    <div class="search-btn">
-                        <button name=" " data-intro="Click this button to start your search." data-step="7" data-position="bottom">
-                            <img src="images/searchicon.webp" alt="search">
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
+
+            <div class="right-header">
+                <lottie-player
+                    src="https://lottie.host/1c0dd04b-5a3f-4809-9363-8bf8ce288271/0rq7KbvgzG.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 80%; height: 80%;"
+                    loop
+                    autoplay>
+                </lottie-player>
+                <p>
+                    Tired of distractions at home? Our platform connects you with the best boarding houses in Zimbabwe, offering a quiet, comfortable, and convenient environment for your academic pursuits. Elevate your study experience and find your ideal home away from home.
+                </p>
+            </div>
+
         </header>
         <!-- BROWSE Student -->
-        <div class="containersub">
-            <hr>
-            <h2 class="sub-title text-blue-600">
-                BROWSE
-                <p>
-                    (BOARDING HOUSES BY UNI)
-                </p>
-            </h2>
-            <hr>
+        <div class="containersub" id="browse">
+            <div class="heading-text">
+                <a href="#browse">
+                    <h2 class="sub-title">
+                        What We Have To Offer
+                    </h2>
+                </a>
+            </div>
+            <div class="about-div">
+                <div class="about-card" style="background-color: rgb(8, 8, 12,0.8)">
+                    <h3 style="color: white;">
+                        Fill Your Rooms, Find Your Tenants
+                    </h3>
+                    <p style="color: white;">
+                        Tired of empty rooms? Let us connect you with students seeking quality accommodation. List your property today, connect to students and start earning.
+                    <div class="about-div-btn">
+                        <a href="">
+                        <button style="background-color: rgb(252, 153, 82); color: rgb(8, 8, 12);">
+                        Get Started
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="about-card" style="background-color: white; opacity: 0.8;">
+
+                    <h3>
+                    Fill Your Needs, Find Your Boarding House
+                    </h3>
+                    <p>
+                    Discover your perfect study haven. Tired of distractions at home? Find the ideal boarding house that offers a quiet, comfortable, and convenient environment for your studies. Let us help you achieve your academic goals.
+                    </p>
+                    <div class="about-div-btn">
+                        <a href="">
+                            <button style="background-color: rgb(252, 153, 82); color:white;">
+                                Get Started
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="about-card" style="background-color: rgb(252,153,82,0.8)">
+                    <h3>
+                        We Bridge The Gap
+                    </h3>
+                    <p>
+                    Our platform connects landlords and students, streamlining the process of finding the perfect match. With our efficient matching system, we ensure that both parties connect seamlessly, saving time and effort for everyone involved.
+                    </p>
+                    <div class="about-div-btn">
+                        <a href="">
+                        <button style="background-color: rgb(8, 8, 12); color:rgb(252, 153, 82);">
+                        Know More
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
             <div class="browse" data-intro="Choose your university to browse through all available listings." data-step="8" data-position="top">
 
                 <a href="./unilistings/uzlisting.php">
@@ -290,17 +352,17 @@ if (isset($_GET['error'])) {
                 </a>
             </div>
 
-            <div class="cta" id="cta">
-                <h3>
-                    Sharing Is Earning
-                </h3>
-                <p>
-                    Grasp The Great Opportunity to make money with shared spaces.
-                </p>
 
-                <a href="know_more.php"> <button class="cta-btn"> Know More </button></a>
+        </div>
+        <div class="cta" id="cta">
+            <h3>
+                Seize the Moment: <b>Profit from Shared Spaces </b>
+            </h3>
+            <p>
+                Discover the lucrative potential of shared spaces. With the growing demand for Boarding Houses, now is the perfect time to invest in this thriving market. The opportunities for profit are endless. Don't miss out on this golden chance to capitalize on the shared economy.
+            </p>
+            <a href="know_more.php"> <button class="cta-btn"> Know More </button></a>
 
-            </div>
         </div>
         <hr>
 

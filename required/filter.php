@@ -28,10 +28,10 @@ if (isset($_POST['filter_reset'])) {
      </div>
      <form class="filter-form" action="<?php $page_filter_name ?>" method="GET">
 
-          <h2>Filters</h2>
+          <h3>Filters</h3>
 
           <div class="filter" id="filter">
-               <h3>Amenities</h3>
+               <p>Amenities</p>
 
                <div>
                     <label for="wifi">Wifi :<input id="wifi" type="checkbox" name="wifi" value="1" <?php if (isset($_GET['wifi']) && $_GET['wifi'] = 1) {
@@ -79,7 +79,7 @@ if (isset($_POST['filter_reset'])) {
                <br>
 
           </div>
-          <h3>Budget $</h3>
+          <p>Budget $</p>
 
           <div class="price_filter">
                <?php
