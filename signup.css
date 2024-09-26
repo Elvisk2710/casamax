@@ -38,7 +38,7 @@ input[type="number"] {
 }
 .radio {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -83,6 +83,32 @@ header a {
   width: 70%;
   height: 80%;
 }
+.left-sign-up,
+.right-sign-up {
+  flex-basis: 50%;
+  height: 100%;
+}
+.right-sign-up {
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 400px;
+}
+.left-sign-up{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.left-sign-up h1{
+  color: white;
+  font-size: 2rem !important;
+  padding: 2rem !important;
+}
 .left-login,
 .right-login {
   height: 100%;
@@ -111,15 +137,26 @@ header a {
   border-radius: 20px;
 }
 form {
-  width: 100%;
   height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+}
+.sign-up-container {
+  padding: 1rem;
+  width: 90% !important ;
 }
 form div {
   margin-top: 10px;
+}
+.input-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
 }
 .input-label {
   color: rgb(8, 8, 12);
@@ -129,10 +166,10 @@ form div {
   width: 80%;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
 }
-.input-label label{
+.input-label label {
   width: 100%;
 }
 .input-label input {
@@ -145,35 +182,23 @@ form div {
   font-size: 1.4rem;
   text-align: center;
 }
-.dropdown {
-  margin-left: 0;
-  display: inline-block;
-  padding-top: 20px;
-}
-.dropdown select {
+select {
   background-color: rgb(252, 153, 82);
   border: none;
-  border-radius: 10px;
-  width: 70% auto;
-  height: 30px;
+  border-radius: 20px;
+  width: fit-content;
   text-align: center;
-  font-size: 15px;
   cursor: pointer;
   outline: none;
   font-weight: 400;
+  padding: 0.5rem;
 }
 
-.dropdown::after {
+.dropdown::before {
   content: "";
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent;
-  border-left: rgb(252, 153, 82);
+  border: none;
   display: inline-block;
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 .container input,
 .input-label .password {
@@ -231,7 +256,7 @@ form div {
   font-weight: 600;
   color: rgb(8, 8, 12);
   border: none;
-  border-radius: 10px;
+  border-radius: 20px;
   background-color: rgb(252, 153, 82);
 }
 .logout_btn {
@@ -340,7 +365,7 @@ form .reg {
   }
   .dropdown select {
     border: none;
-    border-radius: 10px;
+    border-radius: 20px;
     width: 60%;
     height: 40px;
     text-align: center;
