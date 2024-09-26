@@ -71,7 +71,6 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
     <link rel="icon" href="images/logowhite.png">
     <title>CasaMax House-Details</title>
     <link rel="stylesheet" href="listing.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
     <script>
         var tourCookie = 'listinDetailsTour';
     </script>
@@ -99,6 +98,7 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
                     </a>
                 </div>
             </div>
+
             <div class="house-title-contact">
                 <?php if ($agent) : ?>
                     <form data-intro="Get in touch with Agent." data-step="1" data-position="bottom" action="./homerunphp/verify_student_redirect.php?home_id=<?= $user ?>&agent_id=<?= $agent_id ?>&route=agent" method="post" class="button_form">
@@ -119,37 +119,45 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
                     <?php if (!isset($_SESSION['sessionowner'])) : ?>
                         <form data-intro="Get in touch with Landlord." data-step="1" data-position="bottom" action="./homerunphp/verify_student_redirect.php?home_id=<?= $user ?>&route=landlord&student=1" method="post">
                             <button class="chatBtn" id="chatBtn" name="check_sub_chat_landlord" type="submit">
-                                Chat With Me
+                                <img src="images/whatsAppGreen.png" alt="whatsApp" title="Contact on WhatsApp">
                             </button>
                         </form>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>
-
-        <div class="table">
-            <table>
-                <tr>
-                    <th class="value"><?= $row['price'] ?></th>
-                    <th class="value"><?= $row['people_in_a_room'] ?></th>
-                    <th class="value"><?= $row['gender'] ?></th>
-                    <?php if ($agent) : ?>
-                        <th class="value">$<?= $row_agent['agent_fee'] ?></th>
-                    <?php endif; ?>
-                </tr>
-                <tr>
-                    <th>AMOUNT PER MONTH</th>
-                    <th>PEOPLE IN A ROOM</th>
-                    <th>GIRLS, BOYS OR BOTH</th>
-                    <?php if ($agent) : ?>
-                        <th>AGENT-FEE</th>
-                    <?php endif; ?>
-                </tr>
-            </table>
+        <div class="house-gender-price">
+            <div class="house-gender">
+                <?php if ($row['gender'] == 'BOYs') { ?>
+                    <img src="./images/boy.png" alt="Boys Boarding House" title="Boys Boarding House">
+                    <h3>Boys Boarding House</h3>
+                <?php } elseif ($row['gender'] == 'GIRLs') { ?>
+                    <img src="./images/girl.png" alt="Girls Boarding House" title="Girls Boarding House">
+                    <h3>Girls Boarding House</h3>
+                <?php } else { ?>
+                    <img src="./images/mixed.png" alt="Girls Boarding House" title="Girls Boarding House">
+                    <h3>Mixed Boarding House</h3>
+                <?php } ?>
+            </div>
+            <?php
+            if ($agent == true) {
+            ?>
+                <div class="house-price">
+                    <img src="./images/agent.png" alt="Boys Boarding house" title="boys boarding house">
+                    <h3>
+                        Agent Fee - $<?php echo $row_agent['agent_fee'] ?>
+                    </h3>
+                </div>
+            <?php
+            }
+            ?>
+            <div class="house-price">
+                <img src="./images/price.png" alt="Boys Boarding house" title="boys boarding house">
+                <h3>
+                    <?php echo $row['price'] ?> /month
+                </h3>
+            </div>
         </div>
-        <hr>
-        <br>
-
         <?php if (empty($row['image1']) && empty($row['image2']) && empty($row['image3']) && empty($row['image4']) && empty($row['image5']) && empty($row['image6']) && empty($row['image7']) && empty($row['image8'])) : ?>
             <h3 class="no_photos"> No Photos Are Available For This Property </h3>
             <script>
@@ -157,12 +165,10 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
             </script>
         <?php else : ?>
             <div class="gallery" data-intro="View house images." data-step="3" data-position="bottom">
-                <?php for ($i = 1; $i <= 8; $i++) : ?>
+                <?php for ($i = 1; $i <= 5; $i++) : ?>
                     <?php if (!empty($row["image$i"])) : ?>
                         <div class="gallery-img-<?= $i ?>" onclick="open_gallery()">
-                            <a href="#gallery_container" onclick="open_gallery()">
-                                <img src="housepictures/<?= $uni_folder ?>/<?= $row["image$i"] ?>" onclick="open_gallery()">
-                            </a>
+                            <img src="housepictures/<?= $uni_folder ?>/<?= $row["image$i"] ?>" onclick="open_gallery()">
                         </div>
                     <?php endif; ?>
                 <?php endfor; ?>
@@ -181,38 +187,136 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
             <?php
             $amenities = ['kitchen', 'fridge', 'wifi', 'borehole', 'transport'];
             foreach ($amenities as $amenity) {
-                $img = $row[$amenity] == "1" ? $checkmark : $crossmark;
-                echo "<div class='amenities'>
-                        <h4>" . ucfirst($amenity) . "</h4>
-                        <div><img src='$img' alt=''></div>
-                    </div>";
+                if ($row[$amenity] == "1") {
+                    switch ($amenity) {
+                        case 'kitchen':
+                            $icon = './images/kitchenIcon.png';
+                            break;
+                        case 'fridge':
+                            $icon = './images/fridgeIcon.png';
+                            break;
+                        case 'wifi':
+                            $icon = './images/wifiIcon.png';
+                            break;
+                        case 'borehole':
+                            $icon = './images/boreholeIcon.png';
+                            break;
+                        case 'transport':
+                            $icon = './images/transportIcon.png';
+                            break;
+                    }
+                    echo "<div class='amenities'>
+                    <div class='amenities-img'><img src='$icon' alt=''></div>
+                    <h4>" . ucfirst($amenity) . "</h4>
+                </div>";
+                }
             }
             ?>
         </div>
 
         <h2>Additional Info:</h2>
-        <p><?= $row['rules'] ?></p>
-        <br class="ft">
-
+        <p class="additional-p"><?= ucfirst($row['rules']) ?></p>
+        <?php if ($row['people_in_a_room'] != 0) { ?>
+            <h2>Room Info:</h2>
+            <div class="room-info">
+                <div class='house-price'>
+                    <div class='amenities-img'><img src='./images/people.png' alt=''></div>
+                    <h4><?php echo ucfirst($row['people_in_a_room']) . " People In A Room" ?></h4>
+                </div>
+            </div>
+        <?php } ?>
         <?php require './gallery.php'; ?>
     </div>
 
-    <div class="footer">
-        <h3 class="abt">
-            <a href="aboutus.php">About</a> CasaMax
-        </h3>
-        <p>Looking for a House to Rent? Welcome to Casamax, where we provide all the available Homes and Rental properties at the tip of your fingers</p>
-        <p class="abt">
-            <a href="../privacy_policy.html">Our Privacy Policy</a>
-            <a href="../disclaimer.html">Disclaimer</a>
-        </p>
+    <footer class="footer">
+        <div class="left-footer">
+            <div class="footer-title">
+                <div class="logo-img">
+                    <img class="logo" src="./images/logoorange.png" alt="logo">
+                </div>
+                <div class="logo-title">
+                    <h4>
+                        CasaMax
+                    </h4>
+                </div>
+            </div>
+            <div class="footer-contact-details">
+                <div class="contact">
+                    <a target="_blank" href="mailto:info@casamax.co.zw?subject=Feedback to Casamax.co.zw">
+                        <img src="./images/mail.png" alt="">
+                        <p>info@casamax.co.zw</p>
+                    </a>
+                </div>
+                <div class="contact">
+                    <a target="_blank" href="https://www.facebook.com/profile.php?id=100093414304668">
+                        <img src="./images/facebook.png" alt="">
+                        <p>facebook</p>
+                    </a>
+                </div>
+                <div class="contact">
+                    <a target="_blank" href="https://www.instagram.com/casamax.co.zw/">
+                        <img src="./images/instagram.png" alt="">
+                        <p>casamax.co.zw</p>
+                    </a>
+                </div>
+                <div class="contact">
+                    <a target="_blank" href="https://wa.me/+263786989144">
+                        <img src="./images/whatsapp.png" alt="">
+                        <p>whatsApp</p>
+                    </a>
+                </div>
 
-        <div class="icons">
-            <a href="https://www.instagram.com/casa_max_student_accommodations/" class="fa fa-instagram" target="_blank"></a>
-            <a href="https://www.facebook.com/CasaMaxRentalsZW/" class="fa fa-facebook" target="_blank"></a>
-            <a href="https://wa.me/message/YYFWCEGD3AKZC1" class="fa fa-whatsapp" target="_blank"></a>
+            </div>
         </div>
-    </div>
+        <div class="right-footer">
+            <div class="footer-p">
+                <h3 class="abt">
+                    <a href="aboutus.php">About</a> CasaMax
+                </h3>
+                <p>
+                    Our platform connects landlords and students, streamlining the process of finding the perfect match. With our efficient matching system, we ensure that both parties connect seamlessly, saving time and effort for everyone involved.
+                </p>
+
+            </div>
+            <div class="bottom-footer">
+                <div class="quick-action">
+                    <h2>
+                        Our Services
+                    </h2>
+                    <div class="contact">
+                        <a target="_blank" href="https://wa.me/+263786989144">
+                            <p>Advertise</p>
+                        </a>
+                    </div>
+                    <div class="contact">
+                        <a target="_blank" href="https://wa.me/+263786989144">
+                            <p>Manage Rental</p>
+                        </a>
+                    </div>
+                    <div class="contact">
+                        <a target="_blank" href="https://wa.me/+263786989144">
+                            <p>Help</p>
+                        </a>
+                    </div>
+                    <div class="contact">
+                        <a target="_blank" href="https://wa.me/+263786989144">
+                            <p>Login</p>
+                        </a>
+                    </div>
+                    <div class="contact">
+                        <a target="_blank" href="https://wa.me/+263786989144">
+                            <p>Choose University</p>
+                        </a>
+                    </div>
+                </div>
+                <p class="abt">
+                    <a href="./privacy_policy.html">Our Privacy Policy </a>
+                    <br>
+                    <a href="./disclaimer.html">Disclaimer</a>
+                </p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         let startTourCookie = getCookie('listinDetailsTour');

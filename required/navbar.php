@@ -3,7 +3,7 @@
     <img src="https://casamax.co.zw/images/menu.png" alt="menu" onclick="togglebtn()" class="fas">
     <div class="left-navbar">
         <div class="head">
-            <a href="../index.php"> <img src="https://casamax.co.zw/images/logoblack.png" alt="" class="logo"></a>
+            <a href="https://casamax.co.zw"> <img src="https://casamax.co.zw/images/logoblack.png" alt="" class="logo"></a>
         </div>
         <div class="navbar-left-links">
             <a href="../index.php" class="home">Home</a>

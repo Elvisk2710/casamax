@@ -55,6 +55,7 @@
 }
 html {
   scroll-behavior: smooth;
+  height: 100vh;
 }
 .scrollable {
   max-height: 100vh;
@@ -129,6 +130,7 @@ header {
 }
 body {
   background: rgb(248, 248, 248);
+  height: 100vh;
 }
 .container {
   margin-left: 10vw auto;
@@ -640,8 +642,8 @@ hr {
 }
 .cta {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 8rem 6rem;
-  background-color: rgb(252, 153, 82);
+  margin: 2rem 6rem;
+  background: linear-gradient(135deg, rgb(252, 153, 82), rgb(255, 255, 255));
   background-position: center;
   border-radius: 15px;
   padding: 4rem;
@@ -683,61 +685,93 @@ hr {
   text-decoration: none;
   background-color: none;
 }
+
 /* --footer-- */
 
-.footer {
-  flex: 1;
-  width: 100%;
-  position: static;
-  bottom: 0;
-  background: rgb(8, 8, 12);
-  color: white;
-  font-size: 1.2rem;
-  line-height: 1.4vw;
-  padding: 3vw;
+footer {
+  padding: 2rem 6rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  background-color: white;
+  margin: 2rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.socialicons .fab {
-  width: 2.4vw;
-  height: 2.4vw;
-  text-align: center;
-  line-height: 2vw;
-  font-size: 1.2rem;
-  color: white;
-  margin: 0.8vw auto;
-  cursor: pointer;
+.left-footer, .right-footer{
+  flex-basis: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding: 0 4rem;
 }
-.socialicons {
-  text-align: center;
+.footer-title{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
 }
-.socialicons img {
-  height: 2.4vw;
-  width: 2.4vw;
-  text-align: center;
-  margin-bottom: 2vw;
-  padding-bottom: 0px;
+.left-footer .logo-title h4{
+  font-size: 1.5rem;
+  color: rgb(8, 8, 12);
+  font-weight: 700;
 }
-.footer {
-  text-align: center;
-  font-weight: 300;
+.footer-contact-details{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+}
+.contact{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0 2rem;
+}
+.contact a{
+  text-decoration: none;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+.contact a img{
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.contact a p{
+  width: 100%;
+  text-align: left;
+  color: rgb(8, 8, 12);
 }
 .footer p {
-  color: rgba(255, 255, 255, 0.438);
-  margin-bottom: 15px;
-  margin-top: 15px;
+  color: rgb(8, 8, 12, 0.6);
+  margin: 0.8rem 0;
   font-size: 1rem;
+}
+.bottom-footer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 .abt a {
   text-decoration: underline;
   color: rgb(252, 153, 82);
   cursor: pointer;
 }
-hr {
-  height: 2px;
-  background: rgba(8, 8, 12, 0.082);
-  width: 100%;
-  border: 0;
-}
+
 
 /* ----------for small screens------- */
 @media only screen and (max-width: 700px) {
@@ -967,6 +1001,7 @@ hr {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  height: 100%;
 }
 .page-container .container{
   display: flex;
@@ -974,6 +1009,7 @@ hr {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
+  height: 100%;
 }
 .side-bar-container {
   flex-basis: 20%;
@@ -1012,17 +1048,19 @@ hr {
   }
 }
 .list-container {
+  margin: 2rem ;
   flex-basis: 80%;
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
   justify-content: space-between;
-  flex: 1;
 }
 
 .house-list-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
-  gap: 2rem; /* Spacing between grid items */
+  gap: 1.5rem; /* Spacing between grid items */
+  margin: 3rem 4rem;
 }
 .total-heading {
   color: rgb(252, 153, 82);
@@ -1030,7 +1068,9 @@ hr {
   margin: 1rem 0;
 }
 .left-col {
-  flex-basis: 80%;
+  flex-basis: 100%;
+  width: 100%;
+  padding: 0 2rem;
 }
 .right-col {
   flex-basis: 20%;
@@ -1047,7 +1087,9 @@ hr {
   justify-content: space-between;
   border-top: 1px solid rgba(8, 8, 12, 0.2);
   overflow: hidden;
-  width: 18rem;
+  width: 100%;
+  min-width: 20rem;
+  max-width: 22rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   background-color: white;
@@ -1077,9 +1119,10 @@ hr {
   padding: 0 1rem;
 }
 .house-info-gender {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   padding: 0 1rem;
   margin-top: 0.5rem;
+  font-weight: 600;
 }
 .house-info button {
   color: white;
@@ -1125,12 +1168,6 @@ hr {
   font-weight: 600;
   margin-top: 5px;
 }
-.house-img img:active {
-  transform: scale(0.95);
-  /* Scaling button to 0.98 to its original size */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /* Lowering the shadow */
-}
 .house-info h3 {
   min-height: 2vw;
   margin: 0px 0;
@@ -1153,7 +1190,7 @@ hr {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 }
 .amenities_div {
   display: flex;
@@ -1185,15 +1222,15 @@ hr {
   text-align: center;
 }
 .house-price {
-  padding: 0 1rem;
   display: flex;
   flex-direction: row;
-  margin-bottom: 0.5rem;
   justify-content: space-between;
-  align-items: center;
-  position: relative;
-  text-align: right;
-  vertical-align: text-bottom;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+.house-price a{
+  width: fit-content;
+  text-decoration: none;
 }
 .house-price h4 {
   font-size: 1.4rem;
@@ -1203,6 +1240,20 @@ hr {
 .house-price span {
   font-size: 1.2rem;
   font-weight: 400;
+}
+.left-house-price{
+  flex-basis: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+.right-house-price{
+  flex-basis: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
 }
 .sidebar {
   border-left: 1px solid rgba(8, 8, 12, 0.041);

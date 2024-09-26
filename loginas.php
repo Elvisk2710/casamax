@@ -20,31 +20,51 @@ require './required/ads_query.php';
     require_once 'required/pageloader.php';
     $chat = true;
     ?>
-    <header>
-        <a href="index.php">
-            <img src="images/logowhite.png" alt="logo" class="logo">
-        </a>
-    </header>
+
     <div class="container">
-        <div>
-            <h1>Log-In As</h1>
+        <div class="login-container">
+            <div class="left-login">
+                <lottie-player
+                    src="https://lottie.host/0039a8dd-b3e3-4ed5-8ac1-af027ca2d3e6/quHMLFe402.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 70%; height: 70%;"
+                    loop
+                    autoplay>
+                </lottie-player>
+            </div>
+            <div class="right-login">
+                <header>
+                    <a href="index.php">
+                        <img src="images/logoorange.png" alt="logo" class="logo">
+                    </a>
+                </header>
+                <div class="btn-container">
+                    <div>
+                        <h1>Log-In As</h1>
+                    </div>
+                    <div class="login">
+                        <a href="homeownerlogin.php?redirect=<?php echo $redirect ?>"><button type="button" name="submit">
+                                Landlord
+                            </button>
+                        </a>
+                    </div>
+                    <div class="login">
+                        <a href="login.php?redirect=<?php echo $redirect ?>"><button type="button" name="submit">
+                                Student
+                            </button></a>
+                    </div>
+                    <div class="login">
+                        <a href="./agent/"><button type="button" name="submit">
+                                Agent
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="login">
-            <a href="homeownerlogin.php?redirect=<?php echo $redirect ?>"><button type="button" name="submit">
-                    HOME OWNER
-                </button>
-            </a>
-        </div>
-        <div class="login">
-            <a href="login.php?redirect=<?php echo $redirect ?>"><button type="button" name="submit">
-                    STUDENT
-                </button></a>
-        </div>
-        <div class="login">
-            <a href="./agent/"><button type="button" name="submit">
-                    AGENT
-                </button></a>
-        </div>
+
     </div>
 </body>
 

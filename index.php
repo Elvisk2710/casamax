@@ -230,8 +230,8 @@ if (isset($_GET['error'])) {
                         Tired of empty rooms? Let us connect you with students seeking quality accommodation. List your property today, connect to students and start earning.
                     <div class="about-div-btn">
                         <a href="">
-                        <button style="background-color: rgb(252, 153, 82); color: rgb(8, 8, 12);">
-                        Get Started
+                            <button style="background-color: rgb(252, 153, 82); color: rgb(8, 8, 12);">
+                                Get Started
                             </button>
                         </a>
                     </div>
@@ -239,10 +239,10 @@ if (isset($_GET['error'])) {
                 <div class="about-card" style="background-color: white; opacity: 0.8;">
 
                     <h3>
-                    Fill Your Needs, Find Your Boarding House
+                        Fill Your Needs, Find Your Boarding House
                     </h3>
                     <p>
-                    Discover your perfect study haven. Tired of distractions at home? Find the ideal boarding house that offers a quiet, comfortable, and convenient environment for your studies. Let us help you achieve your academic goals.
+                        Discover your perfect study haven. Tired of distractions at home? Find the ideal boarding house that offers a quiet, comfortable, and convenient environment for your studies. Let us help you achieve your academic goals.
                     </p>
                     <div class="about-div-btn">
                         <a href="">
@@ -257,12 +257,12 @@ if (isset($_GET['error'])) {
                         We Bridge The Gap
                     </h3>
                     <p>
-                    Our platform connects landlords and students, streamlining the process of finding the perfect match. With our efficient matching system, we ensure that both parties connect seamlessly, saving time and effort for everyone involved.
+                        Our platform connects landlords and students, streamlining the process of finding the perfect match. With our efficient matching system, we ensure that both parties connect seamlessly, saving time and effort for everyone involved.
                     </p>
                     <div class="about-div-btn">
                         <a href="">
-                        <button style="background-color: rgb(8, 8, 12); color:rgb(252, 153, 82);">
-                        Know More
+                            <button style="background-color: rgb(8, 8, 12); color:rgb(252, 153, 82);">
+                                Know More
                             </button>
                         </a>
                     </div>
@@ -364,90 +364,151 @@ if (isset($_GET['error'])) {
             <a href="know_more.php"> <button class="cta-btn"> Know More </button></a>
 
         </div>
-        <hr>
-
         <!-- footer -->
-        <div class="footer">
-            <h3 class="abt">
-                <a href="aboutus.php">About</a> CasaMax
-            </h3>
-            <p>
-                Looking for a House to Rent?
-                Welcome to CasaMax, where we provide all the available
-                Homes and Rental properties at the tip of your fingers
-            </p>
-            <p class="abt">
-                <a href="../privacy_policy.html">Our Privacy Policy</a>
+        <footer class="footer">
+            <div class="left-footer">
+                <div class="footer-title">
+                    <div class="logo-img">
+                        <img class="logo" src="./images/logoorange.png" alt="logo">
+                    </div>
+                    <div class="logo-title">
+                        <h4>
+                            CasaMax
+                        </h4>
+                    </div>
+                </div>
+                <div class="footer-contact-details">
+                    <div class="contact">
+                        <a target="_blank" href="mailto:info@casamax.co.zw?subject=Feedback to Casamax.co.zw">
+                            <img src="./images/mail.png" alt="">
+                            <p>info@casamax.co.zw</p>
+                        </a>
+                    </div>
+                    <div class="contact">
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=100093414304668">
+                            <img src="./images/facebook.png" alt="">
+                            <p>facebook</p>
+                        </a>
+                    </div>
+                    <div class="contact">
+                        <a target="_blank" href="https://www.instagram.com/casamax.co.zw/">
+                            <img src="./images/instagram.png" alt="">
+                            <p>casamax.co.zw</p>
+                        </a>
+                    </div>
+                    <div class="contact">
+                        <a target="_blank" href="https://wa.me/+263786989144">
+                            <img src="./images/whatsapp.png" alt="">
+                            <p>whatsApp</p>
+                        </a>
+                    </div>
 
-                <a href="../disclaimer.html">Disclaimer</a>
-            </p>
-
-
-
-            <div class="socialicons">
-                <a href="https://www.facebook.com/profile.php?id=100093414304668" data-tabs="timeline"><img src="./images/facebook.png" alt="" title="Our-Facebook-page"></a>
-                <a href="https://www.instagram.com/homerunzim/"><img src="./images/instagram.png" alt="" title="Our-Instagram-page"></a>
-                <a href="https://wa.me/+263786989144"> <img src="./images/whatsapp.png" alt="" title="Our-WhatsApp-page"></a>
-                <a href="mailto:homerunzim@gmail.com?subject=Feedback to HomeRun&cc=c"> <img src="./images/mail.png" alt="" title="Email"></a>
-                <a href=""><img src="./images/twitter.png" alt="" title="Our-twitter-page"></a>
+                </div>
             </div>
-        </div>
-    </div>
-    <?php
-    if (!isset($_GET['chat_id'])) {
-    ?>
-        <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">
-            <a href="./chat/screens/">
-                <img src="./images/new-message.png" alt="">
-            </a>
-        </div>
-    <?php
-    }
-    ?>
-    <script src="./jsfiles/onclickscript.js"></script>
-    <script>
-        // Function to set a cookie
-        function setCookie(name, value, days) {
-            const d = new Date();
-            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-            const expires = "expires=" + d.toUTCString();
-            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            <div class="right-footer">
+                <div class="footer-p">
+                    <h3 class="abt">
+                        <a href="aboutus.php">About</a> CasaMax
+                    </h3>
+                    <p>
+                        Our platform connects landlords and students, streamlining the process of finding the perfect match. With our efficient matching system, we ensure that both parties connect seamlessly, saving time and effort for everyone involved.
+                    </p>
+                   
+                </div>
+                <div class="bottom-footer">
+                    <div class="quick-action">
+                        <h2>
+                            Our Services
+                        </h2>
+                        <div class="contact">
+                            <a target="_blank" href="https://wa.me/+263786989144">
+                                <p>Advertise</p>
+                            </a>
+                        </div>
+                        <div class="contact">
+                            <a target="_blank" href="https://wa.me/+263786989144">
+                                <p>Manage Rental</p>
+                            </a>
+                        </div>
+                        <div class="contact">
+                            <a target="_blank" href="https://wa.me/+263786989144">
+                                <p>Help</p>
+                            </a>
+                        </div>
+                        <div class="contact">
+                            <a target="_blank" href="https://wa.me/+263786989144">
+                                <p>Login</p>
+                            </a>
+                        </div>
+                        <div class="contact">
+                            <a target="_blank" href="https://wa.me/+263786989144">
+                                <p>Choose University</p>
+                            </a>
+                        </div>
+                    </div>
+                    <p class="abt">
+                        <a href="../privacy_policy.html">Our Privacy Policy </a>
+                        <br>
+                        <a href="../disclaimer.html">Disclaimer</a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <?php
+        if (!isset($_GET['chat_id'])) {
+        ?>
+            <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">
+                <a href="./chat/screens/">
+                    <img src="./images/new-message.png" alt="">
+                </a>
+            </div>
+        <?php
         }
+        ?>
+        <script src="./jsfiles/onclickscript.js"></script>
+        <script>
+            // Function to set a cookie
+            function setCookie(name, value, days) {
+                const d = new Date();
+                d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + d.toUTCString();
+                document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            }
 
-        // Function to get a cookie
-        function getCookie(name) {
-            const cname = name + "=";
-            const decodedCookie = decodeURIComponent(document.cookie);
-            const ca = decodedCookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') {
-                    c = c.substring(1);
+            // Function to get a cookie
+            function getCookie(name) {
+                const cname = name + "=";
+                const decodedCookie = decodeURIComponent(document.cookie);
+                const ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(cname) === 0) {
+                        return c.substring(cname.length, c.length);
+                    }
                 }
-                if (c.indexOf(cname) === 0) {
-                    return c.substring(cname.length, c.length);
+                return "";
+            }
+
+            function startTour() {
+                const tourSeen = getCookie("tourSeen");
+
+                if (!tourSeen) {
+                    setCookie("tourSeen", "true", 365);
+                    const intro = introJs();
+                    introJs().start();
+                    introjs - disableInteraction;
                 }
             }
-            return "";
-        }
 
-        function startTour() {
-            const tourSeen = getCookie("tourSeen");
-
-            if (!tourSeen) {
-                setCookie("tourSeen", "true", 365);
-                const intro = introJs();
-                introJs().start();
-                introjs - disableInteraction;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', (event) => {
-            startTour();
-        });
-    </script>
-    <script src="app.js"></script>
-    <script src="./chat/scriptjs/user_status.js"></script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                startTour();
+            });
+        </script>
+        <script src="app.js"></script>
+        <script src="./chat/scriptjs/user_status.js"></script>
 </body>
 
 </html>

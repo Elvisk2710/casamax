@@ -1,9 +1,10 @@
 <style>
     .gallery_container {
-        height: 100vh;
+        height: 100%;
         position: absolute;
         top: 0;
-        width: 100vw;
+        left: 0;
+        width: 100%;
         display: none;
         flex-direction: column;
         align-items: center;
@@ -15,8 +16,8 @@
     }
 
     .slider-inner-container {
-        height: 80vh;
-        width: 100vw;
+        height: 100%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -48,7 +49,7 @@
 
     .image-container {
         width: 100%;
-        height: 80vh;
+        height: 90%;
         margin: auto;
         display: flex;
         justify-content: center;
@@ -59,8 +60,8 @@
     }
 
     .image-container img {
-        max-height: 80vh;
-        max-width: 100vw;
+        max-height: 100%;
+        max-width: 100%;
         object-fit: contain;
         margin: auto;
         border-radius: 10px;
@@ -80,24 +81,30 @@
 
     .controls .prev,
     .controls .next {
-        color: rgb(252, 153, 82);
-        margin: 0 10vw;
+        background-color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    /* 
+    .controls .prev img,
+    .controls .next img {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
 
     .controls .prev:hover,
     .controls .next:hover {
-        opacity: 0.8;
+        transform: scale(1.05);
+        transition: all 0.3s ease-in-out;
+        background-color: rgb(252, 153, 82);
     }
-/* 
-    .controls .prev {
-        right: 90%;
-    }
-
-    .controls .next {
-        left: 90%;
-    } */
 
     .close {
         display: flex;
@@ -113,18 +120,16 @@
     }
 
     .close button {
-        width: 20vw;
+        width: fit-content;
         margin: 0vh 0vw;
         border: none;
-        border-radius: 10px;
+        border-radius: 20px;
         text-align: center;
-        padding: 1vh 2vw;
-        font-weight: 600;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        transition: 0.3s all;
-        color: rgba(8, 8, 12, 0.8);
-        text-align: center;
+        padding: 0.5rem 1.2rem;
+        font-weight: 500;
+        color: rgba(8, 8, 12);
         background-color: rgb(252, 153, 82);
+        font-size: 1rem;
     }
 
     .gallery-icons {
@@ -135,22 +140,26 @@
     }
 
     .icon-btn {
-        background-color: rgb(252, 153, 82);
+        background-color: white;
         border: none;
-        color: white;
         padding: 10px;
         border-radius: 50%;
         cursor: pointer;
-        transition: background-color 0.3s;
         z-index: 10000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-btn img {
+        height: 1.5rem;
+        width: 1.5rem;
     }
 
     .icon-btn:hover {
-        background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    .icon-btn i {
-        font-size: 18px;
+        background-color: rgb(252, 153, 82);
+        transition: all 0.3s ease-in-out;
     }
 
     @media only screen and (max-width: 700px) {
@@ -190,24 +199,29 @@
 
         .controls .prev,
         .controls .next {
-            color: rgb(252, 153, 82);
-            margin: 10px;
+            width: 1.5rem;
+            height: 1.5rem;
         }
+
         .gallery-icons {
-        position: absolute;
-        bottom: 20vh;
-        display: flex;
-        gap: 10px;
-    }
-    .close{
-        position: absolute;
-        bottom: 20px;
-    }
-    .close button{
-        width: 50vw;
-        color: rgba(8, 8, 12, 0.8);
-        font-weight: 800;
-    }
+            position: absolute;
+            bottom: 20vh;
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .close {
+            position: absolute;
+            bottom: 10vh;
+        }
+
+        .close button {
+            width: 50vw;
+            color: rgba(8, 8, 12, 0.8);
+            font-weight: 800;
+        }
     }
 </style>
 <?php
@@ -236,8 +250,8 @@ if ($row['uni'] == "University of Zimbabwe") {
 <div class="gallery_container" id="gallery_container">
     <div class="full_container">
         <div class="controls">
-            <div class="prev"><i class="fa fa-chevron-circle-left" style="font-size: 34px;"></i></div>
-            <div class="next"><i class="fa fa-chevron-circle-right" style="font-size: 34px;"></i></div>
+            <div class="prev"><img src="./images/previous.png" alt="Prev" title="Previous"></div>
+            <div class="next"><img src="./images/next.png" alt="Next" title="Next"></div>
         </div>
         <div class="slider-inner-container">
             <?php
@@ -262,19 +276,20 @@ if ($row['uni'] == "University of Zimbabwe") {
                 }
             }
             ?>
-             <div class="gallery-icons">
-            <button onclick="toggleFullscreen()" class="icon-btn"><i class="fa fa-expand"></i></button>
-            <button onclick="downloadImage()" class="icon-btn"><i class="fa fa-download"></i></button>
-            <button onclick="zoomIn()" class="icon-btn"><i class="fa fa-search-plus"></i></button>
-            <button onclick="zoomOut()" class="icon-btn"><i class="fa fa-search-minus"></i></button>
-            <button onclick="rotateImage()" class="icon-btn"><i class="fa fa-undo"></i></button>
+        </div>
+        <div class="gallery-icons">
+            <button onclick="toggleFullscreen()" class="icon-btn"><img src="./images/fullScreen.png" alt="full-screen" title="Full-screen"></button>
+            <button onclick="downloadImage()" class="icon-btn"><img src="./images/download.png" alt="download" title="Download"></button>
+            <button onclick="zoomIn()" class="icon-btn"><img src="./images/zoomIn.png" alt="zoom in" title="Zoom In"></button>
+            <button onclick="zoomOut()" class="icon-btn"><img src="./images/zoomOut.png" alt="zoom out" title="Zoom Out"></i></button>
+            <button onclick="rotateImage()" class="icon-btn"><img src="./images/rotate.png" alt="rotate" title="Rotate"></button>
         </div>
         <div class="close">
-            <button onclick="close_gallery()">close</button>
+            <button onclick="close_gallery()">Close</button>
         </div>
-        </div>
-       
     </div>
+
+</div>
 </div>
 
 

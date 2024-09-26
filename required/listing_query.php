@@ -90,11 +90,10 @@ while ($row = mysqli_fetch_array($result)) {
         <a href="../listingdetails.php?clicked_id=<?= $row['home_id'] ?>" onclick="GetName(this.id)" id="<?= $row['home_id'] ?>">
             <div class="house-img">
                 <img src="../housepictures/<?= empty($row['image1']) ? 'no_image.png' : "$folder/" . $row['image1'] ?>" alt="house image">
-                <div class="agent-details">
+                <!-- <div class="agent-details">
                     <p style="opacity:0.5;"><?= $agent ? ucfirst($row_agent['agent_tagline']) . ' Agents' : "Landlord" ?></p><br>
                     <p><?= $agent_fee ?></p>
-                </div>
-
+                </div> -->
             </div>
             <div class="house-info">
                 <p class="house-info-gender"><?= $row['gender'] ?> </p>
@@ -122,7 +121,6 @@ while ($row = mysqli_fetch_array($result)) {
                     <img src="<?= $verificationIcon ?>" alt="verification" title="verification">
                 </div>
             <?php } ?>
-            <hr>
             <div class="house-price">
                 <div class="left-house-price">
                     <a href="<?= $whatsapp_link ?>" class="house_link" title="Click to share">

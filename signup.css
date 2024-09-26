@@ -10,8 +10,7 @@ button:active {
   overflow: hidden;
 }
 body {
-  background-color: rgb(8, 8, 12);
-  background-size: cover;
+  background-color: rgb(248, 248, 248);
   padding: 0;
   margin: 0;
 }
@@ -23,11 +22,11 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 .logo {
-  width: 6vw;
-  height: 6vw;
+  width: 4.5rem;
+  height: 4.5rem;
   margin-top: 10px;
 }
-.gender_container{
+.gender_container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -37,7 +36,7 @@ input[type="number"] {
   height: fit-content;
   width: 60%;
 }
-.radio{
+.radio {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,8 +48,8 @@ header {
   text-align: center;
 }
 header a {
-  height: 60px;
-  width: 60px;
+  height: 2.5rem;
+  width: 2.5rem;
 }
 .left-col {
   width: 70%;
@@ -62,41 +61,79 @@ header a {
 }
 
 .container {
-  background-color: rgb(255, 255, 255);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 60vw;
-  margin: 5% auto;
-  font-size: 20px;
   color: rgb(8, 8, 12);
-  border-radius: 10px;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  border-radius: 20px;
   text-align: center;
+  width: 100vw;
+  height: 100vh;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-form{
-  width: 100%;
+.login-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(8, 8, 12);
+  padding: 2rem 2rem;
+  border-radius: 20px;
+  width: 70%;
+  height: 80%;
+}
+.left-login,
+.right-login {
   height: 100%;
+}
+.left-login {
+  flex-basis: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.right-login {
+  background-color: white;
+  flex-basis: 35%;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+}
+.btn-container {
+  background-color: rgb(255, 255, 255);
+  width: fit-content;
+  padding: 2rem;
+  border-radius: 20px;
+}
+form {
+  width: 100%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-form div{
+form div {
   margin-top: 10px;
 }
 .input-label {
-  font-family: "Quicksand", sans-serif;
   color: rgb(8, 8, 12);
-  font-weight: 600;
-  padding-bottom: 20px;
+  font-weight: 500;
+  padding: 1rem;
   text-align: left;
-  padding-bottom: 20px;
-  width: 60%;
+  width: 80%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+.input-label label{
+  width: 100%;
 }
 .input-label input {
   background: transparent;
@@ -105,9 +142,8 @@ form div{
 .container h1 {
   padding: 0;
   margin: 10px 0;
-  font-size: 30px;
+  font-size: 1.4rem;
   text-align: center;
-  font-family: "Oswald", sans-serif;
 }
 .dropdown {
   margin-left: 0;
@@ -139,17 +175,15 @@ form div{
   bottom: 10px;
   border-radius: 10px;
 }
-.container input, .input-label .password {
-  width: 60%;
+.container input,
+.input-label .password {
+  width: 100%;
   background: transparent;
   border: none;
-  font-size: medium;
-  border-bottom: 1px solid rgb(37, 37, 43);
-  font-family: Arial, Helvetica, sans-serif;
-  margin-bottom: 10px;
+  border-bottom: 2px solid rgb(37, 37, 43);
   text-align: left;
 }
-.password input{
+.password input {
   padding: 0;
   margin: 0;
   border: 0 !important;
@@ -163,13 +197,14 @@ form div{
 .container sup {
   color: rgb(252, 153, 82);
 }
-.container #male, .container #female {
+.container #male,
+.container #female {
   width: 15px;
   margin: 0;
 }
 
-.container .man, .container .woman {
-  font-family: Arial, Helvetica, sans-serif;
+.container .man,
+.container .woman {
 }
 
 .container #checkbox {
@@ -183,15 +218,13 @@ form div{
   font-size: 12px;
 }
 .container .login {
-  width: 40%;
+  width: fit-content;
   margin: auto;
 }
-.container .login button {
+.container button {
   margin: 10px auto;
-  margin-left: 0%;
-  font-family: Arial, Helvetica, sans-serif;
   padding: 10px;
-  width: 80%;
+  width: 10rem;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   font-size: 15px;
   text-align: center;
@@ -201,9 +234,9 @@ form div{
   border-radius: 10px;
   background-color: rgb(252, 153, 82);
 }
-.container .login .logout_btn {
-  background-color: rgb(255, 255, 255);
-  color: rgb(252, 153, 82);
+.logout_btn {
+  background-color: rgb(255, 255, 255) !important;
+  color: rgb(252, 153, 82) !important;
 }
 .sign-up {
   width: 60%;
@@ -216,11 +249,9 @@ form div{
 a {
   font-size: 15px;
   color: rgb(252, 153, 82);
-  font-family: "Inconsolata", monospace;
   font-weight: 400;
 }
 form .reg {
-  font-size: 10px;
   text-align: center;
 }
 
@@ -247,17 +278,17 @@ form .reg {
     width: 70vw;
     margin: 10px 0;
   }
-  .container input, .input-label .password{
+  .container input,
+  .input-label .password {
     width: 70%;
     background: white;
     border: none;
     font-size: 1.1rem;
     border-bottom: 1px solid rgba(37, 37, 43, 0.6);
-    font-family: Arial, Helvetica, sans-serif;
     margin-bottom: 10px;
     text-align: left;
   }
-  .password input{
+  .password input {
     width: 100% !important;
   }
   .container .input-label label {
@@ -272,17 +303,14 @@ form .reg {
   .container h1 {
     font-size: 22px;
     margin: 40px 0;
-    font-family: "Oswald", sans-serif;
   }
   .container .h3reg {
     margin: 0;
     padding: 0;
     color: rgb(252, 153, 82);
     font-weight: 600;
-    font-family: "Oswald", sans-serif;
   }
   .container label {
-    font-family: "Lato", sans-serif;
     display: block;
     text-align: left;
     font-weight: 600;

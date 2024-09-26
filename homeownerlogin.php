@@ -27,54 +27,62 @@ setcookie("loginPage", "homeownerlogin.php", time() + (900 * 1), "/");
     require_once 'required/pageloader.php';
 
     ?>
-    <header>
-        <a href="index.php"><img src="images/logowhite.png" alt="logo" height="80px" width="100px" class="logo"></a>
-    </header>
 
     <div class="container">
-
-        <form action="homerunphp/homeownerloginscript.php?redirect=<?php echo $redirect ?>" method="post">
-            <div>
-                <h3 class="h3reg">Home-Owner</h3>
-                <h1>Log-In</h1>
+        <div class="login-container">
+            <div class="left-login">
+                <lottie-player
+                    src="https://lottie.host/12be720b-5ba7-4989-a48d-1cbd6de19286/qAUt599WBl.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 70%; height: 70%;"
+                    loop
+                    autoplay>
+                </lottie-player>
             </div>
+            <div class="right-login">
+                <header>
+                    <a href="index.php">
+                        <img src="images/logoorange.png" alt="logo" class="logo">
+                    </a>
+                </header>
+                <form action="homerunphp/homeownerloginscript.php?redirect=<?php echo $redirect ?>" method="post">
+                    <div>
+                        <h1>Landlord LogIn</h1>
+                    </div>
+                    <div class="input-label">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Email" name="email" required>
+                    </div>
+                    <div class="input-label">
+                        <label for="upword">Password</label>
+                        <input type="password" id="pword" placeholder="Password" name="password" required>
+                    </div>
+                    <div class="login">
+                        <button type="submit" name="submit">
+                            Log-In
+                        </button>
+                        <br>
+                    </div>
+                </form>
+                <div class="lower-login">
+                    <form action="homerunphp/homeownerloginscript.php" method="post">
+                        <button name="logout" class="logout_btn">
+                            Log-Out
+                        </button>
 
-            <div class="input-label">
-                <label for="email">Email<span style="color: red; font-size:10px;">*</span></label>
-                <input type="email" id="email" placeholder="Email Address" name="email" required>
+                        <p class="reg">Don't have an account? <a href="advertise/index.php">Register</a></p>
 
+                    </form>
+                    <div class="fpass">
+                        <a href="required/fpass.php">forgot your password?</a>
+                    </div>
+                </div>
             </div>
-            <div class="input-label">
-                <label for="upword">Password<span style="color: red; font-size:10px;">*</span></label>
-                <input type="password" id="pword" placeholder="Enter your Password" name="password" required>
-
-            </div>
-
-            <div class="login">
-
-                <button type="submit" name="submit">
-                    Log-In
-                </button>
-
-                <br>
-
-        </form>
-
-
-        <form action="homerunphp/homeownerloginscript.php" method="post">
-            <button name="logout" class="logout_btn">
-                Log-Out
-            </button>
+        </div>
     </div>
 
-    <p class="reg">Don't have an account? <a href="advertise/index.php">Register</a></p>
-
-    </form>
-
-    <div class="fpass">
-        <a href="required/fpass.php">forgot your password?</a>
     </div>
-
 
     <?php
 

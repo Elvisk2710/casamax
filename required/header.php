@@ -10,3 +10,4 @@
 <meta http-equiv="expires" content="Sun, 01 Jan 2014 00:00:00 GMT">
 <meta http-equiv="pragma" content="no-cache">
 <meta name="theme-color" content="#08080C" />
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
