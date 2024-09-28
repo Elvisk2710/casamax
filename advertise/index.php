@@ -24,7 +24,7 @@
         </p> -->
         <div class="advertise-container">
             <div class="left-advertise">
-            <lottie-player
+                <lottie-player
                     src="https://lottie.host/12be720b-5ba7-4989-a48d-1cbd6de19286/qAUt599WBl.json"
                     background="transparent"
                     speed="1"
@@ -53,19 +53,19 @@
                         </div>
                         <div class="input-div">
                             <div>
-                                <label>Contact:</label>
-                                <input type="number" min="0" name="phone" placeholder="enter phone-number" required>
-                            </div>
-
-                            <div>
                                 <label for="upword">Password</label>
                                 <input type="password" id="pword" name="password" placeholder="Enter your Password" required>
                             </div>
-                        </div>
-                        <div class="input-div">
                             <div>
                                 <label for="upword">Confirm Password</label>
                                 <input type="password" id="cpword" name="confirmpassword" placeholder="Enter your Password" required>
+                            </div>
+
+                        </div>
+                        <div class="input-div">
+                            <div>
+                                <label>Contact:</label>
+                                <input type="number" min="0" name="phone" placeholder="enter phone-number" required>
                             </div>
 
                             <div>
@@ -146,19 +146,19 @@
                         </div>
                         <div class="navuni">
                             <label>Which University Do You Want To Cater For?</label>
-                                <select name="university" id="uni_dropdown" required>
-                                    <option value="">Choose University</option>
-                                    <option value="University of Zimbabwe">University of Zimbabwe</option>
-                                    <option value="Midlands State University">Midlands State University</option>
-                                    <option value="Africa Univeristy">Africa Univeristy</option>
-                                    <option value="Bindura State University">Bindura State University</option>
-                                    <option value="Chinhoyi University of Science and Technology">Chinhoyi University of Science
-                                        and Technology</option>
-                                    <option value="Great Zimbabwe University">Great Zimbabwe University</option>
-                                    <option value="Harare Institute of Technology">Harare Institue of Technology</option>
-                                    <option value="National University of Science and Technology">National University of Science
-                                        and Technology</option>
-                                </select>
+                            <select name="university" id="uni_dropdown" required>
+                                <option value="">Choose University</option>
+                                <option value="University of Zimbabwe">University of Zimbabwe</option>
+                                <option value="Midlands State University">Midlands State University</option>
+                                <option value="Africa Univeristy">Africa Univeristy</option>
+                                <option value="Bindura State University">Bindura State University</option>
+                                <option value="Chinhoyi University of Science and Technology">Chinhoyi University of Science
+                                    and Technology</option>
+                                <option value="Great Zimbabwe University">Great Zimbabwe University</option>
+                                <option value="Harare Institute of Technology">Harare Institue of Technology</option>
+                                <option value="National University of Science and Technology">National University of Science
+                                    and Technology</option>
+                            </select>
                         </div>
                         <div class="navuni">
                             <label>Gender Basis</label>
@@ -248,7 +248,6 @@
                     </div>
                     <div>
                         <div class="prevNext">
-                            <button type="button" id="cancelBtn" onclick="CloseAddListingForm()">Cancel</button>
                             <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
                             <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
                             <button type="submit" id="submit" onclick="nextPrev(2)" name="create_profile">Submit</button>

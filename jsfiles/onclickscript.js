@@ -115,10 +115,8 @@ function showTab(n) {
   // ... and fix the Previous/Next buttons:
   if (n == 0) {
     document.getElementById("prevBtn").style.display = "none";
-    document.getElementById("cancelBtn").style.display = "inline";
   } else {
     document.getElementById("prevBtn").style.display = "inline";
-    document.getElementById("cancelBtn").style.display = "none";
   }
   if (n == x.length - 1) {
     document.getElementById("nextBtn").style.display = "none";
@@ -165,6 +163,8 @@ document.querySelector("body").classList.add("scrollable");
 // show password
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#pword');
+const confirmPassword = document.querySelector('#cpword');
+
 
 togglePassword.addEventListener('click', function(e) {
     // toggle the type attribute
@@ -204,6 +204,12 @@ function validateForm() {
         // and set the current valid status to false:
         valid = false;
       }
+    }
+    if(password.value != confirmPassword.value){
+      password.classList.add("invalid");
+      confirmPassword.classList.add("invalid");
+
+      valid = false;
     }
   }
   if (x[currentTab] === x[1]) {
