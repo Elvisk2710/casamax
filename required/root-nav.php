@@ -1,39 +1,40 @@
 <div class="nav-container">
-<nav id="navBar" class="navbar-white">
-  <h3 class="smltxt">CasaMax</h3>
-  <img src="https://casamax.co.zw/images/menu.png" alt="menu" onclick="togglebtn()" class="fas">
-  <div class="left-navbar">
-    <div class="head">
-      <a href="https://casamax.co.zw"> <img src="https://casamax.co.zw/images/logoblack.png" alt="" class="logo"></a>
-    </div>
-    <div class="navbar-left-links">
-      <a href="../index.php" class="home">Home</a>
-      <a href="../advertise_as/index.php">Advertise</a>
-      <a href="./manage/index.php">Manage Rental</a>
-      <a href="./aboutus.php">About Us</a>
-      <a href="../help.php">Help</a>
-      <a href="../chat/screens/">My Chats</a>
-    </div>
-  </div>
-  <div class="right-navbar">
-    <div class="navbar-right-links">
-      <?php
-      if (isset($_SESSION['sessionstudent'])) {
-        echo '<a href="../student_profile.php" class="sign_in" name="loginbtn">My Profile</a>';
-      } elseif (isset($_SESSION['sessionowner'])) {
-        echo '<a href="../profile.php" class="sign_in" name="loginbtn">My Profile</a>';
-      } else {
-        echo '<a href="../loginas.php" class="sign_in" name="loginbtn">Login</a>';
-      }
-      ?>
-    </div>
-  </div>
-</nav>
+    <nav id="navBar" class="navbar-white">
+        <h3 class="smltxt">CasaMax</h3>
+        <img src="https://casamax.co.zw/images/menu.png" alt="menu" onclick="togglebtn()" class="fas">
+        <div class="left-navbar">
+            <div class="head">
+                <a href="https://casamax.co.zw"> <img src="./images/logoorange.png" alt="" class="logo"></a>
+            </div>
+            <div class="navbar-left-links">
+                <a href="./index.php" class="home">Home</a>
+                <a href="./advertise_as/index.php">Advertise</a>
+                <a href="./manage/index.php">Manage Rental</a>
+                <a href="./aboutus.php">About Us</a>
+                <a href="./help.php">Help</a>
+                <a href="./chat/screens/">My Chats</a>
+            </div>
+        </div>
+        <div class="right-navbar">
+            <div class="navbar-right-links">
+                <?php
+                if (isset($_SESSION['sessionstudent'])) {
+                    echo '<a href="./student_profile.php" class="sign_in" name="loginbtn">My Profile</a>';
+                } elseif (isset($_SESSION['sessionowner'])) {
+                    echo '<a href="./profile.php" class="sign_in" name="loginbtn">My Profile</a>';
+                } else {
+                    echo '<a href="./loginas.php" class="sign_in" name="loginbtn">Login</a>';
+                }
+                ?>
+            </div>
+        </div>
+    </nav>
 </div>
 <style>
-    .nav-container{
+    .nav-container {
         width: 100%;
     }
+
     nav {
         background-color: white;
         text-align: center;

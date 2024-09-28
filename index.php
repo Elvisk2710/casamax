@@ -98,7 +98,7 @@ if (isset($_GET['error'])) {
     <script src="index.js"></script>
     <!-- Include Intro.js JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
-    <nav id="navBar" data-intro="Here is the navigation bar. You can find various sections of our site here." data-step="3" data-position="bottom">
+    <!-- <nav id="navBar" data-intro="Here is the navigation bar. You can find various sections of our site here." data-step="3" data-position="bottom">
         <div class="left-nav">
             <a href="index.php">
                 <img src="images/logoorange.png" alt="logo" class="logo" data-intro="This is our logo. Click it to return to the homepage." data-step="2" data-position="bottom">
@@ -121,7 +121,10 @@ if (isset($_GET['error'])) {
             }
             ?>
         </div>
-    </nav>
+    </nav> -->
+    <?php
+    require './required/root-nav.php';
+    ?>
     <div class="container">
 
         <header data-intro="Welcome to CasaMax! Let us guide you through our main features." data-step="1">
@@ -365,96 +368,9 @@ if (isset($_GET['error'])) {
 
         </div>
         <!-- footer -->
-        <footer class="footer">
-            <div class="left-footer">
-                <div class="footer-title">
-                    <div class="logo-img">
-                        <img class="logo" src="./images/logoorange.png" alt="logo">
-                    </div>
-                    <div class="logo-title">
-                        <h4>
-                            CasaMax
-                        </h4>
-                    </div>
-                </div>
-                <div class="footer-contact-details">
-                    <div class="contact">
-                        <a target="_blank" href="mailto:info@casamax.co.zw?subject=Feedback to Casamax.co.zw">
-                            <img src="./images/mail.png" alt="">
-                            <p>info@casamax.co.zw</p>
-                        </a>
-                    </div>
-                    <div class="contact">
-                        <a target="_blank" href="https://www.facebook.com/profile.php?id=100093414304668">
-                            <img src="./images/facebook.png" alt="">
-                            <p>facebook</p>
-                        </a>
-                    </div>
-                    <div class="contact">
-                        <a target="_blank" href="https://www.instagram.com/casamax.co.zw/">
-                            <img src="./images/instagram.png" alt="">
-                            <p>casamax.co.zw</p>
-                        </a>
-                    </div>
-                    <div class="contact">
-                        <a target="_blank" href="https://wa.me/+263786989144">
-                            <img src="./images/whatsapp.png" alt="">
-                            <p>whatsApp</p>
-                        </a>
-                    </div>
 
-                </div>
-            </div>
-            <div class="right-footer">
-                <div class="footer-p">
-                    <h3 class="abt">
-                        <a href="aboutus.php">About</a> CasaMax
-                    </h3>
-                    <p>
-                        Our platform connects landlords and students, streamlining the process of finding the perfect match. With our efficient matching system, we ensure that both parties connect seamlessly, saving time and effort for everyone involved.
-                    </p>
-                   
-                </div>
-                <div class="bottom-footer">
-                    <div class="quick-action">
-                        <h2>
-                            Our Services
-                        </h2>
-                        <div class="contact">
-                            <a target="_blank" href="https://wa.me/+263786989144">
-                                <p>Advertise</p>
-                            </a>
-                        </div>
-                        <div class="contact">
-                            <a target="_blank" href="https://wa.me/+263786989144">
-                                <p>Manage Rental</p>
-                            </a>
-                        </div>
-                        <div class="contact">
-                            <a target="_blank" href="https://wa.me/+263786989144">
-                                <p>Help</p>
-                            </a>
-                        </div>
-                        <div class="contact">
-                            <a target="_blank" href="https://wa.me/+263786989144">
-                                <p>Login</p>
-                            </a>
-                        </div>
-                        <div class="contact">
-                            <a target="_blank" href="https://wa.me/+263786989144">
-                                <p>Choose University</p>
-                            </a>
-                        </div>
-                    </div>
-                    <p class="abt">
-                        <a href="../privacy_policy.html">Our Privacy Policy </a>
-                        <br>
-                        <a href="../disclaimer.html">Disclaimer</a>
-                    </p>
-                </div>
-            </div>
-        </footer>
         <?php
+        require './required/root-footer.php';
         if (!isset($_GET['chat_id'])) {
         ?>
             <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">

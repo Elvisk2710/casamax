@@ -42,7 +42,7 @@ setcookie("page_pass", "homerunuserdb", time() + (900 * 1), "/");
             <div class="right-sign-up">
                 <form class="sign-up-container" action="homerunphp/register.php" method="post">
                     <div>
-                        <h1>Student Register</h1>
+                        <h1>Student Registration</h1>
                     </div>
                     <div class="input-div">
                         <div class="input-label">

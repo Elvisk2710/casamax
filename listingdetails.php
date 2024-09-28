@@ -77,13 +77,9 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
 </head>
 
 <body class="scrollable">
-    <?php require 'required/pageloader.php'; ?>
-
-    <div class="listing-navbar-div">
-        <?php require './required/navbar.php'; ?>
-    </div>
-
     <?php
+    require 'required/pageloader.php';
+    require './required/navbar.php';
     $ownerName = $agent ? $row_agent['firstname'] : $row['firstname'];
     ?>
 
