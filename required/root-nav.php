@@ -1,7 +1,9 @@
 <div class="nav-container">
     <nav id="navBar" class="navbar-white">
-        <h3 class="smltxt">CasaMax</h3>
-        <img src="https://casamax.co.zw/images/menu.png" alt="menu" onclick="togglebtn()" class="fas">
+        <div class="top-nav">
+            <h3 class="smltxt">CasaMax</h3>
+            <img src="https://casamax.co.zw/images/menu.png" alt="menu" onclick="togglebtn()" class="fas">
+        </div>
         <div class="left-navbar">
             <div class="head">
                 <a href="https://casamax.co.zw"> <img src="./images/logoorange.png" alt="" class="logo"></a>
@@ -34,7 +36,9 @@
     .nav-container {
         width: 100%;
     }
-
+    .top-nav{
+        display: none;
+    }
     nav {
         background-color: white;
         text-align: center;
@@ -177,5 +181,111 @@
         color: rgb(8, 8, 12);
         transform: scale(0.95);
         transition: transform 0.3s ease-in-out;
+    }
+
+    @media only screen and (max-width: 700px) {
+        nav .home {
+            font-size: 1.2rem;
+            display: inline-block;
+            color: rgb(252, 153, 82);
+        }
+        .head{
+            display: none;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            z-index: 40;
+            display: block !important;
+            width: 100%;
+            background: rgb(8, 8, 12);
+            margin: 0 auto !important;
+            max-height: 5rem;
+            overflow: hidden;
+            transition: max-height 1s;
+            border-radius: 0px !important;
+        }
+
+        .top-nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            height: 5rem;
+        }
+
+        .smltxt {
+            display: block;
+            color: rgb(252, 153, 82);
+        }
+
+        .left-navbar {
+            display: block;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .navbar-left-links {
+            display: flex;
+            flex-direction: column;
+            margin-top: 0rem !important;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navbar-right-links {
+            display: flex;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        nav a {
+            display: block;
+            color: rgb(255, 255, 255);
+            font-weight: 400;
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .sign_in {
+            background: rgb(252, 153, 82);
+            border-radius: 15px;
+            padding: 3px 12px;
+            font-weight: 700;
+            color: rgb(8, 8, 12);
+            width: fit-content;
+        }
+
+        .hidemenu {
+            max-height: 300vw;
+            background: rgb(8, 8, 12);
+            width: 100%;
+        }
+
+        .search-bar {
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px 10px 30px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        #navBar .fas {
+            display: inline-block;
+            color: rgb(252, 153, 82);
+            height: 30px;
+            width: 30px;
+            background: none;
+            text-align: right;
+            margin-left: 60px;
+            margin-bottom: 0px;
+            padding-top: 0;
+        }
     }
 </style>

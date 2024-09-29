@@ -25,76 +25,66 @@ setcookie("loginPage", "login.php", time() + (900 * 1), "/");
     <?php
     require_once '../required/pageloader.php';
     ?>
-    <header>
-        <a href="../index.php"><img src="../images/logowhite.png" alt="logo" class="logo"></a>
-    </header>
+    <?php
+
+    if (isset($_POST['logout'])) {
+        unset($_SESSION['sessionstudent']);
+        session_destroy();
+        redirect('./index.php?error=You Have Logged Out Successfully');
+    }
+    ?>
 
     <div class="container">
-        <form action="../homerunphp/admin_login_script.php" method="post">
-            <div>
-                <h3 class="h3reg">Admin</h3>
-                <h1>Log-In</h1>
-            </div>
+        <div class="login-container">
+            <!-- <div class="left-login">
+                <lottie-player
+                    src="https://lottie.host/54b560aa-0926-4f33-ba56-bc874c3cdf00/HGgMex1FgU.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 70%; height: 70%;"
+                    loop
+                    autoplay>
+                </lottie-player>
+            </div> -->
+            <div class="right-login">
+                <header>
+                    <a href="../index.php">
+                        <img src="../images/logoorange.png" alt="logo" class="logo">
+                    </a>
+                </header>
+                <form action="../homerunphp/admin_login_script.php" method="post">
+                    <div>
+                        <h1>Admin LogIn</h1>
+                    </div>
 
-            <div class="input-label">
-                <label for="email">Email<span style="color: red; font-size:10px;">*</span></label>
-                <input type="email" id="email" placeholder="Email Address" name="email" required>
+                    <div class="input-label">
+                        <label for="email">Email<span style="color: red; font-size:10px;">*</span></label>
+                        <input type="email" id="email" placeholder="Email Address" name="email" required>
 
-            </div>
-            <div class="input-label">
-                <label for="upword">Password<span style="color: red; font-size:10px;">*</span></label>
-                <input type="password" id="pword" placeholder="Enter your Password" name="password" required>
-                <i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
-
-            </div>
-
-            <div class="login">
-                <div>
-                    <button type="submit" name="submit" class="login_btn">
-                        Log-In
-                    </button>
-                    <br>
-
+                    </div>
+                    <div class="input-label">
+                        <label for="upword">Password<span style="color: red; font-size:10px;">*</span></label>
+                        <input type="password" id="pword" placeholder="Enter your Password" name="password" required>
+                    </div>
+                    <div class="login">
+                        <button type="submit" name="submit" class="login_btn">
+                            Log-In
+                        </button>
+                    </div>
+                </form>
+                <div class="lower-login">
+                    <form action="../homerunphp/loginscript.php" method="post">
+                        <button name="logout" class="logout_btn">
+                            Log-Out
+                        </button>
+                        <p class="reg">Don't have an account? <a href="signup.php">Register</a></p>
+                    </form>
+                    <div class="fpass">
+                        <a href="../required/fpass.php">forgot your password?</a>
+                    </div>
                 </div>
-
             </div>
-
-            <script>
-                const togglePassword = document.querySelector('#togglePassword');
-                const password = document.querySelector('#pword');
-
-                togglePassword.addEventListener('click', function(e) {
-                    // toggle the type attribute
-                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                    password.setAttribute('type', type);
-                    // toggle the eye slash icon
-                    this.classList.toggle('fa-eye-slash');
-                });
-            </script>
-        </form>
-
-        <form action="../homerunphp/loginscript.php" method="post">
-
-            <div class="login">
-                <button name="logout" class="logout_btn">
-                    Log-Out
-                </button>
-            </div>
-        </form>
-        <br>
-        <div class="fpass">
-            <a href="../required/fpass.php">forgot your password?</a>
         </div>
-
-        <?php
-
-        if (isset($_POST['logout'])) {
-            unset($_SESSION['sessionstudent']);
-            session_destroy();
-            redirect('./index.php?error=You Have Logged Out Successfully');
-        }
-        ?>
-
     </div>
 </body>
 

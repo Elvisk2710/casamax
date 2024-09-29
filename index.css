@@ -585,7 +585,7 @@ hr {
   margin: 2rem 6rem;
   background: linear-gradient(135deg, rgb(252, 153, 82), rgb(255, 255, 255));
   background-position: center;
-  border-radius: 15px;
+  border-radius: 20px;
   padding: 4rem;
   color: rgb(8, 8, 12);
 }
@@ -630,217 +630,80 @@ hr {
 @media only screen and (max-width: 700px) {
   .container {
     background-color: white;
-  }
-  nav .home {
-    font-size: 1.2rem;
-    display: inline-block;
-    margin-top: 6vw;
-    color: rgb(252, 153, 82);
-    padding-top: 20px;
-  }
-  .smltxt {
-    display: inline-block;
-    color: white;
-    text-align: left;
-    width: 40%;
-    margin: 0 auto;
-  }
-  nav {
-    position: fixed;
-    top: 0;
-    z-index: 40;
-    display: block;
+    margin-top: 4rem;
+    padding-top: 1rem;
     width: 100%;
-    padding: 20px 0% 12% 0%;
-    background: rgb(8, 8, 12);
-    margin: 0 auto;
-    max-height: 1%;
-    overflow: hidden;
-    transition: max-height 1s;
-    margin-top: 0px;
-    border-radius: 0px;
   }
-  nav a {
-    display: block;
-    color: rgb(255, 255, 255);
-    font-weight: 400;
-    margin: 4px auto;
-    font-size: 1rem;
-    display: flex;
+
+  .logo {
+    display: none !important;
+  }
+  header {
+    margin: 1rem 0.5rem;
+    flex-direction: column;
     justify-content: center;
-    justify-items: center;
-    align-items: center;
   }
-  .sign_in {
-    background: rgb(252, 153, 82);
-    border-radius: 15px;
-    padding: 3px 12px;
-    font-weight: 700;
-    color: rgb(8, 8, 12);
-    width: fit-content;
+  .left-header {
+    flex-basis: 100%;
+    padding: 0 !important;
+    margin: 2rem 1rem;
+    display: flex;
   }
-  .hidemenu {
-    max-height: 300vw;
-    background: rgb(8, 8, 12);
-    width: 100%;
+  .right-header {
+    display: none;
   }
-  .search-bar {
-    width: 80%;
-    margin: 30px auto;
-    padding: 20px 10px 30px;
-    border-radius: 15px;
-    position: relative;
-  }
-  #navBar .fas {
-    display: inline-block;
-    color: rgb(252, 153, 82);
-    height: 30px;
-    width: 30px;
-    background: none;
-    text-align: right;
-    margin-left: 60px;
-    margin-bottom: 0px;
-    padding-top: 0;
+  h1 {
+    margin: 2rem 1rem;
+    font-size: 3rem;
   }
   select {
-    font-size: 1.2rem;
-    height: 10vw;
     width: 95%;
     padding: 10px;
-    font-size: 16px;
     border: none;
-    border-radius: 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
     color: #333;
     appearance: none; /* Remove default arrow in some browsers */
     -webkit-appearance: none; /* Remove default arrow in WebKit browsers */
     -moz-appearance: none; /* Remove default arrow in Firefox */
     cursor: pointer;
   }
-  option {
-    color: rgb(8, 8, 12); /* Default color of options */
-    background-color: white; /* Background color of options */
-  }
-
-  select option:checked {
-    color: white; /* Color of the selected text */
-    background-color: rgb(
-      252,
-      153,
-      82
-    ); /* Background color of the selected option */
-  }
-  .containersub p {
-    font-size: 1rem;
-  }
-  .search-form {
-    flex-direction: column;
-  }
-
-  .search-bar form input {
-    border-bottom: 1px solid rgb(8, 8, 12);
+  .about-div {
     width: 100%;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    padding: 10px;
-    font-size: 0.8rem;
+    margin: 0 !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-  .search-bar form button {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 50%);
-    width: 15vw;
-    height: 15vw;
-    transition: 0.3s all;
-  }
-  .search-btn button:active {
-    transform: scale(0.9) translate(-50%, 50%);
-    /* Scaling button to 0.98 to its original size */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Lowering the shadow */
-  }
-  .search-bar form button img {
-    width: 30px;
-  }
-  h1 {
-    font-size: 4.6rem;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    margin-bottom: 2rem;
-    padding-top: 10vw;
-    line-height: 12vw;
-  }
-  .srch-p {
-    color: rgb(252, 153, 82);
-    padding-top: 12vw;
-    padding-bottom: 1vw;
-    font-size: 1rem;
-  }
-  .containersub {
-    padding-left: 15%;
-    padding-right: 15%;
-    background-color: white;
-  }
-  .sub-title {
-    font-size: 1.2rem;
+  .about-card {
+    margin: 0.5rem 0rem !important;
+    width: 100% !important;
   }
   .browse {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-gap: 20px;
-    margin: 4rem;
-  }
-  .browse div img {
-    width: 100%;
-    border-radius: 15px;
-    height: 20vh;
-    opacity: 100%;
-    filter: drop-shadow(0 0 4px rgb(107, 107, 107)) brightness(40%);
-    transition: 0.3s all;
-  }
-  .browse div img:active {
-    filter: brightness(40%) drop-shadow(0 0 8px rgb(82, 82, 82));
-    height: 14vh;
-    width: 90%;
-    margin-left: 4vw;
-  }
-  .browse a div h3 {
-    font-size: 1.2rem;
+    grid-template-columns: repeat(2, 1fr); /* 2 equal-width columns */
   }
   .cta {
-    padding: 15% 5%;
-    border-radius: 20px;
+    margin: 1rem !important;
+    padding: 2rem !important;
   }
   .cta h3 {
     font-size: 1.2rem;
-    font-weight: 600;
-    line-height: 8vw;
+    line-height: 1rem;
   }
   .cta p {
-    font-size: 1rem;
+    margin: 1rem 0;
+    width: 100%;
   }
-  .cta-btn {
-    padding: 6px 15px;
-    border-radius: 20px;
-    margin-top: 10px;
-    font-size: 1rem;
+  .search-btn button {
+    width: fit-content;
+    height: fit-content;
+    padding: 1rem;
   }
-  .footer {
-    font-size: 1rem;
-    line-height: 4vw;
-  }
-  .socialicons {
-    text-align: center;
-  }
-  .socialicons img {
-    height: 10vw;
-    width: 10vw;
-    text-align: center;
-    margin-bottom: 2vw;
-    padding-bottom: 0px;
+  .search-bar form button img {
+    width: 2rem;
   }
 }
-
 /* ----------listingpage--------- */
 
 .left-col h2 {
@@ -854,9 +717,9 @@ hr {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  height: 100%;
+  height: fit-content;
 }
-.page-container .container{
+.page-container .container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -901,7 +764,7 @@ hr {
   }
 }
 .list-container {
-  margin: 2rem ;
+  margin: 2rem;
   flex-basis: 80%;
   display: flex;
   flex-wrap: wrap;
@@ -953,7 +816,7 @@ hr {
   transform: scale(1.05);
   transition: transform 0.3s ease-in-out;
 }
-.house a{
+.house a {
   text-decoration: none;
   color: rgb(8, 8, 12);
 }
@@ -1081,7 +944,7 @@ hr {
   width: 100%;
   padding: 0.5rem 1rem;
 }
-.house-price a{
+.house-price a {
   width: fit-content;
   text-decoration: none;
 }
@@ -1094,14 +957,14 @@ hr {
   font-size: 1.2rem;
   font-weight: 400;
 }
-.left-house-price{
+.left-house-price {
   flex-basis: 30%;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
 }
-.right-house-price{
+.right-house-price {
   flex-basis: 70%;
   display: flex;
   flex-direction: column;
@@ -1148,7 +1011,7 @@ hr {
 .filter_div {
   display: none;
 }
-.filter div{
+.filter div {
   width: 100%;
 }
 .sidebar h2 {
@@ -1183,7 +1046,6 @@ hr {
   transform: scale(1.05);
   transition: all 0.3s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
 }
 .filter {
   display: flex;
@@ -1261,356 +1123,66 @@ input[type="checkbox"]:checked {
 
 /* -------small listingpage------------ */
 @media only screen and (max-width: 700px) {
-  .navbar-white {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  .page-container {
+    height: fit-content;
   }
-  .head a {
-    text-align: center;
+  .page-container .container {
+    background-color: rgb(248, 248, 248);
   }
-  .homerun {
-    padding: 0;
+  .house-list-container {
+    grid-template-columns: repeat(1, 1fr);
     margin: 0;
   }
-
-  .left-col,
-  .right-col,
-  .house-img,
-  .house-info {
-    flex-basis: 100%;
-  }
-  .left-col h1 {
-    font-size: 24px;
-    margin-top: 0px;
-    padding-top: 0px;
-  }
-  .house-info .fas,
-  .house-info .far {
-    display: inline-block;
-    color: rgb(252, 153, 82);
-    height: 40px;
-    width: 10px;
-    text-align: left;
-    margin-right: none;
-    text-indent: 0px;
-    background: none;
-    padding-top: 10px;
-    padding-left: 25px;
-    padding-right: 0px;
-    border-radius: 15px;
-  }
-  .pagination {
-    width: 90%;
-  }
-  .pagination a {
-    font-size: 20px;
-    padding: 1px 3px;
-    margin: 2px 4px;
-    height: 15px;
-    width: 15px;
-  }
-  .pagination .active {
-    font-size: 22px;
-    font-weight: 400;
-    padding: 5px;
-  }
   .filter_div {
-    width: 100%;
     display: flex;
     justify-content: end;
-    margin: 10px 0;
-  }
-  .filter_button {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
     align-items: center;
-    padding: 8px 14px;
-    gap: 10px;
+    margin: 0.5rem 0;
+  }
+  .filter_div button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: rgb(8, 8, 12);
-    color: rgb(255, 255, 255);
+    color: white;
+    padding: 0.5rem 2rem;
     border: none;
-    text-align: center;
-    border-radius: 15px;
-    font-weight: 600;
+    border-radius: 20px;
   }
-  .filter_button img {
-    height: 1.2rem;
-    width: 1.2rem;
+  .filter_div button img {
+    width: 1.7rem;
+    height: 1.7rem;
   }
-  .filter_button h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-  .sidebar {
-    position: fixed;
-    top: 10vh;
-    bottom: 10vh;
-    width: 90%;
-    height: 80%;
-    padding: 10%;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  .side-bar-container {
     display: none;
-  }
-  .sidebar-link {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-  }
-  .sidebar-link button {
-    width: 100%;
-    margin-top: 20px;
+    height: fit-content;
+    z-index: 1000;
+    background-color: rgb(248, 248, 248);
+    padding: 0;
   }
   .close_icon {
-    width: 100%;
     display: flex;
-    flex-direction: row;
     justify-content: end;
-  }
-  .close_icon svg {
-    width: 1.8rem;
-    height: 1.8rem;
-  }
-}
-
-/* --------------house details-------------- */
-.house-details {
-  padding: 0 12%;
-}
-.house-title {
-  margin-top: 20px;
-}
-.house-title h1 {
-  font-weight: 600;
-  color: rgb(8, 8, 12);
-  text-align: left;
-  font-size: 30px;
-  padding: 0px 0px 0px;
-  margin-bottom: 0px;
-}
-.table {
-  font-size: 10px;
-  width: 40%;
-  font-weight: 600;
-  margin: 0 auto;
-  text-align: center;
-  padding: 2% 0 5% 0;
-}
-th {
-  margin: 20px auto;
-  padding: 8px;
-  color: rgba(8, 8, 12, 0.6);
-}
-tr .value {
-  color: rgb(252, 153, 82);
-  font-size: 30px;
-  border-radius: 150%;
-  font-weight: 600;
-}
-.house-title .row {
-  font-size: 20px;
-  font-weight: 400;
-  margin: 10px 0;
-  color: rgb(252, 153, 82);
-}
-.house-title span {
-  margin: 0 20px;
-}
-.house-title i {
-  color: rgb(252, 153, 82);
-  font-size: 12px;
-}
-.viewmore {
-  text-decoration: none;
-  text-align: right;
-}
-.circular {
-  text-align: center;
-  margin-right: 50%;
-  margin-left: 50%;
-}
-.circle {
-  width: 150px;
-  height: 150px;
-  line-height: 120px;
-  border-radius: 150%;
-  text-align: center;
-  font-size: 20px;
-  border: 10px solid rgb(252, 153, 82);
-  text-transform: uppercase;
-  margin: 0 auto;
-}
-.viewmore a {
-  position: absolute;
-  display: inline-block;
-  transform: translate(-100%, -200%);
-  text-decoration: none;
-  font-weight: 600;
-  color: rgb(8, 8, 12);
-  background-color: rgba(252, 153, 82, 0.85);
-  border-radius: 15px;
-  padding: 5px 5px;
-  width: 20%;
-}
-.gallery {
-  display: grid;
-  grid-gap: 5px;
-  margin: 20px 0;
-  grid-template-areas: "first first . . " "first first . . ";
-}
-.gallery div img {
-  width: 100%;
-  display: block;
-  border-radius: 15px;
-}
-.gallery-img-1 {
-  grid-area: first;
-  column-width: 80% auto;
-}
-.small-details h2 {
-  font-weight: 400;
-  font-size: 40px;
-}
-.small-details h4 {
-  text-align: right;
-  font-size: 22px;
-}
-.price {
-  color: rgb(252, 153, 82);
-  font-weight: 600;
-}
-.line {
-  border: 0;
-  height: 1px;
-  background: rgb(8, 8, 12);
-  width: 100%;
-  max-width: 800px;
-  margin: 20px 0 50px;
-}
-.guest-field {
-  flex: 1;
-}
-.details-list {
-  list-style: none;
-  margin: 50px 0;
-}
-.details-list li {
-  margin-left: 50px;
-  font-size: 20px;
-  font-weight: 500;
-  margin-bottom: 20px;
-  position: relative;
-}
-.details-list li span {
-  display: block;
-  font-size: 16px;
-  color: rgba(8, 8, 12, 0.65);
-}
-.details-list li i {
-  position: absolute;
-  top: 10px;
-  left: -40px;
-  color: rgb(252, 153, 82);
-  font-weight: 800;
-}
-.home-desc {
-  max-width: 700px;
-  margin-bottom: 50px;
-}
-
-.host img {
-  width: 80px;
-  border-radius: 150%;
-  margin-right: 30px;
-}
-.host h2 {
-  margin-bottom: 10px;
-  font-weight: 500;
-}
-.host span i {
-  color: rgb(252, 153, 82);
-}
-.contact-host {
-  display: block;
-  margin: 40px 20px;
-  text-decoration: none;
-  color: rgb(8, 8, 12);
-  text-align: center;
-  padding: 20px;
-  border: none;
-  border-radius: 15px;
-  background-color: rgb(252, 153, 82);
-  font-weight: 600;
-  width: 30%;
-}
-/* -------small listingpage------------ */
-@media only screen and (max-width: 700px) {
-  .house-title h1 {
-    font-size: 30px;
-  }
-  .logo {
-    width: 120px;
-    height: 120px;
-    margin-top: 100px;
-  }
-
-  .row p {
-    margin-top: 10px;
-    font-weight: 200;
-    font-size: 1rem;
-  }
-  .gallery {
-    grid-template-areas: "first first" ". ." ". .";
-  }
-  .small-details h2 {
-    font-size: 40px;
-    margin-top: 24px;
-    font-weight: 400;
-  }
-  li i {
-    top: 70px;
-  }
-  .viewmore a {
-    position: absolute;
-    display: inline-block;
-    transform: translate(-100%, -200%);
-    text-decoration: none;
-    font-weight: 400;
-    color: rgb(8, 8, 12);
-    background-color: rgba(252, 153, 82, 0.8);
-    border-radius: 15px;
-    padding: 5px 5px;
-    width: 20%;
-  }
-  .details-list h4 {
-    text-align: left;
-    margin: 10px 0;
-    font-size: 18px;
-  }
-  .check-form input {
-    border-bottom: 1px solid rgba(83, 83, 83, 0.404);
-    padding-top: 20px;
-    margin-bottom: 0px;
+    align-items: center;
     width: 100%;
+    padding: 0 1rem;
   }
-  .price {
-    margin: 20px;
+  .left-col {
+    padding: 0;
   }
-  .host {
-    display: block;
-    line-height: 28px;
+  .house {
+    max-width: 100%;
   }
-  .contact-host {
-    display: block;
-    margin: 20px 20px;
-    text-decoration: none;
-    color: rgb(8, 8, 12);
-    text-align: center;
-    padding: 20px;
-    border: 1px solid black;
-    border-radius: 15px;
-    background-color: rgb(252, 153, 82);
-    font-weight: 600;
-    width: 80%;
+  .pagination {
+    width: 100%;
+    background-color: white;
+  }
+  .pagination a {
+    margin: 0.3rem;
+    font-size: 1rem;
   }
 }

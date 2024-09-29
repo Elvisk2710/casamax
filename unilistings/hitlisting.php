@@ -54,11 +54,12 @@ $page_filter_name = "../unilistings/" . $page_name;
                  <?php
                 require_once '../required/listing_query.php';
                 ?>
-            </div>
-        </div>
-        <?php
+                  <?php
         require_once '../required/listing-pagination.php';
         ?>
+            </div>
+        </div>
+      
     </div>
     </div>
   

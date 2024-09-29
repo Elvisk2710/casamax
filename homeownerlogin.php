@@ -62,7 +62,6 @@ setcookie("loginPage", "homeownerlogin.php", time() + (900 * 1), "/");
                         <button type="submit" name="submit">
                             Log-In
                         </button>
-                        <br>
                     </div>
                 </form>
                 <div class="lower-login">

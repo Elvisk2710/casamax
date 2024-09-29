@@ -34,6 +34,7 @@
                 </lottie-player>
             </div>
             <div class="right-advertise">
+                
                 <form action="../homerunphp/advertisescript.php?new_user=true" method="post" enctype="multipart/form-data" id="admin_advertise_form">
 
                     <div id="tab">
@@ -43,29 +44,29 @@
                         <div class="input-div">
                             <div>
                                 <label>First-name:</label>
-                                <input type="text" name="firstname" placeholder="enter name that will show on your profile" required>
+                                <input type="text" name="firstname" placeholder="Firstname" required>
                             </div>
 
                             <div>
                                 <label>Last-name:</label>
-                                <input type="text" name="lastname" placeholder="enter last name" required>
+                                <input type="text" name="lastname" placeholder="Lastname" required>
                             </div>
                         </div>
                         <div class="input-div">
                             <div>
                                 <label for="upword">Password</label>
-                                <input type="password" id="pword" name="password" placeholder="Enter your Password" required>
+                                <input type="password" id="pword" name="password" placeholder="Password" required>
                             </div>
                             <div>
                                 <label for="upword">Confirm Password</label>
-                                <input type="password" id="cpword" name="confirmpassword" placeholder="Enter your Password" required>
+                                <input type="password" id="cpword" name="confirmpassword" placeholder="Password" required>
                             </div>
 
                         </div>
                         <div class="input-div">
                             <div>
                                 <label>Contact:</label>
-                                <input type="number" min="0" name="phone" placeholder="enter phone-number" required>
+                                <input type="number" min="0" name="phone" placeholder="077777777" required>
                             </div>
 
                             <div>
@@ -76,7 +77,7 @@
                         <div class="input-div">
                             <div>
                                 <label>ID-Number:</label>
-                                <input type="text" name="idnum" min="0" placeholder="Enter your Id number " required>
+                                <input type="text" name="idnum" min="0" placeholder="11-1111111A11" required>
                             </div>
                         </div>
                     </div>
@@ -90,7 +91,7 @@
                                 <input type="number" min="0" name="price" id="price" placeholder="Rent per Month" required>
                             </div>
                             <div>
-                                <label>Number of people in a room:</label>
+                                <label># of People in a room:</label>
                                 <input type="number" min="0" name="people" id="people" placeholder="# of people in one room " required>
                             </div>
                         </div>

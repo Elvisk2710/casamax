@@ -35,7 +35,10 @@
           <p>whatsApp</p>
         </a>
       </div>
-
+    </div>
+    <br>
+    <div class="contact">
+      © 2024 Casamax Investments. All Rights Reserved.
     </div>
   </div>
   <div class="right-footer">
@@ -89,94 +92,122 @@
 </footer>
 
 <style>
+  /* --footer-- */
 
-/* --footer-- */
+  footer {
+    padding: 2rem 6rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    background-color: white;
+    margin: 2rem 6rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
-footer {
-  padding: 2rem 6rem;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: row;
-  background-color: white;
-  margin: 2rem 2rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+  .left-footer,
+  .right-footer {
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding: 0 4rem;
+  }
 
-.left-footer, .right-footer{
-  flex-basis: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  padding: 0 4rem;
-}
-.footer-title{
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  gap: 1rem;
-}
-.left-footer .logo-title h4{
-  font-size: 1.5rem;
-  color: rgb(8, 8, 12);
-  font-weight: 700;
-}
-.footer-contact-details{
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  flex-direction: column;
-}
-.contact{
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  padding: 0 2rem;
-}
-.contact a{
-  text-decoration: none;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  width: 100%;
-  gap: 1rem;
-}
-.contact a img{
-  width: 1.2rem;
-  height: 1.2rem;
-}
-.contact a p{
-  width: 100%;
-  text-align: left;
-  color: rgb(8, 8, 12);
-}
-.footer p {
-  color: rgb(8, 8, 12, 0.6);
-  margin: 0.8rem 0;
-  font-size: 1rem;
-}
-.bottom-footer{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-.abt a {
-  text-decoration: underline;
-  color: rgb(252, 153, 82);
-  cursor: pointer;
-}
+  .footer-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+  }
 
+  .left-footer .logo-title h4 {
+    font-size: 1.5rem;
+    color: rgb(8, 8, 12);
+    font-weight: 700;
+  }
 
+  .footer-contact-details {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .contact {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0 2rem;
+  }
+
+  .contact a {
+    text-decoration: none;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .contact a img {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .contact a p {
+    width: 100%;
+    text-align: left;
+    color: rgb(8, 8, 12);
+  }
+
+  .footer p {
+    color: rgb(8, 8, 12, 0.6);
+    margin: 0.8rem 0;
+    font-size: 1rem;
+  }
+
+  .bottom-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .abt a {
+    text-decoration: underline;
+    color: rgb(252, 153, 82);
+    cursor: pointer;
+  }
+
+  .left-footer,
+  .right-footer {
+    padding: 0 !important;
+  }
+
+  .left-footer {
+    margin: 1rem 0;
+    padding: 0 !important;
+    width: 100%;
+  }
+
+  @media only screen and (max-width: 700px) {
+    footer {
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem !important;
+      margin: 1rem;
+    }
+  }
 </style>
 <script>
   var navBar = document.getElementById("navBar");

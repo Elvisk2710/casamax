@@ -38,34 +38,36 @@ $page_filter_name = "../unilistings/" . $page_name;
     ?>
 
     <!-- includes the navbar -->
-<div class="page-container">
-<div class="side-bar-container">
-                <!-- includes the filters of the page -->
-                <?php
-                require '../required/filter.php';
-                ?>
-            </div>
-    <div class="container">
-    <?php
-    require_once '../required/navbar.php';
-    ?>
-        <div class="list-container">
-            <div class="left-col">
-                <h2>Recommended For UZ</h2>
-                <!-- includes the query for looping the houses -->
-                 <?php
-                require_once '../required/listing_query.php';
-                ?>
-            </div>
+    <div class="page-container">
+        <div class="side-bar-container">
+            <!-- includes the filters of the page -->
+            <?php
+            require '../required/filter.php';
+            ?>
         </div>
-        <?php
-        require_once '../required/listing-pagination.php';
-        ?>
+        <div class="container">
+            <?php
+            require_once '../required/navbar.php';
+            ?>
+            <div class="list-container">
+                <div class="left-col">
+                    <h2>Recommended For UZ</h2>
+                    <!-- includes the query for looping the houses -->
+                    <?php
+                    require_once '../required/listing_query.php';
+                    ?>
+                    <?php
+                    require_once '../required/listing-pagination.php';
+                    ?>
+                </div>
+            </div>
+
+        </div>
     </div>
-    </div>
-  
+
     <?php
     require_once '../required/footer.php';
     ?>
 </body>
+
 </html>

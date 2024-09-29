@@ -101,8 +101,7 @@ if (isset($_POST['filter_reset'])) {
 </div>
 <script>
      function closeFilter() {
-          console.log("closeFilter() called");
-          const sidebarElement = document.querySelector(".sidebar");
+          const sidebarElement = document.querySelector(".side-bar-container");
           if (sidebarElement) {
                sidebarElement.style.display = "none";
           } else {

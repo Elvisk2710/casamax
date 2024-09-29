@@ -15,7 +15,7 @@ $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 <script>
     function openFilter() {
         console.log("openFilter() called");
-        const sidebarElement = document.querySelector(".sidebar");
+        const sidebarElement = document.querySelector(".side-bar-container");
         if (sidebarElement) {
             sidebarElement.style.display = "block";
         } else {
@@ -89,7 +89,7 @@ while ($row = mysqli_fetch_array($result)) {
     <div class="house" data-intro="View each home and its amenities." data-step="2" data-position="top" id="div<?= $row['home_id'] ?>">
         <a href="../listingdetails.php?clicked_id=<?= $row['home_id'] ?>" onclick="GetName(this.id)" id="<?= $row['home_id'] ?>">
             <div class="house-img">
-                <img src="../housepictures/<?= empty($row['image1']) ? 'no_image.png' : "$folder/" . $row['image1'] ?>" alt="house image">
+                <img src="<?= empty($row['image1']) ? '../images/no_image.png' : "../housepictures/$folder/" . $row['image1'] ?>" alt="house image">
                 <!-- <div class="agent-details">
                     <p style="opacity:0.5;"><?= $agent ? ucfirst($row_agent['agent_tagline']) . ' Agents' : "Landlord" ?></p><br>
                     <p><?= $agent_fee ?></p>

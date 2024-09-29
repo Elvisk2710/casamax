@@ -294,36 +294,62 @@ form .reg {
 
 /* ----------for small screens------- */
 @media only screen and (max-width: 600px) {
-  header {
-    font-size: 3rem;
+  .login-container{
+    width: 90%;
+    height: 90%;
+    background-color: rgb(248, 248, 248);
+    padding: 0;
+  }
+  .right-login{
+    width: 90%;
+    flex-basis: 100%;
+  }
+  .container{
+    width: 100%;
+  }
+  .sign-up-container{
+    width: 90% !important;
+    height: 100%;
   }
   header a {
     height: 120px;
     width: 120px;
   }
   .logo {
-    width: 120px;
-    height: 120px;
-    margin-top: 100px;
+    width: 4rem;
+    height: 4rem;
+  }
+  .left-login{
+    display: none;
+  }
+  .left-sign-up{
+    display: none;
+  }
+  .btn-container{
+    width: 100%;
+    padding: 2rem 0;
+  }
+  .lower-login{
+    width: 100%;
   }
   .container button {
-    width: 100%;
+    width: 80%;
     margin: 0 auto;
   }
-  .container .input-label {
+  .input-div .input-label {
     text-align: left;
-    width: 70vw;
+    width: 100%;
     margin: 10px 0;
+    padding: 0 0.5rem;
   }
   .container input,
   .input-label .password {
-    width: 70%;
-    background: white;
+    width: 90%;
+    background: transparent;
     border: none;
-    font-size: 1.1rem;
     border-bottom: 1px solid rgba(37, 37, 43, 0.6);
-    margin-bottom: 10px;
     text-align: left;
+    padding:0 0.5rem;
   }
   .password input {
     width: 100% !important;
@@ -331,11 +357,8 @@ form .reg {
   .container .input-label label {
     text-align: left;
     padding-bottom: 5%;
-    font-size: 1.1rem;
-  }
-  .container {
+    font-size: 1rem;
     width: 90%;
-    font-size: 16px;
   }
   .container h1 {
     font-size: 22px;
@@ -371,9 +394,14 @@ form .reg {
     padding-bottom: 20px;
   }
   .container .login {
-    display: block;
-    margin: 0 auto;
-    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 2rem 0;
+  }
+  .login a{
+    width: 100%;
   }
   .dropdown select {
     border: none;

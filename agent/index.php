@@ -47,7 +47,7 @@ if (isset($_POST['logout'])) {
             </div>
             <div class="right-login">
                 <header>
-                    <a href="index.php">
+                    <a href="../index.php">
                         <img src="../images/logoorange.png" alt="logo" class="logo">
                     </a>
                 </header>
@@ -66,12 +66,9 @@ if (isset($_POST['logout'])) {
                         <input type="password" id="pword" placeholder="Enter your Password" name="password" required>
                     </div>
                     <div class="login">
-                        <div>
                             <button type="submit" name="submit" class="login_btn">
                                 Log-In
                             </button>
-                            <br>
-                        </div>
                     </div>
                 </form>
                 <div class="lower-login">

@@ -1,21 +1,21 @@
 <?php
 session_start();
 require './required/ads_query.php';
-if (!isset($_SESSION['sessionstudent'])) {
-    header("Location: ./login.php?pleaseloginfirst");
-    echo '<script type="text/javascript"> alert("PLEASE LOGIN FIRST") </script>';
-    exit();
-}
-if (isset($_GET['error'])) {
-    $error_name = $_GET['error'];
-    echo "
-        <script>
-            alert(" . $error_name . ")
-        </script>
+// if (!isset($_SESSION['sessionstudent'])) {
+//     header("Location: ./login.php?pleaseloginfirst");
+//     echo '<script type="text/javascript"> alert("PLEASE LOGIN FIRST") </script>';
+//     exit();
+// }
+// if (isset($_GET['error'])) {
+//     $error_name = $_GET['error'];
+//     echo "
+//         <script>
+//             alert(" . $error_name . ")
+//         </script>
 
-        ";
-    unset($_GET['error']);
-}
+//         ";
+//     unset($_GET['error']);
+// }
 
 ?>
 <!DOCTYPE html>
@@ -38,10 +38,19 @@ require_once 'required/pageloader.php';
 
 <body onunload="" class="scrollable">
 
-    <div class="head">
-        <a href="index.php"> <img src="images/logowhite.png" alt="home" class="logo"></a>
-    </div>
     <div class="container">
+        <div class="head">
+            <a href="index.php"> <img src="./images/logoorange.png" alt="home" class="logo"></a>
+        </div>
+        <div class="head-title">
+            <h1>
+                Plans and Pricing
+            </h1>
+            <br>
+            <p>
+                Select From The Best Plans Ensuring A Perfect Match.
+            </p>
+        </div>
         <div class="status">
             <?php
             if (isset($_GET['success']) and $_GET["success"] == "true") {
@@ -66,72 +75,162 @@ require_once 'required/pageloader.php';
         </div>
 
         <form method="post" action="./required/payment_btn.php">
-
             <div class="subscription_buttons">
 
                 <div class="sub">
-                    <h5>Starter</h5>
-                    <h2>ZIG 14</h2>
+                    <div class="package-name">
+                        <h5>Basic</h5>
+                        <p>
+                            - 3 months
+                        </p>
+                    </div>
+                    <div class="desc">
+                        <p>
+                        Get started with the essentials! List your boarding house for <b>3 Months</b> and showcase your property to students. Perfect for those just starting out.
+                        </p>
+                    </div>
+                    <div class="price">
+                        <h2>USD $15</h2>
+
+                    </div>
                     <hr>
-                    <p>
-                        This will give you acces to contact 1 <b>CasaMax Home</b> The Subscription expires in a month
-                    </p>
-                    <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="starter" value="subscriptionBtn1">
-                        SUBSCRIBE
-                    </button>
+                    <div class="features">
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Manage Rental
+                            </p>
+                        </div>
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Chat to Students
+                            </p>
+                        </div>
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Connect via WhatsApp
+                            </p>
+                        </div>
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Email Notifications
+                            </p>
+                        </div>
+                    </div>
+                    <div class="price-btn">
+                        <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="starter" value="subscriptionBtn1">
+                            SUBSCRIBE
+                        </button>
+                    </div>
                 </div>
 
                 <div class="sub">
-                    <h5>Basic</h5>
-                    <h2>ZIG 42 </h2>
+                    <div class="package-name">
+                        <h5>Premium</h5>
+                        <p>
+                            - 6 months
+                        </p>
+                    </div>
+                    <div class="desc">
+                        <p>
+                        Take your listings to the next level! With <b>6 months</b> of visibility on our platform for you to connect with students around Zimbabwe</p>
+                    </div>
+                    <div class="price">
+                        <h2>USD $30</h2>
+                    </div>
                     <hr>
-                    <p>
-                        This will give you acces to contact 5 <b>CasaMax Homes</b> The Subscription expires in a month
-                    </p>
-                    <button id="subscriptionBtn2" type="submit" onclick="disableBtn()" name="basic" value="subscriptionBtn2">
-                        SUBSCRIBE
-                    </button>
-                </div>
-                <div class="sub">
-                    <h5>Pro</h5>
-                    <h2>ZWL 70</h2>
-                    <hr>
-                    <p>
-                        This will give you acces to contact 15 <b>CasaMax Homes</b>. The Subscription expires in a month
-                    </p>
-                    <button id="subscriptionBtn3" type="submit" onclick="disableBtn()" name="pro" value="subscriptionBtn3">
-                        SUBSCRIBE
-                    </button>
+                    <div class="features">
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Manage Rental
+                            </p>
+                        </div>
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Chat to Students
+                            </p>
+                        </div>
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Connect via WhatsApp
+                            </p>
+                        </div>
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Email Notifications
+                            </p>
+                        </div>
+                    </div>
+                    <div class="price-btn">
+                        <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="starter" value="subscriptionBtn1">
+                            SUBSCRIBE
+                        </button>
+                    </div>
                 </div>
 
+                <div class="sub">
+                    <div class="package-name">
+                        <h5>Pro</h5>
+                        <p>
+                            - 12 months
+                        </p>
+                    </div>
+                    <div class="desc">
+                        <p>
+                        Maximize your exposure and dominate the market! Enjoy <b>12 Months</b> of your boarding house on our platform and get a chance to fill up your home as quickly as possible.
+                        </p>
+                    </div>
+                    <div class="price">
+                        <h2>USD $50</h2>
+                    </div>
+                    <hr>
+                    <div class="features">
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Manage Rental
+                            </p>
+                        </div>
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Chat to Students
+                            </p>
+                        </div>
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Connect via WhatsApp
+                            </p>
+                        </div>
+                        <div>
+                            <img src="./images/done.png" alt="">
+                            <p>
+                                Email Notifications
+                            </p>
+                        </div>
+                    </div>
+                    <div class="price-btn">
+                        <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="starter" value="subscriptionBtn1">
+                            SUBSCRIBE
+                        </button>
+                    </div>
+                </div>
             </div>
         </form>
         <div class="browse_btn">
-            <a href="./index.php">
+            <a href="./advertise.php">
                 <button>
-                    browse boarding-houses instead....
+                    Register Your Home.
                 </button>
             </a>
-        </div>
-    </div>
-
-    <div class="footer">
-        <h3 class="abt">
-            <a href="aboutus.php">About</a> CasaMax
-        </h3>
-        <p>
-            Looking for a House to Rent?
-            Welcome to CasaMax, where we provide all the available
-            Homes and Rental properties at the tip of your fingers
-        </p>
-
-
-        <div class="socialicons">
-            <a href="https://www.facebook.com/profile.php?id=100093414304668" data-tabs="timeline"><img src="./images/facebook.png" alt="" title="Our-Facebook-page"></a>
-            <a href="https://www.instagram.com/casamax.co.zw/"><img src="./images/instagram.png" alt="" title="Our-Instagram-page"></a>
-            <a href="https://wa.me/+263786989144"> <img src="./images/whatsapp.png" alt="" title="Our-WhatsApp-page"></a>
-            <a href="mailto:casamaxzim@gmail.com?subject=Feedback to CasaMax&cc=c"> <img src="./images/mail.png" alt="" title="Email"></a>
-            <a href=""><img src="./images/twitter.png" alt="" title="Our-twitter-page"></a>
         </div>
     </div>
     </div>
@@ -155,7 +254,7 @@ require_once 'required/pageloader.php';
         function disableBtn() {
             document.querySelector(".container_loader").classList.remove("container_loader--hidden");
             document.querySelector("body").classList.add("scrollable");
-         }
+        }
     </script>
 </body>
 

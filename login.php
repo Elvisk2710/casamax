@@ -64,12 +64,9 @@ if (isset($_POST['logout'])) {
                         <input type="password" id="pword" placeholder="Enter your Password" name="password" required>
                     </div>
                     <div class="login">
-                        <div>
                             <button type="submit" name="submit" class="login_btn">
                                 Log-In
                             </button>
-                            <br>
-                        </div>
                     </div>
                 </form>
                 <div class="lower-login">

@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once '../../homerunphp/advertisesdb.php';
-include '../../required/alerts.php';
 if (empty($_SESSION['sessionAdmin'])) {
     redirect('../index.php?error=Please Login');
     exit();

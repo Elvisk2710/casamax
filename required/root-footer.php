@@ -35,7 +35,10 @@
                     <p>whatsApp</p>
                 </a>
             </div>
-
+        </div>
+        <br>
+        <div class="contact">
+        © 2024 Casamax Investments. All Rights Reserved.
         </div>
     </div>
     <div class="right-footer">
@@ -97,7 +100,7 @@
         align-items: center;
         flex-direction: row;
         background-color: white;
-        margin: 2rem 2rem;
+        margin: 2rem 6rem;
         border-radius: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
@@ -183,6 +186,26 @@
         text-decoration: underline;
         color: rgb(252, 153, 82);
         cursor: pointer;
+    }
+
+    .left-footer,
+    .right-footer {
+        padding: 0 !important;
+    }
+
+    .left-footer {
+        margin: 1rem 0;
+        padding: 0 !important;
+        width: 100%;
+    }
+
+    @media only screen and (max-width: 700px) {
+        footer {
+            justify-content: center;
+            flex-direction: column;
+            padding: 2rem !important;
+            margin: 1rem;
+        }
     }
 </style>
 <script>

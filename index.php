@@ -199,7 +199,6 @@ if (isset($_GET['error'])) {
                     </form>
                 </div>
             </div>
-
             <div class="right-header">
                 <lottie-player
                     src="https://lottie.host/1c0dd04b-5a3f-4809-9363-8bf8ce288271/0rq7KbvgzG.json"
@@ -232,7 +231,7 @@ if (isset($_GET['error'])) {
                     <p style="color: white;">
                         Tired of empty rooms? Let us connect you with students seeking quality accommodation. List your property today, connect to students and start earning.
                     <div class="about-div-btn">
-                        <a href="">
+                        <a href="./advertise/">
                             <button style="background-color: rgb(252, 153, 82); color: rgb(8, 8, 12);">
                                 Get Started
                             </button>
@@ -240,7 +239,6 @@ if (isset($_GET['error'])) {
                     </div>
                 </div>
                 <div class="about-card" style="background-color: white; opacity: 0.8;">
-
                     <h3>
                         Fill Your Needs, Find Your Boarding House
                     </h3>
@@ -248,7 +246,7 @@ if (isset($_GET['error'])) {
                         Discover your perfect study haven. Tired of distractions at home? Find the ideal boarding house that offers a quiet, comfortable, and convenient environment for your studies. Let us help you achieve your academic goals.
                     </p>
                     <div class="about-div-btn">
-                        <a href="">
+                        <a href="#browse">
                             <button style="background-color: rgb(252, 153, 82); color:white;">
                                 Get Started
                             </button>
@@ -263,7 +261,7 @@ if (isset($_GET['error'])) {
                         Our platform connects landlords and students, streamlining the process of finding the perfect match. With our efficient matching system, we ensure that both parties connect seamlessly, saving time and effort for everyone involved.
                     </p>
                     <div class="about-div-btn">
-                        <a href="">
+                        <a href="./aboutus.php">
                             <button style="background-color: rgb(8, 8, 12); color:rgb(252, 153, 82);">
                                 Know More
                             </button>
@@ -354,8 +352,6 @@ if (isset($_GET['error'])) {
                     </div>
                 </a>
             </div>
-
-
         </div>
         <div class="cta" id="cta">
             <h3>
@@ -365,10 +361,8 @@ if (isset($_GET['error'])) {
                 Discover the lucrative potential of shared spaces. With the growing demand for Boarding Houses, now is the perfect time to invest in this thriving market. The opportunities for profit are endless. Don't miss out on this golden chance to capitalize on the shared economy.
             </p>
             <a href="know_more.php"> <button class="cta-btn"> Know More </button></a>
-
         </div>
         <!-- footer -->
-
         <?php
         require './required/root-footer.php';
         if (!isset($_GET['chat_id'])) {

@@ -38,6 +38,7 @@ setcookie("page_pass", "homerunuserdb", time() + (900 * 1), "/");
                 </lottie-player>
             </div>
             <div class="right-sign-up">
+                
                 <form class="sign-up-container" action="./agent_register_script.php" method="post">
                     <div>
                         <h1>Agent Registration</h1>
@@ -115,9 +116,8 @@ setcookie("page_pass", "homerunuserdb", time() + (900 * 1), "/");
                         <button type="submit" name="submit">
                             SignUp
                         </button>
-                        <br>
-                        <p class="reg">Already have an account? <a href="index.php">LogIn</a></p>
                     </div>
+                    <p class="reg">Already have an account? <a href="index.php">LogIn</a></p>
                 </form>
             </div>
         </div>

@@ -24,26 +24,23 @@ if (empty($_SESSION['sessionagent'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
     <link rel="icon" href="../images/logowhite.png">
     <meta name="google-site-verification" content="3DpOPyMzbY1JYLNtsHzbAZ_z6o249iU0lE5DYE_mLJA" />
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="agent_profile_css.css">
+    <link rel="stylesheet" href="./agent_profile_css.css">
     <title>Agent Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <meta name="description" content=" Quick and Easy way to advertise your off-campus acommodation for tertiary students.">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#08080C" />
-    <link rel="apple-touch-icon" href="iconsicons/192x192.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
     <script>
         var tourCookie = 'agentProfileTour';
     </script>
+
 <body onunload="" class="scrollable">
     <?php
     require_once '../required/pageloader.php';
@@ -61,8 +58,6 @@ if (empty($_SESSION['sessionagent'])) {
         </div>
 
         <div class="header_container" data-intro='View your details.' data-step='1' data-position='top'>
-
-            <br>
             <div class="details">
                 <div class="name">
                     <h1>
@@ -233,7 +228,7 @@ if (empty($_SESSION['sessionagent'])) {
         ?>
 
     </div>
-  
+
     <?php
     require '../required/footer.php';
     require 'add_house.html';

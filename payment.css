@@ -1,14 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.3),
-      rgba(0, 0, 0, 0.3)
-    ),
-    url(images/cleanwhite.jpg);
-  background-size: cover;
+  height: 100vh;
+  width: 100vw;
 }
 .container {
-  width: 80%;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
+  background-color: rgb(241, 241, 241);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem 6rem;
 }
 .scrollable {
   max-height: 100vh;
@@ -16,86 +24,116 @@ body {
 }
 .head {
   text-align: center;
-  border-radius: 10px;
-  margin-bottom: 100px;
+  padding: 1rem;
+  height: fit-content;
+}
+.head-title {
+  margin: 2rem;
+  text-align: center;
 }
 .logo {
-  width: 6vw;
-  height: 6vw;
-  margin-top: 10px;
+  width: 4rem;
+  height: 4rem;
 }
 form {
   text-align: center;
 }
-.phone_label {
-  color: white;
-  font-weight: 400;
-  font-size: 16px;
-  font-family: "Quicksand", sans-serif;
-}
-.phone {
-  border-style: none;
-  height: 20px;
-  width: 10vw;
-  min-width: 120px;
-  border-radius: 10px;
-  text-align: center;
-}
-.phone::-webkit-outer-spin-button,
-.phone::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type="number"] {
-  -moz-appearance: textfield;
-}
+
 .subscription_buttons {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  flex-direction: row;
+  justify-content: space-evenly;
   text-align: center;
+  height: fit-content;
 }
 .sub {
-  flex-basis: 20%;
+  flex-basis: 25%;
   background-color: white;
-  padding: 40px;
-  border-radius: 10px;
+  max-width: 500px;
+  min-width: 300px;
+  padding: 2rem;
+  border-radius: 20px;
   text-align: center;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+  cursor: pointer;
 }
-h5 {
-  font-size: 30px;
-  font-weight: 200;
-  opacity: 80%;
+.sub:hover{
+  transform: scale(1.05);
 }
-h2 {
-  color: rgb(8, 8, 12);
-  font-size: 30px;
-  font-weight: 600;
-  font-family: "Playfair Display", serif;
-  font-family: "Oswald", sans-serif;
+.package-name{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin: 1rem;
 }
-a {
-  text-decoration: none;
-  font-family: "Inconsolata", monospace;
-  color: white;
-  font-weight: 800;
+.package-name h5{
+  background-color: rgb(252, 153, 82);
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
+  margin: 0 0.5rem;
+}
+.desc{
+  width: 100%;
+  text-align: left;
+  margin: 2rem 1rem;
+  height: 10vh;
+}
+.price{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+.price h2{
+  font-size: 2rem;
+}
+.features{
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  padding: 1rem 2rem;
+}
+.features div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0;
+  gap: 1rem;
+}
+.features div p{
+  font-size: 1rem;
+}
+.features div img{
+  width: 1.7rem;
+  height: 1.7rem;
 }
 button {
   background-color: rgb(252, 153, 82);
   border: none;
-  border-radius: 10px;
-  padding: 5px;
-  margin: 10px;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
   font-weight: 600;
   text-align: center;
-  width: 120px;
-  height: 30px;
+  color: white;
+  font-size: 1rem;
 }
 .browse_btn {
   display: flex;
   text-align: center;
   align-items: center;
   justify-content: center;
+  margin: 2rem;
+  width: 100%;
 }
 .browse_btn a {
   display: flex;
@@ -103,6 +141,8 @@ button {
   text-align: center;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
+  width: fit-content;
 }
 .browse_btn button {
   display: flex;
@@ -111,17 +151,15 @@ button {
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: 10px;
+  border-radius: 20px;
   color: rgb(252, 153, 82);
   font-weight: 500;
-  margin-top: 2vw;
-  padding: 1.5vw 2vw;
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
   font-size: 18px;
-  width: fit-content !important;
-  transform: translate(0%, -50%);
-  box-shadow: 3px 10px 22px 1px rgba(0, 0, 0, 0.24);
-  background-color: rgba(8, 8, 12, 1);
-  /* Lowering the shadow */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
 }
 
 button:active {
@@ -131,107 +169,7 @@ button:active {
   /* Lowering the shadow */
   transition: 0.3s all;
 }
-p {
-  font-family: "Source Sans 3", sans-serif;
-  font-size: 15px;
-  color: rgba(8, 8, 12, 0.5);
-  font-weight: 600;
-}
 
-/* footer */
-
-.socialicons .fab {
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  line-height: 20px;
-  font-size: 40px;
-  color: white;
-  margin: 10px auto;
-  cursor: pointer;
-}
-.socialicons {
-  text-align: center;
-}
-.socialicons img {
-  height: 30px;
-  width: 30px;
-  text-align: center;
-  margin-bottom: 40px;
-  padding-bottom: 0px;
-}
-.footer {
-  text-align: center;
-  font-weight: 100;
-  margin-top: 80px;
-}
-.footer p {
-  color: rgba(0, 0, 0, 0.438);
-  margin-bottom: 15px;
-  margin-top: 15px;
-  font-family: "Source Sans 3", sans-serif;
-  inline-size: 100%;
-  color: rgba(255, 255, 255, 0.4);
-  font-weight: 90;
-}
-.abt {
-  font-size: 16px;
-  color: white;
-}
-.abt a {
-  text-decoration: underline;
-  color: rgb(252, 153, 82);
-  cursor: pointer;
-}
-hr {
-  height: 2px;
-  background: rgba(8, 8, 12, 0.082);
-  width: 100%;
-  border: 0;
-}
-@media only screen and (max-width: 700px) {
-  .container {
-    width: 100%;
-  }
-  .logo {
-    width: 120px;
-    height: 120px;
-    margin-top: 100px;
-  }
-  .browse_btn {
-    width: 100vw;
-    margin-top: 20px;
-  }
-  .browse_btn button{
-    padding: 10px;
-  }
-  .sub {
-    flex-basis: 50%;
-    margin: 20px 0 auto;
-    text-align: center;
-  }
-  .sub div {
-    margin: 0 auto;
-    width: 60%;
-  }
-  p {
-    inline-size: 100%;
-  }
-  button {
-    margin: 60px 20px 20px 20px;
-  }
-  button:active {
-    transform: scale(0.7);
-    /* Scaling button to 0.98 to its original size */
-    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
-    /* Lowering the shadow */
-    transition: 0.3s all;
-  }
-  a {
-    text-decoration: none;
-    font-family: "Arvo", serif;
-    color: white;
-    font-weight: 800;
-    font-size: 20px;
-  }
+hr{
+  opacity: 0.5;
 }

@@ -34,7 +34,7 @@ session_start();
             </div>
             <div class="right-login">
                 <header>
-                    <a href="index.php">
+                    <a href="../index.php">
                         <img src="../images/logoorange.png" alt="logo" class="logo">
                     </a>
                 </header>

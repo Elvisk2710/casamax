@@ -259,174 +259,84 @@ h2 {
   margin: 1rem;
 }
 
-/* --footer-- */
-
-footer {
-  padding: 2rem 6rem;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: row;
-  background-color: white;
-  margin: 2rem 6rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.left-footer, .right-footer{
-  flex-basis: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  padding: 0 4rem;
-}
-.footer-title{
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  gap: 1rem;
-}
-.left-footer .logo-title h4{
-  font-size: 1.5rem;
-  color: rgb(8, 8, 12);
-  font-weight: 700;
-}
-.footer-contact-details{
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  flex-direction: column;
-}
-.contact{
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  padding: 0 2rem;
-}
-.contact a{
-  text-decoration: none;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  width: 100%;
-  gap: 1rem;
-}
-.contact a img{
-  width: 1.2rem;
-  height: 1.2rem;
-}
-.contact a p{
-  width: 100%;
-  text-align: left;
-  color: rgb(8, 8, 12);
-}
-.footer p {
-  color: rgb(8, 8, 12, 0.6);
-  margin: 0.8rem 0;
-  font-size: 1rem;
-}
-.bottom-footer{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-.abt a {
-  text-decoration: underline;
-  color: rgb(252, 153, 82);
-  cursor: pointer;
-}
-
 @media only screen and (max-width: 700px) {
   header .logo {
-    width: 120px;
-    height: 120px;
+    width: 2rem;
+    height: 2rem;
     margin-top: 100px;
   }
   .container {
-    width: 90%;
-    padding: 10px;
+    padding: 1rem;
     min-width: 300px;
+    margin: 1rem;
+    margin-top: 6rem;
   }
   h1 {
     font-size: 40px;
     text-align: center;
-    margin: 20px auto;
+    margin: 0px;
   }
   .house-title form button,
   .chatBtn {
-    width: 60vw;
     height: fit-content;
     padding: 10px;
-    font-size: 14px;
   }
   .house-title {
     width: auto;
-    margin: 40px 0 40px 0;
     background: transparent;
     box-shadow: none;
   }
   .house-title form {
-    width: 80vw;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     text-align: center;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
     gap: 10px;
   }
-  .table {
-    text-align: center;
-    width: auto;
+  .house-gender-price{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    margin: 2rem 0;
+  }
+  .house-gender h3, .house-price h3{
+    font-size: 1rem;
+    width: fit-content;
+  }
+  .house-gender, .house-price{
+    gap: 1rem;
+    width: 100%;
+    margin: 0;
   }
   .gallery {
-    grid-template-areas: "first first" ". ." ". .";
-    padding: 20px 10px;
+    margin: 2rem 0;
+    gap: 0.2rem;
   }
   .gallery .gallery-img-1 img {
     height: 200px;
   }
+  .gallery .gallery-img-2 img, .gallery .gallery-img-3 img, .gallery .gallery-img-4 img, .gallery .gallery-img-5 img {
+    height: 100%;
+    max-height: 150px;
+  }
   .more-pictures {
-    width: 60vw;
+    width: fit-content;
   }
   .amenities {
     flex-basis: 15%;
     color: rgb(8, 8, 12);
-    font-size: 12px;
-    margin: 10px 5px;
+    font-size: 1rem;
+    width: 90%;
+    margin: 0.5rem 0;
   }
-  .amenities-list svg {
-    width: 15px;
-    height: 15px;
+  .amenities-list{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
   }
-  h3 {
-    margin: 10px;
+  .amenities-list img {
+    width: 1.7rem;
+    height: 1.7rem;
   }
-  .footer {
-    font-size: 3.2vw;
-    line-height: 4vw;
-  }
-  .socialicons {
-    text-align: center;
-  }
-  .socialicons img {
-    height: 6vw;
-    width: 6vw;
-    text-align: center;
-    margin-bottom: 2vw;
-    padding-bottom: 0px;
-  }
-}
-
-@media only screen and (max-width: 700px) {
   .gallery_container {
     top: 60%;
     width: 100vw;
