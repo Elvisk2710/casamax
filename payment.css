@@ -3,10 +3,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-body {
-  height: 100vh;
-  width: 100vw;
-}
 .container {
   width: 100%;
   height: 100%;
@@ -16,7 +12,6 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 2rem 6rem;
 }
 .scrollable {
   max-height: 100vh;
@@ -62,16 +57,16 @@ form {
   transition: all 0.3s;
   cursor: pointer;
 }
-.sub:hover{
+.sub:hover {
   transform: scale(1.05);
 }
-.package-name{
+.package-name {
   display: flex;
   justify-content: start;
   align-items: center;
   margin: 1rem;
 }
-.package-name h5{
+.package-name h5 {
   background-color: rgb(252, 153, 82);
   padding: 0.5rem 1rem;
   font-size: 1rem;
@@ -80,28 +75,28 @@ form {
   box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
   margin: 0 0.5rem;
 }
-.desc{
+.desc {
   width: 100%;
   text-align: left;
   margin: 2rem 1rem;
   height: 10vh;
 }
-.price{
+.price {
   width: 100%;
   display: flex;
   justify-content: end;
 }
-.price h2{
+.price h2 {
   font-size: 2rem;
 }
-.features{
+.features {
   display: flex;
   justify-content: start;
   align-items: start;
   flex-direction: column;
   padding: 1rem 2rem;
 }
-.features div{
+.features div {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -109,10 +104,10 @@ form {
   margin: 0.5rem 0;
   gap: 1rem;
 }
-.features div p{
+.features div p {
   font-size: 1rem;
 }
-.features div img{
+.features div img {
   width: 1.7rem;
   height: 1.7rem;
 }
@@ -126,6 +121,7 @@ button {
   text-align: center;
   color: white;
   font-size: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .browse_btn {
   display: flex;
@@ -170,6 +166,50 @@ button:active {
   transition: 0.3s all;
 }
 
-hr{
+hr {
   opacity: 0.5;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    height: 100vh;
+  }
+  .subscription_buttons {
+    width: 95vw;
+    align-items: start;
+    overflow-x: scroll;
+    height: fit-content;
+    gap: 1rem;
+    scroll-snap-type: x mandatory; /* Enable snap behavior */
+    scrollbar-width: none; /* For Firefox, hide scrollbar */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge, hide scrollbar */
+    scroll-behavior: smooth; /* Enable smooth scrolling */
+  }
+  .subscription_buttons::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+
+  .sub {
+    width: 90%;
+    flex: 0 0 auto; /* Prevent items from growing or shrinking */
+    scroll-snap-align: center; /* Snap to the start of each item */
+    height: fit-content;
+    transition: all 0.3s;
+  }
+  .sub:active {
+    transform: scale(1.05);
+  }
+  .browse_btn {
+    height: fit-content;
+  }
+  .browse_btn button {
+    margin: 0 auto;
+  }
+  .desc{
+    margin: 1rem;
+  }
+  /* Snapped size */
+  .sub.sub:hover {
+    transform: scale(1); /* Change size when snapped */
+  }
 }

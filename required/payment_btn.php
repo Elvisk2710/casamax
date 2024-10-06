@@ -1,37 +1,26 @@
 <?php
-$pageloader = "waiting confirmation";
-require 'pageloader.php';
-$sec = 0.1;
+$pageloader = "Loading Please Wait";
+// require './pageloader.php';
 require '../homerunphp/advertisesdb.php';
 require 'subscriber_billing.php';
 $this_date = date('y-m-d');
 
-
-if (isset($_POST['starter'])) {
-    $sub_type = "1 house subscription!!";
-    $number_of_houses = 1;
+if (isset($_POST['basic'])) {
+    $sub_type = "basic";
     $time_unit = 'daily';
-    $period = 30;
-    $amount = 14;
-    echo "starter";
-
+    $period = 90;
+    $amount = 25;
     require './paynow.php';
-} elseif (isset($_POST['basic'])) {
-    $sub_type = "5 house subscription!!";
-    $number_of_houses = 5;
+} elseif (isset($_POST['premium'])) {
+    $sub_type = "premium";
     $time_unit = 'daily';
-    $period = 30;
-    $amount = 42;
-    echo "basic";
-
+    $period = 180;
+    $amount = 45;
     require './paynow.php';
 } elseif (isset($_POST['pro'])) {
-    $sub_type = "15 house subscription!!";
-    $number_of_houses = 15;
+    $sub_type = "pro";
     $time_unit = 'daily';
-    $period = 30;
-    $amount = 70;
-    echo "pro";
-
+    $period = 365;
+    $amount = 80;
     require './paynow.php';
 }

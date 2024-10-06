@@ -2,6 +2,8 @@
 
 require_once '../autoloader.php';
 
+
+
 /**
  * Just a small dummy logger. Remove in production
  *

@@ -811,6 +811,7 @@ hr {
   background-color: white;
   position: relative; /* Parent element must be relative */
   cursor: pointer;
+  transition: all 0.3s;
 }
 .house:hover {
   transform: scale(1.05);
@@ -905,8 +906,9 @@ hr {
 .amenities_div_container {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  margin: 0.5rem 0;
+  justify-content: end;
+  gap: 2rem;
+  margin: 0.5rem 1rem;
 }
 .amenities_div {
   display: flex;
@@ -1132,6 +1134,7 @@ input[type="checkbox"]:checked {
   .house-list-container {
     grid-template-columns: repeat(1, 1fr);
     margin: 0;
+    padding: 0.8rem;
   }
   .filter_div {
     display: flex;

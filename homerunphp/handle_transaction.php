@@ -12,12 +12,12 @@ require '../required/common_functions.php';
 // Assuming this is your resultUrl endpoint
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Sanitize and retrieve the posted variables
-    $status = sanitize_string($_GET['status'] ?? '');
-    $reference = sanitize_string($_GET['reference'] ?? '');
-    $amount = sanitize_integer($_GET['amount'] ?? 0);
-    $paynowReference = sanitize_string($_GET['paynowreference'] ?? '');
-    $pollurl = sanitize_string($_GET['pollurl'] ?? '');
-
+    $status = sanitize_string($_POST['status'] ?? '');
+    $reference = sanitize_string($_POST['reference'] ?? '');
+    $amount = sanitize_integer($_POST['amount'] ?? 0);
+    $paynowReference = sanitize_string($_POST['paynowreference'] ?? '');
+    $pollurl = sanitize_string($_POST['pollurl'] ?? '');
+    
     // Get the current date and time
     $date = date('Y-m-d H:i:s');
 

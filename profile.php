@@ -85,7 +85,6 @@ if (empty($_SESSION['sessionowner'])) {
     <?php
     if ($verified == true) {
         require_once 'required/pageloader.php';
-
     ?>
         <header>
 
@@ -93,9 +92,7 @@ if (empty($_SESSION['sessionowner'])) {
             <?php if ($row['available'] != 1) { ?>
                 // alerts whether the house is being shown on the platfrom or not.
                 <div class="alert_off">
-
                     <p> Your current listing is not visible on CasaMax. To make it visible click available and update <a href="#available">Right Here!</a></p>
-
                 </div>
             <?php } ?>
             <h1>
@@ -134,8 +131,42 @@ if (empty($_SESSION['sessionowner'])) {
                 </form>
             </div>
         <?php } ?>
+        <div class="banner-container">
+            <div class="subscribe-banner">
+                <div class="sub-banner-top">
+                    <img src="./images/logoorange.png" class="logo" alt="warning">
+                    <div class="top-banner">
+                        <h3>
+                            Unlock Your Home's Full Potential
+                        </h3>
+                        <p>
+                            Right now, your home isn't visible to students. Upgrade to our premium package and shine bright—showcase your space and attract more interest!
+                            <br>
+                            <br>
+                            <b> Don't miss out on this opportunity to connect!</b>
+                        </p>
 
+                    </div>
+
+                </div>
+                <div class="sub-banner-bottom">
+                    <div>
+                        <button class="cancel" onclick="closeSub()">
+                            Maybe Later!
+                        </button>
+                    </div>
+                    <div>
+                        <a href="./payment.php">
+                            <button class="subscribe-btn">
+                                Subscribe
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container" data-intro='View Your Details.' data-step='1' data-position='bottom'>
+
             <div class="house-info">
                 <h2>YOUR HOUSE INFO</h2>
             </div>
@@ -254,28 +285,37 @@ if (empty($_SESSION['sessionowner'])) {
 
             </div>
         </div>
-        <script>
-            function copyToClipboard() {
-                var home_id = '<?php echo $row['home_id']; ?>';
-
-                var tempInput = document.createElement("input");
-                tempInput.value = home_id;
-                document.body.appendChild(tempInput);
-
-                tempInput.select();
-                tempInput.setSelectionRange(0, 99999);
-
-                document.execCommand("copy");
-
-                document.body.removeChild(tempInput);
-
-                alert("Home ID Has Been Copied To Clipboard: " + home_id);
-            }
-        </script>
     <?php
     }
     ?>
+    <script>
+        const banner = document.querySelector('.banner-container');
 
+        function copyToClipboard() {
+            var home_id = '<?php echo $row['home_id']; ?>';
+
+            var tempInput = document.createElement("input");
+            tempInput.value = home_id;
+            document.body.appendChild(tempInput);
+
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999);
+
+            document.execCommand("copy");
+
+            document.body.removeChild(tempInput);
+
+            alert("Home ID Has Been Copied To Clipboard: " + home_id);
+        }
+
+        function closeSub() {
+            banner.style.display = 'none';
+            document.querySelector("body").classList.remove("scrollable");
+        }
+        if(banner.style.display != 'none'){
+            document.querySelector("body").classList.add("scrollable");
+        }
+    </script>
 </body>
 
 </html>

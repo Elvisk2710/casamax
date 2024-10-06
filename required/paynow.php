@@ -10,9 +10,9 @@ $paynow = new Paynow\Payments\Paynow(
 );
 
 $invoice_name = "Casamax Invoice " . time();
-$user_id = filter_var($_SESSION['sessionstudent'], FILTER_SANITIZE_EMAIL);
+$user_id = filter_var($_SESSION['sessionowner'], FILTER_SANITIZE_EMAIL);
 
-$sql = "SELECT * FROM homerunuserdb WHERE userid = $user_id";
+$sql = "SELECT * FROM homerunhouses WHERE home_id = $user_id";
 
 $result = mysqli_query($conn, $sql);
 if ($row = mysqli_fetch_assoc($result)) {
@@ -25,7 +25,6 @@ $payment = $paynow->createPayment($invoice_name, $user_email);
 $payment->add($sub_type, $amount);
 $payment->add($user_email); // Include email as part of the item description
 
-try {
     $response = $paynow->send($payment);
 
     if ($response->success()) {
@@ -36,7 +35,7 @@ try {
         header("Location: $redirectUrl");
 
         // Use a background process to poll the transaction status
-        $transactionStatus = $this->pollTransactionStatus($paynow, $pollUrl);
+        $transactionStatus = pollTransactionStatus($paynow, $pollUrl);
 
         if ($transactionStatus['paid']) {
             setcookie("success", "true", time() + (8600 * 1), "/", "", true, true);
@@ -54,23 +53,15 @@ try {
         $_SESSION['payment_status'] = "failed";
         exit('<script>alert("Transaction failed: ' . $errorMessage . '");</script>');
     }
-} catch (Exception $e) {
-    $errorMessage = $e->getMessage();
-    error_log($errorMessage);
-    header('location: ../payment.php?error=' . urlencode($errorMessage) . '&success=false');
-    setcookie("success", "false", time() + (8600 * 1), "/", "", true, true);
-    $_SESSION['payment_status'] = "failed";
-    exit('<script>alert("An error occurred: ' . $errorMessage . '");</script>');
-}
 
 function pollTransactionStatus($paynow, $pollUrl)
 {
-    $timeout = 60;
+    $timeout = 30;
     $count = 0;
     $success = false;
 
     while (!$success) {
-        sleep(2);
+        sleep(1);
         $status = $paynow->pollTransaction($pollUrl);
 
         if ($status->paid()) {

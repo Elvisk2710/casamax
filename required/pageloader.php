@@ -58,7 +58,7 @@ require 'alerts.php';
         ?>
     </span>
 </div>
-<?php
+<!-- <?php
 if ((!isset($_GET['chat_id']) && (!isset($_SESSION['sessionAdmin'])) && (!isset($_SESSION['sessionagent']))) || ((isset($_SESSION['sessionowner']))) || (isset($_SESSION['sessionstudent']))) {
 ?>
     <div class="floating_chat_icon" title="chats">
@@ -68,7 +68,7 @@ if ((!isset($_GET['chat_id']) && (!isset($_SESSION['sessionAdmin'])) && (!isset(
     </div>
 <?php
 }
-?>
+?> -->
 <style>
     .container_loader {
         width: 100%;
@@ -217,4 +217,4 @@ if ((!isset($_GET['chat_id']) && (!isset($_SESSION['sessionAdmin'])) && (!isset(
         margin: 0 !important;
     }
 </style>
-<script src="https://localhost/casamax/chat/scriptjs/user_status.js"></script>
+<!-- <script src="https://localhost/casamax/chat/scriptjs/user_status.js"></script> -->

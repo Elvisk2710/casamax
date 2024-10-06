@@ -1,21 +1,10 @@
 <?php
 session_start();
 require './required/ads_query.php';
-// if (!isset($_SESSION['sessionstudent'])) {
-//     header("Location: ./login.php?pleaseloginfirst");
-//     echo '<script type="text/javascript"> alert("PLEASE LOGIN FIRST") </script>';
-//     exit();
-// }
-// if (isset($_GET['error'])) {
-//     $error_name = $_GET['error'];
-//     echo "
-//         <script>
-//             alert(" . $error_name . ")
-//         </script>
-
-//         ";
-//     unset($_GET['error']);
-// }
+if (!isset($_SESSION['sessionowner'])) {
+    header("Location: ./homeownerlogin.php?error=please login first");
+    exit();
+}
 
 ?>
 <!DOCTYPE html>
@@ -34,8 +23,17 @@ require_once 'required/pageloader.php';
     <link rel="stylesheet" href="payment.css">
 </head>
 
+<script>
+        // Get all the buttons on the page
+        const buttons = document.querySelectorAll('button');
 
+        // Function to disable all buttons and replace their text with 'loading'
+        function disableBtn() {
+            document.querySelector(".container_loader").classList.remove("container_loader--hidden");
+            document.querySelector("body").classList.add("scrollable");
+        }
 
+</script>
 <body onunload="" class="scrollable">
 
     <div class="container">
@@ -70,28 +68,25 @@ require_once 'required/pageloader.php';
                         </div>                    
                     ';
             }
-
             ?>
         </div>
 
         <form method="post" action="./required/payment_btn.php">
             <div class="subscription_buttons">
-
                 <div class="sub">
                     <div class="package-name">
                         <h5>Basic</h5>
                         <p>
-                            - 3 months
+                            - 90 days
                         </p>
                     </div>
                     <div class="desc">
                         <p>
-                        Get started with the essentials! List your boarding house for <b>3 Months</b> and showcase your property to students. Perfect for those just starting out.
+                            Get started with the essentials! List your boarding house for <b>90 Days</b> and showcase your property to students. Perfect for those just starting out.
                         </p>
                     </div>
                     <div class="price">
-                        <h2>USD $15</h2>
-
+                        <h2>USD $25</h2>
                     </div>
                     <hr>
                     <div class="features">
@@ -121,25 +116,24 @@ require_once 'required/pageloader.php';
                         </div>
                     </div>
                     <div class="price-btn">
-                        <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="starter" value="subscriptionBtn1">
+                        <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="basic" value="subscriptionBtn1">
                             SUBSCRIBE
                         </button>
                     </div>
                 </div>
-
                 <div class="sub">
                     <div class="package-name">
                         <h5>Premium</h5>
                         <p>
-                            - 6 months
+                            - 180 Days
                         </p>
                     </div>
                     <div class="desc">
                         <p>
-                        Take your listings to the next level! With <b>6 months</b> of visibility on our platform for you to connect with students around Zimbabwe</p>
+                            Take your listings to the next level! With <b>180 Days</b> of visibility on our platform for you to connect with students around Zimbabwe</p>
                     </div>
                     <div class="price">
-                        <h2>USD $30</h2>
+                        <h2>USD $45</h2>
                     </div>
                     <hr>
                     <div class="features">
@@ -169,26 +163,25 @@ require_once 'required/pageloader.php';
                         </div>
                     </div>
                     <div class="price-btn">
-                        <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="starter" value="subscriptionBtn1">
+                        <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="premium" value="subscriptionBtn1">
                             SUBSCRIBE
                         </button>
                     </div>
                 </div>
-
                 <div class="sub">
                     <div class="package-name">
                         <h5>Pro</h5>
                         <p>
-                            - 12 months
+                            - 365 days
                         </p>
                     </div>
                     <div class="desc">
                         <p>
-                        Maximize your exposure and dominate the market! Enjoy <b>12 Months</b> of your boarding house on our platform and get a chance to fill up your home as quickly as possible.
+                            Maximize your exposure and dominate the market! Enjoy <b>365 Days</b> of your boarding house on our platform and get a chance to fill up your home as quickly as possible.
                         </p>
                     </div>
                     <div class="price">
-                        <h2>USD $50</h2>
+                        <h2>USD $80</h2>
                     </div>
                     <hr>
                     <div class="features">
@@ -218,7 +211,7 @@ require_once 'required/pageloader.php';
                         </div>
                     </div>
                     <div class="price-btn">
-                        <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="starter" value="subscriptionBtn1">
+                        <button id="subscriptionBtn1" type="submit" onclick="disableBtn()" name="pro" value="subscriptionBtn1">
                             SUBSCRIBE
                         </button>
                     </div>
@@ -234,28 +227,6 @@ require_once 'required/pageloader.php';
         </div>
     </div>
     </div>
-
-    <script>
-        var navBar = document.getElementById("navBar");
-
-        function togglebtn() {
-
-            navBar.classList.toggle("hidemenu")
-        }
-    </script>
-    <script>
-        var dropdown = document.getElementById("dropdown");
-
-        function togglebtn1() {
-
-            navBar.classList.toggle("hideuni")
-        }
-
-        function disableBtn() {
-            document.querySelector(".container_loader").classList.remove("container_loader--hidden");
-            document.querySelector("body").classList.add("scrollable");
-        }
-    </script>
 </body>
 
 </html>

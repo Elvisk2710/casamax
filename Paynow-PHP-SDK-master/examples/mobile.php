@@ -23,7 +23,7 @@ $payment->setDescription("Mr Maposa\'s lunch order");
 
 
 // Initiate a Payment 
-$response = $paynow->sendMobile($payment, '786989144', 'ecocash');
+$response = $paynow->sendMobile($payment, '0777832735', 'ecocash');
 
 
 ?>
