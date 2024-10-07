@@ -26,7 +26,7 @@ $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 <?php
 $num_per_page = 8;
-$filters = ['kitchen', 'wifi', 'borehole', 'fridge', 'transport', 'gender', 'price'];
+$filters = ['kitchen', 'wifi', 'borehole', 'fridge', 'transport', 'gender'];
 $filter_query = '';
 $filter_url = '';
 $kitchenIcon = '../images/kitchenIcon.png';
@@ -36,23 +36,27 @@ $transportIcon = '../images/transportIcon.png';
 $fridgeIcon = '../images/fridgeIcon.png';
 $verificationIcon = '../images/verifiedIcon.png';
 
-foreach ($filters as $filter) {
-    if (isset($_GET[$filter])) {
-        $value = $_GET[$filter];
-        if ($filter === 'gender') {
-            $filter_query .= " and gender = '$value'";
-            $filter_url .= "&gender=$value";
-        } elseif ($filter === 'price' && $value != '') {
-            $filter_query .= " and price <= '$value'";
-            $filter_url .= "&price=$value";
-        } else {
-            $filter_query .= " and $filter = '1'";
-            $filter_url .= "&$filter=1";
+if (isset($_GET['filter_set'])) {
+    foreach ($filters as $filter) {
+        if (isset($_GET[$filter])) {
+            $value = $_GET[$filter];
+            if ($filter === 'gender') {
+                $filter_query .= " AND gender = '$value'";
+                $filter_url .= "&gender = $value";
+            }else {
+                $filter_query .= " AND $filter = '1'";
+                $filter_url .= "&$filter=1";
+            }
         }
     }
+    if (isset($_GET['price']) && $_GET['price'] != null) {
+        $filter_query .= " AND price <= " . $_GET['price'];
+        $filter_url .= ($_GET['price']);
+    }
+} elseif (isset($_GET['filter_reset'])) {
+    $filter_query = '';
+    $filter_url = '';
 }
-
-$filter_url .= isset($_GET['filter']) ? '&filter=' : '';
 
 $page = $_GET['page'] ?? 1;
 $start_from = ($page - 1) * $num_per_page;
@@ -104,7 +108,7 @@ while ($row = mysqli_fetch_array($result)) {
                     <?php if ($row['fridge'] == "1"): ?>
                         <div class="amenities_div"><img src="<?= $fridgeIcon ?>" alt="fridge" title="fridge"></div>
                     <?php endif; ?>
-                    <?php if ($row['wifi'] == "0"): ?>
+                    <?php if ($row['wifi'] == "1"): ?>
                         <div class="amenities_div"><img src="<?= $wifiIcon ?>" alt="wifi" title="wifi"></div>
                     <?php endif; ?>
                     <?php if ($row['borehole'] == "1"): ?>

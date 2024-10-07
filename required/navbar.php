@@ -42,7 +42,7 @@
     nav {
         background-color: white;
         text-align: center;
-        margin: 2rem 6rem;
+        margin: 1rem;
         border-radius: 20px;
         display: flex;
         flex-direction: row;

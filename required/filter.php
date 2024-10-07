@@ -1,25 +1,3 @@
-<?php
-// reseting a filter
-if (isset($_POST['filter_reset'])) {
-     unset($_GET['fridge']);
-     unset($_GET['borehole']);
-     unset($_GET['wifi']);
-     unset($_GET['kitchen']);
-     unset($_GET['transport']);
-     unset($_GET['price']);
-     unset($_GET['filter']);
-     $transport_query = '';
-     $kitchen_query = '';
-     $wifi_query = '';
-     $borehole_query = '';
-     $fridge_query = '';
-     $gender_query = '';
-     $price_query = '';
-     $price_url = "";
-     $filter_url = "";
-     redirect("https://casamax.co.zw/unilistings/$page_name");
-}
-?>
 <div class="sidebar">
      <div class="close_icon" onclick="closeFilter()">
           <svg xmlns="https://www.w3.org/2000/svg" fill="currentColor" class="crossmark" viewBox="0 0 16 16">
@@ -27,12 +5,9 @@ if (isset($_POST['filter_reset'])) {
           </svg>
      </div>
      <form class="filter-form" action="<?php $page_filter_name ?>" method="GET">
-
           <h3>Filters</h3>
-
           <div class="filter" id="filter">
                <p>Amenities</p>
-
                <div>
                     <label for="wifi">Wifi :<input id="wifi" type="checkbox" name="wifi" value="1" <?php if (isset($_GET['wifi']) && $_GET['wifi'] = 1) {
                                                                                                          echo "checked";
@@ -88,14 +63,13 @@ if (isset($_POST['filter_reset'])) {
                <input type="number" id="price" name="price" value="<?php echo $price ?>" placeholder="What's Your Budget?">
           </div>
           <div class="sidebar-link">
-               <button name="filter" type="submit">Apply Filter</button>
+               <button name="filter_set" type="submit">Apply Filter</button>
                <br>
           </div>
-     </form>
-     <form action="<?php $page_filter_name ?>" method="post">
+          <!-- </form> -->
+          <!-- <form action="<?php $page_filter_name ?>" method="post"> -->
           <div class="sidebar-link">
                <button name="filter_reset" style="background-color: rgb(8,8,12); color:rgb(252,153,82);">Reset Filter</button>
-               <br>
           </div>
      </form>
 </div>
