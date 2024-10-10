@@ -98,30 +98,6 @@ if (isset($_GET['error'])) {
     <script src="index.js"></script>
     <!-- Include Intro.js JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
-    <!-- <nav id="navBar" data-intro="Here is the navigation bar. You can find various sections of our site here." data-step="3" data-position="bottom">
-        <div class="left-nav">
-            <a href="index.php">
-                <img src="images/logoorange.png" alt="logo" class="logo" data-intro="This is our logo. Click it to return to the homepage." data-step="2" data-position="bottom">
-            </a>
-            <h3 class="smltxt">CasaMax</h3>
-            <img src="images/menu.webp" alt="menu" onclick="togglebtn()" class="fas">
-            <br>
-            <a href="./index.php" class="home">Home</a>
-            <a href="./manage/index.php">Manage Rental</a>
-            <a href="advertise_as/index.php">Advertise</a>
-            <a href="help.php">Help</a>
-            <a href="./chat/screens/">My Chats</a>
-        </div>
-        <div class="right-nav">
-            <?php
-            if (!isset($_SESSION['sessionstudent'])) {
-                echo '<a href="./loginas.php" class="sign_in" name="loginbtn">Login</a>';
-            } else {
-                echo '<a href="./student_profile.php" class="sign_in" name="loginbtn">My Profile</a>';
-            }
-            ?>
-        </div>
-    </nav> -->
     <?php
     require './required/root-nav.php';
     ?>
@@ -365,15 +341,15 @@ if (isset($_GET['error'])) {
         <!-- footer -->
         <?php
         require './required/root-footer.php';
-        if (!isset($_GET['chat_id'])) {
-        ?>
-            <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">
-                <a href="./chat/screens/">
-                    <img src="./images/new-message.png" alt="">
-                </a>
-            </div>
-        <?php
-        }
+        // if (!isset($_GET['chat_id'])) {
+        // ?>
+        //     <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">
+        //         <a href="./chat/screens/">
+        //             <img src="./images/new-message.png" alt="">
+        //         </a>
+        //     </div>
+        // <?php
+        // }
         ?>
         <script src="./jsfiles/onclickscript.js"></script>
         <script>
@@ -417,8 +393,5 @@ if (isset($_GET['error'])) {
                 startTour();
             });
         </script>
-        <script src="app.js"></script>
-        <script src="./chat/scriptjs/user_status.js"></script>
 </body>
-
 </html>

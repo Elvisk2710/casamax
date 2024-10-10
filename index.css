@@ -552,10 +552,9 @@ hr {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  margin: 2rem 2rem;
-  height: 18rem;
-  width: 50%;
-  flex-basis: 30%;
+  margin: 1rem;
+  min-height: 18rem;
+  flex-basis: 33%;
   border-radius: 20px;
   background-color: white;
   padding: 2.5rem;
