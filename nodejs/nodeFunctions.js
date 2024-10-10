@@ -1,5 +1,5 @@
 const axios = require("axios");
-const text = require("body-parser/lib/types/text");
+const intents = require("./intents"); // Import the intents file
 
 // Function to generate a WhatsApp link
 async function generateWhatsAppLink(phoneNumber) {
@@ -50,7 +50,7 @@ async function generateFullCasamaxLink() {
 
   fullUrl = `https://casamax.co.zw/unilistings/${pageUrl}?gender=${gender}&price=${budget}&filter_set=1`;
   const shortUrl = await minifyWithTinyURL(fullUrl);
-  text = "View the full list on CasaMax: " + shortUrl + "\n";
+  const text = "View the full list on CasaMax: " + shortUrl + "\n";
   return text;
 }
 // Function to generate messages for each house object
