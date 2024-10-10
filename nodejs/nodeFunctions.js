@@ -1,4 +1,5 @@
 const axios = require("axios");
+const text = require("body-parser/lib/types/text");
 
 // Function to generate a WhatsApp link
 async function generateWhatsAppLink(phoneNumber) {
@@ -31,6 +32,27 @@ async function generateWebLink(home_id) {
   return shortUrl;
 }
 
+// generate the full casamax link
+async function generateFullCasamaxLink() {
+  let pageUrl;
+  for (let key in intents) {
+    const intent = intents[key];
+    if (
+      intent.name.toLowerCase() === university.toLowerCase() ||
+      intent.nicknames.some(
+        (nickname) => nickname.toLowerCase() === university.toLowerCase()
+      )
+    ) {
+      pageUrl = intent.pageUrl;
+      break;
+    }
+  }
+
+  fullUrl = `https://casamax.co.zw/unilistings/${pageUrl}?gender=${gender}&price=${budget}&filter_set=1`;
+  const shortUrl = await minifyWithTinyURL(fullUrl);
+  text = "View the full list on CasaMax: " + shortUrl + "\n";
+  return text;
+}
 // Function to generate messages for each house object
 async function generateMessages(houses) {
   // Check if houses is an array

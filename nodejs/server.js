@@ -141,7 +141,7 @@ app.post("/whatsapp", async (req, res) => {
 
     console.log(`Received message from ${fromNumber}: ${incomingMessage}`);
 
-    // Initialize conversation data for the sender if not already done
+    // Initialize conversation data for the sender if not already present
     if (!conversationData[fromNumber]) {
       conversationData[fromNumber] = {
         stage: "initial",
@@ -153,18 +153,34 @@ app.post("/whatsapp", async (req, res) => {
 
     // Check if the message is a greeting
     if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+      console.log(`Greeting detected. Resetting stage to 'initial'.`);
       conversation.stage = "initial"; // Reset to initial stage if needed
     }
+
     // Check if the message is a goodbye
     if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+      console.log(`Goodbye detected. Setting stage to 'goodbye'.`);
       conversation.stage = "goodbye"; // Set stage to completed or end the conversation
     }
-    console.log(conversation.stage);
+
+    console.log(`Current conversation stage: ${conversation.stage}`);
+
+    // Initialize responseMessage variable to store the outgoing message
     let responseMessage;
+
+    // Handle conversation stages
     switch (conversation.stage) {
       case "initial":
         responseMessage =
-          "Hello my name is Casa. \nI am here to help you find the best boarding house for your needs\n\nChoose your university....\n\n1. University of Zimbabwe\n2. Midlands State University\n3. Africa University\n4. Bindura university of Science and Education\n5. Chinhoyi University of Science and Technology\n6. Great Zimbabwe University\n7. Harare Institute of Technology\n8. National University of Science and Technology";
+          "Hello! My name is Casa.\nI am here to help you find the best boarding house for your needs.\n\nChoose your university by replying with the corresponding number:\n\n" +
+          "1. University of Zimbabwe\n" +
+          "2. Midlands State University\n" +
+          "3. Africa University\n" +
+          "4. Bindura University of Science and Education\n" +
+          "5. Chinhoyi University of Science and Technology\n" +
+          "6. Great Zimbabwe University\n" +
+          "7. Harare Institute of Technology\n" +
+          "8. National University of Science and Technology";
         conversation.stage = "university";
         break;
 
@@ -182,11 +198,15 @@ app.post("/whatsapp", async (req, res) => {
             const intent = intents[key];
             if (
               intent.name.toLowerCase() === incomingMessage ||
-              intent.nicknames.some(
-                (nickname) => nickname.toLowerCase() === incomingMessage
-              )
+              (intent.nicknames &&
+                intent.nicknames.some(
+                  (nickname) => nickname.toLowerCase() === incomingMessage
+                ))
             ) {
               matchedUniversity = intent;
+              console.log(
+                `Matched university by nickname: ${matchedUniversity.name}`
+              );
               break;
             }
           }
@@ -220,7 +240,7 @@ app.post("/whatsapp", async (req, res) => {
         if (
           maleKeywords.some(
             (keyword) =>
-              incomingMessage.includes(keyword) || incomingMessage == 1
+              incomingMessage.includes(keyword) || incomingMessage === "1"
           )
         ) {
           conversation.data.gender = "boys";
@@ -229,27 +249,28 @@ app.post("/whatsapp", async (req, res) => {
         } else if (
           femaleKeywords.some(
             (keyword) =>
-              incomingMessage.includes(keyword) || incomingMessage == 2
+              incomingMessage.includes(keyword) || incomingMessage === "2"
           )
         ) {
           conversation.data.gender = "girls";
-          responseMessage =
-            "Please wait whilst we fetch *Boarding Houses* for you";
-          await sendHouses(conversation, res);
+          responseMessage = await sendHouses(conversation, res);
           conversation.stage = "goodbye";
         } else {
           responseMessage =
-            "Invalid selection. Please choose 1 for Male or 2 for Female.";
+            "Invalid selection. Please choose between: \n1. for Male \nor \n2. for Female.";
         }
         break;
 
       case "goodbye":
         responseMessage =
           "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
+        // Optionally, you can reset the conversation or delete the conversation data
+        // delete conversationData[fromNumber];
         break;
 
       default:
-        responseMessage = "I’m not sure how to help with that.";
+        responseMessage =
+          "I’m not sure how to help with that. Can you please give a valid response!!";
         break;
     }
 
@@ -271,6 +292,9 @@ app.post("/whatsapp", async (req, res) => {
     // Send the TwiML response
     res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
+
+    // Log the response for debugging purposes
+    console.log(`Sent message to ${fromNumber}: ${responseMessage}`);
   } catch (error) {
     console.error("Error processing WhatsApp message:", error);
     const twiml = new MessagingResponse();
@@ -283,29 +307,66 @@ app.post("/whatsapp", async (req, res) => {
 });
 // function to send houses to the client
 async function sendHouses(conversation, res) {
+  // Initialize responseMessage to ensure it's scoped correctly
+  let responseMessage;
+
   try {
-    console.log("Fetching houses");
+    // Destructure necessary data from the conversation object
     const { university, budget, gender } = conversation.data;
 
-    // Fetch the houses from your API
+    // Fetch houses from the external API based on user criteria
     const response = await makeBDApiCall(university, budget, gender);
-    console.log("response", JSON.stringify(response)); // Log the response as a stringified JSON
-    if (response && response.length > 0) {
-      const messagesArray = await generateMessages(response);
-      if (messagesArray && messagesArray.length > 0) {
-        responseMessage = messagesArray.join('\n\n');
-        console.log("messageArray" + responseMessage);
 
+    // Generate a full URL related to the house listings
+    let casaFullUrl = await generateFullCasamaxLink(university, budget, gender);
+
+    // Check if the API returned any house listings
+    if (response && response.length > 0) {
+      // Generate an array of message strings based on the house listings
+      const messagesArray = await generateMessages(
+        response,
+        university,
+        budget,
+        gender
+      );
+
+      // Check if message generation was successful and contains messages
+      if (messagesArray && messagesArray.length > 0) {
+        // Initialize responseMessage with the generated URL
+        responseMessage = casaFullUrl;
+
+        // Append the concatenated messages, separated by two newline characters for readability
+        responseMessage += messagesArray.join("\n\n");
+
+        // Log the complete message for debugging purposes
+        console.log("messageArray: " + responseMessage);
+
+        // Send the response message back to the client
         return responseMessage;
       } else {
-        responseMessage = "Sorry! No houses found at the moment";
+        // If message generation failed or returned no messages
+        responseMessage = "Sorry! No houses found at the moment.";
+
+        // Send the fallback message to the client
+        return responseMessage;
       }
     } else {
+      // If the API returned no house listings matching the criteria
       responseMessage =
-        "Sorry! No houses found at the moment matching your criteria";
+        "Sorry! No houses found at the moment matching your criteria.";
+
+      // Send the fallback message to the client
+      return responseMessage;
     }
   } catch (error) {
-    responseMessage = "Sorry! Fetching Error Please try again later";
+    // Log the actual error details for debugging
+    console.error("Error in sendHouses:", error);
+
+    // Set a generic error message for the user
+    responseMessage = "Sorry! Fetching Error. Please try again later.";
+
+    // Send the error message back to the client
+    return responseMessage;
   }
 }
 
