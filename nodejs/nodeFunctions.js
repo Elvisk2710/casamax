@@ -139,4 +139,5 @@ module.exports = {
   makeBDApiCall,
   generateWhatsAppLink,
   generateMessages,
+  generateFullCasamaxLink,
 };

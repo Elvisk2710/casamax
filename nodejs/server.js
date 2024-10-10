@@ -15,6 +15,7 @@ const {
   makeBDApiCall,
   generateWhatsAppLink,
   generateMessages,
+  generateFullCasamaxLink,
 } = require("./nodeFunctions"); // Import the intents file
 
 // Initialize Express
