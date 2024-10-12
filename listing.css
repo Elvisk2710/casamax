@@ -220,9 +220,9 @@ h2 {
   font-size: 1.2rem;
 }
 .amenities-list {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); /* Dynamic filling with min width */
+  gap: 1rem;
   align-items: center;
   width: 100%;
 }
@@ -310,14 +310,23 @@ h2 {
   }
   .gallery {
     margin: 2rem 0;
+    display: grid;
     gap: 0.2rem;
+    grid-template-areas: "first first first first " ;
+    min-height: 40vh;
+    max-height: 60vh;
+    overflow: none;
   }
+  
   .gallery .gallery-img-1 img {
-    height: 200px;
+    height: fit-content;
+    max-width: 100% !important;
+    object-fit: cover;
+    max-height: 300px;
   }
   .gallery .gallery-img-2 img, .gallery .gallery-img-3 img, .gallery .gallery-img-4 img, .gallery .gallery-img-5 img {
     height: 100%;
-    max-height: 150px;
+    max-height: 200px;
   }
   .more-pictures {
     width: fit-content;
