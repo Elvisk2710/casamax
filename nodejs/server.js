@@ -140,8 +140,6 @@ app.post("/whatsapp", async (req, res) => {
     const incomingMessage = req.body.Body.trim().toLowerCase(); // Normalize input
     const fromNumber = req.body.From;
 
-    console.log(`Received message from ${fromNumber}: ${incomingMessage}`);
-
     // Initialize conversation data for the sender if not already present
     if (!conversationData[fromNumber]) {
       conversationData[fromNumber] = {
@@ -154,17 +152,13 @@ app.post("/whatsapp", async (req, res) => {
 
     // Check if the message is a greeting
     if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
-      console.log(`Greeting detected. Resetting stage to 'initial'.`);
       conversation.stage = "initial"; // Reset to initial stage if needed
     }
 
     // Check if the message is a goodbye
     if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
-      console.log(`Goodbye detected. Setting stage to 'goodbye'.`);
       conversation.stage = "goodbye"; // Set stage to completed or end the conversation
     }
-
-    console.log(`Current conversation stage: ${conversation.stage}`);
 
     // Initialize responseMessage variable to store the outgoing message
     let responseMessage;
@@ -205,9 +199,6 @@ app.post("/whatsapp", async (req, res) => {
                 ))
             ) {
               matchedUniversity = intent;
-              console.log(
-                `Matched university by nickname: ${matchedUniversity.name}`
-              );
               break;
             }
           }
@@ -295,7 +286,6 @@ app.post("/whatsapp", async (req, res) => {
     res.end(twiml.toString());
 
     // Log the response for debugging purposes
-    console.log(`Sent message to ${fromNumber}: ${responseMessage}`);
   } catch (error) {
     console.error("Error processing WhatsApp message:", error);
     const twiml = new MessagingResponse();
@@ -338,9 +328,6 @@ async function sendHouses(conversation, res) {
 
         // Append the concatenated messages, separated by two newline characters for readability
         responseMessage += messagesArray.join("\n\n");
-
-        // Log the complete message for debugging purposes
-        console.log("messageArray: " + responseMessage);
 
         // Send the response message back to the client
         return responseMessage;
