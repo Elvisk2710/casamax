@@ -33,11 +33,14 @@ async function generateWebLink(home_id) {
 }
 
 // generate the full casamax link
-async function generateFullCasamaxLink(university,budget,gender) {
-  console.log('university ' + university);
+async function generateFullCasamaxLink(university, budget, gender) {
+  console.log("university " + university);
   let pageUrl;
+  console.log("University: ", university);
   for (let key in intents) {
     const intent = intents[key];
+    console.log("Intent: ", intent);
+
     if (
       intent.name.toLowerCase() === university.toLowerCase() ||
       intent.nicknames.some(
@@ -48,6 +51,8 @@ async function generateFullCasamaxLink(university,budget,gender) {
       break;
     }
   }
+
+  console.log("Page URL: ", pageUrl);
 
   fullUrl = `https://casamax.co.zw/unilistings/${pageUrl}?gender=${gender}&price=${budget}&filter_set=1`;
   const shortUrl = await minifyWithTinyURL(fullUrl);
