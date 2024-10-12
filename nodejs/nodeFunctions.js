@@ -7,8 +7,8 @@ async function generateWhatsAppLink(phoneNumber) {
     "Hello found your boarding house on casamax.co.zw. Is your house still available?";
   const encodedMessage = encodeURIComponent(message);
   const longUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-  const shortUrl = await minifyWithTinyURL(longUrl);
-  return shortUrl;
+  // const shortUrl = await minifyWithTinyURL(longUrl);
+  return longUrl;
 }
 
 // Function to get houses from the database
@@ -33,7 +33,7 @@ async function generateWebLink(home_id) {
 }
 
 // generate the full casamax link
-async function generateFullCasamaxLink() {
+async function generateFullCasamaxLink(university,budget,gender) {
   let pageUrl;
   for (let key in intents) {
     const intent = intents[key];
