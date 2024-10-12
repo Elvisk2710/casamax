@@ -47,7 +47,7 @@ async function generateFullCasamaxLink(university, budget, gender) {
         (nickname) => nickname.toLowerCase() === university.toLowerCase()
       )
     ) {
-      pageUrl = intent.pageUrl;
+      pageUrl = intent.page;
       break;
     }
   }
