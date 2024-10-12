@@ -34,6 +34,7 @@ async function generateWebLink(home_id) {
 
 // generate the full casamax link
 async function generateFullCasamaxLink(university,budget,gender) {
+  console.log('university ' + university);
   let pageUrl;
   for (let key in intents) {
     const intent = intents[key];
@@ -99,7 +100,7 @@ async function generateMessages(houses) {
         `*${firstname} ${lastname}'s house*\n` +
         `Price: *$${price}*\n` +
         `Located at ${adrs}\n` +
-        `WhatsApp link:${whatsAppLink}\n` +
+        `WhatsApp link: ${whatsAppLink}\n` +
         `Casamax Link:${webLink}`;
 
       return message;
