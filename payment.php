@@ -42,6 +42,8 @@ require_once 'required/pageloader.php';
         </div>
         <div class="head-title">
             <h1>
+                Landlord
+                <br>
                 Plans and Pricing
             </h1>
             <br>
