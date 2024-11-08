@@ -160,26 +160,22 @@ app.post("/whatsapp", async (req, res) => {
       conversation.stage = "goodbye"; // Set stage to completed or end the conversation
     }
 
-    // Initialize responseMessage variable to store the outgoing message
     let responseMessage;
 
     // Handle conversation stages
     switch (conversation.stage) {
       case "initial":
-        await sendTemplateMessage(fromNumber); // Ensuring the template message is sent before moving on
+        await sendTemplateMessage(fromNumber); // Send a template or initial message
         conversation.stage = "university";
         break;
 
       case "university":
         let matchedUniversity = null;
-
-        // Check for number-based selection
         if (intents[incomingMessage]) {
           matchedUniversity = intents[incomingMessage];
         } else if (!isNaN(incomingMessage) && intents[incomingMessage]) {
           matchedUniversity = intents[incomingMessage];
         } else {
-          // Check for nickname or full name
           for (let key in intents) {
             const intent = intents[key];
             if (
@@ -197,14 +193,10 @@ app.post("/whatsapp", async (req, res) => {
 
         if (matchedUniversity) {
           conversation.data.university = matchedUniversity.name;
-          responseMessage =
-            "Oh Great!! " +
-            matchedUniversity.name +
-            ". What is your budget? (e.g. 160)";
-          conversation.stage = "budget"; // Move to the next stage
+          responseMessage = `Oh Great!! ${matchedUniversity.name}. What is your budget? (e.g. 160)`;
+          conversation.stage = "budget";
         } else {
-          responseMessage =
-            "Invalid selection. Please choose a valid university number or name from the list.";
+          responseMessage = "Invalid selection. Please choose a valid university number or name from the list.";
         }
         break;
 
@@ -228,7 +220,7 @@ app.post("/whatsapp", async (req, res) => {
         ) {
           conversation.data.gender = "boys";
           responseMessage = await sendHouses(conversation, res);
-          conversation.stage = "goodbye"; // Set stage after fetching houses
+          conversation.stage = "goodbye";
         } else if (
           femaleKeywords.some(
             (keyword) =>
@@ -239,21 +231,16 @@ app.post("/whatsapp", async (req, res) => {
           responseMessage = await sendHouses(conversation, res);
           conversation.stage = "goodbye";
         } else {
-          responseMessage =
-            "Invalid selection. Please choose between: \n1. for Male \nor \n2. for Female.";
+          responseMessage = "Invalid selection. Please choose between: \n1. for Male \nor \n2. for Female.";
         }
         break;
 
       case "goodbye":
-        responseMessage =
-          "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
-        // Optionally, you can reset the conversation or delete the conversation data
-        // delete conversationData[fromNumber];
+        responseMessage = "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
         break;
 
       default:
-        responseMessage =
-          "I’m not sure how to help with that. Can you please give a valid response!!";
+        responseMessage = "I’m not sure how to help with that. Can you please give a valid response!!";
         break;
     }
 
@@ -268,25 +255,39 @@ app.post("/whatsapp", async (req, res) => {
       message: responseMessage,
     });
 
-    // Generate TwiML response
+    // Send the message
+    await sendMessage(fromNumber, responseMessage);
+
+    // Send the TwiML response to WhatsApp
     const twiml = new MessagingResponse();
     twiml.message(responseMessage);
 
-    // Send the TwiML response
     res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
 
-    // Log the response for debugging purposes
   } catch (error) {
     console.error("Error processing WhatsApp message:", error);
     const twiml = new MessagingResponse();
-    twiml.message(
-      "Sorry, there was an error processing your request. Please try again later."
-    );
+    twiml.message("Sorry, there was an error processing your request. Please try again later.");
     res.writeHead(500, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
   }
 });
+
+// Generic message sending
+const sendMessage = async (to, message) => {
+  try {
+    const response = await client.messages.create({
+      from: 'whatsapp:+12082157816', // Your Twilio WhatsApp number
+      to: `whatsapp:${to}`,          // Recipient's WhatsApp number
+      body: message                  // Message content
+    });
+    console.log('Message sent:', response.sid);
+  } catch (error) {
+    console.error('Error sending message:', error);
+  }
+};
+
 
 // twilio template message
 async function sendTemplateMessage(receiver) {
