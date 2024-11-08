@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const http = require("http");
@@ -6,11 +6,11 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
-const twilio = require("twilio");
-const client = new twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+const twilio = require('twilio');
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = twilio(accountSid, authToken);
+
 
 const {
   makeBDApiCall,
