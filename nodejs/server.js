@@ -166,16 +166,7 @@ app.post("/whatsapp", async (req, res) => {
     // Handle conversation stages
     switch (conversation.stage) {
       case "initial":
-        responseMessage =
-          "Hello! My name is Casa.\nI am here to help you find the best boarding house for your needs.\n\nChoose your university by replying with the corresponding number:\n\n" +
-          "1. University of Zimbabwe\n" +
-          "2. Midlands State University\n" +
-          "3. Africa University\n" +
-          "4. Bindura University of Science and Education\n" +
-          "5. Chinhoyi University of Science and Technology\n" +
-          "6. Great Zimbabwe University\n" +
-          "7. Harare Institute of Technology\n" +
-          "8. National University of Science and Technology";
+        await sendTemplateMessage(fromNumber); // Ensuring the template message is sent before moving on
         conversation.stage = "university";
         break;
 
@@ -296,6 +287,20 @@ app.post("/whatsapp", async (req, res) => {
     res.end(twiml.toString());
   }
 });
+
+// twilio template message
+async function sendTemplateMessage(receiver) {
+  try {
+    const message = await client.messages.create({
+      contentSid: "HX7a1d8839e67a806c0f69e2397f6605a1",
+      from: "whatsapp:+15005550006",
+      to: "whatsapp:" + receiver,
+    });
+    console.log("Template message sent:", message.sid);
+  } catch (error) {
+    console.error("Error sending template message:", error);
+  }
+}
 // function to send houses to the client
 async function sendHouses(conversation, res) {
   // Initialize responseMessage to ensure it's scoped correctly

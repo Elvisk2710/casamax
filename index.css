@@ -810,6 +810,7 @@ hr {
   position: relative; /* Parent element must be relative */
   cursor: pointer;
   transition: all 0.3s;
+  height: fit-content;
 }
 .house:hover {
   transform: scale(1.05);
