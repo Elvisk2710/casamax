@@ -1,5 +1,4 @@
-
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const http = require("http");
@@ -198,7 +197,8 @@ app.post("/whatsapp", async (req, res) => {
           responseMessage = `Oh Great!! ${matchedUniversity.name}. What is your budget? (e.g. 160)`;
           conversation.stage = "budget";
         } else {
-          responseMessage = "Invalid selection. Please choose a valid university number or name from the list.";
+          responseMessage =
+            "Invalid selection. Please choose a valid university number or name from the list.";
         }
         break;
 
@@ -233,16 +233,19 @@ app.post("/whatsapp", async (req, res) => {
           responseMessage = await sendHouses(conversation, res);
           conversation.stage = "goodbye";
         } else {
-          responseMessage = "Invalid selection. Please choose between: \n1. for Male \nor \n2. for Female.";
+          responseMessage =
+            "Invalid selection. Please choose between: \n1. for Male \nor \n2. for Female.";
         }
         break;
 
       case "goodbye":
-        responseMessage = "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
+        responseMessage =
+          "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you";
         break;
 
       default:
-        responseMessage = "I’m not sure how to help with that. Can you please give a valid response!!";
+        responseMessage =
+          "I’m not sure how to help with that. Can you please give a valid response!!";
         break;
     }
 
@@ -266,11 +269,12 @@ app.post("/whatsapp", async (req, res) => {
 
     res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
-
   } catch (error) {
     console.error("Error processing WhatsApp message:", error);
     const twiml = new MessagingResponse();
-    twiml.message("Sorry, there was an error processing your request. Please try again later.");
+    twiml.message(
+      "Sorry, there was an error processing your request. Please try again later."
+    );
     res.writeHead(500, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
   }
@@ -280,23 +284,22 @@ app.post("/whatsapp", async (req, res) => {
 const sendMessage = async (to, message) => {
   try {
     const response = await client.messages.create({
-      from: 'whatsapp:+12082157816', // Your Twilio WhatsApp number
-      to: `whatsapp:${to}`,          // Recipient's WhatsApp number
-      body: message                  // Message content
+      from: "whatsapp:" + process.env.TWILIO_PHONE_NUMBER, // Your Twilio WhatsApp number
+      to: `whatsapp:${to}`, // Recipient's WhatsApp number
+      body: message, // Message content
     });
-    console.log('Message sent:', response.sid);
+    console.log("Message sent:", response.sid);
   } catch (error) {
-    console.error('Error sending message:', error);
+    console.error("Error sending message:", error);
   }
 };
-
 
 // twilio template message
 async function sendTemplateMessage(receiver) {
   try {
     const message = await client.messages.create({
-      contentSid: "HX7a1d8839e67a806c0f69e2397f6605a1",
-      from: "whatsapp:+12082157816",
+      contentSid: process.env.FIRST_TEMPLATE_SID,
+      from: "whatsapp:" + process.env.TWILIO_PHONE_NUMBER,
       to: "whatsapp:" + receiver,
     });
     console.log("Template message sent:", message.sid);
