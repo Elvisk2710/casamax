@@ -293,7 +293,7 @@ async function sendTemplateMessage(receiver) {
   try {
     const message = await client.messages.create({
       contentSid: "HX7a1d8839e67a806c0f69e2397f6605a1",
-      from: "whatsapp:+15005550006",
+      from: "whatsapp:+14155238886",
       to: "whatsapp:" + receiver,
     });
     console.log("Template message sent:", message.sid);
