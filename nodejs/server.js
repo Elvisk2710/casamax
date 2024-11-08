@@ -1,3 +1,5 @@
+
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const http = require("http");
@@ -7,8 +9,8 @@ const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
 const twilio = require("twilio");
 const client = new twilio(
-  "ACc7621dcd3d33b6d756b448a7e17820bb",
-  "ff18252aa20a7efd629890d0b22377e0"
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
 );
 
 const {
