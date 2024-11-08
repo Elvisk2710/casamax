@@ -8,7 +8,7 @@ const intents = require("./intents"); // Import the intents file
 const twilio = require("twilio");
 const client = new twilio(
   "ACc7621dcd3d33b6d756b448a7e17820bb",
-  "696e108a6a6ef1b5df5909031a64d9d0"
+  "ff18252aa20a7efd629890d0b22377e0"
 );
 
 const {
@@ -293,7 +293,7 @@ async function sendTemplateMessage(receiver) {
   try {
     const message = await client.messages.create({
       contentSid: "HX7a1d8839e67a806c0f69e2397f6605a1",
-      from: "whatsapp:+14155238886",
+      from: "whatsapp:+12082157816",
       to: "whatsapp:" + receiver,
     });
     console.log("Template message sent:", message.sid);
