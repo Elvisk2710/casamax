@@ -4,7 +4,6 @@ const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
-const twilio = require('twilio');
 const intents = require("./intents"); // Import the intents file
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -279,19 +278,23 @@ app.post("/whatsapp", async (req, res) => {
       message: responseMessage,
     });
 
-    // Call sendMessage function to send the response
-    await sendMessage(fromNumber, responseMessage);
+    // Generate TwiML response
+    const twiml = new MessagingResponse();
+    twiml.message(responseMessage);
 
-    // Send an HTTP status response for successful message processing
-    res.status(200).send("Message processed");
+    // Send the TwiML response
+    res.writeHead(200, { "Content-Type": "text/xml" });
+    res.end(twiml.toString());
 
+    // Log the response for debugging purposes
   } catch (error) {
     console.error("Error processing WhatsApp message:", error);
-    await sendMessage(
-      fromNumber,
+    const twiml = new MessagingResponse();
+    twiml.message(
       "Sorry, there was an error processing your request. Please try again later."
     );
-    res.status(500).send("Error processing the request");
+    res.writeHead(500, { "Content-Type": "text/xml" });
+    res.end(twiml.toString());
   }
 });
 
@@ -308,7 +311,6 @@ const sendMessage = async (to, message) => {
     console.error("Error sending message:", error);
   }
 };
-
 
 // function to send houses to the client
 async function sendHouses(conversation, res) {
