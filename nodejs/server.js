@@ -5,11 +5,12 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
-const twilio = require("twilio");
-const client = new twilio(
-  "ACc7621dcd3d33b6d756b448a7e17820bb",
-  "696e108a6a6ef1b5df5909031a64d9d0"
-);
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = twilio(accountSid, authToken);
+
+console.log("TWILIO_ACCOUNT_SID:", process.env.TWILIO_ACCOUNT_SID);
+console.log("TWILIO_AUTH_TOKEN:", process.env.TWILIO_AUTH_TOKEN);
 
 const {
   makeBDApiCall,
@@ -277,25 +278,37 @@ app.post("/whatsapp", async (req, res) => {
       message: responseMessage,
     });
 
-    // Generate TwiML response
-    const twiml = new MessagingResponse();
-    twiml.message(responseMessage);
+    // Call sendMessage function to send the response
+    await sendMessage(fromNumber, responseMessage);
 
-    // Send the TwiML response
-    res.writeHead(200, { "Content-Type": "text/xml" });
-    res.end(twiml.toString());
+    // Send an HTTP status response for successful message processing
+    res.status(200).send("Message processed");
 
-    // Log the response for debugging purposes
   } catch (error) {
     console.error("Error processing WhatsApp message:", error);
-    const twiml = new MessagingResponse();
-    twiml.message(
+    await sendMessage(
+      fromNumber,
       "Sorry, there was an error processing your request. Please try again later."
     );
-    res.writeHead(500, { "Content-Type": "text/xml" });
-    res.end(twiml.toString());
+    res.status(500).send("Error processing the request");
   }
 });
+
+// Generic message sending
+const sendMessage = async (to, message) => {
+  try {
+    const response = await client.messages.create({
+      from: "whatsapp:" + process.env.TWILIO_PHONE_NUMBER, // Your Twilio WhatsApp number
+      to: `whatsapp:${to}`, // Recipient's WhatsApp number
+      body: message, // Message content
+    });
+    console.log("Message sent:", response.sid);
+  } catch (error) {
+    console.error("Error sending message:", error);
+  }
+};
+
+
 // function to send houses to the client
 async function sendHouses(conversation, res) {
   // Initialize responseMessage to ensure it's scoped correctly
