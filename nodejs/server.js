@@ -3,12 +3,13 @@ const bodyParser = require("body-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
-const twilio = require('twilio');
+const twilio = require("twilio");
 const { MessagingResponse } = require("twilio").twiml;
 const intents = require("./intents"); // Import the intents file
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
+const axios = require("axios");
 
 console.log("TWILIO_ACCOUNT_SID:", process.env.TWILIO_ACCOUNT_SID);
 console.log("TWILIO_AUTH_TOKEN:", process.env.TWILIO_AUTH_TOKEN);
@@ -122,7 +123,8 @@ const goodbyeKeywords = [
   "great",
 ];
 
-const phpApiUrl = "https://casamax.co.zw/chat/server/";
+const chatPhpApiUrl = "https://casamax.co.zw/chat/server/";
+const whatsAppDbApi = "https://casamax.co.zw/homerunphp/";
 
 // Body Parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -164,6 +166,10 @@ app.post("/whatsapp", async (req, res) => {
 
     // Initialize responseMessage variable to store the outgoing message
     let responseMessage;
+    const currentDateTime = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " "); // Formats as 'YYYY-MM-DD HH:mm:ss'
 
     // Handle conversation stages
     switch (conversation.stage) {
@@ -179,9 +185,11 @@ app.post("/whatsapp", async (req, res) => {
           "7. Harare Institute of Technology\n" +
           "8. National University of Science and Technology";
         conversation.stage = "university";
+        callWhatsAppDbApi(fromNumber, "initiated", currentDateTime);
         break;
 
       case "university":
+        updateConversationStatus(fromNumber, "university");
         let matchedUniversity = null;
 
         // Check for number-based selection
@@ -220,6 +228,7 @@ app.post("/whatsapp", async (req, res) => {
         break;
 
       case "budget":
+        updateConversationStatus(fromNumber, "budget");
         const budget = parseFloat(incomingMessage);
         if (!isNaN(budget) && budget > 0) {
           conversation.data.budget = budget;
@@ -231,6 +240,7 @@ app.post("/whatsapp", async (req, res) => {
         break;
 
       case "gender":
+        updateConversationStatus(fromNumber, "gender");
         if (
           maleKeywords.some(
             (keyword) =>
@@ -238,7 +248,7 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "boys";
-          responseMessage = await sendHouses(conversation, res);
+          responseMessage = await sendHouses(conversation, res, fromNumber);
           conversation.stage = "goodbye"; // Set stage after fetching houses
         } else if (
           femaleKeywords.some(
@@ -247,7 +257,7 @@ app.post("/whatsapp", async (req, res) => {
           )
         ) {
           conversation.data.gender = "girls";
-          responseMessage = await sendHouses(conversation, res);
+          responseMessage = await sendHouses(conversation, res, fromNumber);
           conversation.stage = "goodbye";
         } else {
           responseMessage =
@@ -313,10 +323,58 @@ const sendMessage = async (to, message) => {
   }
 };
 
+// add conversation to database
+async function callWhatsAppDbApi(contact, status, date) {
+  try {
+    // Define the API endpoint
+    const apiUrl = `${whatsAppDbApi}/homerunphp/add_initiated_conversations.php`; // Update with your PHP API URL
+    // Prepare the data to send to the PHP API
+    const data = {
+      contact: contact,
+      status: status,
+      date: date,
+    };
+    // Make the POST request to the PHP API
+    const response = await axios.post(apiUrl, data);
+    // Handle the response
+    if (response.data.success) {
+      console.log("API call successful:", response.data);
+    } else {
+      console.log("API call failed:", response.data);
+    }
+  } catch (error) {
+    console.error("Error making API call:", error.message);
+  }
+}
+
+// Function to update conversation status
+async function updateConversationStatus(contact, status) {
+  try {
+    // The URL of the PHP API you want to call
+    const apiUrl = `${whatsAppDbApi}homerunphp/update_initiated_conversations.php`; // Update with the correct URL
+    // Prepare the data to send in the PUT request
+    const data = {
+      contact: contact,
+      status: status,
+    };
+    // Make the PUT request to the PHP API
+    const response = await axios.put(apiUrl, data);
+    // Check the response from the PHP API
+    if (response.data.success) {
+      console.log("Conversation status updated successfully:", response.data);
+    } else {
+      console.log("Error updating status:", response.data.error);
+    }
+  } catch (error) {
+    console.error("Error calling the API:", error.message);
+  }
+}
+
 // function to send houses to the client
-async function sendHouses(conversation, res) {
+async function sendHouses(conversation, res, fromNumber) {
   // Initialize responseMessage to ensure it's scoped correctly
   let responseMessage;
+  updateConversationStatus(fromNumber, "university");
 
   try {
     // Destructure necessary data from the conversation object
@@ -389,7 +447,7 @@ io.on("connection", (socket) => {
     try {
       await withTimeout(
         axios.post(
-          `${phpApiUrl}update_is_read.php?mobile_api=true&responseType=json`,
+          `${chatPhpApiUrl}update_is_read.php?mobile_api=true&responseType=json`,
           data,
           {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -409,13 +467,13 @@ io.on("connection", (socket) => {
       if (data.type == "student") {
         response = await withTimeout(
           axios.get(
-            `${phpApiUrl}show_users.php?student=${data.user}&responseType=json`
+            `${chatPhpApiUrl}show_users.php?student=${data.user}&responseType=json`
           )
         );
       } else if (data.type == "landlord") {
         response = await withTimeout(
           axios.get(
-            `${phpApiUrl}show_users.php?landlord=${data.user}&responseType=json`
+            `${chatPhpApiUrl}show_users.php?landlord=${data.user}&responseType=json`
           )
         );
       }
@@ -433,7 +491,7 @@ io.on("connection", (socket) => {
     try {
       const response = await withTimeout(
         axios.get(
-          `${phpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${data.user}&incoming_id=${data.receiver}`
+          `${chatPhpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${data.user}&incoming_id=${data.receiver}`
         )
       );
       io.to(data.roomId).emit("newChatMessage", response.data);
@@ -453,7 +511,7 @@ io.on("connection", (socket) => {
 
       const response = await withTimeout(
         axios.post(
-          `${phpApiUrl}insert_chat.php?responseType=json&mobile_api=true`,
+          `${chatPhpApiUrl}insert_chat.php?responseType=json&mobile_api=true`,
           formData,
           {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -489,7 +547,7 @@ function startPollingChat(socket, userId, receiver, roomId, type) {
     try {
       const response = await withTimeout(
         axios.get(
-          `${phpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${userId}&incoming_id=${receiver}`
+          `${chatPhpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${userId}&incoming_id=${receiver}`
         )
       );
       const messages = Array.isArray(response.data.chats)
@@ -518,13 +576,13 @@ function startPolling(socket, userId, type) {
       if (type === "student") {
         response = await withTimeout(
           axios.get(
-            `${phpApiUrl}show_users.php?student=${userId}&responseType=json`
+            `${chatPhpApiUrl}show_users.php?student=${userId}&responseType=json`
           )
         );
       } else if (type === "landlord") {
         response = await withTimeout(
           axios.get(
-            `${phpApiUrl}show_users.php?landlord=${userId}&responseType=json`
+            `${chatPhpApiUrl}show_users.php?landlord=${userId}&responseType=json`
           )
         );
       }
