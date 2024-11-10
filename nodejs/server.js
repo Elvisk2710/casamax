@@ -185,7 +185,8 @@ app.post("/whatsapp", async (req, res) => {
           "7. Harare Institute of Technology\n" +
           "8. National University of Science and Technology";
         conversation.stage = "university";
-        callWhatsAppDbApi(fromNumber, "initiated", currentDateTime);
+        let intPhoneNumber = parseInt(fromNumber, 10); // Converts to integer (base 10)
+        callWhatsAppDbApi(intPhoneNumber, "initiated", currentDateTime);
         break;
 
       case "university":
