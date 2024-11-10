@@ -358,7 +358,7 @@ async function updateConversationStatus(contact, status) {
       status: status,
     };
     // Make the PUT request to the PHP API
-    const response = await axios.put(apiUrl, data);
+    const response = await axios.post(apiUrl, data);
     // Check the response from the PHP API
     if (response.data.success) {
       console.log("Conversation status updated successfully:", response.data);
