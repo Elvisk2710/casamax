@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 require './advertisesdb.php';
 
 // Check if the request method is PUT
-if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get JSON input
     $input = json_decode(file_get_contents("php://input"), true);
 
