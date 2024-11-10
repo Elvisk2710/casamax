@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(["error" => "An error occurred: " . $e->getMessage()]);
     }
 } else {
-    echo json_encode(["error" => "Invalid request method. Use PUT."]);
+    echo json_encode(["error" => "Invalid request method. Use Post."]);
 }
 
 // Close the database connection
