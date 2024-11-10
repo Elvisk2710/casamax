@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
     try {
         // Find the ID of the most recent conversation record for the given contact
-        $sql_select = "SELECT id FROM initiated_conversations WHERE contact = '$contact' ORDER BY date DESC LIMIT 1";
+        $sql_select = "SELECT id FROM initiated_messages WHERE contact = '$contact' ORDER BY date DESC LIMIT 1";
         $result = mysqli_query($conn, $sql_select);
 
         if ($result && mysqli_num_rows($result) > 0) {
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
             $conversation_id = $row['id'];
 
             // Update the status of the last conversation record
-            $sql_update = "UPDATE initiated_conversations SET status = '$status' WHERE id = $conversation_id";
+            $sql_update = "UPDATE initiated_messages SET status = '$status' WHERE id = $conversation_id";
             if (mysqli_query($conn, $sql_update)) {
                 echo json_encode([
                     "success" => true,

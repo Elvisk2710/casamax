@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date = mysqli_real_escape_string($conn, $input['date']); // Expected to be in a format like 'YYYY-MM-DD'
 
     // Prepare SQL query for inserting the conversation
-    $sql = "INSERT INTO initiated_conversations (contact, status, date) 
+    $sql = "INSERT INTO initiated_messages (contact, status, date) 
             VALUES ('$contact', '$status', '$date')";
 
     // Execute the query and check if the insertion is successful
