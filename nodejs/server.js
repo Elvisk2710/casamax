@@ -374,7 +374,7 @@ async function updateConversationStatus(contact, status) {
 async function sendHouses(conversation, res, fromNumber) {
   // Initialize responseMessage to ensure it's scoped correctly
   let responseMessage;
-  updateConversationStatus(fromNumber, "university");
+  updateConversationStatus(fromNumber, "completed");
 
   try {
     // Destructure necessary data from the conversation object
