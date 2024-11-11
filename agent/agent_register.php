@@ -7,6 +7,18 @@ setcookie("page_pass", "homerunuserdb", time() + (900 * 1), "/");
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-48DWXXLG5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-48DWXXLG5F');
+    </script>
     <meta name="description" content="Sign-up as an agent to advertise your off campus accommodation to students">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <link rel="icon" href="../images/logowhite.png">
@@ -38,7 +50,7 @@ setcookie("page_pass", "homerunuserdb", time() + (900 * 1), "/");
                 </lottie-player>
             </div>
             <div class="right-sign-up">
-                
+
                 <form class="sign-up-container" action="./agent_register_script.php" method="post">
                     <div>
                         <h1>Agent Registration</h1>

@@ -8,6 +8,18 @@ setcookie("loginPage", "login.php", time() + (900 * 1), "/");
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-48DWXXLG5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-48DWXXLG5F');
+    </script>
     <?php
     require '../required/header.php';
     ?>
@@ -15,10 +27,7 @@ setcookie("loginPage", "login.php", time() + (900 * 1), "/");
     <link rel="icon" href="../images/logowhite.png">
     <link rel="stylesheet" href="../signup.css">
     <title>CasaMax Admin Log-In</title>
-
-
 </head>
-
 
 <body onunload="" class="scrollable">
 

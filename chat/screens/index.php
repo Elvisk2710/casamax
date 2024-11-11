@@ -4,7 +4,7 @@ session_start();
 require '../../homerunphp/advertisesdb.php';
 require '../../required/common_functions.php';
 $student = false;
-$_GET['chat_id']=true;
+$_GET['chat_id'] = true;
 if (isset($_SESSION['sessionstudent'])) {
     $sender_id = $_SESSION['sessionstudent'];
     $student = true;
@@ -36,6 +36,18 @@ if ($results = mysqli_query($conn, $sql)) {
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-48DWXXLG5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-48DWXXLG5F');
+    </script>
     <?php
     require_once '../../required/header.php';
     ?>
@@ -91,7 +103,7 @@ if ($results = mysqli_query($conn, $sql)) {
         </div>
         <div class="search">
             <div class="search_bar">
-            <input type="text" id="searchInput" placeholder="Search by name or surname">
+                <input type="text" id="searchInput" placeholder="Search by name or surname">
 
             </div>
             <!-- <div class="search_icon">

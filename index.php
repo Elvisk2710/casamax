@@ -76,6 +76,18 @@ if (isset($_GET['error'])) {
             navigator.serviceWorker.register('sw.js')
         }
     </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-48DWXXLG5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-48DWXXLG5F');
+    </script>
     <!-- Include Intro.js CSS -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
@@ -342,15 +354,16 @@ if (isset($_GET['error'])) {
         <?php
         require './required/root-footer.php';
         // if (!isset($_GET['chat_id'])) {
-        // ?>
-        //     <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">
-        //         <a href="./chat/screens/">
-        //             <img src="./images/new-message.png" alt="">
-        //         </a>
-        //     </div>
-        // <?php
-        // }
+        // 
         ?>
+        // <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">
+            // <a href="./chat/screens/">
+                // <img src="./images/new-message.png" alt="">
+                // </a>
+            // </div>
+        // <?php
+            // }
+            ?>
         <script src="./jsfiles/onclickscript.js"></script>
         <script>
             // Function to set a cookie
@@ -394,4 +407,5 @@ if (isset($_GET['error'])) {
             });
         </script>
 </body>
+
 </html>

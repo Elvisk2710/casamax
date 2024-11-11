@@ -16,6 +16,18 @@ if (isset($_POST['logout'])) {
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-48DWXXLG5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-48DWXXLG5F');
+    </script>
     <meta name="description" content="Login as an Agent and enjoy the vast benefits of advertising on casamax ">
     <?php
     require '../required/header.php';
@@ -66,9 +78,9 @@ if (isset($_POST['logout'])) {
                         <input type="password" id="pword" placeholder="Enter your Password" name="password" required>
                     </div>
                     <div class="login">
-                            <button type="submit" name="submit" class="login_btn">
-                                Log-In
-                            </button>
+                        <button type="submit" name="submit" class="login_btn">
+                            Log-In
+                        </button>
                     </div>
                 </form>
                 <div class="lower-login">

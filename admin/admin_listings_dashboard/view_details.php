@@ -30,18 +30,27 @@ if (empty($_SESSION['sessionAdmin'])) {
     }
     $id_image = $row['verification_image'];
     $id_location = '../../verification_images/agents_verification_images/' . $agent_id . '/' . $id_image;
-    
 } else {
     redirect('./index.php?error=Sorry Id Is Not Set');
     exit();
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-48DWXXLG5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-48DWXXLG5F');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verification Documents</title>
@@ -77,19 +86,19 @@ require '../../required/pageloader.php';
                         <ul>
                             <li>
                                 <label for="name">Name:</label>
-                                <h4 id="name"><?php echo $row['firstname']?></h4>
+                                <h4 id="name"><?php echo $row['firstname'] ?></h4>
                             </li>
                             <li>
                                 <label for="lastname">LastName:</label>
-                                <h4 id="lastname"><?php echo $row['lastname']?></h4>
+                                <h4 id="lastname"><?php echo $row['lastname'] ?></h4>
                             </li>
                             <li>
                                 <label for="id">ID Number:</label>
-                                <h4 id="id"><?php echo $row['id_num']?></h4>
+                                <h4 id="id"><?php echo $row['id_num'] ?></h4>
                             </li>
                             <li>
                                 <label for="email">Email:</label>
-                                <h4 id="email"><?php echo $row['email']?></h4>
+                                <h4 id="email"><?php echo $row['email'] ?></h4>
                             </li>
                         </ul>
                     </div>

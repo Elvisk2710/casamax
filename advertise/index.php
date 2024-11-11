@@ -2,6 +2,18 @@
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-48DWXXLG5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-48DWXXLG5F');
+    </script>
     <?php
     require '../required/header.php';
     ?>
@@ -34,7 +46,7 @@
                 </lottie-player>
             </div>
             <div class="right-advertise">
-                
+
                 <form action="../homerunphp/advertisescript.php?new_user=true" method="post" enctype="multipart/form-data" id="admin_advertise_form">
 
                     <div id="tab">
