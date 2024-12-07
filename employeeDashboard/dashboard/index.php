@@ -3,13 +3,13 @@ session_start();
 $currentMonthFull = date('F');
 $amount = 2201;
 $formattedAmount = number_format($amount, 2);
-require '../../homerunphp/advertisesdb.php';
 
-if (empty($_SESSION['sessionAdmin'])) {
+if (empty($_SESSION['sessionEmployee'])) {
     require '../../required/alerts.php';
     redirect('../index.php?error=Please Login');
 } else {
-    $user = $_SESSION['sessionAdmin'];
+    $user = $_SESSION['sessionEmployee'];
+    require_once '../../homerunphp/advertisesdb.php';
     $sql = "SELECT * FROM  admin_table WHERE admin_id = '$user' ";
 }
 if ($rs_result = mysqli_query($conn, $sql)) {
@@ -32,8 +32,6 @@ if (empty($user)) {
     }
 }
 
-require "../../homerunphp/admin_dashboard_functions.php";
-var_dump($agentData);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +53,7 @@ var_dump($agentData);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./dashboard.css">
     <link rel="icon" href="../../images/logowhite.png">
-    <title>Admin Dashboard</title>
+    <title>Employee Dashboard</title>
 </head>
 
 <body onunload="">
@@ -70,7 +68,7 @@ var_dump($agentData);
         ?>
         <div class="left-col">
             <?php
-            require '../../required/nav_header.php';
+                require '../../required/nav_header.php';
             ?>
             <!-- <div class="left-col-content"> -->
             <div class="top-row">
@@ -81,179 +79,49 @@ var_dump($agentData);
                         </div>
                     </div>
                     <div class="top-container-value">
-                        <h2><?php echo $newEmployees ?></h2>
+                        <h2>$<?php echo $formattedAmount ?></h2>
                     </div>
                     <div class="top-container-desc">
-                        <p>New Employees (<?php echo $currentMonthFull ?>)</p>
+                        <p>Commission (<?php echo $currentMonthFull ?>)</p>
                     </div>
                 </div>
                 <div class="top-row-container">
                     <div class="top-container-top">
                         <div class="top-container-top-icon">
-                            <img src="../../images/house_added.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2><?php echo $houseData['new_houses'] ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>New Houses Added (<?php echo $currentMonthFull ?>)</p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/verified_home.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2><?php echo $houseData['verified_houses'] ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>Verified Houses </p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/house_listings.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2><?php echo $houseData['total_houses'] ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>Total Houses Added</p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/wallet.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2>$<?php echo $adminEarnings ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>Total Commissions Earned (<?php echo $currentMonthFull ?>)</p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/house_added.png" alt="">
+                        <img src="../../images/house_added.png" alt="">
                         </div>
                     </div>
                     <div class="top-container-value">
                         <h2>6</h2>
                     </div>
                     <div class="top-container-desc">
-                        <p>Total Chats Initiated (<?php echo $currentMonthFull ?>)</p>
+                        <p>Houses Added (<?php echo $currentMonthFull ?>)</p>
                     </div>
                 </div>
                 <div class="top-row-container">
                     <div class="top-container-top">
                         <div class="top-container-top-icon">
-                            <img src="../../images/verified_home.png" alt="">
+                        <img src="../../images/verified_home.png" alt="">
                         </div>
                     </div>
                     <div class="top-container-value">
                         <h2>2</h2>
                     </div>
                     <div class="top-container-desc">
-                        <p>Total Chats Completed (<?php echo $currentMonthFull ?>)</p>
+                        <p>Verified Houses (<?php echo $currentMonthFull ?>)</p>
                     </div>
                 </div>
                 <div class="top-row-container">
                     <div class="top-container-top">
                         <div class="top-container-top-icon">
-                            <img src="../../images/house_listings.png" alt="">
+                        <img src="../../images/house_listings.png" alt="">
                         </div>
                     </div>
                     <div class="top-container-value">
-                        <h2><?php echo $agentData['total_agents'] ?></h2>
+                        <h2>30</h2>
                     </div>
                     <div class="top-container-desc">
-                        <p>Total Agents</p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/wallet.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2><?php echo $agentData['new_agents'] ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>New Agents Joined (<?php echo $currentMonthFull ?>)</p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/house_added.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2><?php echo $landlordAgentData['agent_houses'] ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>New Agent Houses Added (<?php echo $currentMonthFull ?>)</p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/verified_home.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2><?php echo $landlordAgentData['agent_houses'] ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>Total Agent Houses (<?php echo $currentMonthFull ?>)</p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/wallet.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2><?php echo $newLandlords ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>New Landlord Houses (<?php echo $currentMonthFull ?>)</p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/house_added.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2><?php echo $landlordAgentData['landlord_houses'] ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>Total Landlord Houses (<?php echo $currentMonthFull ?>)</p>
-                    </div>
-                </div>
-                <div class="top-row-container">
-                    <div class="top-container-top">
-                        <div class="top-container-top-icon">
-                            <img src="../../images/verified_home.png" alt="">
-                        </div>
-                    </div>
-                    <div class="top-container-value">
-                        <h2><?php echo $houseData['available_houses'] ?></h2>
-                    </div>
-                    <div class="top-container-desc">
-                        <p>Total Houses available (<?php echo $currentMonthFull ?>)</p>
+                        <p>Total Houses Added</p>
                     </div>
                 </div>
             </div>
@@ -261,16 +129,16 @@ var_dump($agentData);
                 <div class="bottom-left">
                     <div class="bottom-left-header">
                         <h2>
-                            Casamax Houses
+                            My Houses
                         </h2>
                         <div class="button">
                             <p class="positive-percent">
                                 5 (Last Month)
                             </p>
                             <a href="../admin_listings_dashboard">
-                                <Button>
-                                    View All Houses
-                                </Button>
+                            <Button>
+                                View All Houses
+                            </Button>
                             </a>
                         </div>
                     </div>

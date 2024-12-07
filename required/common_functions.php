@@ -739,3 +739,34 @@ class WhatsAppResponse
 
     }
 }
+
+// incrementing a value in the database
+function incrementIntField($conn, $tableName, $columnName, $home_id)
+{
+    // Sanitize table and column names to avoid SQL injection
+    $tableName = $conn->real_escape_string($tableName);
+    $columnName = $conn->real_escape_string($columnName);
+
+    // Prepare the SQL query
+    $sql = "UPDATE $tableName 
+            SET $columnName = $columnName + 1 
+            WHERE home_id = ?";
+    // Prepare and bind the statement
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Statement preparation failed: " . $conn->error);
+        echo "stmet failed";
+    }
+
+    // Bind the ID value
+    $stmt->bind_param("s", $home_id);
+
+    // Execute the query
+    if (!$stmt->execute()) {
+        throw new Exception("Error updating field: " . $stmt->error);
+        echo "stmet execute failed";
+    }
+
+    // Return the number of affected rows
+    return $stmt->affected_rows;
+}

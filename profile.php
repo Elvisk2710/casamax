@@ -1,17 +1,17 @@
 <?php
 // Start the session at the very beginning
 session_start();
-
+$currentMonthFull = date('F');
 require './homerunphp/advertisesdb.php';
-
 // Check if the session variable is set
 if (empty($_SESSION['sessionowner'])) {
     require './required/alerts.php';
     echo "Session is not set"; // Debugging: Check if this message appears
     redirect("./homeownerlogin.php?error=Please Login");
 } else {
-    $user = $_SESSION['sessionowner'];
-    $sql = "SELECT * FROM  homerunhouses WHERE home_id = '$user' ";
+    $home_id = $_SESSION['sessionowner'];
+    $sql = "SELECT * FROM  homerunhouses WHERE home_id = '$home_id' ";
+    require './homerunphp/landlord_dashboard_functions.php';
 
     if ($rs_result = mysqli_query($conn, $sql)) {
         $row = mysqli_fetch_array($rs_result);
@@ -87,8 +87,6 @@ if (empty($_SESSION['sessionowner'])) {
         require_once 'required/pageloader.php';
     ?>
         <header>
-
-            <a href="index.php"><img src="images/logowhite.png" alt="logo" class="logo"></a>
             <?php if ($row['available'] != 1) { ?>
                 // alerts whether the house is being shown on the platfrom or not.
                 <div class="alert_off">
@@ -96,17 +94,15 @@ if (empty($_SESSION['sessionowner'])) {
                 </div>
             <?php } ?>
             <h1>
-                <?php echo "Hey " . ucfirst($row['firstname']) . "!"; ?>
-            </h1>
+                <a href="index.php"><img src="images/logoorange.png" alt="logo" class="logo"></a>
+                <h2>Casamax.co.zw</h2>
+                <div class="profile_pic">
+                    <img src="./images/profile.png" alt="prof_pic">
+                    <h2>
+                        <?php echo ucfirst($row['firstname']); ?>
+                    </h2>
+                </div>
         </header>
-
-        <?php if (!empty($row['image1'])) { ?>
-            <div class="profile-photo">
-
-                <img src=" <?php echo $location . $row["image1"]; ?>" alt="">
-
-            </div>
-        <?php } ?>
         <?php if (empty($row['image1']) and empty($row['image2']) and empty($row['image3']) and empty($row['image4']) and empty($row['image5']) and empty($row['image6']) and empty($row['image7']) and empty($row['image8'])) {
         ?>
             <div class="add_photos">
@@ -118,7 +114,6 @@ if (empty($_SESSION['sessionowner'])) {
 
                             <img title="Choose an Image" src="./images/addimage.png" id="image1" onclick="triggerClick()">
                             <input type="file" onchange="displayImage2(this)" id="inputimage1" name="image[]" multiple>
-                            <br>
                             <h3 style="color: rgb(8, 8, 12);">
                                 Add Upto 8 Images
                             </h3>
@@ -141,8 +136,6 @@ if (empty($_SESSION['sessionowner'])) {
                         </h3>
                         <p>
                             Right now, your home isn't visible to students. Upgrade to our premium package and shine bright—showcase your space and attract more interest!
-                            <br>
-                            <br>
                             <b> Don't miss out on this opportunity to connect!</b>
                         </p>
 
@@ -166,77 +159,107 @@ if (empty($_SESSION['sessionowner'])) {
             </div>
         </div>
         <div class="container" data-intro='View Your Details.' data-step='1' data-position='bottom'>
-
-            <div class="house-info">
-                <h2>YOUR HOUSE INFO</h2>
-            </div>
-            <div class="table">
-                <table>
-                    <tr>
-                        <th class="value">$ <?php echo $row['price']; ?> </th>
-                        <th class="value"> <?php echo $row['people_in_a_room']; ?> </th>
-                        <th class="value"> <?php echo $row['gender']; ?> </th>
-                    </tr>
-                    <tr>
-                        <th>AMOUNT PER MONTH</th>
-                        <th>PEOPLE IN A ROOM</th>
-                        <th>GIRLS, BOYS OR BOTH</th>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="address">
-                <div class="address_info">
-                    <h3>ADDRESS</h3>
-                    <p><?php echo $row['adrs'] ?></p>
+            <div class="house_details">
+                <div class="title_text">
+                    <h2>
+                        Insigths
+                    </h2>
                 </div>
 
-                <div class="address_info">
-                    <h3>PHONE</h3>
-                    <p>0<?php echo $row['contact'] ?></p>
+                <div class="insights">
+                    <div class="top-row">
+                        <div class="top-row-container">
+                            <div class="top-container-top">
+                            </div>
+                            <div class="top-container-value">
+                                <h2><?php echo $landlordShares ?></h2>
+                            </div>
+                            <div class="top-container-desc">
+                                <p>Shares (How many times your home has been shared)</p>
+                            </div>
+                        </div>
+                        <div class="top-row-container">
+                            <div class="top-container-top">
+                            </div>
+                            <div class="top-container-value">
+                                <h2><?php echo $landlordChats ?></h2>
+                            </div>
+                            <div class="top-container-desc">
+                                <p>WhatsApp Conversations </p>
+                            </div>
+                        </div>
+                        <div class="top-row-container">
+                            <div class="top-container-top">
+                            </div>
+                            <div class="top-container-value">
+                                <h2><?php echo $landlordViews ?></h2>
+                            </div>
+                            <div class="top-container-desc">
+                                <p>Total Views </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="address_info">
-                    <h3>EMAIL</h3>
-                    <p><?php echo $row['email'] ?></p>
+                <div class="title_text">
+                    <h2>Your House Info</h2>
                 </div>
-
-            </div>
-
-            <div class="edit">
-                <a href="./listingdetails.php?clicked_id=<?php echo $row['home_id'] ?>">
-                    <div class="btn-div" data-intro='View the preview of your listing and see how students see it.' data-step='2' data-position='bottom'>
-                        <button class="edit-btn" name="viewpage">
-                            Page Preview
-                        </button>
+                <div class="table">
+                    <table>
+                        <tr>
+                            <th class="value">$ <?php echo $row['price']; ?> </th>
+                            <th class="value"> <?php echo $row['people_in_a_room']; ?> </th>
+                            <th class="value"> <?php echo $row['gender']; ?> </th>
+                        </tr>
+                        <tr>
+                            <td>Amount Per Month</td>
+                            <td>People In A Room</td>
+                            <td>Gender</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="address">
+                    <div class="address_info">
+                        <h3>Address:</h3>
+                        <p><?php echo $row['adrs'] ?></p>
                     </div>
 
-                </a>
-            </div>
+                    <div class="address_info">
+                        <h3>Phone:</h3>
+                        <p>0<?php echo $row['contact'] ?></p>
+                    </div>
 
-            <div class="profile-bottom" data-intro='Change the visibility of your house.' data-step='3' data-position='top'>
-
-                <form action="./homerunphp/update.php" method="POST">
-                    <p>Is your Home...</p>
-
-                    <label for="available">
-                        <input type="radio" name="availability" id="available" value="1">
-                        Available
-                    </label> or
-                    <label for="occupied">
-                        <input type="radio" name="availability" id="occupied" value="0">
-                        Occupied
-                    </label>
-
-                    <br>
-
-                    <button class="update" name="update">
-                        Update
-                    </button>
-
-                    <p class="desc">
-                        this will allow your home to either be removed temporarily (Occupied) or be placed back onto the platform (Available)
-                    </p>
+                    <div class="address_info">
+                        <h3>Email:</h3>
+                        <p><?php echo $row['email'] ?></p>
+                    </div>
+                </div>
+                <div class="edit">
+                    <a href="./listingdetails.php?clicked_id=<?php echo $row['home_id'] ?>">
+                        <div class="btn-div" data-intro='View the preview of your listing and see how students see it.' data-step='2' data-position='bottom'>
+                            <button class="edit-btn" name="viewpage">
+                                Page Preview
+                            </button>
+                        </div>
+                    </a>
+                </div>
+                <br>
+                <div class="profile-bottom" data-intro='Change the visibility of your house.' data-step='3' data-position='top'>
+                    <form action="./homerunphp/update.php" method="POST">
+                        <p>Update To Show If Your Home Is Available Or Not</p>
+                        <div class="available_options">
+                            <label for="available">
+                                <input type="radio" name="availability" id="available" value="1">
+                                Available
+                            </label> or
+                            <label for="occupied">
+                                <input type="radio" name="availability" id="occupied" value="0">
+                                Occupied
+                            </label>
+                        </div>
+                        <button class="update" name="update">
+                            Update
+                        </button>
+                </div>
             </div>
         </div>
         </div>
@@ -312,7 +335,7 @@ if (empty($_SESSION['sessionowner'])) {
             banner.style.display = 'none';
             document.querySelector("body").classList.remove("scrollable");
         }
-        if(banner.style.display != 'none'){
+        if (banner.style.display != 'none') {
             document.querySelector("body").classList.add("scrollable");
         }
     </script>

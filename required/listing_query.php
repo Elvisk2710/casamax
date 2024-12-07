@@ -22,6 +22,13 @@ $url .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             console.error("Element with class 'sidebar' not found.");
         }
     }
+
+    function triggerSharePHP(home_id) {
+        // Send an AJAX request to your PHP script
+        fetch(`https://localhost/casamax/homerunphp/database_increment_int.php?column=shares&home_id=${home_id}`)
+            .then(response) // Get the response as text
+            .catch(error => console.error('Error:', error));
+    }
 </script>
 
 <?php
@@ -43,7 +50,7 @@ if (isset($_GET['filter_set'])) {
             if ($filter === 'gender') {
                 $filter_query .= " AND gender = '$value'";
                 $filter_url .= "&gender = $value";
-            }else {
+            } else {
                 $filter_query .= " AND $filter = '1'";
                 $filter_url .= "&$filter=1";
             }
@@ -127,7 +134,7 @@ while ($row = mysqli_fetch_array($result)) {
             <?php } ?>
             <div class="house-price">
                 <div class="left-house-price">
-                    <a href="<?= $whatsapp_link ?>" class="house_link" title="Click to share">
+                    <a href="<?= $whatsapp_link ?>" class="house_link" title="Click to share" onclick="triggerSharePHP('<?= $row['home_id'] ?>')">
                         <img src="../images/share_icon.png" alt="Share link">
                     </a>
                 </div>

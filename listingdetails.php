@@ -5,7 +5,6 @@ require_once 'homerunphp/advertisesdb.php';
 $checkmark = './images/checkmark.png';
 $crossmark = './images/crossmark.png';
 require './required/common_functions.php';
-
 if (!empty($_GET['clicked_id']) && isset($_GET['clicked_id'])) {
     $user  = $_GET['clicked_id'];
 
@@ -49,6 +48,8 @@ if (!empty($_GET['clicked_id']) && isset($_GET['clicked_id'])) {
                 $uni_folder = 'uzpictures';
                 break;
         }
+
+        incrementIntField($conn, 'homerunhouses', "views", $user);
     } else {
         header('Location: ./index.php?error=' . urlencode("Clicked Id Is Not Valid"));
         exit;
@@ -61,9 +62,18 @@ if (!empty($_GET['clicked_id']) && isset($_GET['clicked_id'])) {
 $currentURL = getCurrentUrl();
 setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
 ?>
-
+<script>
+    function triggerWhatsAppConvo(home_id) {
+        console.log(home_id);
+        // Send an AJAX request to your PHP script
+        fetch(`https://localhost/casamax/homerunphp/database_increment_int.php?column=chats_initiated&home_id=${home_id}`)
+            .then(response => console.log(response))
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
     <?php require './required/header.php'; ?>
@@ -98,7 +108,7 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
             <div class="house-title-contact">
                 <?php if ($agent) : ?>
                     <form data-intro="Get in touch with Agent." data-step="1" data-position="bottom" action="./homerunphp/verify_student_redirect.php?home_id=<?= $user ?>&agent_id=<?= $agent_id ?>&route=agent" method="post" class="button_form">
-                        <button class="contact-host" id="whatsapp" name="check_sub_whatsapp_agent" type="submit">
+                        <button class="contact-host" id="whatsapp" name="check_sub_whatsapp_agent" type="submit" style="background-color: rgb(37, 211, 102);" onclick="triggerWhatsAppConvo('<?= $_GET['clicked_id'] ?>')">
                             <img src="images/whatsAppGreen.png" alt="whatsApp" title="Contact on WhatsApp">
                         </button>
                         <button class="contact-host" id="call" name="check_sub_call_agent" type="submit">
@@ -112,13 +122,11 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
                     </form>
 
                 <?php else : ?>
-                    <?php if (!isset($_SESSION['sessionowner'])) : ?>
-                        <form data-intro="Get in touch with Landlord." data-step="1" data-position="bottom" action="./homerunphp/verify_student_redirect.php?home_id=<?= $user ?>&route=landlord&student=1" method="post">
-                            <button class="chatBtn" id="chatBtn" name="check_sub_chat_landlord" type="submit">
-                                <img src="images/whatsAppGreen.png" alt="whatsApp" title="Contact on WhatsApp">
-                            </button>
-                        </form>
-                    <?php endif; ?>
+                    <form data-intro="Get in touch with Landlord." data-step="1" data-position="bottom" action="./homerunphp/verify_student_redirect.php?home_id=<?= $user ?>&route=landlord&student=1" method="post">
+                    <button class="chatBtn" id="chatBtn" name="check_sub_chat_landlord" type="submit" style="background-color: rgb(37, 211, 102);" onclick="triggerWhatsAppConvo('<?= $_GET['clicked_id'] ?>')">
+                        <img src="images/whatsAppGreen.png" alt="whatsApp" title="Contact on WhatsApp">
+                    </button>
+                    </form>
                 <?php endif; ?>
             </div>
         </div>
@@ -224,9 +232,9 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
         <?php require './gallery.php'; ?>
     </div>
 
-<?php
+    <?php
     require './required/root-footer.php'
-?>
+    ?>
 
     <script>
         let startTourCookie = getCookie('listinDetailsTour');
