@@ -288,7 +288,7 @@ h3 {
   margin: 10px 10px;
   font-size: 16px;
 }
-label{
+label {
   color: rgb(8, 8, 12);
   transition: 0.3s all ease-in-out;
 }
@@ -586,49 +586,193 @@ form input {
   background-color: rgb(252, 153, 82) !important;
   color: white !important;
 }
+/* edit form popup */
+.edit_form {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+.edit_form form {
+  background-color: white;
+  padding: 1rem;
+  height: fit-content;
+  width: 30%;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Horizontal, Vertical, Blur, Color */
+}
+.edit_form form div {
+  margin: 0;
+}
+.edit_form form .edit_title {
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+.input-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  margin: 0.2rem 0;
+}
+.input-div div {
+  margin-bottom: 1rem;
+  width: 100%;
+  padding: 0 1rem;
+  margin: 1rem !important;
+}
+.input-div input {
+  padding: 10px;
+  width: 90%;
+  border: none;
+  background: none;
+  color: rgb(8, 8, 12);
+  border-bottom: solid 2px rgba(8, 8, 12, 0.452);
+}
+textarea {
+  width: 100%;
+  margin: 1rem auto;
+  border-radius: 20px;
+  border: 1px solid rgb(8, 8, 12);
+  padding: 10px;
+}
+.amenities {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+  margin: 1rem 0;
+}
+.left_amenities {
+  flex-basis: 50%;
+}
+.right_amenities {
+  flex-basis: 50%;
+}
+.right_amenities div,
+.left_amenities div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+.prevNext {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  justify-items: center;
+  align-items: center;
+}
+.checkbox label {
+  display: block;
+  padding-left: 15px;
+  text-indent: -15px;
+}
+.checkbox input {
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin: 0;
+  vertical-align: bottom;
+  position: relative;
+  top: -4px;
+  overflow: hidden;
+  text-align: center;
+}
+.radio {
+  text-align: center;
+}
+.radio h2 {
+  font-size: 30px;
+  display: block;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgb(252, 153, 82);
+}
+.radio label {
+  text-align: center;
+  font-weight: 100;
+  font-size: 15px;
+}
+.desc-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+  width: 100%;
+  margin: 0.2rem 0;
+}
+.desc-div label {
+  color: rgb(8, 8, 12);
+  font-weight: 600;
+  text-align: left;
+  width: 100%;
+  display: block;
+}
+.edit_button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem;
+}
 @media only screen and (max-width: 700px) {
-  body{
+  body {
     padding: 1rem;
   }
-  header{
+  header {
     margin: 0;
   }
   .container {
-    margin: 1rem 0 ;
+    margin: 1rem 0;
     padding: 0;
     height: fit-content;
   }
-  .title_text{
+  .title_text {
     margin: 0;
     padding: 1rem;
   }
-  .top-row{
+  .top-row {
     grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
   }
   .logo {
     width: 2rem;
     height: 2rem;
   }
-  h2{
+  h2 {
     font-size: 1rem;
   }
-  .top-row-container{
+  .top-row-container {
     margin: 0;
     height: fit-content;
     max-height: 8rem;
     padding: 1rem;
   }
-  .top-container-value, .top-container-desc{
+  .top-container-value,
+  .top-container-desc {
     display: flex;
     align-items: center;
   }
-  .top-container-desc{
+  .top-container-desc {
     justify-content: start;
   }
-  .top-container-value{
+  .top-container-value {
     justify-content: end;
   }
-  .available_options{
+  .available_options {
     width: 100%;
   }
   .add_photos {
@@ -691,6 +835,9 @@ form input {
     width: 60%;
     padding: 20px auto;
     font-size: 20px;
+  }
+  .edit_form form{
+    width: 90%;
   }
   .banner-container {
     display: none;

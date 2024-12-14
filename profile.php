@@ -241,6 +241,11 @@ if (empty($_SESSION['sessionowner'])) {
                             </button>
                         </div>
                     </a>
+                    <div class="btn-div" data-intro='View the preview of your listing and see how students see it.' data-step='2' data-position='bottom'>
+                        <button class="edit-btn" name="viewpage" onclick="openForm()">
+                            Edit Info
+                        </button>
+                    </div>
                 </div>
                 <br>
                 <div class="profile-bottom" data-intro='Change the visibility of your house.' data-step='3' data-position='top'>
@@ -259,14 +264,91 @@ if (empty($_SESSION['sessionowner'])) {
                         <button class="update" name="update">
                             Update
                         </button>
+                    </form>
                 </div>
             </div>
         </div>
-        </div>
-        </form>
 
-        </div>
+        <div class="edit_form" id="edit_form">
+            <form action="./homerunphp/update.php" method="POST">
+                <div class="edit_title">
+                    <h3>Edit Your Details</h3>
+                </div>
+                <div class="input-div">
+                    <div>
+                        <label>Price $:</label>
+                        <input type="number" name="price_change" value="<?php echo $row['price'] ?>" required>
+                    </div>
+                </div>
+                <div class="input-div">
+                    <div>
+                        <label>Contact:</label>
+                        <input type="number" min="0" name="phone" value="<?php echo $row['contact'] ?>" required>
+                    </div>
+                </div>
+                <div class="input-div">
+                    <div>
+                        <label for="description">House Rules and Additional Ammenities </label>
+                        <textarea name="description" id="description" placeholder=" add description, rules, curfew, security-status etc" required rows="5" cols=15><?php echo htmlspecialchars($row['rules'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    </div>
+                </div>
 
+                <label>Amenities</label>
+                <div class="amenities">
+                    <div class="left_amenities">
+                        <div>
+                            <label>Kichen: </label>
+                            <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input type="checkbox" value="1" name="kitchen" <?php if ($row['kitchen'] == 1) {
+                                                                                                                                                                echo 'checked';
+                                                                                                                                                            } ?>></label></div>
+
+                        </div>
+
+                        <div>
+                            <label>Fridge: </label>
+                            <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input type="checkbox" value="1" name="fridge" <?php if ($row['fridge'] == 1) {
+                                                                                                                                                            echo 'checked';
+                                                                                                                                                        } ?>></label></div>
+
+                        </div>
+                        <div>
+                            <label>Wifi: </label>
+                            <div class="amenities_radio"><label style="font-weight:100; font: size 12px;"><input type="checkbox" value="1" name="wifi" <?php if ($row['wifi'] == 1) {
+                                                                                                                                                            echo 'checked';
+                                                                                                                                                        } ?>></label></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="right_amenities">
+                        <div>
+                            <label>Borehole: </label>
+                            <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input type="checkbox" value="1" name="borehole" <?php if ($row['borehole'] == 1) {
+                                                                                                                                                                echo 'checked';
+                                                                                                                                                            } ?>></label></div>
+
+                        </div>
+
+                        <div>
+                            <label>Transport: </label>
+                            <div class="amenities_radio"><label style="font-weight:100;font: size 12px;"><input type="checkbox" value="1" name="transport" <?php if ($row['transport'] == 1) {
+                                                                                                                                                                echo 'checked';
+                                                                                                                                                            } ?>></label></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edit_button">
+                    <button type="submit" name="edit_submit" class="update">
+                        Update
+                    </button>
+                    <button type="button" name="cancel_edit" class="update" onclick="closeForm()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
         <script>
             function triggerClick() {
                 document.getElementById("inputimage1").click();
@@ -274,11 +356,12 @@ if (empty($_SESSION['sessionowner'])) {
 
             // edit info onclick
             function openForm() {
-                document.getElementById("myForm").style.display = "block";
+                console.log("clicked")
+                document.getElementById("edit_form").style.display = "flex";
             }
 
             function closeForm() {
-                document.getElementById("myForm").style.display = "none";
+                document.getElementById("edit_form").style.display = "none";
             }
 
             function open_Verification_popup() {
