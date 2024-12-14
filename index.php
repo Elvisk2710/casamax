@@ -356,12 +356,12 @@ if (isset($_GET['error'])) {
         // if (!isset($_GET['chat_id'])) {
         // 
         ?>
-        // <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">
-            // <a href="./chat/screens/">
-                // <img src="./images/new-message.png" alt="">
-                // </a>
-            // </div>
-        // <?php
+         <!-- <div class="floating_chat_icon" title="chats" data-intro="View your recent chats with landlords." data-step="9" data-position="top">
+             <a href="./chat/screens/">
+                 <img src="./images/new-message.png" alt="">
+                 </a>
+             </div> -->
+         <?php
             // }
             ?>
         <script src="./jsfiles/onclickscript.js"></script>
