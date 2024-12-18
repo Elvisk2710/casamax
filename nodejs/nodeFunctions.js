@@ -64,10 +64,12 @@ function toProperCase(str) {
 }
 
 // generate google maps link
-function generateGoogleMapsLink(address) {
+async function generateGoogleMapsLink(address) {
   const baseUrl = "https://www.google.com/maps/search/?api=1&query=";
   const encodedAddress = encodeURIComponent(address); // Encode the address for a URL
-  return `${baseUrl}${encodedAddress}`;
+  longAddressUrl = `${baseUrl}${encodedAddress}`;
+  const shortMapAddress = await minifyWithTinyURL(longAddressUrl);
+  return shortMapAddress;
 }
 
 // Function to generate messages for each house object
@@ -117,7 +119,7 @@ async function generateMessages(houses) {
         `Price: *$${price}*\n` +
         `Located at: ${adrs}\n` +
         `Phone Number: ${whatsAppLink}\n` +
-        `Casamax Link:${webLink}\n` + 
+        `Casamax Link:${webLink}\n` +
         `Maps Link: ${generateGoogleMapsLink(adrs)}`;
 
       return message;
