@@ -63,6 +63,13 @@ function toProperCase(str) {
     .join(" "); // Join the words back into a single string
 }
 
+// generate google maps link
+function generateGoogleMapsLink(address) {
+  const baseUrl = "https://www.google.com/maps/search/?api=1&query=";
+  const encodedAddress = encodeURIComponent(address); // Encode the address for a URL
+  return `${baseUrl}${encodedAddress}`;
+}
+
 // Function to generate messages for each house object
 async function generateMessages(houses) {
   // Check if houses is an array
@@ -106,11 +113,12 @@ async function generateMessages(houses) {
 
       // Generate the message
       const message =
-        `*${toProperCase(firstname)} ${toProperCase(lastname)}'s house*\n` +
+        `*${toProperCase(firstname)} ${toProperCase(lastname)}'s House*\n` +
         `Price: *$${price}*\n` +
-        `Located at ${adrs}\n` +
-        `WhatsApp link: ${whatsAppLink}\n` +
-        `Casamax Link:${webLink}`;
+        `Located at: ${adrs}\n` +
+        `Phone Number: ${whatsAppLink}\n` +
+        `Casamax Link:${webLink}\n` + 
+        `Maps Link: ${generateGoogleMapsLink(adrs)}`;
 
       return message;
     })
