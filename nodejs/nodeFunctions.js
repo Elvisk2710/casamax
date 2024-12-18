@@ -116,7 +116,7 @@ async function generateMessages(houses) {
 
       // Generate the message
       const message =
-        `*${toProperCase(firstname)} ${toProperCase(lastname)}'s House*\n` +
+        `\n*${toProperCase(firstname)} ${toProperCase(lastname)}'s House*\n` +
         `Price: *$${price}*\n` +
         `Located at: ${adrs}\n` +
         `Phone Number: ${whatsAppLink}\n` +
