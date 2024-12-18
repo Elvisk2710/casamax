@@ -97,9 +97,10 @@ async function generateMessages(houses) {
       } = house;
 
       // Generate the link to the house on casamax.co.zw
-      const [webLink, whatsAppLink] = await Promise.all([
+      const [webLink, whatsAppLink, mapsLink] = await Promise.all([
         generateWebLink(home_id),
         generateWhatsAppLink(contact),
+        generateGoogleMapsLink(adrs),
       ]);
 
       // Create a string of available amenities
@@ -120,7 +121,7 @@ async function generateMessages(houses) {
         `Located at: ${adrs}\n` +
         `Phone Number: ${whatsAppLink}\n` +
         `Casamax Link:${webLink}\n` +
-        `Maps Link: ${generateGoogleMapsLink(adrs)}`;
+        `Maps Link: ${mapsLink}`;
 
       return message;
     })
