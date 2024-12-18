@@ -98,7 +98,7 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
             <div class="house-title-name">
                 <h1><?= $ownerName ?>'s Home</h1>
                 <div class="address">
-                    <a href="http://maps.google.com/?q=<?= $row['home_location'] ?> Zimbabwe" target="blank">
+                    <a href="https://www.google.com/maps/search/?api=1&query=<?= $agent ? $row['home_location'] : $row['adrs'] ?>" target="blank">
                         <img src="./images/location.png" alt="location" title="Click to go to Google Maps">
                         <p><?= $agent ? $row['home_location'] : $row['adrs'] ?></p>
                     </a>
@@ -123,9 +123,9 @@ setcookie('subscriptionRedirect', $currentURL, time() + 3600, '/');
 
                 <?php else : ?>
                     <form data-intro="Get in touch with Landlord." data-step="1" data-position="bottom" action="./homerunphp/verify_student_redirect.php?home_id=<?= $user ?>&route=landlord&student=1" method="post">
-                    <button class="chatBtn" id="chatBtn" name="check_sub_chat_landlord" type="submit" style="background-color: rgb(37, 211, 102);" onclick="triggerWhatsAppConvo('<?= $_GET['clicked_id'] ?>')">
-                        <img src="images/whatsAppGreen.png" alt="whatsApp" title="Contact on WhatsApp">
-                    </button>
+                        <button class="chatBtn" id="chatBtn" name="check_sub_chat_landlord" type="submit" style="background-color: rgb(37, 211, 102);" onclick="triggerWhatsAppConvo('<?= $_GET['clicked_id'] ?>')">
+                            <img src="images/whatsAppGreen.png" alt="whatsApp" title="Contact on WhatsApp">
+                        </button>
                     </form>
                 <?php endif; ?>
             </div>
