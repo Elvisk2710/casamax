@@ -54,6 +54,15 @@ async function generateFullCasamaxLink(university, budget, gender) {
   const text = "View the full list on CasaMax: " + shortUrl + "\n";
   return text;
 }
+// converting to proper case
+function toProperCase(str) {
+  return str
+    .toLowerCase() // Convert the entire string to lowercase
+    .split(" ") // Split the string into an array of words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+    .join(" "); // Join the words back into a single string
+}
+
 // Function to generate messages for each house object
 async function generateMessages(houses) {
   // Check if houses is an array
@@ -97,7 +106,7 @@ async function generateMessages(houses) {
 
       // Generate the message
       const message =
-        `*${firstname} ${lastname}'s house*\n` +
+        `*${toProperCase(firstname)} ${toProperCase(lastname)}'s house*\n` +
         `Price: *$${price}*\n` +
         `Located at ${adrs}\n` +
         `WhatsApp link: ${whatsAppLink}\n` +
