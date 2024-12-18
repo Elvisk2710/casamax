@@ -8,7 +8,7 @@ async function generateWhatsAppLink(phoneNumber) {
   const encodedMessage = encodeURIComponent(message);
   const longUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
   // const shortUrl = await minifyWithTinyURL(longUrl);
-  return longUrl;
+  return phoneNumber;
 }
 
 // Function to get houses from the database
