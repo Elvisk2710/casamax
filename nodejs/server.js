@@ -35,7 +35,8 @@ const conversationData = {};
 const chatPhpApiUrl = process.env.CHAT_PHP_API_URL;
 
 // Body Parser Middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json()); // To parse JSON payloads
+app.use(bodyParser.urlencoded({ extended: false })); // For form data
 
 // CORS Configuration
 app.use(
@@ -241,7 +242,7 @@ app.get("/webhook", async (req, res) => {
 
 app.post("/webhook", (req, res) => {
   let body_param = req.body;
-  consolel.log("request",req)
+  console.log("request", req);
 
   console.log(JSON.stringify(body_param, null, 2));
   if (body_param.object) {
@@ -256,13 +257,13 @@ app.post("/webhook", (req, res) => {
       let from = body_param.entry[0].changes[0].value.messages[0].from;
       let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
 
+      console.log("Sending message to:", from);
+      console.log("Message Body:", msg_body);
+      console.log("Phone Number ID:", phone_no_id);
+
       axios({
         method: "POST",
-        url:
-          "https://graph.facebook.com/v21.0/" +
-          phone_no_id +
-          "/messages?access_token=" +
-          token,
+        url: `https://graph.facebook.com/v21.0/${phone_no_id}/messages?access_token=${token}`,
         headers: {
           Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
           "Content-Type": "application/json",
@@ -272,10 +273,19 @@ app.post("/webhook", (req, res) => {
           to: from,
           type: "text",
           text: {
-            body: `hello this is elvis`,
+            body: "Hello, this is Elvis",
           },
         },
-      });
+      })
+        .then((response) => {
+          console.log("Message sent successfully:", response.data);
+        })
+        .catch((error) => {
+          console.error(
+            "Error sending message:",
+            error.response?.data || error.message
+          );
+        });
       res.sendStatus(200);
     } else {
       res.sendStatus(404);
