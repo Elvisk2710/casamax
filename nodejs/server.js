@@ -212,22 +212,17 @@ app.use(
 
 const token = process.env.WHATSAPP_TOKEN;
 const myToken = "myToken";
-
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
-  const challenge = req.query["hub.challenge"];
   const token = req.query["hub.verify_token"];
+  const challenge = req.query["hub.challenge"];
 
-  if (mode && token) {
-    if (mode === "subscribe" && token === myToken) {
-      console.log("Webhook verified successfully!");
-      res.status(200).send(challenge);
-    } else {
-      console.log("Webhook verification failed.");
-      res.sendStatus(403);
-    }
+  if (mode === "subscribe" && token === process.env.VERIFY_TOKEN) {
+    console.log("Webhook verified successfully.");
+    res.status(200).send(challenge);
   } else {
-    res.sendStatus(400);
+    console.log("Failed webhook verification.");
+    res.status(403).send("Forbidden");
   }
 });
 
@@ -262,7 +257,7 @@ app.post("/webhook", (req, res) => {
                 // Respond back to the user
                 axios
                   .post(
-                    `https://graph.facebook.com/v21.0/${phoneNoId}/messages`,
+                    `https://graph.facebook.com/v21.0/${phoneNoId}/messages?access_token=`+token,
                     {
                       messaging_product: "whatsapp",
                       to: from,
