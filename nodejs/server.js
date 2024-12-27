@@ -233,65 +233,81 @@ app.get("/webhook", (req, res) => {
 
 // Handle incoming messages
 app.post("/webhook", (req, res) => {
-  const body = req.body;
+  try {
+    const body = req.body;
 
-  // Log the full payload for debugging
-  console.log("Received payload:", JSON.stringify(body, null, 2));
+    // Log the payload for debugging
+    console.log("Received payload:", JSON.stringify(body, null, 2));
 
-  // if (body.object === "whatsapp_business_account") {
-    console.log("inside body");
-    body.entry.forEach((entry) => {
-      const changes = entry.changes;
+    if (body.object === "whatsapp_business_account") {
+      // Check if 'entry' exists and is an array
+      if (Array.isArray(body.entry)) {
+        body.entry.forEach((entry) => {
+          const changes = entry.changes;
 
-      changes.forEach((change) => {
-        const value = change.value;
+          // Check if 'changes' exists and is an array
+          if (Array.isArray(changes)) {
+            changes.forEach((change) => {
+              const value = change.value;
 
-        // Check if a message is included in the payload
-        if (value.messages && value.messages[0]) {
-          const phoneNoId = value.metadata.phone_number_id;
-          const from = value.messages[0].from;
-          const msgBody = value.messages[0].text.body;
+              if (value.messages && value.messages[0]) {
+                const phoneNoId = value.metadata.phone_number_id;
+                const from = value.messages[0].from;
+                const msgBody = value.messages[0].text.body;
 
-          console.log(`Phone Number ID: ${phoneNoId}`);
-          console.log(`From: ${from}`);
-          console.log(`Message Body: ${msgBody}`);
+                console.log(`Phone Number ID: ${phoneNoId}`);
+                console.log(`From: ${from}`);
+                console.log(`Message Body: ${msgBody}`);
 
-          // Respond back to the user
-          axios({
-            method: "POST",
-            url: `https://graph.facebook.com/v21.0/${phoneNoId}/messages`,
-            headers: {
-              Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-              "Content-Type": "application/json",
-            },
-            data: {
-              messaging_product: "whatsapp",
-              to: from,
-              type: "text",
-              text: { body: `Hello, this is Elvis` },
-            },
-          })
-            .then((response) => {
-              console.log("Message sent successfully:", response.data);
-            })
-            .catch((error) => {
-              console.error(
-                "Error sending message:",
-                error.response?.data || error.message
-              );
+                // Respond back to the user
+                axios
+                  .post(
+                    `https://graph.facebook.com/v21.0/${phoneNoId}/messages`,
+                    {
+                      messaging_product: "whatsapp",
+                      to: from,
+                      type: "text",
+                      text: { body: `Hello, this is Elvis` },
+                    },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+                        "Content-Type": "application/json",
+                      },
+                    }
+                  )
+                  .then((response) => {
+                    console.log("Message sent successfully:", response.data);
+                  })
+                  .catch((error) => {
+                    console.error(
+                      "Error sending message:",
+                      error.response?.data || error.message
+                    );
+                  });
+              } else {
+                console.log("No message found in this payload.");
+              }
             });
-        } else {
-          console.log("No message found in this payload.");
-        }
-      });
-    });
+          } else {
+            console.log("'changes' is missing or not an array.");
+          }
+        });
+      } else {
+        console.log("'entry' is missing or not an array.");
+      }
 
-    res.sendStatus(200);
-  // } else {
-  //   console.log("Received non-WhatsApp payload.");
-  //   res.sendStatus(404);
-  // }
+      res.sendStatus(200);
+    } else {
+      console.log("Received non-WhatsApp payload.");
+      res.sendStatus(404);
+    }
+  } catch (error) {
+    console.error("Internal Server Error:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
 });
+
 
 // app.get("/",(req,res)=>{
 //   res.status(200).send("lol vghvhgvgh");
