@@ -304,7 +304,6 @@ const myToken = process.env.WHATSAPP_TOKEN;
 app.post("/webhook", async (req, res) => {
   try {
     const body = req.body;
-
     // Check if the webhook contains messages
     if (body.object) {
       const entry = body.entry[0];
@@ -345,7 +344,7 @@ app.post("/webhook", async (req, res) => {
         switch (conversation.stage) {
           case "initial":
             conversation.stage = "university";
-            sendTemplateMessage("initial", fromNumber);
+            sendTemplateMessage("choose_uni", fromNumber);
             callWhatsAppDbApi(fromNumber, "initiated", currentDateTime);
             break;
 
