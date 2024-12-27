@@ -238,7 +238,7 @@ app.post("/webhook", (req, res) => {
   // Log the full payload for debugging
   console.log("Received payload:", JSON.stringify(body, null, 2));
 
-  if (body.object === "whatsapp_business_account") {
+  // if (body.object === "whatsapp_business_account") {
     console.log("inside body");
     body.entry.forEach((entry) => {
       const changes = entry.changes;
@@ -287,10 +287,10 @@ app.post("/webhook", (req, res) => {
     });
 
     res.sendStatus(200);
-  } else {
-    console.log("Received non-WhatsApp payload.");
-    res.sendStatus(404);
-  }
+  // } else {
+  //   console.log("Received non-WhatsApp payload.");
+  //   res.sendStatus(404);
+  // }
 });
 
 // app.get("/",(req,res)=>{
