@@ -210,64 +210,85 @@ app.use(
 //   }
 // });
 
-const token = process.env.WHATSAPP_TOKEN
+const token = process.env.WHATSAPP_TOKEN;
 const myToken = "myToken";
 
-app.get("/webhook", async (req, res) => {
-  let mode = req.query["hub.mode"];
-  let challenge = req.query["hub.challenge"];
-  let token = req.query["hub.verify_token"];
+app.get("/webhook", (req, res) => {
+  const mode = req.query["hub.mode"];
+  const challenge = req.query["hub.challenge"];
+  const token = req.query["hub.verify_token"];
+
   if (mode && token) {
     if (mode === "subscribe" && token === myToken) {
+      console.log("Webhook verified successfully!");
       res.status(200).send(challenge);
-      console.log(req);
     } else {
-      res.status(403);
+      console.log("Webhook verification failed.");
+      res.sendStatus(403);
     }
+  } else {
+    res.sendStatus(400);
   }
 });
 
+// Handle incoming messages
 app.post("/webhook", (req, res) => {
-  let body_param = req.body;
+  const body = req.body;
 
-  console.log(JSON.stringify(body_param, null, 2));
-  if (body_param.object) {
-    if (
-      body_param.entry &&
-      body_param.entry[0].changes &&
-      body_param.entry[0].changes[0].value.message &&
-      body_param.entry[0].changes[0].value.message[0]
-    ) {
-      let phone_no_id =
-        body_param.entry[0].changes[0].value.metadata.phone_number_id;
-      let from = body_param.entry[0].changes[0].value.messages[0].from;
-      let msg_body =
-        body_param.entry[0].changes[0].value.messages[0].text.body;
+  // Log the full payload for debugging
+  console.log("Received payload:", JSON.stringify(body, null, 2));
 
-      axios({
-        method: "POST",
-        url:
-          "https://graph.facebook.com/v21.0/" +
-          phone_no_id +
-          "/messages?access_token=" +
-          token,
-        headers: {
-          Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        data: {
-          messaging_product: "whatsapp",
-          to: from,
-          type: "text",
-          text: {
-            body: `hello this is elvis`,
-          },
-        },
+  if (body.object === "whatsapp_business_account") {
+    body.entry.forEach((entry) => {
+      const changes = entry.changes;
+
+      changes.forEach((change) => {
+        const value = change.value;
+
+        // Check if a message is included in the payload
+        if (value.messages && value.messages[0]) {
+          const phoneNoId = value.metadata.phone_number_id;
+          const from = value.messages[0].from;
+          const msgBody = value.messages[0].text.body;
+
+          console.log(`Phone Number ID: ${phoneNoId}`);
+          console.log(`From: ${from}`);
+          console.log(`Message Body: ${msgBody}`);
+
+          // Respond back to the user
+          axios({
+            method: "POST",
+            url: `https://graph.facebook.com/v16.0/${phoneNoId}/messages`,
+            headers: {
+              Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+              "Content-Type": "application/json",
+            },
+            data: {
+              messaging_product: "whatsapp",
+              to: from,
+              type: "text",
+              text: { body: `Hello, this is Elvis` },
+            },
+          })
+            .then((response) => {
+              console.log("Message sent successfully:", response.data);
+            })
+            .catch((error) => {
+              console.error(
+                "Error sending message:",
+                error.response?.data || error.message
+              );
+            });
+        } else {
+          console.log("No message found in this payload.");
+        }
       });
-      res.sendStatus(200);
-    } else {
-      res.sendStatus(404);
-    }
+    });
+
+    res.sendStatus(200);
+  } else {
+    console.log("Received non-WhatsApp payload.");
+    res.sendStatus(404);
   }
 });
 
