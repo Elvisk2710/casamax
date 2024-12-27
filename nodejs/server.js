@@ -212,7 +212,7 @@ app.use(
 // });
 
 const token = process.env.WHATSAPP_TOKEN;
-const myToken = "myToken";
+const myToken = process.env.WHATSAPP_TOKEN;
 
 app.get("/webhook", async (req, res) => {
   const mode = req.query["hub.mode"];
