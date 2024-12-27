@@ -239,6 +239,7 @@ app.post("/webhook", (req, res) => {
   console.log("Received payload:", JSON.stringify(body, null, 2));
 
   if (body.object === "whatsapp_business_account") {
+    console.log("inside body");
     body.entry.forEach((entry) => {
       const changes = entry.changes;
 
