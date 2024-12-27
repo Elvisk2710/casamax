@@ -214,92 +214,251 @@ app.use(
 const token = process.env.WHATSAPP_TOKEN;
 const myToken = process.env.WHATSAPP_TOKEN;
 
-app.get("/webhook", async (req, res) => {
-  const mode = req.query["hub.mode"];
-  const challenge = req.query["hub.challenge"];
-  const token = req.query["hub.verify_token"];
+// app.get("/webhook", async (req, res) => {
+//   const mode = req.query["hub.mode"];
+//   const challenge = req.query["hub.challenge"];
+//   const token = req.query["hub.verify_token"];
 
-  // Log the incoming request details for debugging
-  console.log("Received webhook verification request:");
-  console.log(`Mode: ${mode}`);
-  console.log(`Challenge: ${challenge}`);
-  console.log(`Token: ${token}`);
+//   // Log the incoming request details for debugging
+//   console.log("Received webhook verification request:");
+//   console.log(`Mode: ${mode}`);
+//   console.log(`Challenge: ${challenge}`);
+//   console.log(`Token: ${token}`);
 
-  if (mode && token) {
-    // Check if the mode is "subscribe" and the token matches
-    if (mode == "subscribe" && token == myToken) {
-      res.status(200).send(challenge); // Respond with the challenge code
-      console.log("Webhook verified successfully.");
-    } else {
-      res.status(403).send("Forbidden"); // Forbidden if the token doesn't match
-      console.log("Failed webhook verification.");
-    }
-  } else {
-    res.status(400).send("Bad Request"); // Respond with 400 if required parameters are missing
-    console.log("Missing required parameters.");
-  }
-});
+//   if (mode && token) {
+//     // Check if the mode is "subscribe" and the token matches
+//     if (mode == "subscribe" && token == myToken) {
+//       res.status(200).send(challenge); // Respond with the challenge code
+//       console.log("Webhook verified successfully.");
+//     } else {
+//       res.status(403).send("Forbidden"); // Forbidden if the token doesn't match
+//       console.log("Failed webhook verification.");
+//     }
+//   } else {
+//     res.status(400).send("Bad Request"); // Respond with 400 if required parameters are missing
+//     console.log("Missing required parameters.");
+//   }
+// });
 
-app.post("/webhook", (req, res) => {
-  let body_param = req.body;
-  // console.log("request", body_param);
+// app.post("/webhook", (req, res) => {
+//   let body_param = req.body;
+//   // console.log("request", body_param);
 
-  console.log(JSON.stringify(body_param, null, 2));
-  if (body_param.object) {
-    if (
-      body_param.entry &&
-      Array.isArray(body_param.entry) &&
-      body_param.entry[0].changes &&
-      Array.isArray(body_param.entry[0].changes) &&
-      body_param.entry[0].changes[0].value.messages &&
-      Array.isArray(body_param.entry[0].changes[0].value.messages) &&
-      body_param.entry[0].changes[0].value.messages[0]
-    ) {
-      let phone_no_id =
-        body_param.entry[0].changes[0].value.metadata.phone_number_id;
-      let from = body_param.entry[0].changes[0].value.messages[0].from;
-      let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+//   console.log(JSON.stringify(body_param, null, 2));
+//   if (body_param.object) {
+//     if (
+//       body_param.entry &&
+//       Array.isArray(body_param.entry) &&
+//       body_param.entry[0].changes &&
+//       Array.isArray(body_param.entry[0].changes) &&
+//       body_param.entry[0].changes[0].value.messages &&
+//       Array.isArray(body_param.entry[0].changes[0].value.messages) &&
+//       body_param.entry[0].changes[0].value.messages[0]
+//     ) {
+//       let phone_no_id =
+//         body_param.entry[0].changes[0].value.metadata.phone_number_id;
+//       let from = body_param.entry[0].changes[0].value.messages[0].from;
+//       let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
 
-      console.log("Sending message to:", from);
-      console.log("Message Body:", msg_body);
-      console.log("Phone Number ID:", phone_no_id);
+//       console.log("Sending message to:", from);
+//       console.log("Message Body:", msg_body);
+//       console.log("Phone Number ID:", phone_no_id);
 
-      axios({
-        method: "POST",
-        url: `https://graph.facebook.com/v21.0/${phone_no_id}/messages`,
-        headers: {
-          Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        data: {
-          messaging_product: "whatsapp",
-          to: from,
-          type: "text",
-          text: {
-            body: "Hello, this is Elvis",
-          },
-        },
-      })
-        .then((response) => {
-          console.log("Message sent successfully:", response.data);
-        })
-        .catch((error) => {
-          console.error(
-            "Error sending message:",
-            error.response?.data || error.message
-          );
-        });
-      res.sendStatus(200);
-    } else {
-      res.sendStatus(404);
-    }
-  }
-});
+//       axios({
+//         method: "POST",
+//         url: `https://graph.facebook.com/v21.0/${phone_no_id}/messages`,
+//         headers: {
+//           Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+//           "Content-Type": "application/json",
+//         },
+//         data: {
+//           messaging_product: "whatsapp",
+//           to: from,
+//           type: "text",
+//           text: {
+//             body: "Hello, this is Elvis",
+//           },
+//         },
+//       })
+//         .then((response) => {
+//           console.log("Message sent successfully:", response.data);
+//         })
+//         .catch((error) => {
+//           console.error(
+//             "Error sending message:",
+//             error.response?.data || error.message
+//           );
+//         });
+//       res.sendStatus(200);
+//     } else {
+//       res.sendStatus(404);
+//     }
+//   }
+// });
 
 // app.get("/",(req,res)=>{
 //   res.status(200).send("lol vghvhgvgh");
 // })
 // Socket.IO Configuration
+
+app.post("/webhook", async (req, res) => {
+  let mode = req.query["hub.mode"];
+  let challenge = req.query["hub.challenge"];
+  let token = req.query["hub.verify_token"];
+
+  try {
+    const incomingMessage = req.body.Body.trim().toLowerCase(); // Normalize input
+    const fromNumber = req.body.From;
+
+    // Initialize conversation data for the sender if not already present
+    if (!conversationData[fromNumber]) {
+      conversationData[fromNumber] = {
+        stage: "initial",
+        data: {},
+      };
+    }
+
+    const conversation = conversationData[fromNumber];
+
+    // Check if the message is a greeting
+    if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+      conversation.stage = "initial"; // Reset to initial stage if needed
+    }
+
+    // Check if the message is a goodbye
+    if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+      conversation.stage = "goodbye"; // Set stage to completed or end the conversation
+    }
+
+    // Initialize responseMessage variable to store the outgoing message
+    let responseMessage;
+    const currentDateTime = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " "); // Formats as 'YYYY-MM-DD HH:mm:ss'
+
+    // Handle conversation stages
+    switch (conversation.stage) {
+      case "initial":
+        conversation.stage = "university";
+        sendTemplateMessage("initial", fromNumber);
+        callWhatsAppDbApi(fromNumber, "initiated", currentDateTime);
+        break;
+
+      case "university":
+        updateConversationStatus(fromNumber, "university");
+        let matchedUniversity = null;
+
+        // Check for number-based selection
+        if (intents[incomingMessage]) {
+          matchedUniversity = intents[incomingMessage];
+        } else if (!isNaN(incomingMessage) && intents[incomingMessage]) {
+          matchedUniversity = intents[incomingMessage];
+        } else {
+          // Check for nickname or full name
+          for (let key in intents) {
+            const intent = intents[key];
+            if (
+              intent.name.toLowerCase() === incomingMessage ||
+              (intent.nicknames &&
+                intent.nicknames.some(
+                  (nickname) => nickname.toLowerCase() === incomingMessage
+                ))
+            ) {
+              matchedUniversity = intent;
+              break;
+            }
+          }
+        }
+
+        if (matchedUniversity) {
+          conversation.data.university = matchedUniversity.name;
+          conversation.stage = "budget"; // Move to the next stage
+          sendTemplateMessage("budget", fromNumber);
+        } else {
+          sendTemplateMessage("error", fromNumber);
+        }
+        break;
+
+      case "budget":
+        updateConversationStatus(fromNumber, "budget");
+        const budget = parseFloat(incomingMessage);
+        if (!isNaN(budget) && budget > 0) {
+          conversation.data.budget = budget;
+          conversation.stage = "gender";
+          sendTemplateMessage("gender", fromNumber);
+        } else {
+          sendTextMessage(
+            "Please enter a valid budget (e.g. 180).",
+            fromNumber
+          );
+        }
+        break;
+
+      case "gender":
+        updateConversationStatus(fromNumber, "gender");
+        if (
+          maleKeywords.some(
+            (keyword) =>
+              incomingMessage.includes(keyword) || incomingMessage === "1"
+          )
+        ) {
+          conversation.data.gender = "boys";
+          responseMessage = await sendHouses(conversation, res, fromNumber);
+          sendTemplateMessage(responseMessage, fromNumber);
+          conversation.stage = "goodbye"; // Set stage after fetching houses
+        } else if (
+          femaleKeywords.some(
+            (keyword) =>
+              incomingMessage.includes(keyword) || incomingMessage === "2"
+          )
+        ) {
+          conversation.data.gender = "girls";
+          responseMessage = await sendHouses(conversation, res, fromNumber);
+          sendTemplateMessage(responseMessage, fromNumber);
+          conversation.stage = "goodbye";
+        } else {
+          sendTextMessage(
+            "Invalid selection. Please choose between: \n1. for Male \nor \n2. for Female.",
+            fromNumber
+          );
+        }
+        break;
+
+      case "goodbye":
+        sendTextMessage(
+          "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you",
+          fromNumber
+        );
+        break;
+
+      default:
+        sendTextMessage(
+          "I’m not sure how to help with that. Can you please give a valid response!!",
+          fromNumber
+        );
+        break;
+    }
+
+    // Store the incoming and outgoing messages in the conversation object
+    conversation.data.messages = conversation.data.messages || [];
+    conversation.data.messages.push({
+      direction: "incoming",
+      message: incomingMessage,
+    });
+    conversation.data.messages.push({
+      direction: "outgoing",
+      message: responseMessage,
+    });
+
+    // Respond to the webhook
+    res.status(200).send("OK");
+  } catch (error) {
+    console.error("Error processing WhatsApp message:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 io.on("connection", (socket) => {
   console.log("New client connected");
 
