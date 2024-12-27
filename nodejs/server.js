@@ -220,7 +220,7 @@ app.get("/webhook", async (req, res) => {
   if (mode && token) {
     if (mode === "subscribe" && token === myToken) {
       res.status(200).send(challenge);
-      console.log(res);
+      console.log(req);
     } else {
       res.status(403);
     }
