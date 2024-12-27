@@ -90,9 +90,71 @@
     </div>
   </div>
 </footer>
-
+<div class="know_developer">
+  <h2>
+    Get To Know The Developer
+  </h2>
+  <div class="developer_details">
+    <div class="left_details">
+      <div class="left_name">
+        <h2>
+          Kadeya Elvis T.
+        </h2>
+      </div>
+    </div>
+    <div class="right_details">
+      <div class="link_list">
+        <div class="link_img"><a href="https://www.linkedin.com/in/elvis-kadeya-1267412aa/"><img src="../images/linkedIn.png" alt="linkedIn" target="blank"></a></div>
+        <div class="link_img"><a href="mailto:kadeyaelvis@gmail.com"><img src="../images/mail.png" alt="email" target="blank"></a></div>
+      </div>
+    </div>
+  </div>
+</div>
 <style>
   /* --footer-- */
+  .know_developer {
+    width: 100%;
+    padding: 1rem;
+    background-color: rgb(8, 8, 12);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .developer_details {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .know_developer h2{
+    color: white;
+    width: fit-content;
+  }
+
+  .know_developer .left_details {
+    flex-basis: 50%;
+  }
+
+  .know_developer .left_details .left_name h2 {
+    color: white;
+  }
+
+  .know_developer .left_details .link_list {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .link_list .link_img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .link_img a,
+  .link_img a img {
+    width: 100%;
+    height: 100%;
+  }
 
   footer {
     padding: 2rem 6rem;
