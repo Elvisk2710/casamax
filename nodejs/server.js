@@ -300,6 +300,7 @@ const myToken = process.env.WHATSAPP_TOKEN;
 //   res.status(200).send("lol vghvhgvgh");
 // })
 // Socket.IO Configuration
+const processedMessages = new Set();
 
 app.post("/webhook", async (req, res) => {
   try {
@@ -307,11 +308,19 @@ app.post("/webhook", async (req, res) => {
     // Check if the webhook contains messages
     if (body.object) {
       const entry = body.entry[0];
-      const message = entry.changes[0].value.messages[0];
+      const message = entry.changes[0]?.value?.messages[0];
 
       if (message) {
-        const incomingMessage = message.text.body.trim().toLowerCase(); // Normalize input
-        const fromNumber = message.from;
+        const messageId = message.id;
+
+        if (processedMessages.has(messageId)) {
+          console.log(`Message ${messageId} already processed.`);
+          res.status(200).send("Already processed");
+          return;
+        }
+        processedMessages.add(messageId);
+        const incomingMessage = message?.text?.body?.trim().toLowerCase(); // Normalize input
+        const fromNumber = message?.from;
 
         // Initialize conversation data for the sender if not already present
         if (!conversationData[fromNumber]) {
@@ -324,12 +333,16 @@ app.post("/webhook", async (req, res) => {
         const conversation = conversationData[fromNumber];
 
         // Check if the message is a greeting
-        if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+        if (
+          greetingKeywords.some((keyword) => incomingMessage.includes(keyword))
+        ) {
           conversation.stage = "initial"; // Reset to initial stage if needed
         }
 
         // Check if the message is a goodbye
-        if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+        if (
+          goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))
+        ) {
           conversation.stage = "goodbye"; // Set stage to completed or end the conversation
         }
 
@@ -453,13 +466,13 @@ app.post("/webhook", async (req, res) => {
           direction: "outgoing",
           message: responseMessage,
         });
-
         // Respond to the webhook
-        res.status(200).send("OK");
-
+        res.status(200).send("Message processed");
+        return;
       } else {
         // No message data found in the webhook
         res.status(404).send("Message data not found.");
+        return;
       }
     } else {
       // If no object found, return error

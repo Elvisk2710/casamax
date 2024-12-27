@@ -159,48 +159,75 @@ async function minifyWithTinyURL(longUrl) {
 
 // send template message
 async function sendTemplateMessage(templateName, receiver) {
-  const response = await axios({
-    url: "https://graph.facebook.com/v21.0/550108761512173/messages",
-    method: "post",
-    headers: {
-      Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    data: JSON.stringify({
-      messaging_product: "whatsapp",
-      to: `${receiver}`,
-      type: "template",
-      template: {
-        name: `${templateName}`,
-        language: {
-          code: "en_US",
+  try {
+    if (!templateName || !receiver) {
+      throw new Error("Invalid template name or receiver.");
+    }
+
+    const response = await axios({
+      url: `${process.env.WHATSAPP_API_URL}/messages`, // Use environment variable for URL
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      data: {
+        messaging_product: "whatsapp",
+        to: receiver,
+        type: "template",
+        template: {
+          name: templateName,
+          language: {
+            code: "en_US", // Customize language if necessary
+          },
         },
       },
-    }),
-  });
-  console.log("Response:", response.data);
+    });
+
+    console.log("Template Message Sent. Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error sending template message:", error.message);
+    if (error.response) {
+      console.error("API Response:", error.response.data);
+    }
+  }
 }
 
 // send text message
 async function sendTextMessage(body, receiver) {
-  const response = await axios({
-    url: "https://graph.facebook.com/v21.0/550108761512173/messages",
-    method: "post",
-    headers: {
-      Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    data: JSON.stringify({
-      messaging_product: "whatsapp",
-      to: `${receiver}`,
-      type: "text",
-      text: {
-        body: `${body}`,
+  try {
+    if (!body || !receiver) {
+      throw new Error("Invalid message body or receiver.");
+    }
+
+    const response = await axios({
+      url: `${process.env.WHATSAPP_API_URL}/messages`, // Use environment variable for URL
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+        "Content-Type": "application/json",
       },
-    }),
-  });
-  console.log("Response:", response.data);
+      data: {
+        messaging_product: "whatsapp",
+        to: receiver,
+        type: "text",
+        text: {
+          body: body,
+        },
+      },
+    });
+
+    console.log("Text Message Sent. Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error sending text message:", error.message);
+    if (error.response) {
+      console.error("API Response:", error.response.data);
+    }
+  }
 }
+
 
 // add conversation to database
 async function callWhatsAppDbApi(contact, status, date) {
