@@ -211,14 +211,16 @@ app.use(
 // });
 
 const token = process.env.WHATSAPP_TOKEN
+const myToken = "myToken";
+
 app.get("/webhook", async (req, res) => {
   let mode = req.query["hub.mode"];
   let challenge = req.query["hub.challenge"];
   let token = req.query["hub.verify_token"];
-  const myToken = "myToken";
   if (mode && token) {
     if (mode === "subscribe" && token === myToken) {
       res.status(200).send(challenge);
+      console.log(res);
     } else {
       res.status(403);
     }
@@ -269,9 +271,9 @@ app.post("/webhook", (req, res) => {
   }
 });
 
-app.get("/",(req,res)=>{
-  res.status(200).send("lol vghvhgvgh");
-})
+// app.get("/",(req,res)=>{
+//   res.status(200).send("lol vghvhgvgh");
+// })
 // Socket.IO Configuration
 io.on("connection", (socket) => {
   console.log("New client connected");
