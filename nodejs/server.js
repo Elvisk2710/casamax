@@ -421,7 +421,7 @@ app.post("/webhook", async (req, res) => {
             ) {
               conversation.data.gender = "boys";
               responseMessage = await sendHouses(conversation, res, fromNumber);
-              sendTemplateMessage(responseMessage, fromNumber);
+              sendTextMessage(responseMessage, fromNumber);
               conversation.stage = "goodbye"; // Set stage after fetching houses
             } else if (
               femaleKeywords.some(
@@ -431,11 +431,11 @@ app.post("/webhook", async (req, res) => {
             ) {
               conversation.data.gender = "girls";
               responseMessage = await sendHouses(conversation, res, fromNumber);
-              sendTemplateMessage(responseMessage, fromNumber);
+              sendTextMessage(responseMessage, fromNumber);
               conversation.stage = "goodbye";
             } else {
-              sendTextMessage(
-                "Invalid selection. Please choose between: \n1. for Male \nor \n2. for Female.",
+              sendTemplateMessage(
+                "error",
                 fromNumber
               );
             }
