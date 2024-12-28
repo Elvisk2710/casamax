@@ -497,7 +497,7 @@ io.on("connection", (socket) => {
     try {
       await withTimeout(
         axios.post(
-          `${chatPhpApiUrl}update_is_read.php?mobile_api=true&responseType=json`,
+          `${chatPhpApiUrl}/update_is_read.php?mobile_api=true&responseType=json`,
           data,
           {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -517,13 +517,13 @@ io.on("connection", (socket) => {
       if (data.type == "student") {
         response = await withTimeout(
           axios.get(
-            `${chatPhpApiUrl}show_users.php?student=${data.user}&responseType=json`
+            `${chatPhpApiUrl}/show_users.php?student=${data.user}&responseType=json`
           )
         );
       } else if (data.type == "landlord") {
         response = await withTimeout(
           axios.get(
-            `${chatPhpApiUrl}show_users.php?landlord=${data.user}&responseType=json`
+            `${chatPhpApiUrl}/show_users.php?landlord=${data.user}&responseType=json`
           )
         );
       }
@@ -541,7 +541,7 @@ io.on("connection", (socket) => {
     try {
       const response = await withTimeout(
         axios.get(
-          `${chatPhpApiUrl}get_chat_msg.php?responseType=json&student=true&outgoing_id=${data.user}&incoming_id=${data.receiver}`
+          `${chatPhpApiUrl}/get_chat_msg.php?responseType=json&student=true&outgoing_id=${data.user}&incoming_id=${data.receiver}`
         )
       );
       io.to(data.roomId).emit("newChatMessage", response.data);
@@ -561,7 +561,7 @@ io.on("connection", (socket) => {
 
       const response = await withTimeout(
         axios.post(
-          `${chatPhpApiUrl}insert_chat.php?responseType=json&mobile_api=true`,
+          `${chatPhpApiUrl}/insert_chat.php?responseType=json&mobile_api=true`,
           formData,
           {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },

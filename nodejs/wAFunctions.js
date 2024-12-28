@@ -257,7 +257,7 @@ async function callWhatsAppDbApi(contact, status, date) {
 async function updateConversationStatus(contact, status) {
   try {
     // The URL of the PHP API you want to call
-    const apiUrl = `${whatsAppDbApi}update_initiated_conversations.php`; // Update with the correct URL
+    const apiUrl = `${whatsAppDbApi}/update_initiated_conversations.php`; // Update with the correct URL
     // Prepare the data to send in the PUT request
     const data = {
       contact: contact,
