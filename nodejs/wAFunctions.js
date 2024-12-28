@@ -13,13 +13,19 @@ const whatsAppDbApi = process.env.WA_DB_API_URL;
 async function generateWhatsAppLink(phoneNumber) {
   try {
     // Ensure the phone number is valid
-    if (!phoneNumber || typeof phoneNumber !== 'string' || !/^\+?\d{1,15}$/.test(phoneNumber)) {
-      throw new Error("Invalid phone number format. Please provide a valid phone number.");
+    if (
+      !phoneNumber ||
+      typeof phoneNumber !== "string" ||
+      !/^\+?\d{1,15}$/.test(phoneNumber)
+    ) {
+      throw new Error(
+        "Invalid phone number format. Please provide a valid phone number."
+      );
     }
 
     const message =
       "Hello found your boarding house on casamax.co.zw. Is your house still available?";
-    
+
     // Safely encode the message to prevent any injection attacks
     const encodedMessage = encodeURIComponent(message);
 
@@ -40,7 +46,7 @@ async function generateWhatsAppLink(phoneNumber) {
 async function makeBDApiCall(uni, price, gender) {
   try {
     // Validate inputs to prevent potential security issues
-    if (!uni || typeof uni !== 'string' || uni.trim().length === 0) {
+    if (!uni || typeof uni !== "string" || uni.trim().length === 0) {
       throw new Error("Invalid university input.");
     }
 
@@ -48,12 +54,14 @@ async function makeBDApiCall(uni, price, gender) {
       throw new Error("Invalid price input.");
     }
 
-    if (!gender || (gender !== 'male' && gender !== 'female')) {
+    if (!gender) {
       throw new Error("Invalid gender input. Must be 'male' or 'female'.");
     }
 
     // Construct the API URL with query parameters
-    const apiUrl = `https://casamax.co.zw/homerunphp/whatsapp_reply.php?university=${encodeURIComponent(uni)}&price=${encodeURIComponent(price)}&gender=${encodeURIComponent(gender)}`;
+    const apiUrl = `https://casamax.co.zw/homerunphp/whatsapp_reply.php?university=${encodeURIComponent(
+      uni
+    )}&price=${encodeURIComponent(price)}&gender=${encodeURIComponent(gender)}`;
 
     // Make the API call
     const response = await axios.get(apiUrl);
@@ -74,12 +82,18 @@ async function makeBDApiCall(uni, price, gender) {
 async function generateWebLink(home_id) {
   try {
     // Validate the home_id input
-    if (!home_id || typeof home_id !== 'string' || home_id.trim().length === 0) {
+    if (
+      !home_id ||
+      typeof home_id !== "string" ||
+      home_id.trim().length === 0
+    ) {
       throw new Error("Invalid home_id input.");
     }
 
     // Construct the long URL
-    const longUrl = `https://casamax.co.zw/listingdetails.php?clicked_id=${encodeURIComponent(home_id)}`;
+    const longUrl = `https://casamax.co.zw/listingdetails.php?clicked_id=${encodeURIComponent(
+      home_id
+    )}`;
 
     // Generate the short URL
     const shortUrl = await minifyWithTinyURL(longUrl);
@@ -140,14 +154,16 @@ async function generateFullCasamaxLink(university, budget, gender) {
     }
 
     if (!pageUrl) {
-      throw new Error(`No matching page URL found for university: ${university}`);
+      throw new Error(
+        `No matching page URL found for university: ${university}`
+      );
     }
 
     // Construct the full URL
     const fullUrl = `https://casamax.co.zw/unilistings/${pageUrl}?gender=${gender}&price=${budget}&filter_set=1`;
 
     // Validate input parameters (gender and budget)
-    if (typeof gender !== 'string' || gender.trim().length === 0) {
+    if (typeof gender !== "string" || gender.trim().length === 0) {
       throw new Error("Invalid gender parameter.");
     }
     if (isNaN(budget) || budget <= 0) {
@@ -164,13 +180,15 @@ async function generateFullCasamaxLink(university, budget, gender) {
     return "View the full list on CasaMax: " + shortUrl + "\n";
   } catch (error) {
     console.error("Error generating full CasaMax link:", error.message);
-    throw new Error("Failed to generate the full CasaMax link. Please try again later.");
+    throw new Error(
+      "Failed to generate the full CasaMax link. Please try again later."
+    );
   }
 }
 // converting to proper case
 function toProperCase(str) {
   try {
-    if (typeof str !== 'string') {
+    if (typeof str !== "string") {
       throw new Error("Input is not a valid string.");
     }
 
@@ -195,7 +213,7 @@ function toProperCase(str) {
 async function generateGoogleMapsLink(address) {
   try {
     // Ensure the address is a valid string
-    if (typeof address !== 'string' || address.trim() === '') {
+    if (typeof address !== "string" || address.trim() === "") {
       throw new Error("Invalid address provided.");
     }
 
@@ -205,7 +223,7 @@ async function generateGoogleMapsLink(address) {
 
     // Generate the shortened URL using TinyURL
     const shortMapAddress = await minifyWithTinyURL(longAddressUrl);
-    
+
     // Return the shortened Google Maps URL
     return shortMapAddress;
   } catch (error) {
@@ -300,7 +318,6 @@ function ensureArray(responseBody) {
   }
 }
 
-
 // Function to minify URL using TinyURL
 async function minifyWithTinyURL(longUrl) {
   try {
@@ -348,7 +365,7 @@ async function sendTemplateMessage(templateName, receiver) {
   } catch (error) {
     // Handle errors by logging specific details
     console.error("Error sending template message:", error.message);
-    
+
     // Check if the error has a response (e.g., from the WhatsApp API)
     if (error.response) {
       console.error("API Response:", error.response.data);
@@ -390,7 +407,7 @@ async function sendTextMessage(body, receiver) {
   } catch (error) {
     // Handle and log errors with additional context
     console.error("Error sending text message:", error.message);
-    
+
     // If the error includes a response from the API, log that as well
     if (error.response) {
       console.error("API Response:", error.response.data);
@@ -499,7 +516,9 @@ async function sendHouses(conversation, res, fromNumber) {
 
     // Validate inputs
     if (!university || !budget || !gender) {
-      throw new Error("Missing required fields: university, budget, or gender.");
+      throw new Error(
+        "Missing required fields: university, budget, or gender."
+      );
     }
 
     // Update conversation status
