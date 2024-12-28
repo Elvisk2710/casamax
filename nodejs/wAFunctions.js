@@ -1,5 +1,11 @@
 const axios = require("axios");
-const intents = require("./intents"); // Import the intents file
+const {
+  intents,
+  greetingKeywords,
+  maleKeywords,
+  femaleKeywords,
+  goodbyeKeywords,
+} = require("./intents"); // Import the intents file
 require("dotenv").config();
 const whatsAppDbApi = process.env.WA_DB_API_URL;
 
