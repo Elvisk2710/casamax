@@ -479,7 +479,7 @@ app.post("/webhook", async (req, res) => {
       res.status(400).send("Invalid webhook data.");
     }
   } catch (error) {
-    console.error("Error processing WhatsApp message:", error);
+    // console.error("Error processing WhatsApp message:", error);
     res.status(500).send("Internal Server Error");
   }
 });
