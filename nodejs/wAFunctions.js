@@ -38,27 +38,31 @@ async function generateWebLink(home_id) {
 async function generateFullCasamaxLink(university, budget, gender) {
   if (!university) {
     throw new Error("University is undefined or null");
-  } else {
-    console.log("university", university);
   }
+
+  console.log("University input:", university);
+  console.log("Intents object:", intents);
 
   let pageUrl;
 
   for (let key in intents) {
     const intent = intents[key];
 
+    if (!intent || !intent.name || !intent.nicknames) {
+      console.log(`Skipping invalid intent at key: ${key}`);
+      continue;
+    }
+
     console.log("Processing intent:", intent.name);
     console.log("Comparing with university:", university);
     console.log("Nicknames:", intent.nicknames);
 
-    // Normalize and compare names
     if (
       intent.name?.trim().toLowerCase() === university.trim().toLowerCase() ||
-      (intent.nicknames &&
-        intent.nicknames.some(
-          (nickname) =>
-            nickname?.trim().toLowerCase() === university.trim().toLowerCase()
-        ))
+      intent.nicknames.some(
+        (nickname) =>
+          nickname?.trim().toLowerCase() === university.trim().toLowerCase()
+      )
     ) {
       pageUrl = intent.page;
       break;
@@ -73,8 +77,7 @@ async function generateFullCasamaxLink(university, budget, gender) {
 
   try {
     const shortUrl = await minifyWithTinyURL(fullUrl);
-    const text = "View the full list on CasaMax: " + shortUrl + "\n";
-    return text;
+    return "View the full list on CasaMax: " + shortUrl + "\n";
   } catch (error) {
     console.error("Error generating short URL:", error);
     throw new Error("Failed to generate short URL");
