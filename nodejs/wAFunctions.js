@@ -38,6 +38,8 @@ async function generateWebLink(home_id) {
 async function generateFullCasamaxLink(university, budget, gender) {
   if (!university) {
     throw new Error("University is undefined or null");
+  } else {
+    console.log("university", university);
   }
 
   let pageUrl;
@@ -45,12 +47,17 @@ async function generateFullCasamaxLink(university, budget, gender) {
   for (let key in intents) {
     const intent = intents[key];
 
-    // Safeguard checks to avoid calling `toLowerCase` on undefined or null values
+    console.log("Processing intent:", intent.name);
+    console.log("Comparing with university:", university);
+    console.log("Nicknames:", intent.nicknames);
+
+    // Normalize and compare names
     if (
-      intent.name?.toLowerCase() === university.toLowerCase() ||
+      intent.name?.trim().toLowerCase() === university.trim().toLowerCase() ||
       (intent.nicknames &&
         intent.nicknames.some(
-          (nickname) => nickname?.toLowerCase() === university.toLowerCase()
+          (nickname) =>
+            nickname?.trim().toLowerCase() === university.trim().toLowerCase()
         ))
     ) {
       pageUrl = intent.page;
@@ -295,7 +302,7 @@ async function updateConversationStatus(contact, status) {
 // function to send houses to the client
 async function sendHouses(conversation, res, fromNumber) {
   // Initialize responseMessage to ensure it's scoped correctly
-  console.log("conversation",conversation)
+  console.log("conversation", conversation);
   let responseMessage;
   updateConversationStatus(fromNumber, "completed");
 

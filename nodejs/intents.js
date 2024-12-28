@@ -1,7 +1,7 @@
 const intents = {
   1: {
     name: "University of Zimbabwe",
-    nicknames: ["UZ", "University of Zimbabwe"],
+    nicknames: ["UZ", "University of Zimbabwe","University of Zimbabwe"],
     response:
       "You have selected the University of Zimbabwe. We will now find suitable boarding houses for you.",
     page: "uzlisting.php",
