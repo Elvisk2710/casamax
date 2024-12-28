@@ -48,169 +48,6 @@ app.use(
 );
 
 // Route for handling Twilio WhatsApp messages
-// app.post("/webhook", async (req, res) => {
-//   let mode = req.query["hub.mode"];
-//   let challenge = req.query["hub.challenge"];
-//   let token = req.query["hub.verify_token"];
-
-//   try {
-//     const incomingMessage = req.body.Body.trim().toLowerCase(); // Normalize input
-//     const fromNumber = req.body.From;
-
-//     // Initialize conversation data for the sender if not already present
-//     if (!conversationData[fromNumber]) {
-//       conversationData[fromNumber] = {
-//         stage: "initial",
-//         data: {},
-//       };
-//     }
-
-//     const conversation = conversationData[fromNumber];
-
-//     // Check if the message is a greeting
-//     if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
-//       conversation.stage = "initial"; // Reset to initial stage if needed
-//     }
-
-//     // Check if the message is a goodbye
-//     if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
-//       conversation.stage = "goodbye"; // Set stage to completed or end the conversation
-//     }
-
-//     // Initialize responseMessage variable to store the outgoing message
-//     let responseMessage;
-//     const currentDateTime = new Date()
-//       .toISOString()
-//       .slice(0, 19)
-//       .replace("T", " "); // Formats as 'YYYY-MM-DD HH:mm:ss'
-
-//     // Handle conversation stages
-//     switch (conversation.stage) {
-//       case "initial":
-//         conversation.stage = "university";
-//         sendTemplateMessage("initial", fromNumber);
-//         callWhatsAppDbApi(fromNumber, "initiated", currentDateTime);
-//         break;
-
-//       case "university":
-//         updateConversationStatus(fromNumber, "university");
-//         let matchedUniversity = null;
-
-//         // Check for number-based selection
-//         if (intents[incomingMessage]) {
-//           matchedUniversity = intents[incomingMessage];
-//         } else if (!isNaN(incomingMessage) && intents[incomingMessage]) {
-//           matchedUniversity = intents[incomingMessage];
-//         } else {
-//           // Check for nickname or full name
-//           for (let key in intents) {
-//             const intent = intents[key];
-//             if (
-//               intent.name.toLowerCase() === incomingMessage ||
-//               (intent.nicknames &&
-//                 intent.nicknames.some(
-//                   (nickname) => nickname.toLowerCase() === incomingMessage
-//                 ))
-//             ) {
-//               matchedUniversity = intent;
-//               break;
-//             }
-//           }
-//         }
-
-//         if (matchedUniversity) {
-//           conversation.data.university = matchedUniversity.name;
-//           conversation.stage = "budget"; // Move to the next stage
-//           sendTemplateMessage("budget", fromNumber);
-//         } else {
-//           sendTemplateMessage("error", fromNumber);
-//         }
-//         break;
-
-//       case "budget":
-//         updateConversationStatus(fromNumber, "budget");
-//         const budget = parseFloat(incomingMessage);
-//         if (!isNaN(budget) && budget > 0) {
-//           conversation.data.budget = budget;
-//           conversation.stage = "gender";
-//           sendTemplateMessage("gender", fromNumber);
-//         } else {
-//           sendTextMessage(
-//             "Please enter a valid budget (e.g. 180).",
-//             fromNumber
-//           );
-//         }
-//         break;
-
-//       case "gender":
-//         updateConversationStatus(fromNumber, "gender");
-//         if (
-//           maleKeywords.some(
-//             (keyword) =>
-//               incomingMessage.includes(keyword) || incomingMessage === "1"
-//           )
-//         ) {
-//           conversation.data.gender = "boys";
-//           responseMessage = await sendHouses(conversation, res, fromNumber);
-//           sendTemplateMessage(responseMessage, fromNumber);
-//           conversation.stage = "goodbye"; // Set stage after fetching houses
-//         } else if (
-//           femaleKeywords.some(
-//             (keyword) =>
-//               incomingMessage.includes(keyword) || incomingMessage === "2"
-//           )
-//         ) {
-//           conversation.data.gender = "girls";
-//           responseMessage = await sendHouses(conversation, res, fromNumber);
-//           sendTemplateMessage(responseMessage, fromNumber);
-//           conversation.stage = "goodbye";
-//         } else {
-//           sendTextMessage(
-//             "Invalid selection. Please choose between: \n1. for Male \nor \n2. for Female.",
-//             fromNumber
-//           );
-//         }
-//         break;
-
-//       case "goodbye":
-//         sendTextMessage(
-//           "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you",
-//           fromNumber
-//         );
-//         // Optionally, you can reset the conversation or delete the conversation data
-//         // delete conversationData[fromNumber];
-//         break;
-
-//       default:
-//         sendTextMessage(
-//           "I’m not sure how to help with that. Can you please give a valid response!!",
-//           fromNumber
-//         );
-//         break;
-//     }
-
-//     // Store the incoming and outgoing messages in the conversation object
-//     conversation.data.messages = conversation.data.messages || [];
-//     conversation.data.messages.push({
-//       direction: "incoming",
-//       message: incomingMessage,
-//     });
-//     conversation.data.messages.push({
-//       direction: "outgoing",
-//       message: responseMessage,
-//     });
-//     // Send the TwiML response
-//     res.writeHead(200, { "Content-Type": "text/xml" });
-//     res.end(twiml.toString());
-
-//     // Log the response for debugging purposes
-//   } catch (error) {
-//     console.error("Error processing WhatsApp message:", error);
-//     res.writeHead(500, { "Content-Type": "text/xml" });
-//     res.end(twiml.toString());
-//   }
-// });
-
 const token = process.env.WHATSAPP_TOKEN;
 const myToken = process.env.WHATSAPP_TOKEN;
 
@@ -434,10 +271,7 @@ app.post("/webhook", async (req, res) => {
               sendTextMessage(responseMessage, fromNumber);
               conversation.stage = "goodbye";
             } else {
-              sendTemplateMessage(
-                "error",
-                fromNumber
-              );
+              sendTemplateMessage("error", fromNumber);
             }
             break;
 
@@ -467,6 +301,7 @@ app.post("/webhook", async (req, res) => {
           message: responseMessage,
         });
         // Respond to the webhook
+        console.log(conversation);
         res.status(200).send("Message processed");
         return;
       } else {
