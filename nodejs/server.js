@@ -301,7 +301,6 @@ app.post("/webhook", async (req, res) => {
           message: responseMessage,
         });
         // Respond to the webhook
-        console.log(conversation);
         res.status(200).send("Message processed");
         return;
       } else {

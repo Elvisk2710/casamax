@@ -36,26 +36,44 @@ async function generateWebLink(home_id) {
 
 // generate the full casamax link
 async function generateFullCasamaxLink(university, budget, gender) {
+  if (!university) {
+    throw new Error("University is undefined or null");
+  }
+
   let pageUrl;
+
   for (let key in intents) {
     const intent = intents[key];
 
+    // Safeguard checks to avoid calling `toLowerCase` on undefined or null values
     if (
-      intent.name.toLowerCase() === university.toLowerCase() ||
-      intent.nicknames.some(
-        (nickname) => nickname.toLowerCase() === university.toLowerCase()
-      )
+      intent.name?.toLowerCase() === university.toLowerCase() ||
+      (intent.nicknames &&
+        intent.nicknames.some(
+          (nickname) => nickname?.toLowerCase() === university.toLowerCase()
+        ))
     ) {
       pageUrl = intent.page;
       break;
     }
   }
 
-  fullUrl = `https://casamax.co.zw/unilistings/${pageUrl}?gender=${gender}&price=${budget}&filter_set=1`;
-  const shortUrl = await minifyWithTinyURL(fullUrl);
-  const text = "View the full list on CasaMax: " + shortUrl + "\n";
-  return text;
+  if (!pageUrl) {
+    throw new Error(`No matching page URL found for university: ${university}`);
+  }
+
+  const fullUrl = `https://casamax.co.zw/unilistings/${pageUrl}?gender=${gender}&price=${budget}&filter_set=1`;
+
+  try {
+    const shortUrl = await minifyWithTinyURL(fullUrl);
+    const text = "View the full list on CasaMax: " + shortUrl + "\n";
+    return text;
+  } catch (error) {
+    console.error("Error generating short URL:", error);
+    throw new Error("Failed to generate short URL");
+  }
 }
+
 // converting to proper case
 function toProperCase(str) {
   return str
@@ -228,7 +246,6 @@ async function sendTextMessage(body, receiver) {
   }
 }
 
-
 // add conversation to database
 async function callWhatsAppDbApi(contact, status, date) {
   try {
@@ -278,6 +295,7 @@ async function updateConversationStatus(contact, status) {
 // function to send houses to the client
 async function sendHouses(conversation, res, fromNumber) {
   // Initialize responseMessage to ensure it's scoped correctly
+  console.log("conversation",conversation)
   let responseMessage;
   updateConversationStatus(fromNumber, "completed");
 
