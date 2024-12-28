@@ -285,10 +285,10 @@ async function generateMessages(houses) {
           `\n*${toProperCase(firstname)} ${toProperCase(lastname)}'s House*\n` +
           `Price: *$${price}*\n` +
           `Located at: ${adrs}\n` +
-          `Phone Number: ${whatsAppLink}\n` +
+          `Phone Number: ${contact}\n` +
           `Casamax Link:${webLink}\n` +
           `Maps Link: ${mapsLink}` +
-          (amenities ? `\nAmenities:\n${amenities}` : "");
+          (amenities ? `\n*Amenities:*\n${amenities}` : "");
 
         return message;
       })
