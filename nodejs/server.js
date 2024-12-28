@@ -142,181 +142,184 @@ const processedMessages = new Set();
 app.post("/webhook", async (req, res) => {
   try {
     const body = req.body;
-    // Check if the webhook contains messages
-    if (body.object) {
-      const entry = body.entry[0];
-      const message = entry.changes[0]?.value?.messages[0];
-
-      if (message) {
-        const messageId = message.id;
-
-        if (processedMessages.has(messageId)) {
-          console.log(`Message ${messageId} already processed.`);
-          res.status(200).send("Already processed");
-          return;
-        }
-        processedMessages.add(messageId);
-        const incomingMessage = message?.text?.body?.trim().toLowerCase(); // Normalize input
-        const fromNumber = message?.from;
-
-        // Initialize conversation data for the sender if not already present
-        if (!conversationData[fromNumber]) {
-          conversationData[fromNumber] = {
-            stage: "initial",
-            data: {},
-          };
-        }
-
-        const conversation = conversationData[fromNumber];
-
-        // Check if the message is a greeting
-        if (
-          greetingKeywords.some((keyword) => incomingMessage.includes(keyword))
-        ) {
-          conversation.stage = "initial"; // Reset to initial stage if needed
-        }
-
-        // Check if the message is a goodbye
-        if (
-          goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))
-        ) {
-          conversation.stage = "goodbye"; // Set stage to completed or end the conversation
-        }
-
-        // Initialize responseMessage variable to store the outgoing message
-        let responseMessage;
-        const currentDateTime = new Date()
-          .toISOString()
-          .slice(0, 19)
-          .replace("T", " "); // Formats as 'YYYY-MM-DD HH:mm:ss'
-
-        // Handle conversation stages
-        switch (conversation.stage) {
-          case "initial":
-            conversation.stage = "university";
-            sendTemplateMessage("choose_uni", fromNumber);
-            callWhatsAppDbApi(fromNumber, "initiated", currentDateTime);
-            break;
-
-          case "university":
-            updateConversationStatus(fromNumber, "university");
-            let matchedUniversity = null;
-
-            // Check for number-based selection
-            if (intents[incomingMessage]) {
-              matchedUniversity = intents[incomingMessage];
-            } else if (!isNaN(incomingMessage) && intents[incomingMessage]) {
-              matchedUniversity = intents[incomingMessage];
-            } else {
-              // Check for nickname or full name
-              for (let key in intents) {
-                const intent = intents[key];
-                if (
-                  intent.name.toLowerCase() === incomingMessage ||
-                  (intent.nicknames &&
-                    intent.nicknames.some(
-                      (nickname) => nickname.toLowerCase() === incomingMessage
-                    ))
-                ) {
-                  matchedUniversity = intent;
-                  break;
-                }
-              }
-            }
-
-            if (matchedUniversity) {
-              conversation.data.university = matchedUniversity.name;
-              conversation.stage = "budget"; // Move to the next stage
-              sendTemplateMessage("budget", fromNumber);
-            } else {
-              sendTemplateMessage("error", fromNumber);
-            }
-            break;
-
-          case "budget":
-            updateConversationStatus(fromNumber, "budget");
-            const budget = parseFloat(incomingMessage);
-            if (!isNaN(budget) && budget > 0) {
-              conversation.data.budget = budget;
-              conversation.stage = "gender";
-              sendTemplateMessage("gender", fromNumber);
-            } else {
-              sendTextMessage(
-                "Please enter a valid budget (e.g. 180).",
-                fromNumber
-              );
-            }
-            break;
-
-          case "gender":
-            updateConversationStatus(fromNumber, "gender");
-            if (
-              maleKeywords.some(
-                (keyword) =>
-                  incomingMessage.includes(keyword) || incomingMessage === "1"
-              )
-            ) {
-              conversation.data.gender = "boys";
-              responseMessage = await sendHouses(conversation, res, fromNumber);
-              sendTextMessage(responseMessage, fromNumber);
-              conversation.stage = "goodbye"; // Set stage after fetching houses
-            } else if (
-              femaleKeywords.some(
-                (keyword) =>
-                  incomingMessage.includes(keyword) || incomingMessage === "2"
-              )
-            ) {
-              conversation.data.gender = "girls";
-              responseMessage = await sendHouses(conversation, res, fromNumber);
-              sendTextMessage(responseMessage, fromNumber);
-              conversation.stage = "goodbye";
-            } else {
-              sendTemplateMessage("error", fromNumber);
-            }
-            break;
-
-          case "goodbye":
-            sendTextMessage(
-              "Thank you for using Casa. \nFor the full experience please visit: https://casamax.co.zw/ where you can view all listings, view their pictures, contact landlord or agent and find the boarding house that is just right for you",
-              fromNumber
-            );
-            break;
-
-          default:
-            sendTextMessage(
-              "I’m not sure how to help with that. Can you please give a valid response!!",
-              fromNumber
-            );
-            break;
-        }
-
-        // Store the incoming and outgoing messages in the conversation object
-        conversation.data.messages = conversation.data.messages || [];
-        conversation.data.messages.push({
-          direction: "incoming",
-          message: incomingMessage,
-        });
-        conversation.data.messages.push({
-          direction: "outgoing",
-          message: responseMessage,
-        });
-        // Respond to the webhook
-        res.status(200).send("Message processed");
-        return;
-      } else {
-        // No message data found in the webhook
-        res.status(404).send("Message data not found.");
-        return;
-      }
-    } else {
-      // If no object found, return error
-      res.status(400).send("Invalid webhook data.");
+    
+    // Validate incoming webhook data
+    if (!body || !body.object || !body.entry || !body.entry[0]?.changes[0]?.value?.messages) {
+      return res.status(400).send("Invalid webhook data.");
     }
+
+    const entry = body.entry[0];
+    const message = entry.changes[0].value.messages[0];
+
+    if (!message) {
+      return res.status(404).send("Message data not found.");
+    }
+
+    const messageId = message.id;
+    const fromNumber = message.from;
+    const incomingMessage = message.text?.body?.trim().toLowerCase();
+
+    // Prevent duplicate message processing
+    if (processedMessages.has(messageId)) {
+      console.log(`Message ${messageId} already processed.`);
+      return res.status(200).send("Already processed");
+    }
+    processedMessages.add(messageId);
+
+    // Initialize conversation data if not present
+    if (!conversationData[fromNumber]) {
+      conversationData[fromNumber] = {
+        stage: "initial",
+        data: {},
+      };
+    }
+
+    const conversation = conversationData[fromNumber];
+    
+    // Handle greetings or goodbye messages
+    if (greetingKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+      conversation.stage = "initial";
+    }
+
+    if (goodbyeKeywords.some((keyword) => incomingMessage.includes(keyword))) {
+      conversation.stage = "goodbye";
+    }
+
+    let responseMessage;
+
+    const currentDateTime = new Date().toISOString().slice(0, 19).replace("T", " "); // 'YYYY-MM-DD HH:mm:ss'
+
+    // Switch based on conversation stage
+    switch (conversation.stage) {
+      case "initial":
+        conversation.stage = "university";
+        await sendTemplateMessage("choose_uni", fromNumber);
+        await callWhatsAppDbApi(fromNumber, "initiated", currentDateTime);
+        break;
+
+      case "university":
+        await updateConversationStatus(fromNumber, "university");
+        let matchedUniversity = findMatchedUniversity(incomingMessage);
+
+        if (matchedUniversity) {
+          conversation.data.university = matchedUniversity.name;
+          conversation.stage = "budget";
+          await sendTemplateMessage("budget", fromNumber);
+        } else {
+          await sendTemplateMessage("error", fromNumber);
+        }
+        break;
+
+      case "budget":
+        await updateConversationStatus(fromNumber, "budget");
+        const budget = parseFloat(incomingMessage);
+        if (isValidBudget(budget)) {
+          conversation.data.budget = budget;
+          conversation.stage = "gender";
+          await sendTemplateMessage("gender", fromNumber);
+        } else {
+          await sendTextMessage("Please enter a valid budget (e.g., 180).", fromNumber);
+        }
+        break;
+
+      case "gender":
+        await updateConversationStatus(fromNumber, "gender");
+        const gender = await handleGenderStage(incomingMessage, conversation, fromNumber);
+        if (gender) {
+          conversation.data.gender = gender;
+          responseMessage = await sendHouses(conversation, res, fromNumber);
+          await sendTextMessage(responseMessage, fromNumber);
+          conversation.stage = "goodbye";
+        } else {
+          await sendTemplateMessage("error", fromNumber);
+        }
+        break;
+
+      case "goodbye":
+        await sendTextMessage(
+          "Thank you for using Casa. For the full experience, please visit: https://casamax.co.zw/ where you can view all listings, pictures, contact the landlord or agent, and find the perfect boarding house.",
+          fromNumber
+        );
+        break;
+
+      default:
+        await sendTextMessage("I’m not sure how to help with that. Can you please give a valid response?", fromNumber);
+        break;
+    }
+
+    // Log incoming and outgoing messages
+    conversation.data.messages = conversation.data.messages || [];
+    conversation.data.messages.push({
+      direction: "incoming",
+      message: incomingMessage,
+    });
+    conversation.data.messages.push({
+      direction: "outgoing",
+      message: responseMessage,
+    });
+
+    return res.status(200).send("Message processed");
+
   } catch (error) {
-    // console.error("Error processing WhatsApp message:", error);
-    res.status(500).send("Internal Server Error");
+    console.error("Error processing WhatsApp message:", error);
+    return res.status(500).send("Internal Server Error");
   }
 });
+
+// Helper functions
+
+function findMatchedUniversity(incomingMessage) {
+  let matchedUniversity = null;
+
+  // Check for number-based selection
+  if (intents[incomingMessage]) {
+    matchedUniversity = intents[incomingMessage];
+  } else if (!isNaN(incomingMessage) && intents[incomingMessage]) {
+    matchedUniversity = intents[incomingMessage];
+  } else {
+    // Check for nickname or full name
+    for (let key in intents) {
+      const intent = intents[key];
+      if (
+        intent.name.toLowerCase() === incomingMessage ||
+        (intent.nicknames &&
+          intent.nicknames.some(
+            (nickname) => nickname.toLowerCase() === incomingMessage
+          ))
+      ) {
+        matchedUniversity = intent;
+        break;
+      }
+    }
+  }
+  return matchedUniversity;
+}
+
+function isValidBudget(budget) {
+  return !isNaN(budget) && budget > 0;
+}
+
+async function handleGenderStage(incomingMessage, conversation, fromNumber) {
+  if (
+    maleKeywords.some(
+      (keyword) =>
+        incomingMessage.includes(keyword) || incomingMessage === "1"
+    )
+  ) {
+    conversation.data.gender = "boys";
+    return "boys";
+  } else if (
+    femaleKeywords.some(
+      (keyword) =>
+        incomingMessage.includes(keyword) || incomingMessage === "2"
+    )
+  ) {
+    conversation.data.gender = "girls";
+    return "girls";
+  }
+  return null;
+}
+
 
 io.on("connection", (socket) => {
   console.log("New client connected");

@@ -116,10 +116,6 @@ async function generateFullCasamaxLink(university, budget, gender) {
     if (!university) {
       throw new Error("University is undefined or null");
     }
-
-    console.log("University input:", university);
-    console.log("Intents object:", intents);
-
     let pageUrl;
 
     // Ensure the intents object is correctly defined and processed
@@ -132,13 +128,8 @@ async function generateFullCasamaxLink(university, budget, gender) {
 
       // Ensure intent has the necessary properties
       if (!intent || !intent.name || !intent.nicknames) {
-        console.log(`Skipping invalid intent at key: ${key}`);
         continue;
       }
-
-      console.log("Processing intent:", intent.name);
-      console.log("Comparing with university:", university);
-      console.log("Nicknames:", intent.nicknames);
 
       // Case-insensitive comparison of university name and nicknames
       if (
@@ -502,7 +493,6 @@ async function updateConversationStatus(contact, status) {
 // function to send houses to the client
 async function sendHouses(conversation, res, fromNumber) {
   // Initialize responseMessage to ensure it's scoped correctly
-  console.log("conversation", conversation);
   let responseMessage;
 
   try {
