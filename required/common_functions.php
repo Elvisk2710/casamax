@@ -113,29 +113,32 @@ function compressImage($source, $destination, $quality)
 // Function to get upload path based on university
 function getUniLocation($uni)
 {
+    // Convert the input to lowercase
+    $uni = strtolower($uni);
+
     switch ($uni) {
-        case "University of Zimbabwe":
+        case "university of zimbabwe":
             $uploadPath = '../housepictures/uzpictures/';
             break;
-        case "Midlands State University":
+        case "midlands state university":
             $uploadPath = '../housepictures/msupictures/';
             break;
-        case "Africa University":
+        case "africa university":
             $uploadPath = '../housepictures/aupictures/';
             break;
-        case "Bindura State University":
+        case "bindura state university":
             $uploadPath = '../housepictures/bsupictures/';
             break;
-        case "Chinhoyi University of Science and Technology":
+        case "chinhoyi university of science and technology":
             $uploadPath = '../housepictures/cutpictures/';
             break;
-        case "Great Zimbabwe University":
+        case "great zimbabwe university":
             $uploadPath = '../housepictures/gzpictures/';
             break;
-        case "Harare Institute of Technology":
+        case "harare institute of technology":
             $uploadPath = '../housepictures/hitpictures/';
             break;
-        case "National University of Science and Technology":
+        case "national university of science and technology":
             $uploadPath = '../housepictures/nustpictures/';
             break;
         default:
@@ -143,6 +146,7 @@ function getUniLocation($uni)
     }
     return $uploadPath;
 }
+
 
 // Custom function to sanitize and validate user input
 function sanitizeInput($input)

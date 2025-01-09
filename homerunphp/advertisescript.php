@@ -127,7 +127,6 @@ if (isset($_POST['create_profile'])) {
                     $randomString = bin2hex(random_bytes(1)); // Generate a random string
                     $rand_num = rand(1, 100);
                     $truncated_text = substr($hashedpass, 0, 5);
-
                     $home_id = $timestamp . $randomString . $rand_num;
                     $home_id = preg_replace('/[^0-9]/', '', $home_id);
 
@@ -160,8 +159,8 @@ if (isset($_POST['create_profile'])) {
                                                 } else {
 
                                                     $status = 'failed';
-                                                    $uploadPath = getUniLocation($uni);
-
+                                                    $lowercaseUni = strtolower($uni);
+                                                    $uploadPath = getUniLocation($lowercaseUni);
                                                     if (!empty($uploadPath)) {
                                                         for ($num = 0; $num < $count; $num++) {
                                                             $imageUploadPath = $uploadPath . basename($_FILES["$name"]["name"][$num]);
