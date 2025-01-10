@@ -46,7 +46,7 @@ function fetchHouse($queryParams)
 
     try {
         // Fetch the house with the specified home_id
-        $sql = "SELECT id, firstname, lastname, contact, price, adrs, home_id, image1, uni FROM homerunhouses WHERE home_id = ? AND available = 1 AND contact != 0 ";
+        $sql = "SELECT id, firstname, lastname, contact, price, adrs, home_id, image1, uni FROM homerunhouses WHERE home_id = ? AND available = 1 AND contact != 0  AND image1 IS NOT NULL";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
             throw new Exception("Failed to prepare SQL statement: " . $conn->error);
@@ -162,8 +162,8 @@ function fetchHouses($queryParams)
             $types .= 'ss';
         }
 
-        $sql = "SELECT id, firstname, lastname, contact, price, adrs, home_id FROM homerunhouses";
-        $sql .= " WHERE available = 1";
+        $sql = "SELECT id, firstname, lastname, contact, price, adrs, home_id, image1 FROM homerunhouses";
+        $sql .= ' WHERE available = 1 AND contact != 0  AND image1 IS NOT NULL AND image1 != ""';
         if (!empty($whereClauses)) {
             $sql .= " AND " . implode(" AND ", $whereClauses);
         }
@@ -172,14 +172,6 @@ function fetchHouses($queryParams)
             $sortOrder = (!empty($queryParams['sort_order']) && strtoupper($queryParams['sort_order']) === 'DESC') ? 'DESC' : 'ASC';
             $sql .= " ORDER BY price $sortOrder";
         }
-
-        $page = !empty($queryParams['page']) ? max(1, intval($queryParams['page'])) : 1;
-        $limit = !empty($queryParams['limit']) ? max(1, min(100, intval($queryParams['limit']))) : 10;
-        $offset = ($page - 1) * $limit;
-        $sql .= " LIMIT ?, ?";
-        $params[] = $offset;
-        $params[] = $limit;
-        $types .= 'ii';
 
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
@@ -208,7 +200,7 @@ function fetchHouses($queryParams)
             $house['link'] = generateShortUrl($fullUrl); // Use the shortened link
         }
 
-        $totalSql = "SELECT COUNT(*) as total FROM homerunhouses";
+        $totalSql = "SELECT COUNT(*) as total FROM homerunhouses WHERE available = 1 AND contact != 0  AND image1 IS NOT NULL AND image1 != ''";
         if (!empty($whereClauses)) {
             $totalSql .= " WHERE " . implode(" AND ", $whereClauses);
         }
@@ -227,9 +219,8 @@ function fetchHouses($queryParams)
         sendResponse([
             "message" => empty($houses) ? "No houses found" : "Houses found successfully",
             "total" => $total,
-            "current_page" => $page,
-            "total_pages" => ceil($total / $limit),
-            "data" => $houses
+            "data" => $houses,
+
         ], 200);
     } catch (Exception $e) {
         sendResponse(["error" => $e->getMessage(), "code" => $e->getCode()], 500);
